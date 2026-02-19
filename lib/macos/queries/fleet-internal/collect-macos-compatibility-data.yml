@@ -1,3 +1,4 @@
+---
 - name: Collect macOS compatibility data
   automations_enabled: false
   description: Collects macOS compatibility data from macOS hosts.

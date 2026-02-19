@@ -1,3 +1,4 @@
+---
 - name: Detect if Apple Intelligence is enabled
   automations_enabled: false
   description: Detects if Apple Intelligence has been enabled.

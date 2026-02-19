@@ -1,3 +1,4 @@
+---
 - name: Detect APNs certificate by topic
   automations_enabled: false
   description: Detects macOS devices that are enrolled using an invalid APNs certificate.

@@ -4,7 +4,7 @@
 # These are saved queries that run AGAINST the ATC tables defined in agent-options.yml.
 # The ATC config must be applied first, otherwise these return nothing.
 # ==============================================================================
-
+---
 apiVersion: v1
 kind: query
 spec:
