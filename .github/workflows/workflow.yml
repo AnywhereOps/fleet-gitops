@@ -21,6 +21,7 @@ defaults:
 # Limit permissions of GITHUB_TOKEN.
 permissions:
   contents: read
+  id-token: write # Required for OIDC
 
 jobs:
   fleet-gitops:
@@ -29,21 +30,30 @@ jobs:
       - name: Checkout GitOps repository
         uses: actions/checkout@v4
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - name: Fetch secrets from AWS Secrets Manager
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            FLEET, fleet-api-key
+        env:
+          AWS_REGION: us-east-2
+
       - name: Apply latest configuration to Fleet
         uses: ./.github/gitops-action
         with:
-          # Run GitOps in dry-run mode for pull requests.
           dry-run-only: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
-        # Add the environment variables below to the repository secrets.
-        # In addition, specify or add secrets for all the environment variables that are mentioned in the global/team YAML files.
         env:
-          FLEET_API_TOKEN: ${{ secrets.FLEET_API_TOKEN }}
+          FLEET_API_TOKEN: ${{ env.FLEET }}
+          FLEET_URL: ${{ secrets.FLEET_URL }}
           FLEET_DEDICATED_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_DEDICATED_DEVICES_ENROLL_SECRET }}
           FLEET_EMPLOYEE_ISSUED_MOBILE_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_EMPLOYEE_ISSUED_MOBILE_DEVICES_ENROLL_SECRET }}
           FLEET_IT_SERVERS_ENROLL_SECRET: ${{ secrets.FLEET_IT_SERVERS_ENROLL_SECRET }}
           FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET }}
-          FLEET_URL: ${{ secrets.FLEET_URL }}
           FLEET_WORKSTATIONS_ENROLL_SECRET: ${{ secrets.FLEET_WORKSTATIONS_ENROLL_SECRET }}
           FLEET_GLOBAL_ENROLL_SECRET: ${{ secrets.FLEET_GLOBAL_ENROLL_SECRET }}
-          
-          
