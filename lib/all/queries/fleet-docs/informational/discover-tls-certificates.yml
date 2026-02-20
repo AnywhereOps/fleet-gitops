@@ -1,0 +1,67 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Discover TLS certificates
+  platform: linux, windows, darwin
+  description: Retrieves metadata about TLS certificates for servers listening on the local machine. Enables mTLS adoption analysis and cert expiration notifications.
+  query: SELECT * FROM curl_certificate WHERE hostname IN (SELECT DISTINCT 'localhost:'||port FROM listening_ports WHERE protocol=6 AND address!='127.0.0.1' AND address!='::1');
+  powershell: |-
+    function Get-CurlCertificate {
+        param(
+            [string]$hostname,
+            [int]$port
+        )
+        try {
+            $tcpClient = New-Object System.Net.Sockets.TcpClient
+            $tcpClient.Connect($hostname, $port)
+            $networkStream = $tcpClient.GetStream()
+            $sslStream = New-Object System.Net.Security.SslStream($networkStream, $false, { return $true })
+            $sslStream.ReadTimeout = 5000
+            $sslStream.WriteTimeout = 5000
+            $sslStream.AuthenticateAsClient($hostname)
+            $remoteCert = $sslStream.RemoteCertificate
+            if ($remoteCert) {
+                $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2 $remoteCert
+                [PSCustomObject]@{
+                    Hostname   = "$hostname`:$port"
+                    Subject    = $cert.Subject
+                    Issuer     = $cert.Issuer
+                    NotBefore  = $cert.NotBefore
+                    NotAfter   = $cert.NotAfter
+                    Thumbprint = $cert.Thumbprint
+                }
+            }
+            else {
+                [PSCustomObject]@{
+                    Hostname   = "$hostname`:$port"
+                    Error      = "No certificate returned"
+                }
+            }
+            $sslStream.Close()
+            $tcpClient.Close()
+        }
+        catch {
+            [PSCustomObject]@{
+                Hostname = "$hostname`:$port"
+                Error    = "Failed to retrieve certificate - $_"
+            }
+        }
+    }
+
+    # Get distinct TCP listening ports where local address is not 127.0.0.1 or ::1
+    $ports = Get-NetTCPConnection -State Listen -Protocol TCP |
+        Where-Object { $_.LocalAddress -ne "127.0.0.1" -and $_.LocalAddress -ne "::1" } |
+        Select-Object -ExpandProperty LocalPort -Unique
+
+    foreach ($port in $ports) {
+        # Use "localhost" as the hostname to match the pattern "localhost:port"
+        $result = Get-CurlCertificate -hostname "localhost" -port $port
+        $result
+    }
+  bash: echo "Hostname,Subject,Issuer"; netstat -an | grep LISTEN | grep -v '127.0.0.1' | grep -v '::1' | awk '{print $4}' | sed -E 's/.*\.//' | sort -u | while read port; do cert=$(echo | openssl s_client
+    -connect localhost:$port -servername localhost 2>/dev/null | openssl x509 -noout -subject -issuer 2>/dev/null); subject=$(echo "$cert" | grep '^subject=' | sed 's/subject=//'); issuer=$(echo "$cert"
+    | grep '^issuer=' | sed 's/issuer=//'); echo "localhost:$port,$subject,$issuer"; done
+  purpose: Informational
+  tags: network, tls
+  contributors: nabilschear

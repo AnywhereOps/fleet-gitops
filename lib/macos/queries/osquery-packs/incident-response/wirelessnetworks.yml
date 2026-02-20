@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: wireless_networks
+  platform: darwin
+  description: Retrieves all the remembered wireless network that the target machine has connected to.
+  query: select ssid, network_name, security_type, last_connected, captive_portal, possibly_hidden, roaming, roaming_profile from wifi_networks;
+  interval: '3600'
+  value: Identifies connections to rogue access points.
+  version: 1.6.0

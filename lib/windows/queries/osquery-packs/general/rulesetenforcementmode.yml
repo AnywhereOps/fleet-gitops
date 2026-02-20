@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: RuleSetEnforcementMode
+  description: Check Applocker rule set configuration
+  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\%\EnforcementMode'
+  interval: '86400'
+  snapshot: true
+  platform: windows

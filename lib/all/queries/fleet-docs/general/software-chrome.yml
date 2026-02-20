@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Software (Chrome)
+  platform: chrome
+  description: Gathers information about software installed on a ChromeOS device.
+  query: |
+    SELECT
+      name AS name,
+      version AS version,
+      identifier AS extension_id,
+      browser_type AS browser,
+      'chrome_extensions' AS source,
+      '' AS vendor,
+      '' AS installed_path
+    FROM chrome_extensions
+  purpose: Informational
+  tags: built-in

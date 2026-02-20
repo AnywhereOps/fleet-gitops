@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: MDM Disk encryption key file
+  platform: darwin
+  description: Retrieves the encrypted FileVault recovery key for managed macOS devices.
+  query: |
+    WITH
+        de AS (SELECT IFNULL((SELECT 1 FROM disk_encryption WHERE user_uuid IS NOT "" AND filevault_status = 'on' LIMIT 1), 0) as encrypted),
+        fv AS (SELECT base64_encrypted as filevault_key FROM filevault_prk)
+      SELECT encrypted, filevault_key FROM de LEFT JOIN fv
+  purpose: Informational
+  tags: built-in
+  discovery: filevault_prk

@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: dr_watson_registry_missing
+  description: Returns 0 as a result if the registry key does not exist
+  query: SELECT IFNULL(key_count,0) AS key_exists FROM (SELECT COUNT(*) AS key_count FROM registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug') WHERE key_exists!=2;
+  platform: windows

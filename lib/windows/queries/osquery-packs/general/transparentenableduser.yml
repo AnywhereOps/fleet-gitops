@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: TransparentEnabledUser
+  description: Check Software Restriction Policies state
+  query: select * from registry where key like 'HKEY_USERS\%\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\TransparentEnabled'
+  interval: '86400'
+  snapshot: true
+  platform: windows

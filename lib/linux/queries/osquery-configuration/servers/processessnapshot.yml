@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: processes_snapshot
+  description: A snapshot of all processes running on the host. Useful for outlier analysis.
+  query: select name, path, cmdline, cwd, on_disk from processes;
+  platform: linux

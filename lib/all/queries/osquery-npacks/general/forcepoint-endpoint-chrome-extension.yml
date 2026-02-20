@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Forcepoint Endpoint Chrome Extension
+  description: (https://www.bleepingcomputer.com/news/security/malicious-extension-abuses-chrome-sync-to-steal-users-data/)
+  query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='fmfjhicbjecfchfmpelfnifijeigelme';
+  interval: 3600

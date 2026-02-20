@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: app_schemes
+  platform: darwin
+  description: Retrieves the list of application scheme/protocol-based IPC handlers.
+  query: select * from app_schemes;
+  interval: '86400'
+  value: Post-priori hijack detection, detect potential sensitive information leakage.
+  version: 1.4.7

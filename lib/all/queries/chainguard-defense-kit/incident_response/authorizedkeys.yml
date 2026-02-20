@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Authorized Keys
+  description: Retrieves all the currently installed authorized keys on a system
+  query: |
+    SELECT
+      authorized_keys.*
+    FROM
+      users
+      JOIN authorized_keys ON users.uid = authorized_keys.uid;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

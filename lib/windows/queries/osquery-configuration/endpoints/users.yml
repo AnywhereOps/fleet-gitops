@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: users
+  description: Local system users.
+  query: SELECT * FROM users;
+  platform: windows

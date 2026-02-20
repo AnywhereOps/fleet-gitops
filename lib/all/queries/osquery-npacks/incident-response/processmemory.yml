@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: process_memory
+  platform: posix
+  description: Retrieves the memory map per process in the target Linux or macOS system.
+  query: select * from process_memory_map;
+  interval: '86400'
+  value: Ability to compare with known good. Identify mapped regions corresponding with or containing injected code.
+  version: 1.4.5

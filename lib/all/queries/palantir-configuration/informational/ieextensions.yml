@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ie_extensions
+  description: List installed Internet Explorer extensions
+  query: SELECT * FROM ie_extensions;

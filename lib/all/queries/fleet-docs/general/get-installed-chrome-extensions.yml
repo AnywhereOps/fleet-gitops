@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get installed Chrome Extensions
+  platform: darwin, linux, windows
+  description: List installed Chrome Extensions for all users.
+  query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid);
+  powershell: |-
+    $users = Get-CimInstance -ClassName Win32_UserAccount -Filter "LocalAccount=True"
+    $profileList = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList" | ForEach-Object {
+        $sid = $_.PSChildName
+        try {
+            $profilePath = (Get-ItemProperty $_.PSPath).ProfileImagePath
+        }
+        catch {
+            $profilePath = $null
+        }
+        [PSCustomObject]@{
+            SID = $sid
+            ProfilePath = $profilePath
+        }
+    }
+
+    $results = @()
+
+    foreach ($user in $users) {
+        # Match user with profile path using SID as uid
+        $profile = $profileList | Where-Object { $_.SID -eq $user.SID }
+        if (-not $profile -or -not $profile.ProfilePath) {
+            continue
+        }
+
+        # Construct the expected Chrome extensions directory path
+        $chromeExtensionsDir = Join-Path $profile.ProfilePath "AppData\Local\Google\Chrome\User Data\Default\Extensions"
+        if (-not (Test-Path $chromeExtensionsDir)) {
+            continue
+        }
+
+        # Get each extension folder (each folder name is the extension id)
+        Get-ChildItem -Path $chromeExtensionsDir -Directory | ForEach-Object {
+            $extensionID = $_.Name
+            # Each extension folder may contain one or more version folders
+            Get-ChildItem -Path $_.FullName -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+                $versionFolder = $_
+                $manifestPath = Join-Path $versionFolder.FullName "manifest.json"
+                if (Test-Path $manifestPath) {
+                    try {
+                        $raw = Get-Content -Path $manifestPath -Raw
+                        $manifest = $raw | ConvertFrom-Json
+                    }
+                    catch {
+                        $manifest = $null
+                    }
+                }
+                else {
+                    $manifest = $null
+                }
+                $extensionName = $null
+                $extensionVersion = $null
+                if ($manifest) {
+                    $extensionName = $manifest.name
+                    $extensionVersion = $manifest.version
+                }
+                else {
+                    $extensionVersion = $versionFolder.Name
+                }
+                $results += [PSCustomObject]@{
+                    uid               = $user.SID
+                    username          = $user.Name
+                    extension_id      = $extensionID
+                    extension_name    = $extensionName
+                    extension_version = $extensionVersion
+                    extension_path    = $versionFolder.FullName
+                }
+            }
+        }
+    }
+
+    $results | Format-Table -AutoSize
+    Write-Output $results
+  bash: printf 'uid,username,extension_id,version\n'; for d in /Users/*; do [ -d "$d" ] && user=$(basename "$d") && uid=$(id -u "$user" 2>/dev/null) && ext_path="$d/Library/Application Support/Google/Chrome/Default/Extensions"
+    && [ -d "$ext_path" ] && for ext in "$ext_path"/*; do ext_id=$(basename "$ext"); for ver in "$ext"/*; do version=$(basename "$ver"); printf "%s,%s,%s,%s\n" "$uid" "$user" "$ext_id" "$version"; done;
+    done; done
+  purpose: Informational
+  tags: browser, built-in, inventory
+  contributors: zwass

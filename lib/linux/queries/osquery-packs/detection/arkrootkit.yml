@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ark_rootkit
+  platform: linux
+  description: ark_rootkit
+  query: select * from file where path in ('/dev/ptyxx');
+  interval: '3600'
+  value: Artifacts used by this malware

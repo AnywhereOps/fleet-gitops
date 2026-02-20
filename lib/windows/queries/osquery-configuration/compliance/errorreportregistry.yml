@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: error_report_registry
+  description: This key does not exist by default and controls enabling/disabling error reporting. Some malware creates this key sets the value to 0 (disables error reports). See https://msdn.microsoft.com/en-us/library/aa939342(v=winembedded.5).aspx
+    and https://www.documentcloud.org/documents/3477047-Document-07-Neel-Mehta-Billy-Leonard-and-Shane.html
+  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Microsoft\PCHealth\ErrorReporting\DoReport';
+  platform: windows

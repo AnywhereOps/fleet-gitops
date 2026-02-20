@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: uac_settings_registry
+  description: Controls UAC. A setting of 0 indicates that UAC is disabled.
+  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA';
+  platform: windows

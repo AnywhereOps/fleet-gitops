@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get etc hosts entries
+  platform: darwin, linux
+  description: Line-parsed /etc/hosts
+  query: SELECT * FROM etc_hosts WHERE address not in ('127.0.0.1', '::1');
+  bash: echo "address hostname aliases"; grep -vE '^[[:space:]]*#' /etc/hosts | awk '$1!="127.0.0.1" && $1!="::1" && NF'
+  purpose: informational
+  tags: hunting, inventory
+  contributors: anelshaer

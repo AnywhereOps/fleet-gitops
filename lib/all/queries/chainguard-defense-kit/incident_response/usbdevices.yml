@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Usb Devices
+  description: Return the list of USB devices
+  query: |
+    SELECT
+      *
+    FROM
+      usb_devices;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

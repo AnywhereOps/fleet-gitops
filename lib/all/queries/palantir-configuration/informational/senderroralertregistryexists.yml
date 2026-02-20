@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: send_error_alert_registry_exists
+  description: Returns the content of this key if it exists, which it shouldn't by default
+  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl\SendAlert';

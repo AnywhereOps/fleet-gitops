@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Microsoft device ID (Windows)
+  platform: windows
+  description: Retrieves the Microsoft device ID of a Windows device.
+  query: |
+    SELECT name, data
+    FROM registry
+    WHERE path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Provisioning\OMADM\MDMDeviceID\DeviceClientId';
+  purpose: Informational
+  tags: built-in

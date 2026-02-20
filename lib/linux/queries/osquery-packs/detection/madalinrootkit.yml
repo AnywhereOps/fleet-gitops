@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: madalin_rootkit
+  platform: linux
+  description: madalin_rootkit
+  query: select * from file where path in ('/usr/include/icekey.h', '/usr/include/iceconf.h', '/usr/include/iceseed.h');
+  interval: '3600'
+  value: Artifacts used by this malware

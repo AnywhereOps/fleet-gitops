@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: nfs_shares
+  platform: darwin
+  description: Retrieves the current list of Network File System mounted shares.
+  query: select * from nfs_shares;
+  interval: '86400'
+  value: Verify if shares are accessible to those who need it
+  version: 1.4.5

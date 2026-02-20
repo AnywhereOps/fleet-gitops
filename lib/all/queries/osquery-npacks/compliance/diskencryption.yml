@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: disk_encryption
+  platform: posix
+  description: Retrieves the current disk encryption status for the target system.
+  query: select * from disk_encryption;
+  interval: '86400'
+  value: Identifies a system potentially vulnerable to disk cloning.
+  version: 1.4.5

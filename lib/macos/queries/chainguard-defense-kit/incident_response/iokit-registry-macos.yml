@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Iokit Registry Macos
+  platform: darwin
+  description: Retrieves IOKit registry
+  query: |
+    SELECT
+      *
+    FROM
+      iokit_registry;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

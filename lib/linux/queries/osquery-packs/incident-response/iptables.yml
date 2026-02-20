@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: iptables
+  platform: linux
+  description: Retrieves the current filters and chains per filter in the target system.
+  query: select * from iptables;
+  interval: '3600'
+  value: Verify firewall settings are as restrictive as you need. Identify unwanted firewall holes made by malware or humans
+  version: 1.4.5

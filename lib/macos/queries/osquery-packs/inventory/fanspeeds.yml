@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: fan_speeds
+  platform: darwin
+  description: Report current fan speeds in the target OSX system.
+  query: select * from fan_speed_sensors;
+  interval: 7200
+  version: 1.7.1

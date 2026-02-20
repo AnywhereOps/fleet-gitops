@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: wireless_networks
+  description: OS X known/remembered Wi-Fi networks list.
+  query: SELECT ssid, network_name, security_type, last_connected, captive_portal, possibly_hidden, roaming, roaming_profile FROM wifi_networks;

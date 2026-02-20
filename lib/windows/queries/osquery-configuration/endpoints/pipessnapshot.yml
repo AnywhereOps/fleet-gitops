@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: pipes_snapshot
+  description: Pipes snapshot query
+  query: SELECT processes.path, processes.cmdline, processes.uid, processes.on_disk, pipes.name, pid FROM pipes JOIN processes USING (pid);
+  platform: windows

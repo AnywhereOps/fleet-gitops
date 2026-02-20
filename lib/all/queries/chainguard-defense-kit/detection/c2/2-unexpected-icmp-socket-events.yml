@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Unexpected Icmp Socket Events
+  description: Unexpected programs speaking over ICMP (event-based)
+  query: |
+    SELECT
+      se.*,
+      p.path,
+      p.cwd,
+      p.euid,
+      p.cmdline
+    FROM
+      socket_events se
+      LEFT JOIN processes p ON se.pid = p.pid
+    WHERE
+      se.time > (strftime('%s', 'now') -300)
+      AND family = 2 -- PF_INET
+      AND protocol = 1 -- ICMP
+      AND p.name NOT IN ('ping')
+  interval: 300
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

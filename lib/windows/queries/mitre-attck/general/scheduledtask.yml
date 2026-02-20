@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Scheduled_Task
+  platform: windows
+  description: Lists all of the tasks in the Windows task scheduler - ATT&CK T1053
+  query: select name,action,path,enabled,datetime(next_run_time,'unixepoch','UTC') from scheduled_tasks;
+  interval: 3600
+  removed: false

@@ -1,0 +1,25 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Ip Forwarding
+  description: Retrieves the current status of IP/IPv6 forwarding.
+  query: |
+    SELECT
+      *
+    FROM
+      system_controls
+    WHERE
+      oid = '4.30.41.1'
+    UNION
+    SELECT
+      *
+    FROM
+      system_controls
+    WHERE
+      oid = '4.2.0.1';
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

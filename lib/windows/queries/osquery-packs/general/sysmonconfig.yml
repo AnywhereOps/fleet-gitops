@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: SysmonConfig
+  description: Check Microsoft Sysinternals Sysmon config
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CCS\Services\SysmonDrv\Parameters'
+  interval: '86400'
+  snapshot: true
+  platform: windows

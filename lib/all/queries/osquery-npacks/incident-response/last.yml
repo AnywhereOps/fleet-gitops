@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: last
+  platform: posix
+  description: Retrieves the list of the latest logins with PID, username and timestamp.
+  query: select * from last;
+  interval: '3600'
+  value: Useful for intrusion detection and incident response. Verify assumptions of what accounts should be accessing what systems and identify machines accessed during a compromise.
+  version: 1.4.5

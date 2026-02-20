@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: shell_history
+  platform: posix
+  description: Retrieves the command history, per user, by parsing the shell history files.
+  query: select * from users join shell_history using (uid);
+  interval: '86400'
+  value: Identify actions taken. Useful for compromised hosts.
+  version: 1.4.5

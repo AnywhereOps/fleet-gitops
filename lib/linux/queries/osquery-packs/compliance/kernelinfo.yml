@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: kernel_info
+  description: Retrieves information from the current kernel in the target system.
+  query: select * from kernel_info;
+  interval: '86400'
+  value: Identify out of date kernels or version drift across your infrastructure
+  version: 1.4.5
+  platform: linux

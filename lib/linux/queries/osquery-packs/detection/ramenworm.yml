@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ramen_worm
+  platform: linux
+  description: ramen_worm
+  query: select * from file where path in ('/usr/lib/ldlibps.so', '/usr/lib/ldlibns.so', '/usr/lib/ldliblogin.so', '/usr/src/.poop', '/tmp/ramen.tgz', '/etc/xinetd.d/asp');
+  interval: '3600'
+  value: Artifacts used by this malware

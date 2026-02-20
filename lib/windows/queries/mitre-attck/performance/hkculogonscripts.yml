@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: HKCU_Logon_Scripts
+  description: Returns the content of the key HKEY_CURRENT_USER_Environment - ATT&CK T1037
+  query: select * from registry where key='HKEY_CURRENT_USER\Environment';
+  interval: 3600
+  removed: false
+  platform: windows

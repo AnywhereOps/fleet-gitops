@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: monkit_found
+  description: monkit_found
+  query: select * from file where path in ('/usr/lib/libpikapp.a');

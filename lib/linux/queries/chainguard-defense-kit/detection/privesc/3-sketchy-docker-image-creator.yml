@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Sketchy Docker Image Creator
+  platform: linux
+  description: Detect the execution of a Docker containing mounting the root filesystem This attack is very quick, so the likelihood of finding a culprit is entirely dependent on the polling time. The number
+    of "tags" you see associated to an image may reflect the number of times the attack has been attempted.
+  query: |
+    SELECT
+      *
+    FROM
+      docker_image_history
+    WHERE
+      created > (strftime('%s', 'now') -86400)
+      -- This signature is used by Traitor: https://github.com/liamg/traitor/
+      AND created_by LIKE '%/bin/sh%/lol%';
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

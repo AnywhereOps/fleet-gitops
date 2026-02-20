@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: kernel_modules
+  platform: linux
+  description: Retrieves the current list of loaded kernel modules in the target Linux system.
+  query: select * from kernel_modules;
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

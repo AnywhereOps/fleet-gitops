@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get antivirus status from the Windows Security Center
+  platform: windows
+  description: Selects the antivirus and signatures status from Windows Security Center.
+  query: SELECT antivirus, signatures_up_to_date from windows_security_center CROSS JOIN windows_security_products WHERE type = 'Antivirus';
+  powershell: |-
+    $avProducts = Get-CimInstance -Namespace 'root\SecurityCenter2' -ClassName AntiVirusProduct -ErrorAction SilentlyContinue $results = foreach ($av in $avProducts) {
+        # Extract signature status from productState. Note: this interpretation may vary between AV products.
+        # The productState is a 32-bit integer. Shifting right 16 bits isolates the signature status.
+        $sigStatus = ($av.productState -shr 16) -band 0xFF
+        # Conventionally, a value of 16 (0x10) indicates signatures are up to date.
+        $signaturesUpToDate = ($sigStatus -eq 16)
+        [PSCustomObject]@{
+            antivirus              = $av.displayName
+            signatures_up_to_date  = $signaturesUpToDate
+        }
+    } $results | Format-Table -AutoSize
+  purpose: Informational
+  tags: compliance, malware, hardening, built-in
+  contributors: GuillaumeRoss

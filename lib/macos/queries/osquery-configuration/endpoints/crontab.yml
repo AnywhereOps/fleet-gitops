@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: crontab
+  description: Line parsed values from system and user cron/tab.
+  query: SELECT * FROM crontab;
+  platform: darwin

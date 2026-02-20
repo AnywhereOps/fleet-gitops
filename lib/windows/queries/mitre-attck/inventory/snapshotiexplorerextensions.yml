@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Snapshot_iexplorer_extensions
+  description: Snapshot Lists all internet explorer extensions - ATT&CK T1176
+  query: ' select * from  ie_extensions;'
+  interval: 28800
+  snapshot: true
+  platform: windows

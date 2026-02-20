@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Shadow
+  platform: linux
+  description: Return user data from /etc/shadow
+  query: |
+    SELECT
+      *
+    FROM
+      shadow;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

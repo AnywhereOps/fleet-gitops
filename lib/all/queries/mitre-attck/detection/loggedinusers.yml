@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: logged_in_users
+  description: Users with an active shell on the system. - ATT&CK T1075,T1097
+  query: select * from logged_in_users;
+  interval: 3600

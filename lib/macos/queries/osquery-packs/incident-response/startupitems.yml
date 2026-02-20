@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: startup_items
+  platform: darwin
+  description: Retrieve all the items that will load when the target OSX system starts.
+  query: select * from startup_items;
+  interval: '86400'
+  value: Identify malware that uses this persistence mechanism to launch at a given interval
+  version: 1.4.5

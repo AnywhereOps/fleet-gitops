@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: conhost.exe_incorrect_path
+  description: Detect processes masquerading as legitimate Windows processes - ATT&CK T1034
+  query: SELECT * FROM processes WHERE LOWER(name)='conhost.exe' AND LOWER(path)!='c:\windows\system32\conhost.exe' AND path!='';
+  interval: 3600
+  removed: false

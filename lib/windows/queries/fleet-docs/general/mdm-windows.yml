@@ -1,0 +1,55 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: MDM (Windows)
+  platform: windows
+  description: Retrieves information about the mobile device management (MDM) solution a windows device is enrolled in.
+  query: |
+    WITH registry_keys AS (
+                SELECT *
+                FROM registry
+                WHERE path LIKE 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Enrollments\%%'
+              ),
+              enrollment_info AS (
+                SELECT
+                  MAX(CASE WHEN name = 'UPN' THEN data END) AS upn,
+                  MAX(CASE WHEN name = 'DiscoveryServiceFullURL' THEN data END) AS discovery_service_url,
+                  MAX(CASE WHEN name = 'ProviderID' THEN data END) AS provider_id,
+                  MAX(CASE WHEN name = 'EnrollmentState' THEN data END) AS state,
+                  MAX(CASE WHEN name = 'AADResourceID' THEN data END) AS aad_resource_id
+                FROM registry_keys
+                GROUP BY key
+              ),
+              installation_info AS (
+                SELECT data AS installation_type
+                FROM registry
+                WHERE path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\InstallationType'
+                LIMIT 1
+              )
+              SELECT
+                e.aad_resource_id,
+                e.discovery_service_url,
+                e.provider_id,
+                i.installation_type
+              FROM installation_info i
+              LEFT JOIN enrollment_info e ON e.upn IS NOT NULL
+          -- coalesce to 'unknown' and keep that state in the list
+          -- in order to account for hosts that might not have this
+          -- key, and servers
+              WHERE COALESCE(e.state, '0') IN ('0', '1', '2', '3')
+          -- old enrollments that aren't completely cleaned up may still be around
+          -- in the registry so we want to make sure we return the one with an actual
+          -- discovery URL set if there is one. LENGTH is used here to prefer those
+          -- with actual URLs over empty string/null if there are multiple
+              ORDER BY LENGTH(e.discovery_service_url) DESC
+              LIMIT 1;
+  powershell: "$installationKey = \"HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\"\ntry {\n    $installProps = Get-ItemProperty -Path $installationKey -ErrorAction Stop\n    $installationType\
+    \ = $installProps.InstallationType\n}\ncatch {\n    $installationType = $null\n}\n\n$enrollmentsPath = \"HKLM:\\SOFTWARE\\Microsoft\\Enrollments\"\n$enrollmentKeys = Get-ChildItem -Path $enrollmentsPath\
+    \ -ErrorAction SilentlyContinue\n\nforeach ($key in $enrollmentKeys) {\n    try {\n        $props = Get-ItemProperty -Path $key.PSPath -ErrorAction Stop\n    }\n    catch {\n        continue\n    }\n\
+    \    \n    $upn = $props.UPN\n    $discoveryServiceUrl = $props.DiscoveryServiceFullURL\n    $providerId = $props.ProviderID\n    $state = $props.EnrollmentState\n    $aadResourceId = $props.AADResourceID\n\
+    \n    if (-not $state) { $state = \"0\" }\n\n    if ($upn -and @(\"0\",\"1\",\"2\",\"3\") -contains $state) {\n        $result = [PSCustomObject]@{\n            AADResourceID         = $aadResourceId\n\
+    \            DiscoveryServiceURL   = $discoveryServiceUrl\n            ProviderID            = $providerId\n            InstallationType      = $installationType\n        }\n        $result | ConvertTo-Json\
+    \ -Compress\n        break\n    }\n}"
+  purpose: Informational
+  tags: built-in

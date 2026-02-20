@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: safari_extensions
+  platform: darwin
+  description: Retrieves the list of extensions for Safari in the target system.
+  query: select * from users join safari_extensions using (uid);
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Unrestricted_Paths_ItemData
+  description: 'Check Software Restriction Policies state: SRP allow list rules is missing'
+  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\262144\Paths\%\ItemData'
+  interval: '86400'
+  snapshot: true
+  platform: windows

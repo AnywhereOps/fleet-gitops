@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Nvram Macos
+  platform: darwin
+  description: Retrieves entries from the macOS nvram database
+  query: |
+    SELECT
+      *
+    FROM
+      nvram;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

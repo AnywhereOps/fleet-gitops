@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: bmbl_rootkit
+  description: bmbl_rootkit
+  query: select * from file where path in ('/etc/.bmbl', '/etc/.bmbl/sk');

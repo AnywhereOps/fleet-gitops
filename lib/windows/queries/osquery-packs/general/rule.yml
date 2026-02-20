@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Rule
+  description: Check Applocker rule set
+  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\%\%\Value'
+  interval: '86400'
+  snapshot: true
+  platform: windows

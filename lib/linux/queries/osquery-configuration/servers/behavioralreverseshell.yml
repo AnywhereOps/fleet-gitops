@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: behavioral_reverse_shell
+  description: Find shell processes that have open sockets
+  query: SELECT DISTINCT(processes.pid), processes.parent, processes.name, processes.path, processes.cmdline, processes.cwd, processes.root, processes.uid, processes.gid, processes.start_time, process_open_sockets.remote_address,
+    process_open_sockets.remote_port, (SELECT cmdline FROM processes AS parent_cmdline WHERE pid=processes.parent) AS parent_cmdline FROM processes JOIN process_open_sockets USING (pid) LEFT OUTER JOIN
+    process_open_files ON processes.pid = process_open_files.pid WHERE (name='sh' OR name='bash') AND remote_address NOT IN ('0.0.0.0', '::', '') AND remote_address NOT LIKE '10.%' AND remote_address NOT
+    LIKE '192.168.%';
+  platform: linux

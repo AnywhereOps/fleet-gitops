@@ -1,0 +1,298 @@
+---
+apiVersion: v1
+kind: pack
+spec:
+  name: ossec-rootkit
+  queries:
+  - description: mithra`s_rootkit
+    interval: 3600
+    name: mithra`s_rootkit
+    platform: linux
+    query: mithra`s_rootkit
+  - description: illogic_rootkit
+    interval: 3600
+    name: illogic_rootkit
+    platform: linux
+    query: illogic_rootkit
+  - description: override_rootkit
+    interval: 3600
+    name: override_rootkit
+    platform: linux
+    query: override_rootkit
+  - description: monkit_found
+    interval: 3600
+    name: monkit_found
+    platform: linux
+    query: monkit_found
+  - description: tuxkit_rootkit
+    interval: 3600
+    name: tuxkit_rootkit
+    platform: linux
+    query: tuxkit_rootkit
+  - description: tc2_worm
+    interval: 3600
+    name: tc2_worm
+    platform: linux
+    query: tc2_worm
+  - description: sadmind/iis_worm
+    interval: 3600
+    name: sadmind/iis_worm
+    platform: linux
+    query: sadmind/iis_worm
+  - description: showtee
+    interval: 3600
+    name: showtee
+    platform: linux
+    query: showtee
+  - description: rk17
+    interval: 3600
+    name: rk17
+    platform: linux
+    query: rk17
+  - description: scalper_installed
+    interval: 3600
+    name: scalper_installed
+    platform: linux
+    query: scalper_installed
+  - description: shv5_rootkit
+    interval: 3600
+    name: shv5_rootkit
+    platform: linux
+    query: shv5_rootkit
+  - description: monkit
+    interval: 3600
+    name: monkit
+    platform: linux
+    query: monkit
+  - description: shitc
+    interval: 3600
+    name: shitc
+    platform: linux
+    query: shitc
+  - description: romanian_rootkit
+    interval: 3600
+    name: romanian_rootkit
+    platform: linux
+    query: romanian_rootkit
+  - description: cback_worm
+    interval: 3600
+    name: cback_worm
+    platform: linux
+    query: cback_worm
+  - description: volc_rootkit
+    interval: 3600
+    name: volc_rootkit
+    platform: linux
+    query: volc_rootkit
+  - description: telekit_trojan
+    interval: 3600
+    name: telekit_trojan
+    platform: linux
+    query: telekit_trojan
+  - description: lrk_rootkit
+    interval: 3600
+    name: lrk_rootkit
+    platform: linux
+    query: lrk_rootkit
+  - description: zk_rootkit
+    interval: 3600
+    name: zk_rootkit
+    platform: linux
+    query: zk_rootkit
+  - description: optickit
+    interval: 3600
+    name: optickit
+    platform: linux
+    query: optickit
+  - description: hidr00tkit
+    interval: 3600
+    name: hidr00tkit
+    platform: linux
+    query: hidr00tkit
+  - description: knark_installed
+    interval: 3600
+    name: knark_installed
+    platform: linux
+    query: knark_installed
+  - description: fu_rootkit
+    interval: 3600
+    name: fu_rootkit
+    platform: linux
+    query: fu_rootkit
+  - description: kenga3_rootkit
+    interval: 3600
+    name: kenga3_rootkit
+    platform: linux
+    query: kenga3_rootkit
+  - description: ajakit_rootkit
+    interval: 3600
+    name: ajakit_rootkit
+    platform: linux
+    query: ajakit_rootkit
+  - description: esrk_rootkit
+    interval: 3600
+    name: esrk_rootkit
+    platform: linux
+    query: esrk_rootkit
+  - description: apa_kit
+    interval: 3600
+    name: apa_kit
+    platform: linux
+    query: apa_kit
+  - description: adore_worm
+    interval: 3600
+    name: adore_worm
+    platform: linux
+    query: adore_worm
+  - description: phalanx_rootkit
+    interval: 3600
+    name: phalanx_rootkit
+    platform: linux
+    query: phalanx_rootkit
+  - description: zarwt_rootkit
+    interval: 3600
+    name: zarwt_rootkit
+    platform: linux
+    query: zarwt_rootkit
+  - description: beastkit_rootkit
+    interval: 3600
+    name: beastkit_rootkit
+    platform: linux
+    query: beastkit_rootkit
+  - description: t0rn_rootkit
+    interval: 3600
+    name: t0rn_rootkit
+    platform: linux
+    query: t0rn_rootkit
+  - description: 55808.a_worm
+    interval: 3600
+    name: 55808.a_worm
+    platform: linux
+    query: 55808.a_worm
+  - description: ramen_worm
+    interval: 3600
+    name: ramen_worm
+    platform: linux
+    query: ramen_worm
+  - description: bobkit_rootkit
+    interval: 3600
+    name: bobkit_rootkit
+    platform: linux
+    query: bobkit_rootkit
+  - description: enye_sec_rootkit
+    interval: 3600
+    name: enye_sec_rootkit
+    platform: linux
+    query: enye_sec_rootkit
+  - description: trk_rootkit
+    interval: 3600
+    name: trk_rootkit
+    platform: linux
+    query: trk_rootkit
+  - description: ldp_worm
+    interval: 3600
+    name: ldp_worm
+    platform: linux
+    query: ldp_worm
+  - description: bmbl_rootkit
+    interval: 3600
+    name: bmbl_rootkit
+    platform: linux
+    query: bmbl_rootkit
+  - description: suckit_rootkit
+    interval: 3600
+    name: suckit_rootkit
+    platform: linux
+    query: suckit_rootkit
+  - description: lion_worm
+    interval: 3600
+    name: lion_worm
+    platform: linux
+    query: lion_worm
+  - description: shkit_rootkit
+    interval: 3600
+    name: shkit_rootkit
+    platform: linux
+    query: shkit_rootkit
+  - description: slapper_installed
+    interval: 3600
+    name: slapper_installed
+    platform: linux
+    query: slapper_installed
+  - description: old_rootkits
+    interval: 3600
+    name: old_rootkits
+    platform: linux
+    query: old_rootkits
+  - description: anonoiyng_rootkit
+    interval: 3600
+    name: anonoiyng_rootkit
+    platform: linux
+    query: anonoiyng_rootkit
+  - description: omega_worm
+    interval: 3600
+    name: omega_worm
+    platform: linux
+    query: omega_worm
+  - description: tribe_bot
+    interval: 3600
+    name: tribe_bot
+    platform: linux
+    query: tribe_bot
+  - description: loc_rookit
+    interval: 3600
+    name: loc_rookit
+    platform: linux
+    query: loc_rookit
+  - description: adore_rootkit
+    interval: 3600
+    name: adore_rootkit
+    platform: linux
+    query: adore_rootkit
+  - description: solaris_worm
+    interval: 3600
+    name: solaris_worm
+    platform: linux
+    query: solaris_worm
+  - description: ark_rootkit
+    interval: 3600
+    name: ark_rootkit
+    platform: linux
+    query: ark_rootkit
+  - description: rh_sharpe
+    interval: 3600
+    name: rh_sharpe
+    platform: linux
+    query: rh_sharpe
+  - description: rsha
+    interval: 3600
+    name: rsha
+    platform: linux
+    query: rsha
+  - description: showtee_/_romanian_rootkit
+    interval: 3600
+    name: showtee_/_romanian_rootkit
+    platform: linux
+    query: showtee_/_romanian_rootkit
+  - description: maniac_rk
+    interval: 3600
+    name: maniac_rk
+    platform: linux
+    query: maniac_rk
+  - description: madalin_rootkit
+    interval: 3600
+    name: madalin_rootkit
+    platform: linux
+    query: madalin_rootkit
+  - description: suspicious_file
+    interval: 3600
+    name: suspicious_file
+    platform: linux
+    query: suspicious_file
+  - description: bash_door
+    interval: 3600
+    name: bash_door
+    platform: linux
+    query: bash_door
+  targets:
+    labels: null

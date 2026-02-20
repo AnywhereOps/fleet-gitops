@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Account Policy Data Macos
+  platform: darwin
+  description: Retrieves account policy data, such as creation time
+  query: |
+    SELECT
+      *
+    FROM
+      account_policy_data;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

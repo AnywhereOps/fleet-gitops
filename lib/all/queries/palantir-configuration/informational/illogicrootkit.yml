@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: illogic_rootkit
+  description: illogic_rootkit
+  query: select * from file where path in ('/lib/security/.config', '/usr/bin/sia', '/etc/ld.so.hash');

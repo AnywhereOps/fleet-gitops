@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: sip_config
+  description: Apple's System Integrity Protection (rootless) status.
+  query: SELECT * FROM sip_config;
+  platform: darwin

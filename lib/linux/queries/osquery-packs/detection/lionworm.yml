@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: lion_worm
+  platform: linux
+  description: lion_worm
+  query: select * from file where path in ('/dev/.lib', '/dev/.lib/1iOn.sh', '/bin/mjy', '/bin/in.telnetd', '/usr/info/torn');
+  interval: '3600'
+  value: Artifacts used by this malware

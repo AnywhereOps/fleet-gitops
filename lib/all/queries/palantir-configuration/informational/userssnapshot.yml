@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: users_snapshot
+  description: Local system users.
+  query: SELECT * FROM users;

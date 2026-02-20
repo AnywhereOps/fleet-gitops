@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: windows_crashes
+  description: Extracted information from Windows crash logs (Minidumps).
+  query: SELECT * FROM windows_crashes;
+  platform: windows

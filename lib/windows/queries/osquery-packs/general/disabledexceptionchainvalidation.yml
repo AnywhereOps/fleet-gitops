@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: DisabledExceptionChainValidation
+  description: 'Check SEHOP state: DisabledExceptionChainValidation'
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel\DisableExceptionChainValidation'
+  interval: '86400'
+  snapshot: true
+  platform: windows

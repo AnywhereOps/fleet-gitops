@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Software codesign
+  platform: darwin
+  description: A software override query to append codesign information to macOS software entries. Requires fleetd
+  query: |
+    SELECT c.*
+        FROM apps a
+        JOIN codesign c ON a.path = c.path
+  purpose: Informational
+  tags: built-in
+  discovery: codesign

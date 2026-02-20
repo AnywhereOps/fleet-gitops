@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: hidr00tkit
+  description: hidr00tkit
+  query: select * from file where path in ('/var/lib/games/.k');

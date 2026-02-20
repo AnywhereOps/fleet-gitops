@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: endpoint_security_tool_not_running
+  description: Returns an event if a EndpointSecurityTool process is not found running from /Applications/EndpointSecurityTool' (OSX) or 'c:\endpointsecuritytool.exe' (Windows)
+  query: SELECT IFNULL(process_count,0) as process_exists FROM (SELECT count(*) as process_count from processes where path='/Applications/EndpointSecurityTool' OR lower(path)='c:\endpointsecuritytool.exe')
+    where process_exists!=1;

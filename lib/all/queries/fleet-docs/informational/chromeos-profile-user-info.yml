@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: ChromeOS profile user info
+  platform: chrome
+  description: Retrieves information about profiles on ChromeOS devices
+  query: SELECT email FROM users
+  purpose: Informational
+  tags: built-in

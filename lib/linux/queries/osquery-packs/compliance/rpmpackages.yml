@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: rpm_packages
+  platform: linux
+  description: Retrieves all the installed RPM packages in the target Linux system.
+  query: select * from rpm_packages;
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

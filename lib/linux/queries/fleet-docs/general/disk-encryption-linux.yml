@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Disk encryption (Linux)
+  platform: linux
+  description: Retrieves the default disk's (/) encryption status of a device running Linux.
+  query: "SELECT \n  de.encrypted, m.path \nFROM disk_encryption de \nJOIN mounts m ON m.device_alias = de.name\n"
+  purpose: Informational
+  tags: built-in

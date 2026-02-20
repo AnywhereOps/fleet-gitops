@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: pipes
+  description: Named and Anonymous pipes.
+  query: SELECT processes.path, processes.cmdline, processes.uid, processes.on_disk, pipes.name, pid FROM pipes JOIN processes USING (pid);

@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: etc_hosts
+  description: Retrieves all the entries in the target system /etc/hosts file.
+  query: SELECT * FROM etc_hosts;

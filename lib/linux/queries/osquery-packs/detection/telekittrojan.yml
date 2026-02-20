@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: telekit_trojan
+  platform: linux
+  description: telekit_trojan
+  query: select * from file where path in ('/dev/hda06', '/usr/info/libc1.so');
+  interval: '3600'
+  value: Artifacts used by this malware

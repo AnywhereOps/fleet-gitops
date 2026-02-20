@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: programs
+  description: Local system users.
+  query: SELECT * FROM users;
+  interval: 3600

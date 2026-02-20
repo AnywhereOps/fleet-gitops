@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Os Version
+  description: Return the OS version including patch level
+  query: |
+    SELECT
+      *
+    FROM
+      os_version;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

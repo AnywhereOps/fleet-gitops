@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: network_interfaces_snapshot
+  description: Record the network interfaces and their associated IP and MAC addresses
+  query: SELECT a.interface, a.address, d.mac FROM interface_addresses a JOIN interface_details d USING (interface);
+  platform: linux

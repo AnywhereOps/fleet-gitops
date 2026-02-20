@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: linux_process_listening_lort
+  description: Returns the Listening port List - ATT&CK T1108,T1100,T1029,T1011,T1041,T1048,T1020,T1071,T1219
+  query: select p.name, p.path, lp.port, lp.address, lp.protocol  from listening_ports lp LEFT JOIN processes p ON lp.pid = p.pid WHERE lp.port != 0 AND p.name != '';
+  interval: 3600
+  removed: false
+  platform: linux

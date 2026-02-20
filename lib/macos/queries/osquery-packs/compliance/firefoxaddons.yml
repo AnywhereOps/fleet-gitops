@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: firefox_addons
+  platform: darwin
+  description: Retrieves the list of addons for Firefox in the target system.
+  query: select * from users join firefox_addons using (uid);
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

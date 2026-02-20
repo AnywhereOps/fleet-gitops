@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: local_job_scheduling
+  description: List Local job scheduling with Cron - ATT&CK T1168
+  query: select command, path from crontab;
+  interval: 3600
+  platform: linux

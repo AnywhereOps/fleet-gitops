@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Certificates
+  description: Retrieves all the currently installed certificates on a system
+  query: |
+    SELECT
+      *
+    FROM
+      certificates;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

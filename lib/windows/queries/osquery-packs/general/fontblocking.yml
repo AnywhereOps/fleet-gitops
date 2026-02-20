@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: FontBlocking
+  description: Whether FontBlocking is enabled
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\MitigationOptions\MitigationOptions_FontBlocking'
+  interval: '86400'
+  snapshot: true
+  platform: windows

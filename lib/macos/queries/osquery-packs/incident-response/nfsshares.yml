@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: nfs_shares
+  platform: darwin
+  description: Retrieves the current list of Network File System mounted shares.
+  query: select * from nfs_shares;
+  interval: '3600'
+  value: Scope for lateral movement. Potential exfiltration locations. Potential dormant backdoors.
+  version: 1.4.5

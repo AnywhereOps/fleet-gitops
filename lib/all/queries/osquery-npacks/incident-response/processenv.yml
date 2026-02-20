@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: process_env
+  platform: posix
+  description: Retrieves all the environment variables per process in the target system.
+  query: select * from process_envs;
+  interval: '86400'
+  value: 'Insight into the process data: Where was it started from, was it preloaded...'
+  version: 1.4.5

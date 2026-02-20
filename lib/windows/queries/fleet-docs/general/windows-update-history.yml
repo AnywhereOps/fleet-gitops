@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Windows update history
+  platform: windows
+  description: Retrieves the history of the update events on a Windows host.
+  query: "SELECT \n  date, title\nFROM windows_update_history\nWHERE result_code = 'Succeeded';\n"
+  powershell: |-
+    $updateSession = New-Object -ComObject Microsoft.Update.Session
+    $updateSearcher = $updateSession.CreateUpdateSearcher()
+    $totalHistoryCount = $updateSearcher.GetTotalHistoryCount()
+    $updateHistory = $updateSearcher.QueryHistory(0, $totalHistoryCount)
+    $updateHistory | Where-Object { $_.ResultCode -eq 2 } | Format-Table Date, Title -AutoSize
+  purpose: Informational
+  tags: built-in
+  discovery: windows_update_history

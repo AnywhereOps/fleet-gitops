@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ldp_worm
+  description: ldp_worm
+  query: select * from file where path in ('/dev/.kork', '/bin/.login', '/bin/.ps');

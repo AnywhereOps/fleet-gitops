@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Files Dev
+  description: Returns a list of file information from /dev (non-hidden only)
+  query: |
+    SELECT
+      file.*,
+      magic.data
+    FROM
+      file
+      JOIN magic ON file.path = magic.path
+    WHERE
+      file.path LIKE "/dev/%%";
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

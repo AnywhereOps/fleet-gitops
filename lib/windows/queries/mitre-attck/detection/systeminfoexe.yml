@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: systeminfo.exe
+  platform: windows
+  description: Systeminfo Execute, Systeminfo is a Windows utility that can be used to gather detailed information about a computer. - ATT&CK T1082,S0096
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%systeminfo%';
+  interval: 600

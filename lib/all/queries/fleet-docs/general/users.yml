@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Users
+  platform: darwin, linux, windows
+  description: Retrieves information about user accounts.
+  query: |
+    WITH cached_groups AS (select * from groups)
+     SELECT uid, uuid, username, type, groupname, shell
+     FROM users LEFT JOIN cached_groups USING (gid)
+     WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt' AND username NOT LIKE '%$' AND username NOT LIKE '\_%' ESCAPE '\' AND NOT (username = 'sync' AND shell ='/bin/sync' AND directory <> '')
+  powershell: |-
+    $users = Get-LocalUser -ErrorAction SilentlyContinue if ($users) {
+        $filtered = $users | Where-Object {
+            ($_.Name -notmatch '\$$') -and ($_.Name -notmatch '^_')
+        }
+        $filtered | ForEach-Object {
+            [PSCustomObject]@{
+                # 'uid': No direct uid; using SID instead.
+                uid       = $_.SID.Value
+                # 'username': Direct mapping from Name.
+                username  = $_.Name
+                # 'type': No 'type' property; using a fixed value 'Local' for local accounts.
+                type      = 'Local'
+                # 'groupname': No equivalent primary group info; set as 'N/A'.
+                groupname = 'N/A'
+                # 'shell': Not applicable on Windows; set as 'N/A'.
+                shell     = 'N/A'
+            }
+        } | Format-Table -AutoSize
+    } else {
+        Write-Output 'No local users found.'
+    }
+  bash: 'awk -F: ''BEGIN{while((getline<"/etc/group")>0){g[$3]=$1}} {uid=$3+0; if(uid<1000) next; if($7 ~ /\/(false|nologin|shutdown|halt)$/) next; if($1 ~ /\$$/) next; if($1 ~ /^_/) next; if($1=="sync"
+    && $7=="/bin/sync" && $6!="") next; print $3, $1, "user", ($4 in g ? g[$4] : ""), $7}'' /etc/passwd'
+  purpose: Informational
+  tags: built-in

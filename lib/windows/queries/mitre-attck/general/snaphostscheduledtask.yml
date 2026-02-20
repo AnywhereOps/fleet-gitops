@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Snaphost_Scheduled_Task
+  platform: windows
+  description: Lists all of the tasks in the Windows task scheduler
+  query: select name,action,path,enabled,datetime(next_run_time,'unixepoch','UTC') from scheduled_tasks;
+  interval: 28800
+  snapshot: true

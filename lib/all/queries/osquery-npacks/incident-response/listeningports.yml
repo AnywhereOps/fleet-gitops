@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: listening_ports
+  platform: posix
+  description: Retrieves all the listening ports in the target system.
+  query: select * from listening_ports;
+  interval: '3600'
+  value: Detect if a listening port iis not mapped to a known process. Find backdoors.
+  version: 1.4.5

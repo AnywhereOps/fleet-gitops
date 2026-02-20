@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: DeveloperMode
+  description: Check Developer Mode state
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock'
+  interval: '86400'
+  snapshot: true
+  platform: windows

@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Ssh Configs
+  description: Retrieves the ssh configs per user
+  query: |
+    SELECT
+      *
+    FROM
+      users
+      JOIN ssh_configs USING (uid);
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

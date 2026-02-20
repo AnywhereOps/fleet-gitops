@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Disk space (Windows)
+  platform: windows
+  description: Retrieves total amount of free disk space on a Windows host.
+  query: "SELECT \n  ROUND((sum(free_space) * 100 * 10e-10) / (sum(size) * 10e-10)) AS percent_disk_space_available,\n  ROUND(sum(free_space) * 10e-10) AS gigs_disk_space_available,\n  ROUND(sum(size) \
+    \      * 10e-10) AS gigs_total_disk_space\nFROM logical_drives\nWHERE file_system = 'NTFS' LIMIT 1\n"
+  powershell: |-
+    $drives = Get-CimInstance Win32_LogicalDisk | Where-Object { $_.FileSystem -eq 'NTFS' }
+    if (!$drives) {
+        Write-Output "No NTFS drives found."
+        exit
+    }
+    $totalFreeSpace = ($drives | Measure-Object -Property FreeSpace -Sum).Sum
+    $totalSize = ($drives | Measure-Object -Property Size -Sum).Sum
+
+    $percentDiskAvailable = [math]::Round(($totalFreeSpace / $totalSize) * 100, 0)
+    $gigsDiskAvailable = [math]::Round($totalFreeSpace * 1e-9, 0)
+    $gigsTotal = [math]::Round($totalSize * 1e-9, 0)
+
+    Write-Output "percent_disk_space_available: $percentDiskAvailable"
+    Write-Output "gigs_disk_space_available: $gigsDiskAvailable"
+    Write-Output "gigs_total_disk_space: $gigsTotal"
+  purpose: Informational
+  tags: built-in

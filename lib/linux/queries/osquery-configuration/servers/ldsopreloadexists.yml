@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ld_so_preload_exists
+  description: Generates an event if ld.so.preload is present - used by rootkits such as Jynx
+  query: SELECT * FROM file WHERE path='/etc/ld.so.preload' AND path!='';
+  platform: linux

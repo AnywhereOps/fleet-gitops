@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Geolocate via ipapi.co
+  platform: darwin, linux, windows
+  description: Geolocate a host using the [ipapi.co](https://ipapi.co) in an emergency. Requires the curl table. [Learn more](https://fleetdm.com/guides/locate-assets-with-osquery).
+  query: SELECT JSON_EXTRACT(result, '$.ip') AS ip, JSON_EXTRACT(result, '$.city') AS city, JSON_EXTRACT(result, '$.region') AS region, JSON_EXTRACT(result, '$.country') AS country, JSON_EXTRACT(result,
+    '$.latitude') AS latitude, JSON_EXTRACT(result, '$.longitude') AS longitude FROM curl WHERE url = 'http://ipapi.co/json';
+  powershell: |-
+    $uri = 'http://ipapi.co/json'
+    try {
+        $response = Invoke-RestMethod -Uri $uri
+        $result = [PSCustomObject]@{
+            ip        = $response.ip
+            city      = $response.city
+            region    = $response.region
+            country   = $response.country
+            latitude  = $response.latitude
+            longitude = $response.longitude
+        }
+        $result | Format-Table -AutoSize
+    }
+    catch {
+        Write-Error "Failed to retrieve data from $uri`n$($_.Exception.Message)"
+    }
+  purpose: inventory
+  tags: inventory
+  contributors: zwass

@@ -1,0 +1,38 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Software Firefox
+  platform: darwin
+  description: A software override query to differentiate between Firefox and Firefox ESR on macOS. Requires fleetd
+  query: |
+    WITH app_paths AS (
+            SELECT path
+            FROM apps
+            WHERE bundle_identifier = 'org.mozilla.firefox'
+          ),
+          remoting_name AS (
+            SELECT value, path
+            FROM parse_ini
+            WHERE key = 'RemotingName'
+            AND path IN (SELECT CONCAT(path, '/Contents/Resources/application.ini') FROM app_paths)
+          )
+          SELECT
+            CASE
+              WHEN remoting_name.value = 'firefox-esr' THEN 'Firefox ESR.app'
+              ELSE 'Firefox.app'
+            END AS name,
+            COALESCE(NULLIF(apps.bundle_short_version, ''), apps.bundle_version) AS version,
+            apps.bundle_identifier AS bundle_identifier,
+            '' AS extension_id,
+            '' AS browser,
+            'apps' AS source,
+            '' AS vendor,
+            apps.last_opened_time AS last_opened_at,
+            apps.path AS installed_path
+          FROM apps
+          LEFT JOIN remoting_name ON apps.path = REPLACE(remoting_name.path, '/Contents/Resources/application.ini', '')
+          WHERE apps.bundle_identifier = 'org.mozilla.firefox'
+  purpose: Informational
+  tags: built-in
+  discovery: parse_ini

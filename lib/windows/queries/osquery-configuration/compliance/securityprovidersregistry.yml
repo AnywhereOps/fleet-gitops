@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: security_providers_registry
+  description: Controls Windows security provider configurations
+  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecurityProviders\%%';
+  platform: windows

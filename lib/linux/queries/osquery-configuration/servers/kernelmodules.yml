@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: kernel_modules
+  description: Linux kernel modules both loaded and within the load search path.
+  query: SELECT * FROM kernel_modules;
+  platform: linux

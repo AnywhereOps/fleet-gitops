@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Sandboxes Macos
+  platform: darwin
+  description: Lists the application bundle that owns a sandbox label.
+  query: |
+    SELECT
+      *
+    FROM
+      sandboxes;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

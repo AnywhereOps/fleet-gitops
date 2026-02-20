@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Kernel Modules Linux
+  platform: linux
+  description: Retrieves all the information for the current kernel modules in the target Linux system.
+  query: |
+    SELECT
+      *
+    FROM
+      kernel_modules;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

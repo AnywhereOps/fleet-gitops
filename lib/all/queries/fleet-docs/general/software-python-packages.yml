@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Software Python packages
+  platform: darwin, windows, linux
+  description: Retrieves python packages installed on a host.
+  query: |
+    SELECT
+          name AS name,
+          version AS version,
+          '' AS extension_id,
+          '' AS browser,
+          'python_packages' AS source,
+          '' AS vendor,
+          path AS installed_path
+        FROM python_packages;
+  purpose: Informational
+  tags: built-in
+  discovery: osquery_info

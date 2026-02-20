@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: loc_rookit
+  description: loc_rookit
+  query: select * from file where path in ('/tmp/xp', '/tmp/kidd0.c', '/tmp/kidd0');

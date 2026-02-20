@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Operating system information (macOS/Linux)
+  platform: darwin, linux
+  description: Retrieves information about a Unix-based device's operating system.
+  query: |
+    SELECT
+        os.name,
+        os.major,
+        os.minor,
+        os.patch,
+        os.extra,
+        os.build,
+        os.arch,
+        os.platform,
+        os.version AS version,
+        k.version AS kernel_version
+      FROM
+        os_version os,
+        kernel_info k
+  bash: product_name=$(sw_vers -productName); product_version=$(sw_vers -productVersion); build_version=$(sw_vers -buildVersion); IFS='.' read -r major minor patch <<< "$product_version"; arch=$(uname -m);
+    platform=$(uname -s); kernel_version=$(uname -r); extra=""; printf "name\tmajor\tminor\tpatch\tbuild\tarch\tplatform\tversion\tkernel_version\n%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$product_name"
+    "$major" "$minor" "${patch:-}" "$build_version" "$arch" "$platform" "$product_version" "$kernel_version"
+  purpose: Informational
+  tags: built-in

@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Winsecurity_info_1
+  description: (https://sensorstechforum.com/windows-infected-2-viruses-scam-remove/)
+  query: select * from programs where name = 'Winsecurity.info';
+  interval: '3600'
+  value: Artifact used by this malware
+  version: 2.2.1
+  platform: windows

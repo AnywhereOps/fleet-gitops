@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: physicalstore_dll_registry_persistence
+  description: Detect a registry based persistence mechanism that allows an attacker to specify a DLL to be loaded when cryptographic libraries are called (https://twitter.com/PsiDragon/status/978367732793135105)
+  query: SELECT key, path, name, mtime, username FROM registry r, users WHERE path LIKE 'HKEY_USERS\'||uuid||'\Software\Microsoft\SystemCertificates\CA\PhysicalStores\%%' OR path LIKE 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\OID\EncodingType
+    0\CertDllOpenStoreProv\%%' AND name!='#16' AND name!='Ldap';
+  platform: windows

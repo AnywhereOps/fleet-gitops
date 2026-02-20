@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: keychain_items
+  platform: darwin
+  description: Retrieves all the items contained in the keychain in the target OSX system.
+  query: select * from keychain_items;
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Shell History
+  description: Retrieves the command history, per user, by parsing the shell history files.
+  query: |
+    SELECT
+      *
+    FROM
+      users
+      JOIN shell_history USING (uid);
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

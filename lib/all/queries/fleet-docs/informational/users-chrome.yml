@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Users (Chrome)
+  platform: chrome
+  description: Retrieves information about user accounts on a ChromeOS device.
+  query: "SELECT \n  uid, username, email \nFROM users;\n"
+  purpose: Informational
+  tags: built-in

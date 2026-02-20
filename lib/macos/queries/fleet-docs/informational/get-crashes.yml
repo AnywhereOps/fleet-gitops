@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get crashes
+  platform: darwin
+  description: Retrieve application, system, and mobile app crash logs.
+  query: SELECT uid, datetime, responsible, exception_type, identifier, version, crash_path FROM users CROSS JOIN crashes USING (uid);
+  bash: echo "uid, datetime, responsible, exception_type, identifier, version, crash_path"; find /Library/Logs/DiagnosticReports ~/Library/Logs/DiagnosticReports -type f -name "*.crash" 2>/dev/null | while
+    IFS= read -r f; do uid=$(stat -f "%u" "$f"); datetime=$(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$f"); responsible=$(grep -m1 "^Process:" "$f" | cut -d ':' -f2- | xargs); exception=$(grep -m1 "^Exception
+    Type:" "$f" | cut -d ':' -f2- | xargs); identifier=$(grep -m1 "^Identifier:" "$f" | cut -d ':' -f2- | xargs); version=$(grep -m1 "^Version:" "$f" | cut -d ':' -f2- | xargs); echo "$uid, $datetime, $responsible,
+    $exception, $identifier, $version, $f"; done
+  purpose: Informational
+  tags: troubleshooting
+  contributors: zwass

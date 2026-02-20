@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: HKU_CurrentVersion_Run
+  description: Returns the content of the key HKU_Software_Microsoft_Windows_CurrentVersion_Run
+  query: select name,type,data from registry where key='HKEY_USERS\Software\Microsoft\Windows\CurrentVersion\Run';
+  interval: 3600
+  removed: false
+  platform: windows

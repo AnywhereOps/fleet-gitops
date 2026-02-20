@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: linux_sudoers
+  description: Linux sudoers information - ATT&CK T1169,T1206
+  query: select * from sudoers;
+  interval: 3600
+  platform: linux

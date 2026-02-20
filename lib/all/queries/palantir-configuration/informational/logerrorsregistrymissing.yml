@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: log_errors_registry_missing
+  description: Returns 0 as a result if the registry key does not exist
+  query: SELECT IFNULL(key_count,0) AS key_exists FROM (SELECT COUNT(*) AS key_count FROM registry WHERE path='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl\LogEvent') WHERE key_exists!=1;

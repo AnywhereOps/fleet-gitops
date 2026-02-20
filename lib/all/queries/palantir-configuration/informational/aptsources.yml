@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: apt_sources
+  description: Display apt package manager sources.
+  query: SELECT * FROM apt_sources;

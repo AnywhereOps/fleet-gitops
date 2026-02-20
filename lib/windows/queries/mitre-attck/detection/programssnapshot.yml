@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: programs_snapshot
+  description: Local system users.
+  query: select * from programs;
+  interval: 28800
+  snapshot: true
+  platform: windows

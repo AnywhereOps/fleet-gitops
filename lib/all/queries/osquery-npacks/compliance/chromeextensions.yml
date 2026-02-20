@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: chrome_extensions
+  description: Retrieves the list of extensions for Chrome in the target system.
+  query: select * from users join chrome_extensions using (uid);
+  interval: '86400'
+  value: General security posture.
+  version: 1.4.5

@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Software last opened at (Linux)
+  platform: linux
+  description: A software override query to append last_opened_at information to Linux DEB software entries. The accuracy of this information is limited by the accuracy of the atime column in the file table,
+    which can be affected by the system clock and mount settings like noatime and relatime.
+  query: |
+    SELECT
+        package,
+        MAX(atime) AS last_opened_at
+    FROM deb_package_files
+    CROSS JOIN file USING (path)
+    WHERE type = 'regular'
+      AND regex_match(file.mode, '[1357]', 0)
+    GROUP BY package;
+  purpose: Informational
+  tags: built-in
+  discovery: deb_package_files

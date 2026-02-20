@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: bobkit_rootkit
+  platform: linux
+  description: bobkit_rootkit
+  query: select * from file where path in ('/usr/include/.../', '/usr/lib/.../', '/usr/sbin/.../', '/usr/bin/ntpsx', '/tmp/.bkp', '/usr/lib/.bkit-');
+  interval: '3600'
+  value: Artifacts used by this malware

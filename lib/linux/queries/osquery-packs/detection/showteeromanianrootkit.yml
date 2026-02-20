@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: showtee_/_romanian_rootkit
+  platform: linux
+  description: showtee_/_romanian_rootkit
+  query: select * from file where path in ('/usr/include/addr.h', '/usr/include/file.h', '/usr/include/syslogs.h', '/usr/include/proc.h');
+  interval: '3600'
+  value: Artifacts used by this malware

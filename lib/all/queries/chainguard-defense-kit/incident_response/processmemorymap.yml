@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Process Memory Map
+  description: Retrieves the memory map per process
+  query: |
+    SELECT
+      pid,
+      permissions,
+    offset
+    ,
+      inode,
+      path,
+      pseudo
+    FROM
+      process_memory_map
+    WHERE
+      path != ""
+    GROUP BY
+      pid,
+      permissions,
+    offset
+    ,
+      inode,
+      path,
+      pseudo;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

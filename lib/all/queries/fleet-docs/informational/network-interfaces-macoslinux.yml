@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Network interfaces (macOS/Linux)
+  platform: darwin, linux
+  description: Retrieves information about network interfaces on macOS and Linux devices
+  query: |
+    SELECT
+        ia.address,
+        id.mac
+    FROM
+        interface_addresses ia
+        JOIN interface_details id ON id.interface = ia.interface
+        JOIN routes r ON r.interface = ia.interface
+    WHERE
+        (r.destination = '0.0.0.0' OR r.destination = '::') AND r.netmask = 0
+        AND r.type = 'gateway'
+        AND (
+        inet_aton(ia.address) IS NOT NULL AND (
+          split(ia.address, '.', 0) = '10'
+          OR (split(ia.address, '.', 0) = '172' AND (CAST(split(ia.address, '.', 1) AS INTEGER) & 0xf0) = 16)
+          OR (split(ia.address, '.', 0) = '192' AND split(ia.address, '.', 1) = '168')
+        )
+        OR (inet_aton(ia.address) IS NULL AND regex_match(lower(ia.address), '^f[cd][0-9a-f][0-9a-f]:[0-9a-f:]+', 0) IS NOT NULL)
+      )
+    ORDER BY
+        r.metric ASC,
+      inet_aton(ia.address) IS NOT NULL DESC
+    LIMIT 1;
+  bash: iface=$(netstat -rn | awk '$1=="default"{print $NF; exit}'); mac=$(ifconfig "$iface" | awk '/ether/{print $2; exit}'); ip=$(ifconfig "$iface" | awk '/inet / {split($2,a,"."); if(a[1]=="10" || (a[1]=="172"
+    && a[2]>=16 && a[2]<=31) || (a[1]=="192" && a[2]=="168")) print $2}' | head -n1); [ -z "$ip" ] && ip=$(ifconfig "$iface" | awk '/inet6 / {print $2}' | grep -Ei '^f[cd][0-9a-f]{2}:' | head -n1); echo
+    "$ip $mac"
+  purpose: Informational
+  tags: built-in

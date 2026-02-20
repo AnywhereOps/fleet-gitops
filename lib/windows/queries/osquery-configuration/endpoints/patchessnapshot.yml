@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: patches_snapshot
+  description: Patches snapshot query
+  query: SELECT * FROM patches;
+  platform: windows

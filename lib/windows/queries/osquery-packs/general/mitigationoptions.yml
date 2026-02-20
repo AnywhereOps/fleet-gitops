@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: MitigationOptions
+  description: Whether DEP is enabled with application mitigation options
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Kernel\MitigationOptions'
+  interval: '86400'
+  snapshot: true
+  platform: windows

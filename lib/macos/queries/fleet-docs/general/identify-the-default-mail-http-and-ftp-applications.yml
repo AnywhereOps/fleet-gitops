@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Identify the default mail, http and ftp applications
+  platform: darwin
+  description: Lists the currently enabled applications configured to handle mailto, http and ftp schemes.
+  query: SELECT * FROM app_schemes WHERE (scheme='mailto' OR scheme='http' OR scheme='ftp') AND enabled='1';
+  bash: plist=~/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist; echo "scheme,handler"; /usr/libexec/PlistBuddy -c "Print :LSHandlers" "$plist" 2>/dev/null | awk '/LSHandlerURLScheme/
+    {split($0,a," = "); scheme=a[2]} /LSHandlerRoleAll/ {split($0,a," = "); handler=a[2]; if(scheme ~ /^(mailto|http|ftp)$/) print scheme","handler}'
+  purpose: Informational
+  tags: compliance, hunting
+  contributors: brunerd
+  platforms: macOS

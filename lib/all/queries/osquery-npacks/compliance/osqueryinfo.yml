@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: osquery_info
+  description: Retrieves the current version of the running osquery in the target system and where the configuration was loaded from.
+  query: select * from time, osquery_info;
+  interval: '86400'
+  value: Identify if your infrastructure is running the correct osquery version and which hosts may have drifted
+  version: 1.4.5

@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: alf
+  platform: darwin
+  description: Retrieves the configuration values for the Application Layer Firewall for OSX.
+  query: select * from alf;
+  interval: '3600'
+  value: Verify firewall settings are as restrictive as you need. Identify unwanted firewall holes made by malware or humans
+  version: 1.4.5

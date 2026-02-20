@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get dynamic linker hijacking on macOS (MITRE. T1574.006)
+  platform: darwin
+  description: Detect any processes that run with DYLD_INSERT_LIBRARIES environment variable
+  query: SELECT env.pid, env.key, env.value, p.name,p.path, p.cmdline, p.cwd FROM process_envs env join processes p USING (pid) WHERE key='DYLD_INSERT_LIBRARIES';
+  bash: echo "PID,KEY,VALUE,NAME,PATH,CMDLINE,CWD"; for pid in $(ps -axo pid | tail -n +2); do envline=$(ps eww -p "$pid" 2>/dev/null); if echo "$envline" | grep -q "DYLD_INSERT_LIBRARIES="; then value=$(echo
+    "$envline" | grep -o "DYLD_INSERT_LIBRARIES=[^ ]*" | sed 's/DYLD_INSERT_LIBRARIES=//'); cmd=$(ps -p "$pid" -o command= 2>/dev/null); txt=$(lsof -p "$pid" 2>/dev/null | awk '$4=="txt" {print $9; exit}');
+    cwd=$(lsof -p "$pid" 2>/dev/null | awk '$4=="cwd" {print $9; exit}'); name=$(basename "$txt"); echo "$pid,DYLD_INSERT_LIBRARIES,$value,$name,$txt,$cmd,$cwd"; fi; done
+  purpose: Informational
+  tags: hunting, ATTACK, t1574
+  contributors: anelshaer
+  remediation: Identify the process/binary detected and confirm with the system's owner.

@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Alf Exceptions Macos
+  platform: darwin
+  description: Retrieves the exceptions for the Application Layer Firewall in OSX.
+  query: |
+    SELECT
+      *
+    FROM
+      alf_exceptions;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

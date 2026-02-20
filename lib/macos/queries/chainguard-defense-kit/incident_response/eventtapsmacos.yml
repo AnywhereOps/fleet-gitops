@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Event Taps Macos
+  platform: darwin
+  description: Retrieves software packages with access to listening in on keyboard/mouse events
+  query: |
+    SELECT
+      *
+    FROM
+      event_taps;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

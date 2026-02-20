@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: MDM (macOS)
+  platform: darwin
+  description: Retrieves information about the mobile device management (MDM) solution this host is enrolled in.
+  query: "SELECT \n  enrolled, server_url, installed_from_dep, payload_identifier \nFROM mdm\n"
+  purpose: Informational
+  tags: built-in
+  discovery: mdm

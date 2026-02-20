@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ec2_instance_tags
+  description: Retrieve the EC2 tags for this endpoint
+  query: SELECT * FROM ec2_instance_tags;

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: linux_setuid
+  description: List linux files that are setuid-enabled
+  query: select * from suid_bin;
+  interval: 3600
+  platform: linux

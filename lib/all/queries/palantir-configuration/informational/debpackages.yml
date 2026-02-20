@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: deb_packages
+  description: Display all installed DEB packages
+  query: SELECT * FROM deb_packages;

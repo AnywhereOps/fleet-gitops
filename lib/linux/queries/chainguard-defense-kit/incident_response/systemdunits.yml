@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Systemd Units
+  platform: linux
+  description: Returns a list of systemd units
+  query: |
+    SELECT
+      *
+    FROM
+      systemd_units;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

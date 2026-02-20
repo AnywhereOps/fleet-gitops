@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: mounts
+  platform: posix
+  description: Retrieves the current list of mounted drives in the target system.
+  query: select * from mounts;
+  interval: '3600'
+  value: Scope for lateral movement. Potential exfiltration locations. Potential dormant backdoors.
+  version: 1.4.5

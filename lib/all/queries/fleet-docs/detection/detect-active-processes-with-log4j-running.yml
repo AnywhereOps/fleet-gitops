@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Detect active processes with Log4j running
+  platform: darwin, linux
+  description: 'Returns a list of active processes and the Jar paths which are using Log4j. Version numbers are usually within the Jar filename. Note: This query is resource intensive and has caused problems
+    on systems with limited swap space. Test on some systems before running this widely.'
+  query: |
+    WITH target_jars AS (
+      SELECT DISTINCT path
+      FROM (
+          WITH split(word, str) AS(
+            SELECT '', cmdline || ' '
+            FROM processes
+            UNION ALL
+            SELECT substr(str, 0, instr(str, ' ')), substr(str, instr(str, ' ') + 1)
+            FROM split
+            WHERE str != '')
+          SELECT word AS path
+          FROM split
+          WHERE word LIKE '%.jar'
+        UNION ALL
+          SELECT path
+          FROM process_open_files
+          WHERE path LIKE '%.jar'
+      )
+    )
+    SELECT path, matches
+    FROM yara
+    WHERE path IN (SELECT path FROM target_jars)
+      AND count > 0
+      AND sigrule IN (
+        'rule log4jJndiLookup {
+          strings:
+            $jndilookup = "JndiLookup"
+          condition:
+            $jndilookup
+        }',
+        'rule log4jJavaClass {
+          strings:
+            $javaclass = "org/apache/logging/log4j"
+          condition:
+            $javaclass
+        }'
+      );
+  purpose: Detection
+  tags: vulnerability
+  contributors: zwass,tgauda

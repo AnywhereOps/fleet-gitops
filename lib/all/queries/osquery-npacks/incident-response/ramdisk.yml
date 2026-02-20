@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ramdisk
+  platform: posix
+  description: Retrieves all the ramdisk currently mounted in the target system.
+  query: select * from block_devices where type = 'Virtual Interface';
+  interval: '3600'
+  value: Identify if an attacker is using temporary, memory storage to avoid touching disk for anti-forensics purposes
+  version: 1.4.5

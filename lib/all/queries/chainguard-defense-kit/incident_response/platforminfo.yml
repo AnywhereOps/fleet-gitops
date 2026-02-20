@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Platform Info
+  description: Return hardware platform info (UEFI)
+  query: |
+    SELECT
+      *
+    FROM
+      platform_info
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

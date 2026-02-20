@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: mithra`s_rootkit
+  platform: linux
+  description: mithra`s_rootkit
+  query: select * from file where path in ('/usr/lib/locale/uboot');
+  interval: '3600'
+  value: Artifacts used by this malware

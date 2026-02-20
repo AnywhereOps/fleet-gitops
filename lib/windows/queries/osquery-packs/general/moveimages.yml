@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: MoveImages
+  description: Check ASLR configuration
+  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management\moveImages'
+  interval: '86400'
+  snapshot: true
+  platform: windows

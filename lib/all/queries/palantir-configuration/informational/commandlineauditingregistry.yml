@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: command_line_auditing_registry
+  description: Controls Windows command-line auditing
+  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit';

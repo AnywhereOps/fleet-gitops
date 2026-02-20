@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: Get whether TeamViewer is installed/running
+  platform: windows
+  description: Looks for the TeamViewer service running on machines. This is often used when attackers gain access to a machine, running TeamViewer to allow them to access a machine.
+  query: SELECT display_name,status,s.pid,p.path FROM services AS s JOIN processes AS p USING(pid) WHERE s.name LIKE "%teamviewer%";
+  powershell: |-
+    $services = Get-CimInstance -ClassName Win32_Service | Where-Object { $_.Name -like '*teamviewer*' } $results = foreach ($svc in $services) {
+        $proc = Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $($svc.ProcessId)" -ErrorAction SilentlyContinue
+        [PSCustomObject]@{
+            display_name = $svc.DisplayName
+            status       = $svc.State
+            pid          = $svc.ProcessId
+            path         = if ($proc) { $proc.ExecutablePath } else { 'N/A' }
+        }
+    } $results | Format-Table -AutoSize
+  purpose: Informational
+  tags: hunting, inventory
+  contributors: alphabrevity

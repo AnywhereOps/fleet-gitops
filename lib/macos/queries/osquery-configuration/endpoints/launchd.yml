@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: launchd
+  description: LaunchAgents and LaunchDaemons from default search paths.
+  query: SELECT * FROM launchd;
+  platform: darwin

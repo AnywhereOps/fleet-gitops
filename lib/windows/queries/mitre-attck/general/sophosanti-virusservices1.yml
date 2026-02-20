@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ' Sophos_Anti-Virus_Services_1'
+  description: Symantec Endpoint Protection service Status change - ATT&CK T1089
+  query: SELECT * FROM services WHERE name = 'SAVAdminService' AND status != 'RUNNING';
+  interval: 3600
+  platform: windows

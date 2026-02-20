@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: rc.common_snapshot
+  description: Checks the MD5 hash of /etc/rc.common and records the results if the hash differs from the default value. /etc/rc.common can be used for persistence.
+  query: SELECT * FROM hash WHERE path='/etc/rc.common' AND md5!='28ce428faefe6168618867f3ff5527f9' and md5!='';

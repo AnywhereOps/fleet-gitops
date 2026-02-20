@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Docker Container Ports
+  platform: linux
+  description: Return the list of ports for Docker containers
+  query: |
+    SELECT
+      *
+    FROM
+      docker_container_ports;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

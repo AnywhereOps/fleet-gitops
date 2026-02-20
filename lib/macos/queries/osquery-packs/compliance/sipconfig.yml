@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: sip_config
+  platform: darwin
+  description: Retrieves the current System Integrity Protection configuration in the target system.
+  query: select * from sip_config;
+  interval: '86400'
+  value: General security posture.
+  version: 1.7.0

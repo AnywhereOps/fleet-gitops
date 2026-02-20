@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: linux_sudoers_shell
+  description: Check any bash reverse shell forwarded to the attacker - ATT&CK T1169,T1206
+  query: SELECT * FROM processes WHERE cmdline LIKE '/bin/bash -i >& /dev/tcp/%';
+  interval: 3600
+  platform: linux

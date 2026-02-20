@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Chrome Extensions
+  description: Retrieves chrome extensions that execute on a broad set of URLs.
+  query: |
+    SELECT
+      chrome_extensions.*
+    FROM
+      users
+      JOIN chrome_extensions ON users.uid = chrome_extensions.uid
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

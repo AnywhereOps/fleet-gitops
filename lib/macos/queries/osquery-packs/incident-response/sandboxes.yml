@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: sandboxes
+  platform: darwin
+  description: Lists the application bundle that owns a sandbox label.
+  query: select * from sandboxes;
+  interval: '86400'
+  value: Post-priori hijack detection, detect potential sensitive information leakage.
+  version: 1.4.7

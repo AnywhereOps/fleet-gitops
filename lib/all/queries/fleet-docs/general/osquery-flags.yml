@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Osquery flags
+  platform: darwin, linux, windows
+  description: Retrieves the values of osquery configuration flags related to query scheduling, configuration updates, and logging intervals for active processes.
+  query: "SELECT \n  name, value\nFROM osquery_flags\nWHERE name IN (\"distributed_interval\", \"config_tls_refresh\", \"config_refresh\", \"logger_tls_period\")\n"
+  powershell: |-
+    $service = Get-CimInstance Win32_Service -Filter "Name='osqueryd'"
+    if (-not $service) {
+        Write-Error "osqueryd service not found."
+        exit 1
+    }
+
+    $cmdLine = $service.CommandLine
+
+    $flagNames = @("distributed_interval", "config_tls_refresh", "config_refresh", "logger_tls_period")
+    $result = @()
+
+    foreach ($flag in $flagNames) {
+        # Match a flag of the form --flag=value or --flag value
+        $pattern = "--" + [regex]::Escape($flag) + "(?:=|\s+)(\S+)"
+        $match = [regex]::Match($cmdLine, $pattern)
+        if ($match.Success) {
+            $value = $match.Groups[1].Value
+        }
+        else {
+            $value = ""
+        }
+        $result += [pscustomobject]@{
+            Name  = $flag
+            Value = $value
+        }
+    }
+
+    $result | Format-Table -AutoSize
+  purpose: Informational
+  tags: built-in

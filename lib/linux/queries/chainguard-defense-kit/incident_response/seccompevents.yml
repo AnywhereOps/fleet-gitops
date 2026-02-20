@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Seccomp Events
+  platform: linux
+  description: Return the list of seccomp events
+  query: |
+    SELECT
+      *
+    FROM
+      seccomp_events;
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

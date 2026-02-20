@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Orbit information
+  platform: darwin, linux, windows
+  description: Retrieves configuration information the osquery version and configuration manager running on a device.
+  query: SELECT * FROM orbit_info
+  purpose: Informational
+  tags: built-in

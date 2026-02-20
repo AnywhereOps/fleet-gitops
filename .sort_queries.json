@@ -1,0 +1,27 @@
+{
+  "fleet-docs-queries": {
+    "output_folder": "fleet-docs",
+    "source_type": "yaml",
+    "prefix": ""
+  },
+  "osquery-configuration": {
+    "output_folder": "osquery-configuration",
+    "source_type": "conf",
+    "prefix": ""
+  },
+  "osquery-defense-kit": {
+    "output_folder": "chainguard-defense-kit",
+    "source_type": "sql",
+    "prefix": "CDK"
+  },
+  "osquery-attck": {
+    "output_folder": "mitre-attck",
+    "source_type": "conf",
+    "prefix": ""
+  },
+  "packs": {
+    "output_folder": "osquery-npacks",
+    "source_type": "conf",
+    "prefix": ""
+  }
+}

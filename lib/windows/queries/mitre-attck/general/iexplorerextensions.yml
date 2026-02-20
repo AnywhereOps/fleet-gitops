@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: iexplorer_extensions
+  description: Lists all internet explorer extensions - ATT&CK T1176
+  query: select * from ie_extensions;
+  interval: 3600
+  removed: false
+  platform: windows

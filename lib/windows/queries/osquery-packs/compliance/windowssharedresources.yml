@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: windows_shared_resources
+  platform: windows
+  description: Retrieves the list of shared resources in the target Windows system.
+  query: select * from shared_resources;
+  interval: '86400'
+  value: General security posture.
+  version: 2.0.0

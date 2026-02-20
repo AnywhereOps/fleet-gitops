@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: CDK - Docker Container Mounting Root
+  platform: linux
+  description: Detect the execution of a Docker containing mounting the root filesystem This attack is very quick, so the likelihood of finding a culprit is entirely dependent on the polling time.
+  query: |
+    SELECT
+      command,
+      image_id,
+      path,
+      source,
+      destination,
+      security_options,
+      started_at,
+      image
+    FROM
+      docker_container_mounts AS dcm
+      LEFT JOIN docker_containers dc ON dcm.id = dc.id
+    WHERE
+      dcm.source = "/"
+      AND image NOT IN (
+        "ghcr.io/ublue-os/bluefin-cli",
+        "ghcr.io/ublue-os/ubuntu-toolbox"
+      )
+      AND image NOT LIKE '%wolfi-sdk-toolbox:latest'
+  interval: 3600
+  logging: snapshot
+  observer_can_run: true
+  automations_enabled: false
+  discard_data: false

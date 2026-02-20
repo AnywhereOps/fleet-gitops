@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: esrk_rootkit
+  platform: linux
+  description: esrk_rootkit
+  query: select * from file where path in ('/usr/lib/tcl5.3');
+  interval: '3600'
+  value: Artifacts used by this malware

@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: apa_kit
+  platform: linux
+  description: apa_kit
+  query: select * from file where path in ('/usr/share/.aPa');
+  interval: '3600'
+  value: Artifacts used by this malware

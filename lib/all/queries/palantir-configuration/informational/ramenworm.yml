@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: ramen_worm
+  description: ramen_worm
+  query: select * from file where path in ('/usr/lib/ldlibps.so', '/usr/lib/ldlibns.so', '/usr/lib/ldliblogin.so', '/usr/src/.poop', '/tmp/ramen.tgz', '/etc/xinetd.d/asp');

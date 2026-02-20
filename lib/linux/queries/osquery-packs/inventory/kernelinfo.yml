@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: kernel_info
+  description: Report the booted kernel, potential arguments, and the device.
+  query: select * from kernel_info join hash using (path);
+  interval: 7200
+  version: 1.4.0
+  platform: linux

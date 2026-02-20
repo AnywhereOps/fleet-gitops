@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: HKLM_lsa
+  description: Returns the content of the key HKLM_SYSTEM_CurrentControlSet_Control_Lsa - ATT&CK T1131
+  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\system\CurrentControlSet\Control\Lsa';
+  interval: 3600
+  removed: false
+  platform: windows

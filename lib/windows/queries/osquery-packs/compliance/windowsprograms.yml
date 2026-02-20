@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: windows_programs
+  platform: windows
+  description: Retrieves the list of products as they are installed by Windows Installer in the target Windows system.
+  query: select * from programs;
+  interval: '86400'
+  value: General security posture.
+  version: 2.0.0

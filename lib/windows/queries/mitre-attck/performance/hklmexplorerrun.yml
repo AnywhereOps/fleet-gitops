@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: HKLM_Explorer_Run
+  description: Returns the content of the key HKLM_Software_Microsoft_Windows_CurrentVersion_Policies_Explorer_Run - ATT&CK T1060
+  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run';
+  interval: 3600
+  removed: false
+  platform: windows

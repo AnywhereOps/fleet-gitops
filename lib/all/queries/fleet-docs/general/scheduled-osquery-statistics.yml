@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: built-in
+spec:
+  name: Scheduled osquery statistics
+  platform: darwin, windows, linux
+  description: Retrieves statistics about queries that are scheduled on a device.
+  query: |
+    SELECT *,
+            (SELECT value from osquery_flags where name = 'pack_delimiter') AS delimiter
+          FROM osquery_schedule
+  purpose: Informational
+  tags: built-in

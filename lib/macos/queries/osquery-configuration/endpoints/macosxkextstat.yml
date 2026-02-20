@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: macosx_kextstat
+  description: List kernel extensions, their signing status, and their hashes (excluding extensions signed by Apple)
+  query: SELECT kernel_extensions.idx, kernel_extensions.refs, kernel_extensions.size, kernel_extensions.name, kernel_extensions.version, kernel_extensions.linked_against, kernel_extensions.path, signature.signed,
+    signature.identifier, signature.cdhash, signature.team_identifier, signature.authority, hash.md5 FROM hash JOIN kernel_extensions ON hash.path LIKE printf('%s/Contents/MacOS/%', kernel_extensions.path)
+    JOIN signature ON signature.path LIKE printf('%s/Contents/MacOS/%', kernel_extensions.path) WHERE signature.authority!='Software Signing';
+  platform: darwin

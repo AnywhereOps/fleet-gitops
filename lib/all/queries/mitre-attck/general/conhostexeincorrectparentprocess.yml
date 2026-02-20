@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: conhost.exe_incorrect_parent_process
+  description: Detect processes masquerading as legitimate Windows processes - ATT&CK T1204
+  query: SELECT name as bad_parent_child_name, pid bad_parent_child_pid FROM processes WHERE pid=(SELECT parent FROM processes WHERE parent != (SELECT pid from processes where name='csrss.exe') AND LOWER(name)='conhost.exe')
+    OR pid=(SELECT pid FROM processes WHERE parent != (SELECT pid from processes where name='csrss.exe') AND LOWER(name)='conhost.exe');
+  interval: 60
+  removed: false

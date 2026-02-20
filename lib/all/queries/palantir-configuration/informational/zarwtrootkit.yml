@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: zarwt_rootkit
+  description: zarwt_rootkit
+  query: select * from file where path in ('/bin/imin', '/bin/imout');

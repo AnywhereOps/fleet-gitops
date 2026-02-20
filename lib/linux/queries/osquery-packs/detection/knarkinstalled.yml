@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: knark_installed
+  platform: linux
+  description: knark_installed
+  query: select * from file where path in ('/proc/knark', '/dev/.pizda', '/dev/.pula', '/dev/.pula');
+  interval: '3600'
+  value: Artifacts used by this malware
