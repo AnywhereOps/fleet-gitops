@@ -43,12 +43,23 @@ jobs:
           echo "::add-mask::$FLEET_API_TOKEN"
           echo "FLEET_API_TOKEN=$FLEET_API_TOKEN" >> $GITHUB_ENV
 
-          # Fetch and parse enroll secrets JSON (1 secret → many env vars)
-          ENROLL_SECRETS=$(aws secretsmanager get-secret-value --secret-id fleet-enroll-secrets --query SecretString --output text)
-          for key in $(echo "$ENROLL_SECRETS" | jq -r 'keys[]'); do
-            value=$(echo "$ENROLL_SECRETS" | jq -r --arg k "$key" '.[$k]')
+      - name: Fetch enroll secrets from Fleet API
+        run: |
+          # Fetch global enroll secret directly from Fleet API
+          FLEET_GLOBAL_ENROLL_SECRET=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/spec/enroll_secret" \
+            -H "Authorization: Bearer $FLEET_API_TOKEN" | jq -r '.spec.secrets[0].secret')
+          echo "::add-mask::$FLEET_GLOBAL_ENROLL_SECRET"
+          echo "FLEET_GLOBAL_ENROLL_SECRET=$FLEET_GLOBAL_ENROLL_SECRET" >> $GITHUB_ENV
+
+          # Fetch team enroll secrets
+          TEAMS_JSON=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/teams" \
+            -H "Authorization: Bearer $FLEET_API_TOKEN")
+
+          # Parse each team's secret into env vars (FLEET_<TEAM_NAME>_ENROLL_SECRET)
+          echo "$TEAMS_JSON" | jq -r '.teams[] | "FLEET_" + (.name | gsub(" "; "_") | gsub("-"; "_") | ascii_upcase) + "_ENROLL_SECRET=" + (.secrets[0].secret // "")' | while read line; do
+            value="${line#*=}"
             echo "::add-mask::$value"
-            echo "$key=$value" >> $GITHUB_ENV
+            echo "$line" >> $GITHUB_ENV
           done
 
       - name: Apply latest configuration to Fleet
