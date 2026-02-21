@@ -5,11 +5,10 @@ on:
     branches:
       - main
   pull_request:
-  workflow_dispatch: # allows manual triggering
+  workflow_dispatch:
   schedule:
-  - cron: '0 6 * * *' # Nightly 6AM UTC
+  - cron: '0 6 * * *'
 
-# Prevent concurrent runs of this workflow.
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
@@ -18,10 +17,9 @@ defaults:
   run:
     shell: bash
 
-# Limit permissions of GITHUB_TOKEN.
 permissions:
   contents: read
-  id-token: write # Required for OIDC
+  id-token: write
 
 jobs:
   fleet-gitops:
@@ -36,49 +34,18 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-2
 
-      - name: Fetch secrets from AWS Secrets Manager
+      - name: Fetch API token from Secrets Manager
         run: |
-          # Fetch API key
           FLEET_API_TOKEN=$(aws secretsmanager get-secret-value --secret-id fleet-api-key --query SecretString --output text)
           echo "::add-mask::$FLEET_API_TOKEN"
           echo "FLEET_API_TOKEN=$FLEET_API_TOKEN" >> $GITHUB_ENV
 
-      - name: Fetch enroll secrets from Fleet API
+      - name: Fetch global enroll secret from Fleet API
         run: |
-          # Fetch global enroll secret directly from Fleet API
-          RESPONSE=$(curl -s -w "\n%{http_code}" "${{ secrets.FLEET_URL }}/api/v1/fleet/spec/enroll_secret" \
-            -H "Authorization: Bearer $FLEET_API_TOKEN")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | sed '$d')
-
-          if [[ "$HTTP_CODE" != "200" ]]; then
-            echo "::error::Failed to fetch enroll secret (HTTP $HTTP_CODE)"
-            echo "$BODY" | jq . 2>/dev/null || echo "$BODY"
-            exit 1
-          fi
-
-          FLEET_GLOBAL_ENROLL_SECRET=$(echo "$BODY" | jq -r '.spec.secrets[0].secret')
-          echo "::add-mask::$FLEET_GLOBAL_ENROLL_SECRET"
-          echo "FLEET_GLOBAL_ENROLL_SECRET=$FLEET_GLOBAL_ENROLL_SECRET" >> $GITHUB_ENV
-
-          # Fetch team enroll secrets - need to get each team's secret individually
-          TEAMS_JSON=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/teams" \
-            -H "Authorization: Bearer $FLEET_API_TOKEN")
-
-          # Get team IDs and names
-          echo "$TEAMS_JSON" | jq -r '.teams[] | "\(.id)|\(.name)"' | while IFS='|' read -r team_id team_name; do
-            # Fetch team details which includes secrets
-            TEAM_DETAILS=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/teams/$team_id" \
-              -H "Authorization: Bearer $FLEET_API_TOKEN")
-
-            # Extract secret and build env var name
-            SECRET=$(echo "$TEAM_DETAILS" | jq -r '.team.secrets[0].secret // empty')
-            if [[ -n "$SECRET" ]]; then
-              VAR_NAME="FLEET_$(echo "$team_name" | tr ' ' '_' | tr '-' '_' | tr '[:lower:]' '[:upper:]')_ENROLL_SECRET"
-              echo "::add-mask::$SECRET"
-              echo "$VAR_NAME=$SECRET" >> $GITHUB_ENV
-            fi
-          done
+          SECRET=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/spec/enroll_secret" \
+            -H "Authorization: Bearer $FLEET_API_TOKEN" | jq -r '.spec.secrets[0].secret')
+          echo "::add-mask::$SECRET"
+          echo "FLEET_GLOBAL_ENROLL_SECRET=$SECRET" >> $GITHUB_ENV
 
       - name: Apply latest configuration to Fleet
         uses: ./.github/gitops-action

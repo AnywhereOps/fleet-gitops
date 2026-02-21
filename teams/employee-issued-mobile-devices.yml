@@ -5,5 +5,3 @@ agent_options:
 controls:
 software:
 team_settings:
-  secrets:
-    - secret: "$FLEET_EMPLOYEE_ISSUED_MOBILE_DEVICES_ENROLL_SECRET"
