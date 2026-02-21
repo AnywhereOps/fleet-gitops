@@ -46,8 +46,18 @@ jobs:
       - name: Fetch enroll secrets from Fleet API
         run: |
           # Fetch global enroll secret directly from Fleet API
-          FLEET_GLOBAL_ENROLL_SECRET=$(curl -sf "${{ secrets.FLEET_URL }}/api/v1/fleet/spec/enroll_secret" \
-            -H "Authorization: Bearer $FLEET_API_TOKEN" | jq -r '.spec.secrets[0].secret')
+          RESPONSE=$(curl -s -w "\n%{http_code}" "${{ secrets.FLEET_URL }}/api/v1/fleet/spec/enroll_secret" \
+            -H "Authorization: Bearer $FLEET_API_TOKEN")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+
+          if [[ "$HTTP_CODE" != "200" ]]; then
+            echo "::error::Failed to fetch enroll secret (HTTP $HTTP_CODE)"
+            echo "$BODY" | jq . 2>/dev/null || echo "$BODY"
+            exit 1
+          fi
+
+          FLEET_GLOBAL_ENROLL_SECRET=$(echo "$BODY" | jq -r '.spec.secrets[0].secret')
           echo "::add-mask::$FLEET_GLOBAL_ENROLL_SECRET"
           echo "FLEET_GLOBAL_ENROLL_SECRET=$FLEET_GLOBAL_ENROLL_SECRET" >> $GITHUB_ENV
 
