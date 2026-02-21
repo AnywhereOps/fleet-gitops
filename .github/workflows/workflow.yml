@@ -40,7 +40,7 @@ jobs:
         uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
-            FLEET, fleet-api-key
+            FLEET, ${{ secrets.FLEET_API_KEY_SECRET_ARN }}
         env:
           AWS_REGION: us-east-2
 
