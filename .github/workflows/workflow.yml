@@ -37,23 +37,23 @@ jobs:
           aws-region: us-east-2
 
       - name: Fetch secrets from AWS Secrets Manager
-        uses: aws-actions/aws-secretsmanager-get-secrets@v2
-        with:
-          secret-ids: |
-            FLEET, fleet-api-key
-        env:
-          AWS_REGION: us-east-2
+        run: |
+          # Fetch API key
+          FLEET_API_TOKEN=$(aws secretsmanager get-secret-value --secret-id fleet-api-key --query SecretString --output text)
+          echo "::add-mask::$FLEET_API_TOKEN"
+          echo "FLEET_API_TOKEN=$FLEET_API_TOKEN" >> $GITHUB_ENV
+
+          # Fetch and parse enroll secrets JSON (1 secret → many env vars)
+          ENROLL_SECRETS=$(aws secretsmanager get-secret-value --secret-id fleet-enroll-secrets --query SecretString --output text)
+          for key in $(echo "$ENROLL_SECRETS" | jq -r 'keys[]'); do
+            value=$(echo "$ENROLL_SECRETS" | jq -r --arg k "$key" '.[$k]')
+            echo "::add-mask::$value"
+            echo "$key=$value" >> $GITHUB_ENV
+          done
 
       - name: Apply latest configuration to Fleet
         uses: ./.github/gitops-action
         with:
           dry-run-only: ${{ github.event_name == 'pull_request' && 'true' || 'false' }}
         env:
-          FLEET_API_TOKEN: ${{ env.FLEET }}
           FLEET_URL: ${{ secrets.FLEET_URL }}
-          FLEET_DEDICATED_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_DEDICATED_DEVICES_ENROLL_SECRET }}
-          FLEET_EMPLOYEE_ISSUED_MOBILE_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_EMPLOYEE_ISSUED_MOBILE_DEVICES_ENROLL_SECRET }}
-          FLEET_IT_SERVERS_ENROLL_SECRET: ${{ secrets.FLEET_IT_SERVERS_ENROLL_SECRET }}
-          FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET: ${{ secrets.FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET }}
-          FLEET_WORKSTATIONS_ENROLL_SECRET: ${{ secrets.FLEET_WORKSTATIONS_ENROLL_SECRET }}
-          FLEET_GLOBAL_ENROLL_SECRET: ${{ secrets.FLEET_GLOBAL_ENROLL_SECRET }}
