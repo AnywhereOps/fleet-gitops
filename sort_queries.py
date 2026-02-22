@@ -297,6 +297,97 @@ CATEGORY_KEYWORDS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Device type detection (server vs device/endpoint)
+# ---------------------------------------------------------------------------
+SERVER_TABLES = [
+    "docker", "docker_containers", "docker_images", "docker_networks",
+    "docker_volumes", "docker_container_labels", "docker_container_mounts",
+    "kubernetes", "kubernetes_pods", "kubernetes_deployments",
+    "kubernetes_services", "kubernetes_namespaces",
+    "listening_ports", "process_open_sockets",
+    "systemd_units", "services",
+    "crontab", "scheduled_tasks",
+    "shadow", "sudoers",
+    "authorized_keys", "ssh_configs", "known_hosts",
+    "iptables", "iptables_policies",
+    "ec2_instance_metadata", "azure_instance_metadata",
+    "lxd_instances", "lxd_images",
+]
+
+SERVER_KEYWORDS = [
+    "server", "daemon", "service", "infrastructure",
+    "root login", "ssh", "container", "pod", "docker",
+    "kubernetes", "k8s", "systemd", "cron",
+    "listening port", "open socket", "firewall",
+]
+
+DEVICE_TABLES = [
+    "apps", "applications", "safari_extensions", "chrome_extensions",
+    "firefox_addons", "browser_plugins",
+    "disk_encryption", "filevault", "bitlocker_info",
+    "gatekeeper", "xprotect", "gatekeeper_approved_apps",
+    "screen_lock", "screenlock",
+    "battery", "power_info",
+    "wifi_networks", "wifi_status",
+    "mdm", "managed_policies", "profile_payloads",
+    "launchd", "login_items",
+]
+
+DEVICE_KEYWORDS = [
+    "workstation", "laptop", "desktop", "endpoint",
+    "user app", "browser extension", "antivirus",
+    "disk encryption", "filevault", "bitlocker",
+    "screen lock", "gatekeeper", "xprotect",
+    "battery", "wifi", "bluetooth",
+    "mdm", "managed", "profile",
+]
+
+
+def detect_device_type(spec, query_sql=None, query_name=None, description=None):
+    """Detect if query is for servers, devices, or both.
+
+    Returns: 'servers', 'devices', or 'both'
+    """
+    server_score = 0
+    device_score = 0
+
+    # Analyze query SQL for table references
+    if query_sql:
+        query_lower = query_sql.lower()
+        for table in SERVER_TABLES:
+            if re.search(rf"\b{table}\b", query_lower):
+                server_score += 1
+        for table in DEVICE_TABLES:
+            if re.search(rf"\b{table}\b", query_lower):
+                device_score += 1
+
+    # Analyze query name and description
+    text_to_check = ""
+    if query_name:
+        text_to_check += query_name.lower() + " "
+    if description:
+        text_to_check += description.lower() + " "
+    if isinstance(spec, dict):
+        text_to_check += spec.get("name", "").lower() + " "
+        text_to_check += spec.get("description", "").lower() + " "
+
+    for kw in SERVER_KEYWORDS:
+        if kw in text_to_check:
+            server_score += 1
+    for kw in DEVICE_KEYWORDS:
+        if kw in text_to_check:
+            device_score += 1
+
+    # Determine result
+    if server_score > device_score:
+        return "servers"
+    elif device_score > server_score:
+        return "devices"
+    else:
+        return "both"
+
+
 def detect_category(spec, filename=None, filepath=None, query_name=None):
     """Detect category/purpose using multiple strategies."""
 
@@ -602,7 +693,7 @@ def generate_yaml_doc(kind, spec):
 # ---------------------------------------------------------------------------
 def process_sql_source(source_dir, target_dir, output_folder, prefix, dry_run):
     """Process a directory of SQL query files."""
-    stats = {"total": 0, "converted": 0, "by_platform": {}, "by_category": {}}
+    stats = {"total": 0, "converted": 0, "by_platform": {}, "by_category": {}, "by_team": {}, "team_files": {}}
     skip_dirs = {"fragments", ".git", ".github", "images"}
 
     for root, dirs, files in os.walk(source_dir):
@@ -659,6 +750,15 @@ def process_sql_source(source_dir, target_dir, output_folder, prefix, dry_run):
             spec["automations_enabled"] = False
             spec["discard_data"] = False
 
+            # Detect server vs device
+            device_type = detect_device_type(
+                spec,
+                query_sql=parsed["query"],
+                query_name=name,
+                description=parsed["description"]
+            )
+            spec["team"] = device_type
+
             out_filename = slugify(os.path.splitext(filename)[0]) + ".yml"
             out_dir = os.path.join(target_dir, lib_subdir, "queries", output_folder, category)
             out_path = os.path.join(out_dir, out_filename)
@@ -677,6 +777,10 @@ def process_sql_source(source_dir, target_dir, output_folder, prefix, dry_run):
             stats["converted"] += 1
             stats["by_platform"][lib_subdir] = stats["by_platform"].get(lib_subdir, 0) + 1
             stats["by_category"][category] = stats["by_category"].get(category, 0) + 1
+            stats["by_team"][device_type] = stats["by_team"].get(device_type, 0) + 1
+            if device_type not in stats["team_files"]:
+                stats["team_files"][device_type] = []
+            stats["team_files"][device_type].append(out_path)
 
     return stats
 
@@ -690,7 +794,7 @@ def process_structured_source(source_path, target_dir, output_folder, dry_run):
     Prefers Fleet/ subdirectory over Classic/ when both exist.
     Prefers .yaml/.yml over .conf when duplicates exist.
     """
-    stats = {"total": 0, "converted": 0, "by_platform": {}, "by_category": {}}
+    stats = {"total": 0, "converted": 0, "by_platform": {}, "by_category": {}, "by_team": {}, "team_files": {}}
 
     files_to_process = []
     if os.path.isfile(source_path):
@@ -777,6 +881,15 @@ def process_structured_source(source_path, target_dir, output_folder, dry_run):
             if yaml_platform and "platform" not in out_spec:
                 out_spec["platform"] = yaml_platform
 
+            # Detect server vs device
+            device_type = detect_device_type(
+                spec,
+                query_sql=query_sql,
+                query_name=spec.get("name", ""),
+                description=spec.get("description", "")
+            )
+            out_spec["team"] = device_type
+
             query_name = spec.get("name", "unnamed")
             out_filename = slugify(query_name) + ".yml"
             out_dir = os.path.join(target_dir, lib_subdir, "queries", output_folder, category)
@@ -796,6 +909,10 @@ def process_structured_source(source_path, target_dir, output_folder, dry_run):
             stats["converted"] += 1
             stats["by_platform"][lib_subdir] = stats["by_platform"].get(lib_subdir, 0) + 1
             stats["by_category"][category] = stats["by_category"].get(category, 0) + 1
+            stats["by_team"][device_type] = stats["by_team"].get(device_type, 0) + 1
+            if device_type not in stats["team_files"]:
+                stats["team_files"][device_type] = []
+            stats["team_files"][device_type].append(out_path)
 
     return stats
 
@@ -813,6 +930,116 @@ def print_stats(stats, source_type):
     print(f"  By category:")
     for cat, count in sorted(stats["by_category"].items()):
         print(f"    {cat}: {count}")
+    if "by_team" in stats and stats["by_team"]:
+        print(f"  By team:")
+        for team, count in sorted(stats["by_team"].items()):
+            print(f"    {team}: {count}")
+
+
+# ---------------------------------------------------------------------------
+# Update existing lib/ files with team field
+# ---------------------------------------------------------------------------
+def update_existing_teams(lib_dir, dry_run):
+    """Scan existing lib/ query files and add/update team field."""
+    print(f"Scanning {lib_dir} for existing queries...\n")
+
+    stats = {"total": 0, "updated": 0, "by_team": {}, "team_files": {}}
+
+    for root, dirs, files in os.walk(lib_dir):
+        dirs[:] = [d for d in dirs if not d.startswith(".")]
+
+        for filename in sorted(files):
+            if not filename.endswith((".yml", ".yaml")):
+                continue
+
+            filepath = os.path.join(root, filename)
+
+            try:
+                with open(filepath, "r") as f:
+                    content = f.read()
+            except (IOError, OSError):
+                continue
+
+            # Parse YAML documents
+            docs = []
+            raw_docs = re.split(r"^---\s*$", content, flags=re.MULTILINE)
+
+            for raw_doc in raw_docs:
+                raw_doc = raw_doc.strip()
+                if not raw_doc:
+                    continue
+                try:
+                    doc = yaml.safe_load(raw_doc)
+                    if doc and isinstance(doc, dict):
+                        docs.append(doc)
+                except yaml.YAMLError:
+                    continue
+
+            if not docs:
+                continue
+
+            modified = False
+            for doc in docs:
+                spec = doc.get("spec", doc)
+                if not isinstance(spec, dict):
+                    continue
+                if "query" not in spec and "name" not in spec:
+                    continue
+
+                stats["total"] += 1
+
+                # Detect team
+                query_sql = spec.get("query", "")
+                device_type = detect_device_type(
+                    spec,
+                    query_sql=query_sql,
+                    query_name=spec.get("name", ""),
+                    description=spec.get("description", "")
+                )
+
+                # Update if different or missing
+                if spec.get("team") != device_type:
+                    spec["team"] = device_type
+                    modified = True
+                    stats["updated"] += 1
+
+                stats["by_team"][device_type] = stats["by_team"].get(device_type, 0) + 1
+                if device_type not in stats["team_files"]:
+                    stats["team_files"][device_type] = []
+                stats["team_files"][device_type].append(filepath)
+
+            if modified:
+                if dry_run:
+                    print(f"  [DRY-RUN] Would update: {filepath}")
+                else:
+                    # Rewrite the file
+                    output_parts = []
+                    for doc in docs:
+                        spec = doc.get("spec", {})
+                        if "query" in spec and isinstance(spec["query"], str) and "\n" in spec["query"]:
+                            spec["query"] = LiteralStr(spec["query"])
+                        output_parts.append("---\n" + yaml.dump(
+                            doc,
+                            default_flow_style=False,
+                            sort_keys=False,
+                            allow_unicode=True,
+                            width=200,
+                        ))
+                    with open(filepath, "w") as f:
+                        f.write("\n".join(output_parts))
+                    print(f"  Updated: {filepath}")
+
+    print(f"\n  Total queries: {stats['total']}")
+    print(f"  Updated: {stats['updated']}")
+    print(f"  By team:")
+    for team, count in sorted(stats["by_team"].items()):
+        print(f"    {team}: {count}")
+
+    # Write team mappings
+    write_team_mappings(lib_dir, [stats], dry_run)
+
+    if dry_run:
+        print("\n** DRY RUN - no files were written **")
 
 
 # ---------------------------------------------------------------------------
@@ -847,9 +1074,19 @@ def main():
         action="store_true",
         help="Reset saved folder name mappings and re-prompt",
     )
+    parser.add_argument(
+        "--update-teams",
+        action="store_true",
+        help="Scan existing lib/ queries and add/update team field",
+    )
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
+
+    # Update teams mode: scan existing lib/ and add team field
+    if args.update_teams:
+        update_existing_teams(args.target, args.dry_run)
+        return
 
     if args.reset_config:
         config = {}
@@ -903,6 +1140,7 @@ def main():
 
     print()
 
+    all_stats = []
     for src in sources:
         src_config = config[src["name"]]
         output_folder = src_config["output_folder"]
@@ -918,12 +1156,14 @@ def main():
                 src["path"], args.target, output_folder, src_prefix, args.dry_run
             )
             print_stats(stats, "sql")
+            all_stats.append(stats)
 
         elif source_type in ("yaml", "json", "conf"):
             stats = process_structured_source(
                 src["path"], args.target, output_folder, args.dry_run
             )
             print_stats(stats, "yaml")
+            all_stats.append(stats)
 
         elif source_type == "mixed":
             print("\n  --- SQL files ---")
@@ -931,17 +1171,52 @@ def main():
                 src["path"], args.target, output_folder, src_prefix, args.dry_run
             )
             print_stats(sql_stats, "sql")
+            all_stats.append(sql_stats)
 
             print("\n  --- YAML/JSON files ---")
             yaml_stats = process_structured_source(
                 src["path"], args.target, output_folder, args.dry_run
             )
             print_stats(yaml_stats, "yaml")
+            all_stats.append(yaml_stats)
 
         print()
 
+    # Write team mappings summary
+    if all_stats:
+        write_team_mappings(args.target, all_stats, args.dry_run)
+
     if args.dry_run:
-        print("** DRY RUN - no files were written **")
+        print("\n** DRY RUN - no files were written **")
+
+
+def write_team_mappings(target_dir, all_stats, dry_run):
+    """Write team-mappings.json with all query files grouped by team."""
+    team_files = {"servers": [], "devices": [], "both": []}
+
+    for stats in all_stats:
+        for team, files in stats.get("team_files", {}).items():
+            if team in team_files:
+                team_files[team].extend(files)
+
+    # Sort and make paths relative
+    for team in team_files:
+        team_files[team] = sorted(set(team_files[team]))
+
+    mappings_path = os.path.join(target_dir, ".team-mappings.json")
+
+    if dry_run:
+        print(f"\n[DRY-RUN] Would write team mappings to {mappings_path}")
+        print(f"  servers: {len(team_files['servers'])} queries")
+        print(f"  devices: {len(team_files['devices'])} queries")
+        print(f"  both: {len(team_files['both'])} queries")
+    else:
+        with open(mappings_path, "w") as f:
+            json.dump(team_files, f, indent=2)
+        print(f"\nWrote team mappings to {mappings_path}")
+        print(f"  servers: {len(team_files['servers'])} queries")
+        print(f"  devices: {len(team_files['devices'])} queries")
+        print(f"  both: {len(team_files['both'])} queries")
 
 
 if __name__ == "__main__":
