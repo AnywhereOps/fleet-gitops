@@ -6,5 +6,3 @@
   observer_can_run: true
   platform: darwin
   query: SELECT * FROM macos_compatibility;
-  labels_include_any:
-  - macOS compatibility extension installed
