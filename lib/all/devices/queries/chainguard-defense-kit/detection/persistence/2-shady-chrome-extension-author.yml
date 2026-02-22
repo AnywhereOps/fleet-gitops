@@ -1,68 +1,25 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Shady Chrome Extension Author
-  description: Highlight potentially shady chrome extensions from documented spam authors
-  query: |
-    SELECT
-      name,
-      profile,
-      chrome_extensions.description AS 'descr',
-      persistent AS persists,
-      CONCAT (
-        "https://chromewebstore.google.com/detail/extension/",
-        identifier
-      ) AS ext_url,
-      author,
-      chrome_extensions.path,
-      referenced AS in_config,
-      file.ctime,
-      file.btime,
-      file.mtime,
-      from_webstore AS in_store,
-      TRIM(CAST(permissions AS text)) AS perms,
-      state AS 'enabled',
-      CONCAT (
-        from_webstore,
-        ',',
-        author,
-        ',',
-        name,
-        ',',
-        identifier
-      ) AS exception_key,
-      hash.sha256
-    FROM
-      users
-      CROSS JOIN chrome_extensions USING (uid)
-      LEFT JOIN file ON chrome_extensions.path = file.path
-      LEFT JOIN hash ON chrome_extensions.path = hash.path
-    WHERE
-      state = 1
-      AND (
-        (
-          author LIKE '%BigMData%'
-          OR author LIKE '%BroCode LTD%'
-          OR author LIKE '%Chrome Extension Hub%'
-          OR author LIKE '%ExtensionsBox%'
-          OR author LIKE '%Free Business Apps%'
-          OR author LIKE '%Infwiz%'
-          OR author LIKE '%Karbon Project LP%'
-          OR author LIKE '%Kodice LLC%'
-          OR author LIKE '%Lazytech%'
-          OR author LIKE '%NioMaker%'
-          OR author LIKE '%PDF Toolbox cluster%'
-          OR author LIKE '%Yue Apps%'
-          OR author LIKE '%ZingDeck%'
-          OR author LIKE '%ZingFront Software%'
-        )
-      )
-    GROUP BY
-      exception_key
+- name: CDK - Shady Chrome Extension Author
+  description: Highlight potentially shady chrome extensions from documented spam
+    authors
+  query: "SELECT\n  name,\n  profile,\n  chrome_extensions.description AS 'descr',\n\
+    \  persistent AS persists,\n  CONCAT (\n    \"https://chromewebstore.google.com/detail/extension/\"\
+    ,\n    identifier\n  ) AS ext_url,\n  author,\n  chrome_extensions.path,\n  referenced\
+    \ AS in_config,\n  file.ctime,\n  file.btime,\n  file.mtime,\n  from_webstore\
+    \ AS in_store,\n  TRIM(CAST(permissions AS text)) AS perms,\n  state AS 'enabled',\n\
+    \  CONCAT (\n    from_webstore,\n    ',',\n    author,\n    ',',\n    name,\n\
+    \    ',',\n    identifier\n  ) AS exception_key,\n  hash.sha256\nFROM\n  users\n\
+    \  CROSS JOIN chrome_extensions USING (uid)\n  LEFT JOIN file ON chrome_extensions.path\
+    \ = file.path\n  LEFT JOIN hash ON chrome_extensions.path = hash.path\nWHERE\n\
+    \  state = 1\n  AND (\n    (\n      author LIKE '%BigMData%'\n      OR author\
+    \ LIKE '%BroCode LTD%'\n      OR author LIKE '%Chrome Extension Hub%'\n      OR\
+    \ author LIKE '%ExtensionsBox%'\n      OR author LIKE '%Free Business Apps%'\n\
+    \      OR author LIKE '%Infwiz%'\n      OR author LIKE '%Karbon Project LP%'\n\
+    \      OR author LIKE '%Kodice LLC%'\n      OR author LIKE '%Lazytech%'\n    \
+    \  OR author LIKE '%NioMaker%'\n      OR author LIKE '%PDF Toolbox cluster%'\n\
+    \      OR author LIKE '%Yue Apps%'\n      OR author LIKE '%ZingDeck%'\n      OR\
+    \ author LIKE '%ZingFront Software%'\n    )\n  )\nGROUP BY\n  exception_key\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

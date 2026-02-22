@@ -1,8 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: ip_forwarding_enabled
+- name: ip_forwarding_enabled
   description: Discover hosts that have IP forwarding enabled
-  query: SELECT * FROM system_controls WHERE name LIKE '%forwarding%' AND name LIKE '%ip%' AND current_value=1;
-  team: both
+  query: SELECT * FROM system_controls WHERE name LIKE '%forwarding%' AND name LIKE
+    '%ip%' AND current_value=1;

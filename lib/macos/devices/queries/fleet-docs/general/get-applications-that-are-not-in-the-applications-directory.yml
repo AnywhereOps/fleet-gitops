@@ -1,13 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get applications that are not in the Applications directory
-  platform: darwin
+- name: Get applications that are not in the Applications directory
   description: Returns applications that are not in the `/Applications` directory
   query: SELECT * FROM apps WHERE path NOT LIKE '/Applications/%';
-  bash: mdfind "kMDItemContentType == 'com.apple.application-bundle'" | grep -vE '^/Applications/|^/System/Applications/'
-  purpose: Informational
-  tags: hunting, inventory
-  contributors: DominusKelvin
-  team: devices
+  platform: darwin

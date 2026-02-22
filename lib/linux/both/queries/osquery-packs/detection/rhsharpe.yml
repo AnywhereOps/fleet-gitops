@@ -1,12 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: rh_sharpe
-  platform: linux
+- name: rh_sharpe
   description: rh_sharpe
-  query: select * from file where path in ('/bin/.ps', '/usr/bin/cleaner', '/usr/bin/slice', '/usr/bin/vadim', '/usr/bin/.ps', '/bin/.lpstree', '/usr/bin/.lpstree', '/usr/bin/lnetstat', '/bin/lnetstat',
-    '/usr/bin/ldu', '/bin/ldu', '/usr/bin/lkillall', '/bin/lkillall', '/usr/include/rpcsvc/du');
+  query: select * from file where path in ('/bin/.ps', '/usr/bin/cleaner', '/usr/bin/slice',
+    '/usr/bin/vadim', '/usr/bin/.ps', '/bin/.lpstree', '/usr/bin/.lpstree', '/usr/bin/lnetstat',
+    '/bin/lnetstat', '/usr/bin/ldu', '/bin/ldu', '/usr/bin/lkillall', '/bin/lkillall',
+    '/usr/include/rpcsvc/du');
+  platform: linux
   interval: '3600'
-  value: Artifacts used by this malware
-  team: both

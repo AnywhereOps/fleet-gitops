@@ -1,18 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Alf
+- name: CDK - Alf
+  description: Retrieves the configuration values for the Application Layer Firewall
+    for OSX.
+  query: "SELECT\n  *\nFROM\n  alf;\n"
   platform: darwin
-  description: Retrieves the configuration values for the Application Layer Firewall for OSX.
-  query: |
-    SELECT
-      *
-    FROM
-      alf;
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

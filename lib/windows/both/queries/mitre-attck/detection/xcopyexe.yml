@@ -1,10 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: xcopy.exe
+- name: xcopy.exe
+  description: Xcopy Execute, is used for copying multiple files or entire directory
+    trees from one directory to another and for copying files across a network.
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
+    like '%xcopy%';
   platform: windows
-  description: Xcopy Execute, is used for copying multiple files or entire directory trees from one directory to another and for copying files across a network.
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%xcopy%';
   interval: 600
-  team: both

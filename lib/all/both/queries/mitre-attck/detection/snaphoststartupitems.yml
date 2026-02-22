@@ -1,10 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Snaphost_Startup_Items
+- name: Snaphost_Startup_Items
   description: Snapshot Windows Startup Items Osquery predefined query - ATT&CK T1060
   query: select * from startup_items;
   interval: 28800
-  snapshot: true
-  team: both

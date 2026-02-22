@@ -1,60 +1,26 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Files Recently Written
+- name: CDK - Files Recently Written
   description: Returns a list of recently written files
-  query: |
-    SELECT
-      *
-    FROM
-      file
-    WHERE
-      (
-        path LIKE "/var/tmp/%"
-        OR path LIKE "/var/tmp/%/%"
-        OR path LIKE "/Applications/%"
-        OR path LIKE "/Applications/%/%"
-        OR path LIKE "/home/%/%"
-        OR path LIKE "/home/%/.%/%"
-        OR path LIKE "/home/%/.%/%/%"
-        OR path LIKE "/home/%/.config/%"
-        OR path LIKE "/home/%/.config/%/%"
-        OR path LIKE "/Library/%/%"
-        OR path LIKE "/Library/.%"
-        OR path LIKE "/Library/Application Support/%"
-        OR path LIKE "/Library/Application Support/.%"
-        OR path LIKE "/tmp/%"
-        OR path LIKE "/tmp/%/%"
-        OR path LIKE "/tmp/.%/%%"
-        OR path LIKE "/Users/%/%"
-        OR path LIKE "/Users/%/%/%"
-        OR path LIKE "/Users/%/.%/%"
-        OR path LIKE "/Users/%/.%/%/%"
-        OR path LIKE "/Users/Library/%"
-        OR path LIKE "/Users/Library/%/%"
-        OR path LIKE "/Users/Library/.%"
-        OR path LIKE "/Users/Library/Application Support/%"
-        OR path LIKE "/Users/Library/Application Support/%/%"
-        OR path LIKE "/Users/Library/Application Support/.%"
-        OR path LIKE "/var/%"
-        OR path LIKE "/var/%/%"
-      )
-      AND (
-        mtime > (strftime('%s', 'now') -3600)
-        OR (
-          atime > (strftime('%s', 'now') -3600)
-          AND file.type = "regular"
-        )
-        OR ctime > (strftime('%s', 'now') -3600)
-        OR btime > (strftime('%s', 'now') -3600)
-      )
-      AND NOT path LIKE "%/../%"
-    GROUP BY
-      inode;
+  query: "SELECT\n  *\nFROM\n  file\nWHERE\n  (\n    path LIKE \"/var/tmp/%\"\n  \
+    \  OR path LIKE \"/var/tmp/%/%\"\n    OR path LIKE \"/Applications/%\"\n    OR\
+    \ path LIKE \"/Applications/%/%\"\n    OR path LIKE \"/home/%/%\"\n    OR path\
+    \ LIKE \"/home/%/.%/%\"\n    OR path LIKE \"/home/%/.%/%/%\"\n    OR path LIKE\
+    \ \"/home/%/.config/%\"\n    OR path LIKE \"/home/%/.config/%/%\"\n    OR path\
+    \ LIKE \"/Library/%/%\"\n    OR path LIKE \"/Library/.%\"\n    OR path LIKE \"\
+    /Library/Application Support/%\"\n    OR path LIKE \"/Library/Application Support/.%\"\
+    \n    OR path LIKE \"/tmp/%\"\n    OR path LIKE \"/tmp/%/%\"\n    OR path LIKE\
+    \ \"/tmp/.%/%%\"\n    OR path LIKE \"/Users/%/%\"\n    OR path LIKE \"/Users/%/%/%\"\
+    \n    OR path LIKE \"/Users/%/.%/%\"\n    OR path LIKE \"/Users/%/.%/%/%\"\n \
+    \   OR path LIKE \"/Users/Library/%\"\n    OR path LIKE \"/Users/Library/%/%\"\
+    \n    OR path LIKE \"/Users/Library/.%\"\n    OR path LIKE \"/Users/Library/Application\
+    \ Support/%\"\n    OR path LIKE \"/Users/Library/Application Support/%/%\"\n \
+    \   OR path LIKE \"/Users/Library/Application Support/.%\"\n    OR path LIKE \"\
+    /var/%\"\n    OR path LIKE \"/var/%/%\"\n  )\n  AND (\n    mtime > (strftime('%s',\
+    \ 'now') -3600)\n    OR (\n      atime > (strftime('%s', 'now') -3600)\n     \
+    \ AND file.type = \"regular\"\n    )\n    OR ctime > (strftime('%s', 'now') -3600)\n\
+    \    OR btime > (strftime('%s', 'now') -3600)\n  )\n  AND NOT path LIKE \"%/../%\"\
+    \nGROUP BY\n  inode;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

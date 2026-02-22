@@ -1,50 +1,18 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Public Files Macos
-  platform: darwin
+- name: CDK - Unexpected Public Files Macos
   description: Find unexpected files in ~/Public
-  query: |
-    SELECT
-      file.path,
-      file.type,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.btime,
-      file.mode,
-      file.ctime,
-      file.gid,
-      hash.sha256,
-      magic.data,
-      RTRIM(
-        COALESCE(
-          REGEX_MATCH (file.directory, '(/.*?/.*?/.*?/)', 1),
-          file.directory
-        ),
-        "/"
-      ) AS top3_dir
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        file.directory LIKE '/Users/%/Public'
-        OR file.directory LIKE '/Users/%/Public/%%'
-        OR file.directory LIKE '/Users/%/Public/.%'
-      )
-      AND NOT (
-        file.type = 'directory'
-        OR file.path LIKE '%/../%'
-        OR file.path LIKE '%/./%'
-        OR file.path LIKE '/Users/%/Public/Drop Box/.localized'
-        OR file.path LIKE '/Users/%/Public/Drop Box/.DS_Store'
-      )
+  query: "SELECT\n  file.path,\n  file.type,\n  file.size,\n  file.mtime,\n  file.uid,\n\
+    \  file.btime,\n  file.mode,\n  file.ctime,\n  file.gid,\n  hash.sha256,\n  magic.data,\n\
+    \  RTRIM(\n    COALESCE(\n      REGEX_MATCH (file.directory, '(/.*?/.*?/.*?/)',\
+    \ 1),\n      file.directory\n    ),\n    \"/\"\n  ) AS top3_dir\nFROM\n  file\n\
+    \  LEFT JOIN hash ON file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\n\
+    WHERE\n  (\n    file.directory LIKE '/Users/%/Public'\n    OR file.directory LIKE\
+    \ '/Users/%/Public/%%'\n    OR file.directory LIKE '/Users/%/Public/.%'\n  )\n\
+    \  AND NOT (\n    file.type = 'directory'\n    OR file.path LIKE '%/../%'\n  \
+    \  OR file.path LIKE '%/./%'\n    OR file.path LIKE '/Users/%/Public/Drop Box/.localized'\n\
+    \    OR file.path LIKE '/Users/%/Public/Drop Box/.DS_Store'\n  )\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

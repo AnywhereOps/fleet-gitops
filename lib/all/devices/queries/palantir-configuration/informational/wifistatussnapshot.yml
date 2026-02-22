@@ -1,8 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: wifi_status_snapshot
-  description: Shows information about the wifi network that a host is currently connected to.
+- name: wifi_status_snapshot
+  description: Shows information about the wifi network that a host is currently connected
+    to.
   query: SELECT * FROM wifi_status;
-  team: devices

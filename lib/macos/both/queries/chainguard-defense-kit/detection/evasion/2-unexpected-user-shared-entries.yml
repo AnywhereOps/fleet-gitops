@@ -1,102 +1,40 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected User Shared Entries
-  platform: darwin
+- name: CDK - Unexpected User Shared Entries
   description: Find unexpected files in /Users/Shared
-  query: |
-    SELECT
-      file.path,
-      file.type,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.btime,
-      file.mode,
-      file.ctime,
-      file.gid,
-      hash.sha256,
-      magic.data,
-      RTRIM(
-        COALESCE(
-          REGEX_MATCH (file.directory, '(/.*?/.*?/.*?/)', 1),
-          file.directory
-        ),
-        "/"
-      ) AS top3_dir
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        file.path LIKE '/Users/Shared/%%'
-        OR file.path LIKE '/Users/Shared/.%'
-        OR file.path LIKE '/Users/Shared/.%/%%'
-        OR file.path LIKE '/Users/Shared/%/.%'
-      )
-      AND NOT (
-        file.type = 'directory'
-        OR file.size = 0
-        OR file.path LIKE '%/../%'
-        OR file.path LIKE '%/./%'
-        OR file.path IN (
-          '/Users/Shared/.4oaLkgIGnA',
-          '/Users/Shared/.BetaEnrollmentData.plist',
-          '/Users/Shared/.betamigrated',
-          '/Users/Shared/.com.intego.reporting.plist',
-          '/Users/Shared/.DS_Store',
-          '/Users/Shared/.ks.intego_metrics_2.plist',
-          '/Users/Shared/.localized',
-          '/Users/Shared/.NSVolumeHeap',
-          '/Users/Shared/.SeedEnrollment.plist',
-          '/Users/Shared/.userfonts.cachedb',
-          '/Users/Shared/CleanMyMac X/.licence',
-          '/Users/Shared/LogiTuneInstallerStarted.txt',
-          '/Users/Shared/Plugin Loading.log'
-        )
-        OR top3_dir IN (
-          '/Users/Shared/.logishrd',
-          '/Users/Shared/Adobe',
-          '/Users/Shared/AdobeGCData',
-          '/Users/Shared/AdobeGCInfo',
-          '/Users/Shared/AdobeInstalledCodecsTier2',
-          '/Users/Shared/Audiority',
-          '/Users/Shared/Canon_Inc_IC',
-          '/Users/Shared/CleanMyMac X Menu',
-          '/Users/Shared/CleanMyMac X',
-          '/Users/Shared/CleanMyMac_5',
-          '/Users/Shared/Electronic Arts',
-          '/Users/Shared/LGHUB',
-          '/Users/Shared/logi',
-          '/Users/Shared/LogioptionsPlus',
-          '/Users/Shared/LogiOptionsPlus',
-          '/Users/Shared/logitune',
-          '/Users/Shared/macenhance',
-          '/Users/Shared/Maxon',
-          '/Users/Shared/Media Cache Files',
-          '/Users/Shared/Media Cache Files/',
-          '/Users/Shared/Parallels',
-          '/Users/Shared/Pixologic',
-          '/Users/Shared/PPN',
-          '/Users/Shared/Previously Relocated Items',
-          '/Users/Shared/Red Giant',
-          '/Users/Shared/Relocated Items',
-          '/Users/Shared/TechSmith',
-          '/Users/Shared/UnrealEngine',
-          '/Users/Shared/ZBrushData2024'
-        )
-        OR file.path LIKE '/Users/Shared/Epic Games/%'
-        OR file.path LIKE "/Users/Shared/Previously Relocated Items %/%"
-        OR (
-          file.path LIKE "%.plist"
-          AND magic.data = 'XML 1.0 document, ASCII text'
-        )
-      )
+  query: "SELECT\n  file.path,\n  file.type,\n  file.size,\n  file.mtime,\n  file.uid,\n\
+    \  file.btime,\n  file.mode,\n  file.ctime,\n  file.gid,\n  hash.sha256,\n  magic.data,\n\
+    \  RTRIM(\n    COALESCE(\n      REGEX_MATCH (file.directory, '(/.*?/.*?/.*?/)',\
+    \ 1),\n      file.directory\n    ),\n    \"/\"\n  ) AS top3_dir\nFROM\n  file\n\
+    \  LEFT JOIN hash ON file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\n\
+    WHERE\n  (\n    file.path LIKE '/Users/Shared/%%'\n    OR file.path LIKE '/Users/Shared/.%'\n\
+    \    OR file.path LIKE '/Users/Shared/.%/%%'\n    OR file.path LIKE '/Users/Shared/%/.%'\n\
+    \  )\n  AND NOT (\n    file.type = 'directory'\n    OR file.size = 0\n    OR file.path\
+    \ LIKE '%/../%'\n    OR file.path LIKE '%/./%'\n    OR file.path IN (\n      '/Users/Shared/.4oaLkgIGnA',\n\
+    \      '/Users/Shared/.BetaEnrollmentData.plist',\n      '/Users/Shared/.betamigrated',\n\
+    \      '/Users/Shared/.com.intego.reporting.plist',\n      '/Users/Shared/.DS_Store',\n\
+    \      '/Users/Shared/.ks.intego_metrics_2.plist',\n      '/Users/Shared/.localized',\n\
+    \      '/Users/Shared/.NSVolumeHeap',\n      '/Users/Shared/.SeedEnrollment.plist',\n\
+    \      '/Users/Shared/.userfonts.cachedb',\n      '/Users/Shared/CleanMyMac X/.licence',\n\
+    \      '/Users/Shared/LogiTuneInstallerStarted.txt',\n      '/Users/Shared/Plugin\
+    \ Loading.log'\n    )\n    OR top3_dir IN (\n      '/Users/Shared/.logishrd',\n\
+    \      '/Users/Shared/Adobe',\n      '/Users/Shared/AdobeGCData',\n      '/Users/Shared/AdobeGCInfo',\n\
+    \      '/Users/Shared/AdobeInstalledCodecsTier2',\n      '/Users/Shared/Audiority',\n\
+    \      '/Users/Shared/Canon_Inc_IC',\n      '/Users/Shared/CleanMyMac X Menu',\n\
+    \      '/Users/Shared/CleanMyMac X',\n      '/Users/Shared/CleanMyMac_5',\n  \
+    \    '/Users/Shared/Electronic Arts',\n      '/Users/Shared/LGHUB',\n      '/Users/Shared/logi',\n\
+    \      '/Users/Shared/LogioptionsPlus',\n      '/Users/Shared/LogiOptionsPlus',\n\
+    \      '/Users/Shared/logitune',\n      '/Users/Shared/macenhance',\n      '/Users/Shared/Maxon',\n\
+    \      '/Users/Shared/Media Cache Files',\n      '/Users/Shared/Media Cache Files/',\n\
+    \      '/Users/Shared/Parallels',\n      '/Users/Shared/Pixologic',\n      '/Users/Shared/PPN',\n\
+    \      '/Users/Shared/Previously Relocated Items',\n      '/Users/Shared/Red Giant',\n\
+    \      '/Users/Shared/Relocated Items',\n      '/Users/Shared/TechSmith',\n  \
+    \    '/Users/Shared/UnrealEngine',\n      '/Users/Shared/ZBrushData2024'\n   \
+    \ )\n    OR file.path LIKE '/Users/Shared/Epic Games/%'\n    OR file.path LIKE\
+    \ \"/Users/Shared/Previously Relocated Items %/%\"\n    OR (\n      file.path\
+    \ LIKE \"%.plist\"\n      AND magic.data = 'XML 1.0 document, ASCII text'\n  \
+    \  )\n  )\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

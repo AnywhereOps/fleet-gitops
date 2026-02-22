@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: last
+- name: last
   description: Retrieves the list of the latest logins with PID, username and timestamp.
   query: SELECT * FROM last;
   platform: linux
-  team: both

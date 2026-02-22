@@ -1,42 +1,15 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get installed Windows software
+- name: Get installed Windows software
+  description: Get all software installed on a Windows computer, including programs,
+    browser plugins, and installed packages. Note that this does not include other
+    running processes in the processes table.
+  query: SELECT name AS name, version AS version, 'Program (Windows)' AS type, 'programs'
+    AS source FROM programs UNION SELECT name AS name, version AS version, 'Package
+    (Python)' AS type, 'python_packages' AS source FROM python_packages UNION SELECT
+    name AS name, version AS version, 'Browser plugin (IE)' AS type, 'ie_extensions'
+    AS source FROM ie_extensions UNION SELECT name AS name, version AS version, 'Browser
+    plugin (Chrome)' AS type, 'chrome_extensions' AS source FROM chrome_extensions
+    UNION SELECT name AS name, version AS version, 'Browser plugin (Firefox)' AS type,
+    'firefox_addons' AS source FROM firefox_addons UNION SELECT name AS name, version
+    AS version, 'Package (Chocolatey)' AS type, 'chocolatey_packages' AS source FROM
+    chocolatey_packages;
   platform: windows
-  description: Get all software installed on a Windows computer, including programs, browser plugins, and installed packages. Note that this does not include other running processes in the processes table.
-  query: SELECT name AS name, version AS version, 'Program (Windows)' AS type, 'programs' AS source FROM programs UNION SELECT name AS name, version AS version, 'Package (Python)' AS type, 'python_packages'
-    AS source FROM python_packages UNION SELECT name AS name, version AS version, 'Browser plugin (IE)' AS type, 'ie_extensions' AS source FROM ie_extensions UNION SELECT name AS name, version AS version,
-    'Browser plugin (Chrome)' AS type, 'chrome_extensions' AS source FROM chrome_extensions UNION SELECT name AS name, version AS version, 'Browser plugin (Firefox)' AS type, 'firefox_addons' AS source
-    FROM firefox_addons UNION SELECT name AS name, version AS version, 'Package (Chocolatey)' AS type, 'chocolatey_packages' AS source FROM chocolatey_packages;
-  powershell: "# Get installed Windows programs from registry\n$programs = Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\", \"HKLM:\\SOFTWARE\\Wow6432Node\\\
-    Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\" -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName } | ForEach-Object {\n    [PSCustomObject]@{\n        name    = $_.DisplayName\n    \
-    \    version = $_.DisplayVersion\n        type    = \"Program (Windows)\"\n        source  = \"programs\"\n    }\n}\n\n# Get installed Python packages (if pip is available)\n$python_pkgs = @()\ntry\
-    \ {\n    $pipOutput = & pip list --format=freeze 2>$null\n    if ($pipOutput) {\n        foreach ($line in $pipOutput) {\n            if ($line -match \"^(.*?)==(.*)$\") {\n                $python_pkgs\
-    \ += [PSCustomObject]@{\n                    name    = $matches[1]\n                    version = $matches[2]\n                    type    = \"Package (Python)\"\n                    source  = \"python_packages\"\
-    \n                }\n            }\n        }\n    }\n} catch {\n    # pip not found or error occurred\n}\n\n# Get Internet Explorer extensions from registry\n$ie_extensions = @()\n$ieRegKey = \"HKLM:\\\
-    SOFTWARE\\Microsoft\\Internet Explorer\\Extensions\"\nif (Test-Path $ieRegKey) {\n    $ieData = Get-ItemProperty -Path $ieRegKey -ErrorAction SilentlyContinue\n    if ($ieData) {\n        foreach ($prop\
-    \ in $ieData.PSObject.Properties) {\n            # Using property name as the identifier; version info is not normally stored\n            $ie_extensions += [PSCustomObject]@{\n                name\
-    \    = $prop.Name\n                version = \"\"\n                type    = \"Browser plugin (IE)\"\n                source  = \"ie_extensions\"\n            }\n        }\n    }\n}\n\n# Get Chrome\
-    \ extensions by reading installed extension manifests\n$chrome_extensions = @()\n$chromeExtPath = Join-Path $env:LOCALAPPDATA \"Google\\Chrome\\User Data\\Default\\Extensions\"\nif (Test-Path $chromeExtPath)\
-    \ {\n    $extDirs = Get-ChildItem -Path $chromeExtPath -Directory -ErrorAction SilentlyContinue\n    foreach ($ext in $extDirs) {\n        $versionDirs = Get-ChildItem -Path $ext.FullName -Directory\
-    \ -ErrorAction SilentlyContinue\n        foreach ($verDir in $versionDirs) {\n            $manifestPath = Join-Path $verDir.FullName \"manifest.json\"\n            if (Test-Path $manifestPath) {\n \
-    \               try {\n                    $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json\n                    $extName = $manifest.name\n                    $extVersion = $manifest.version\n\
-    \                } catch {\n                    $extName = $ext.Name\n                    $extVersion = $verDir.Name\n                }\n            } else {\n                $extName = $ext.Name\n\
-    \                $extVersion = $verDir.Name\n            }\n            $chrome_extensions += [PSCustomObject]@{\n                name    = $extName\n                version = $extVersion\n        \
-    \        type    = \"Browser plugin (Chrome)\"\n                source  = \"chrome_extensions\"\n            }\n        }\n    }\n}\n\n# Get Firefox add-ons by locating extensions.json in profile directories\
-    \ and parsing it\n$firefox_addons = @()\n$firefoxProfilesPath = Join-Path $env:APPDATA \"Mozilla\\Firefox\\Profiles\"\nif (Test-Path $firefoxProfilesPath) {\n    $profiles = Get-ChildItem -Path $firefoxProfilesPath\
-    \ -Directory -ErrorAction SilentlyContinue\n    foreach ($profile in $profiles) {\n        $extensionsJson = Join-Path $profile.FullName \"extensions.json\"\n        if (Test-Path $extensionsJson) {\n\
-    \            try {\n                $json = Get-Content $extensionsJson -Raw | ConvertFrom-Json\n                if ($json.addons) {\n                    foreach ($addon in $json.addons) {\n       \
-    \                 if ($addon.type -eq \"extension\") {\n                            $firefox_addons += [PSCustomObject]@{\n                                name    = $addon.name\n                   \
-    \             version = $addon.version\n                                type    = \"Browser plugin (Firefox)\"\n                                source  = \"firefox_addons\"\n                       \
-    \     }\n                        }\n                    }\n                }\n            } catch {\n                # Skip profiles with parsing issues\n            }\n        }\n    }\n}\n\n# Get\
-    \ installed Chocolatey packages (if choco is available)\n$chocolatey_packages = @()\ntry {\n    $chocoOutput = & choco list --local-only --limit-output 2>$null\n    if ($chocoOutput) {\n        foreach\
-    \ ($line in $chocoOutput) {\n            if ($line -match \"^(.*?)\\|(.*)$\") {\n                $chocolatey_packages += [PSCustomObject]@{\n                    name    = $matches[1]\n             \
-    \       version = $matches[2]\n                    type    = \"Package (Chocolatey)\"\n                    source  = \"chocolatey_packages\"\n                }\n            }\n        }\n    }\n} catch\
-    \ {\n    # choco not found or error occurred\n}\n\n# Combine all results\n$result = $programs + $python_pkgs + $ie_extensions + $chrome_extensions + $firefox_addons + $chocolatey_packages\n\n# Output\
-    \ the result to stdout in table format\n$result | Format-Table -AutoSize"
-  purpose: Informational
-  tags: inventory, built-in
-  contributors: zwass
-  team: devices

@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Users
+- name: CDK - Users
   description: Returns a list of users
-  query: |
-    SELECT
-      *
-    FROM
-      users
+  query: "SELECT\n  *\nFROM\n  users\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

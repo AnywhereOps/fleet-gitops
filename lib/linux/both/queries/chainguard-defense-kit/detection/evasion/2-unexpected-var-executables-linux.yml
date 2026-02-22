@@ -1,83 +1,32 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Var Executables Linux
-  platform: linux
+- name: CDK - Unexpected Var Executables Linux
   description: Find unexpected executables in /var
-  query: |
-    SELECT
-      file.path,
-      file.directory,
-      uid,
-      gid,
-      mode,
-      file.mtime,
-      file.size,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash on file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        -- This list is the result of multiple queries combined and can likely be minimized
-        file.path LIKE '/var/%%'
-        OR file.path LIKE '/var/spool/.%/%%'
-        OR file.path LIKE '/var/spool/%/.%/%%'
-        OR file.path LIKE '/var/spool/%/%/.%'
-        OR file.path LIKE '/var/spool/%/%%'
-        OR file.path LIKE '/var/spool/%%'
-        OR file.path LIKE '/var/tmp/.%/%%'
-        OR file.path LIKE '/var/tmp/%/.%/%%'
-        OR file.path LIKE '/var/tmp/%/%/.%'
-        OR file.path LIKE '/var/tmp/%/%%'
-        OR file.path LIKE '/var/tmp/%%'
-      )
-      AND file.type = 'regular'
-      AND file.path NOT LIKE '/var/tmp/buildah-cache-1000/var/cache/rpm-ostree/%'
-      AND file.path NOT LIKE '/var/tmp/images/%'
-      AND file.path NOT LIKE '/var/tmp/packages/%'
-      AND file.path NOT LIKE '%/../%'
-      AND file.path NOT LIKE '%/./%'
-      AND file.directory NOT LIKE '/var/tmp/buildah%/run'
-      AND (
-        file.mode LIKE '%7%'
-        OR file.mode LIKE '%5%'
-        OR file.mode LIKE '%1%'
-      )
-      AND file.directory NOT IN (
-        '/var/lib/colord',
-        '/var/ossec/agentless',
-        '/var/ossec/bin',
-        '/var/ossec/wodles',
-        '/var/run/booted-system',
-        '/var/run/current-system',
-        '/var/usrlocal/bin',
-        '/var/usrlocal/lib64',
-        '/var/vanta'
-      )
-      AND file.directory NOT LIKE '/var/tmp/ostree-unlock-ovl.%/upper/bin'
-      AND file.path NOT IN (
-        '/var/run/lima-boot-done',
-        '/var/run/lima-ssh-ready',
-        '/var/opt/bin/elastic-agent'
-      )
-      AND NOT (
-        file.directory = '/var/spool/postfix/incoming'
-        AND size < 1024
-        AND mode = '07000'
-        AND gid = 0
-      )
-      AND (
-        magic.data IS NULL
-        OR magic.data != 'JSON data'
-      )
-      AND file.size > 10
+  query: "SELECT\n  file.path,\n  file.directory,\n  uid,\n  gid,\n  mode,\n  file.mtime,\n\
+    \  file.size,\n  hash.sha256,\n  magic.data\nFROM\n  file\n  LEFT JOIN hash on\
+    \ file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\nWHERE\n\
+    \  (\n    -- This list is the result of multiple queries combined and can likely\
+    \ be minimized\n    file.path LIKE '/var/%%'\n    OR file.path LIKE '/var/spool/.%/%%'\n\
+    \    OR file.path LIKE '/var/spool/%/.%/%%'\n    OR file.path LIKE '/var/spool/%/%/.%'\n\
+    \    OR file.path LIKE '/var/spool/%/%%'\n    OR file.path LIKE '/var/spool/%%'\n\
+    \    OR file.path LIKE '/var/tmp/.%/%%'\n    OR file.path LIKE '/var/tmp/%/.%/%%'\n\
+    \    OR file.path LIKE '/var/tmp/%/%/.%'\n    OR file.path LIKE '/var/tmp/%/%%'\n\
+    \    OR file.path LIKE '/var/tmp/%%'\n  )\n  AND file.type = 'regular'\n  AND\
+    \ file.path NOT LIKE '/var/tmp/buildah-cache-1000/var/cache/rpm-ostree/%'\n  AND\
+    \ file.path NOT LIKE '/var/tmp/images/%'\n  AND file.path NOT LIKE '/var/tmp/packages/%'\n\
+    \  AND file.path NOT LIKE '%/../%'\n  AND file.path NOT LIKE '%/./%'\n  AND file.directory\
+    \ NOT LIKE '/var/tmp/buildah%/run'\n  AND (\n    file.mode LIKE '%7%'\n    OR\
+    \ file.mode LIKE '%5%'\n    OR file.mode LIKE '%1%'\n  )\n  AND file.directory\
+    \ NOT IN (\n    '/var/lib/colord',\n    '/var/ossec/agentless',\n    '/var/ossec/bin',\n\
+    \    '/var/ossec/wodles',\n    '/var/run/booted-system',\n    '/var/run/current-system',\n\
+    \    '/var/usrlocal/bin',\n    '/var/usrlocal/lib64',\n    '/var/vanta'\n  )\n\
+    \  AND file.directory NOT LIKE '/var/tmp/ostree-unlock-ovl.%/upper/bin'\n  AND\
+    \ file.path NOT IN (\n    '/var/run/lima-boot-done',\n    '/var/run/lima-ssh-ready',\n\
+    \    '/var/opt/bin/elastic-agent'\n  )\n  AND NOT (\n    file.directory = '/var/spool/postfix/incoming'\n\
+    \    AND size < 1024\n    AND mode = '07000'\n    AND gid = 0\n  )\n  AND (\n\
+    \    magic.data IS NULL\n    OR magic.data != 'JSON data'\n  )\n  AND file.size\
+    \ > 10\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

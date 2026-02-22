@@ -1,74 +1,27 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Tiny Executable Events
+- name: CDK - Tiny Executable Events
   description: Unusually small programs (events-based)
-  query: |
-    SELECT
-      p.pid,
-      p.path,
-      p.cmdline,
-      file.size,
-      p.time,
-      file.type,
-      p.mode,
-      p.cwd,
-      p.euid,
-      p.parent,
-      p.syscall,
-      pp.path AS parent_path,
-      pp.name AS parent_name,
-      pp.cmdline AS parent_cmdline,
-      pp.euid AS parent_euid,
-      hash.sha256 AS child_sha256,
-      phash.sha256 AS parent_sha256,
-      magic.data AS magic
-    FROM
-      process_events p
-      LEFT JOIN file ON p.path = file.path
-      LEFT JOIN processes pp ON p.parent = pp.pid
-      LEFT JOIN hash ON p.path = hash.path
-      LEFT JOIN hash phash ON pp.path = phash.path
-      LEFT JOIN magic ON p.path = magic.path
-    WHERE
-      p.time > (strftime('%s', 'now') -300)
-      AND file.size > 0
-      AND file.size < 10000
-      AND file.type = 'regular'
-      AND p.cwd != ""
-      AND p.cwd IS NOT NULL
-      AND p.path NOT LIKE '%.sh'
-      AND p.path NOT LIKE '%.py'
-      AND p.path NOT LIKE '%.rb'
-      AND p.path NOT IN (
-        '/opt/incus/bin/skopeo',
-        '/sbin/ldconfig',
-        '/usr/bin/c_rehash',
-        '/usr/bin/dpkg-realpath',
-        '/usr/bin/yq',
-        '/usr/sbin/bpftool',
-        '/usr/sbin/ldconfig',
-        '/usr/sbin/update-ca-certificates'
-      )
-      AND NOT p.path LIKE '%/firefox'
-      AND NOT (
-        p.path LIKE '/Users/%'
-        AND magic.data LIKE 'POSIX shell script%'
-      )
-      AND p.path NOT LIKE '/home/%/.local/share/Steam/%'
-      AND p.path NOT LIKE '/private/var/folders/%/T/iTerm2-scrip%sh'
-      AND p.path NOT LIKE '%/openoffice%/program/pagein'
-      AND p.path NOT LIKE '/home/%/.ape-%'
-
-      -- Removes a false-positive we've seen on Linux, generated through 'runc init'
-      AND NOT (
-        p.path = "/"
-        AND file.size < 8192
-      )
+  query: "SELECT\n  p.pid,\n  p.path,\n  p.cmdline,\n  file.size,\n  p.time,\n  file.type,\n\
+    \  p.mode,\n  p.cwd,\n  p.euid,\n  p.parent,\n  p.syscall,\n  pp.path AS parent_path,\n\
+    \  pp.name AS parent_name,\n  pp.cmdline AS parent_cmdline,\n  pp.euid AS parent_euid,\n\
+    \  hash.sha256 AS child_sha256,\n  phash.sha256 AS parent_sha256,\n  magic.data\
+    \ AS magic\nFROM\n  process_events p\n  LEFT JOIN file ON p.path = file.path\n\
+    \  LEFT JOIN processes pp ON p.parent = pp.pid\n  LEFT JOIN hash ON p.path = hash.path\n\
+    \  LEFT JOIN hash phash ON pp.path = phash.path\n  LEFT JOIN magic ON p.path =\
+    \ magic.path\nWHERE\n  p.time > (strftime('%s', 'now') -300)\n  AND file.size\
+    \ > 0\n  AND file.size < 10000\n  AND file.type = 'regular'\n  AND p.cwd != \"\
+    \"\n  AND p.cwd IS NOT NULL\n  AND p.path NOT LIKE '%.sh'\n  AND p.path NOT LIKE\
+    \ '%.py'\n  AND p.path NOT LIKE '%.rb'\n  AND p.path NOT IN (\n    '/opt/incus/bin/skopeo',\n\
+    \    '/sbin/ldconfig',\n    '/usr/bin/c_rehash',\n    '/usr/bin/dpkg-realpath',\n\
+    \    '/usr/bin/yq',\n    '/usr/sbin/bpftool',\n    '/usr/sbin/ldconfig',\n   \
+    \ '/usr/sbin/update-ca-certificates'\n  )\n  AND NOT p.path LIKE '%/firefox'\n\
+    \  AND NOT (\n    p.path LIKE '/Users/%'\n    AND magic.data LIKE 'POSIX shell\
+    \ script%'\n  )\n  AND p.path NOT LIKE '/home/%/.local/share/Steam/%'\n  AND p.path\
+    \ NOT LIKE '/private/var/folders/%/T/iTerm2-scrip%sh'\n  AND p.path NOT LIKE '%/openoffice%/program/pagein'\n\
+    \  AND p.path NOT LIKE '/home/%/.ape-%'\n\n  -- Removes a false-positive we've\
+    \ seen on Linux, generated through 'runc init'\n  AND NOT (\n    p.path = \"/\"\
+    \n    AND file.size < 8192\n  )\n"
   interval: 300
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

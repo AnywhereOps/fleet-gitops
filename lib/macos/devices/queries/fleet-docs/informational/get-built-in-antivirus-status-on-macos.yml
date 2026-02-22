@@ -1,15 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get built-in antivirus status on macOS
+- name: Get built-in antivirus status on macOS
+  description: Reads the version numbers from the Malware Removal Tool (MRT) and built-in
+    antivirus (XProtect) plists
+  query: SELECT path, value AS version FROM plist WHERE (key = 'CFBundleShortVersionString'
+    AND path = '/Library/Apple/System/Library/CoreServices/MRT.app/Contents/Info.plist')
+    OR (key = 'CFBundleShortVersionString' AND path = '/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Info.plist');
   platform: darwin
-  description: Reads the version numbers from the Malware Removal Tool (MRT) and built-in antivirus (XProtect) plists
-  query: SELECT path, value AS version FROM plist WHERE (key = 'CFBundleShortVersionString' AND path = '/Library/Apple/System/Library/CoreServices/MRT.app/Contents/Info.plist') OR (key = 'CFBundleShortVersionString'
-    AND path = '/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Info.plist');
-  bash: echo "path,version"; for f in "/Library/Apple/System/Library/CoreServices/MRT.app/Contents/Info.plist" "/Library/Apple/System/Library/CoreServices/XProtect.bundle/Contents/Info.plist"; do v=$(defaults
-    read "$f" CFBundleShortVersionString 2>/dev/null); [ -n "$v" ] && echo "$f,$v"; done
-  purpose: Informational
-  tags: compliance, malware, hardening, built-in
-  contributors: GuillaumeRoss
-  team: devices

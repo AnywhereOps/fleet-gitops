@@ -1,19 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get a list of Visual Studio Code extensions
-  platform: darwin, linux, windows
+- name: Get a list of Visual Studio Code extensions
   description: Get a list of installed VS Code extensions (requires osquery > 5.11.0).
-  query: SELECT u.username, vs.* FROM users u JOIN vscode_extensions vs ON u.uid = vs.uid;
-  powershell: "$users = @(\n    [PSCustomObject]@{ uid = 1001; username = 'Alice' },\n    [PSCustomObject]@{ uid = 1002; username = 'Bob' }\n)\n\n$vscode_extensions = @(\n    [PSCustomObject]@{ uid = 1001;\
-    \ extension = 'ms-python.python'; version = '2023.10.0' },\n    [PSCustomObject]@{ uid = 1002; extension = 'ms-vscode.cpptools'; version = '1.15.0' },\n    [PSCustomObject]@{ uid = 1001; extension =\
-    \ 'ms-vscode.PowerShell'; version = '2023.9.0' }\n)\n\n$result = foreach ($user in $users) {\n    foreach ($ext in $vscode_extensions | Where-Object { $_.uid -eq $user.uid }) {\n        [PSCustomObject]@{\n\
-    \            username  = $user.username\n            uid       = $user.uid\n            extension = $ext.extension\n            version   = $ext.version\n        }\n    }\n}\n\n$result | Format-Table\
-    \ -AutoSize\n"
-  bash: echo "username,extension_name" && for u in /Users/*; do [ -d "$u/.vscode/extensions" ] && for ext in "$u/.vscode/extensions"/*; do [ -d "$ext" ] && echo "$(basename "$u"),$(basename "$ext")"; done;
-    done
-  purpose: Informational
-  tags: inventory
-  contributors: lucasmrod,sharon-fdm,zwass
-  team: both
+  query: SELECT u.username, vs.* FROM users u JOIN vscode_extensions vs ON u.uid =
+    vs.uid;
+  platform: darwin, linux, windows

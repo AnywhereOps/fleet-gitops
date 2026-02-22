@@ -1,11 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: suckit_rootkit
-  platform: linux
+- name: suckit_rootkit
   description: suckit_rootkit
   query: select * from file where path in ('/lib/.x', '/lib/sk');
+  platform: linux
   interval: '3600'
-  value: Artifacts used by this malware
-  team: both

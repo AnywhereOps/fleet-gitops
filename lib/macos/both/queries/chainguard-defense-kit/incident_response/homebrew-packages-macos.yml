@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Homebrew Packages Macos
-  platform: darwin
+- name: CDK - Homebrew Packages Macos
   description: Dump a list of homebrew packages
-  query: |
-    SELECT
-      *
-    FROM
-      homebrew_packages;
+  query: "SELECT\n  *\nFROM\n  homebrew_packages;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

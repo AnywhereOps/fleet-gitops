@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Hardware Events
+- name: CDK - Hardware Events
   description: Return hardware events
-  query: |
-    SELECT
-      *
-    FROM
-      hardware_events;
+  query: "SELECT\n  *\nFROM\n  hardware_events;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

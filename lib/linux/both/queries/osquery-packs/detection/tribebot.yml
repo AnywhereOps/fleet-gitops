@@ -1,11 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: tribe_bot
-  platform: linux
+- name: tribe_bot
   description: tribe_bot
   query: select * from file where path in ('/dev/wd4');
+  platform: linux
   interval: '3600'
-  value: Artifacts used by this malware
-  team: both

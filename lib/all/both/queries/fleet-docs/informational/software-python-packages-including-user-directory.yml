@@ -1,26 +1,16 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Software Python packages including user directory
-  platform: darwin, windows, linux
-  description: Retrieves python packages installed on a host. As of osquery version 5.16.0, the python_packages table searches user directories with support from a cross join on users. See <a href="https://fleetdm.com/guides/osquery-consider-joining-against-the-users-table">this
+- name: Software Python packages including user directory
+  description: Retrieves python packages installed on a host. As of osquery version
+    5.16.0, the python_packages table searches user directories with support from
+    a cross join on users. See <a href="https://fleetdm.com/guides/osquery-consider-joining-against-the-users-table">this
     guide</a> for more information.
-  query: |
-    WITH cached_users AS (WITH cached_groups AS (select * from groups)
-     SELECT uid, uuid, username, type, groupname, shell
-     FROM users LEFT JOIN cached_groups USING (gid)
-     WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt' AND username NOT LIKE '%$' AND username NOT LIKE '\_%' ESCAPE '\' AND NOT (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))
-        SELECT
-          name AS name,
-          version AS version,
-          '' AS extension_id,
-          '' AS browser,
-          'python_packages' AS source,
-          '' AS vendor,
-          path AS installed_path
-        FROM cached_users CROSS JOIN python_packages USING (uid);
-  purpose: Informational
-  tags: built-in
-  discovery: osquery_info
-  team: both
+  query: "WITH cached_users AS (WITH cached_groups AS (select * from groups)\n SELECT\
+    \ uid, uuid, username, type, groupname, shell\n FROM users LEFT JOIN cached_groups\
+    \ USING (gid)\n WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell\
+    \ NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt'\
+    \ AND username NOT LIKE '%$' AND username NOT LIKE '\\_%' ESCAPE '\\' AND NOT\
+    \ (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))\n    SELECT\n\
+    \      name AS name,\n      version AS version,\n      '' AS extension_id,\n \
+    \     '' AS browser,\n      'python_packages' AS source,\n      '' AS vendor,\n\
+    \      path AS installed_path\n    FROM cached_users CROSS JOIN python_packages\
+    \ USING (uid);\n"
+  platform: darwin, windows, linux

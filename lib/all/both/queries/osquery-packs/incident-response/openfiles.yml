@@ -1,12 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: open_files
-  platform: posix
+- name: open_files
   description: Retrieves all the open files per process in the target system.
-  query: select distinct pid, path from process_open_files where path not like '/private/var/folders%' and path not like '/System/Library/%' and path not in ('/dev/null', '/dev/urandom', '/dev/random');
+  query: select distinct pid, path from process_open_files where path not like '/private/var/folders%'
+    and path not like '/System/Library/%' and path not in ('/dev/null', '/dev/urandom',
+    '/dev/random');
+  platform: posix
   interval: '86400'
-  value: Identify processes accessing sensitive files they shouldn't
-  version: 1.4.5
-  team: both

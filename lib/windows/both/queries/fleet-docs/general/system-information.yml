@@ -1,17 +1,4 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: System information
-  platform: windows
+- name: System information
   description: Retrieves information about a device's hardware.
   query: SELECT * FROM system_info LIMIT 1
-  powershell: "$hostname = $env:COMPUTERNAME\n$cpu = Get-WmiObject Win32_Processor\n$cpu_brand = $cpu[0].Name\n$logical_cpus = $cpu[0].NumberOfLogicalProcessors\n$physical_cpus = (Get-WmiObject Win32_ComputerSystem).NumberOfProcessors\n\
-    $hardware_model = (Get-WmiObject Win32_ComputerSystem).Model\n$hardware_serial = (Get-WmiObject Win32_BIOS).SerialNumber\n$computer_name = $hostname\n$osInfo = Get-CimInstance Win32_OperatingSystem\n\
-    $os_name = $osInfo.Caption\n$os_build = $osInfo.BuildNumber\n$os_version = $osInfo.Version\n$os_distribution = \"\"\n$platform = \"windows\"\n\n$result = [pscustomobject]@{\n    hostname        = $hostname\n\
-    \    cpu_brand       = $cpu_brand\n    physical_cpus   = $physical_cpus\n    logical_cpus    = $logical_cpus\n    hardware_model  = $hardware_model\n    hardware_serial = $hardware_serial\n    computer_name\
-    \   = $computer_name\n    os_name         = $os_name\n    os_build        = $os_build\n    os_distribution = $os_distribution\n    os_version      = $os_version\n    platform        = $platform\n}\n\
-    \n$result"
-  purpose: Informational
-  tags: built-in
-  team: both
+  platform: windows

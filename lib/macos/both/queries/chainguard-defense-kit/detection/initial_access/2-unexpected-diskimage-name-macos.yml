@@ -1,49 +1,23 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Diskimage Name Macos
-  platform: darwin
+- name: CDK - Unexpected Diskimage Name Macos
   description: Surface ISO/DMG disk images that have suspicious names
-  query: |
-    SELECT
-      file.path,
-      file.size,
-      datetime(file.btime, 'unixepoch') AS file_created,
-      magic.data,
-      hash.sha256,
-      signature.identifier,
-      signature.authority,
-      ea.value AS url,
-      REGEX_MATCH (ea.value, '/[\w_-]+\.([\w\._-]+)[:/]', 1) AS domain,
-      REGEX_MATCH (ea.value, '/([\w_-]+\.[\w\._-]+)[:/]', 1) AS host
-    FROM
-      mdfind
-      LEFT JOIN file ON mdfind.path = file.path
-      LEFT JOIN hash ON mdfind.path = hash.path
-      LEFT JOIN extended_attributes ea ON mdfind.path = ea.path
-      LEFT JOIN magic ON mdfind.path = magic.path
-      LEFT JOIN signature ON mdfind.path = signature.path
-    WHERE
-      (
-        mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.iso'"
-        OR mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.dmg'"
-        OR mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.pkg'"
-      )
-      AND ea.key = 'where_from'
-      AND file.btime > (strftime('%s', 'now') -86400)
-      AND (
-        file.filename LIKE 'Installer.%'
-        OR file.filename LIKE '%Player.%'
-        OR file.filename LIKE '% AIR %'
-        OR file.filename LIKE '%Flash%'
-        OR file.filename LIKE '%Resume%'
-      )
-    GROUP BY
-      ea.value
+  query: "SELECT\n  file.path,\n  file.size,\n  datetime(file.btime, 'unixepoch')\
+    \ AS file_created,\n  magic.data,\n  hash.sha256,\n  signature.identifier,\n \
+    \ signature.authority,\n  ea.value AS url,\n  REGEX_MATCH (ea.value, '/[\\w_-]+\\\
+    .([\\w\\._-]+)[:/]', 1) AS domain,\n  REGEX_MATCH (ea.value, '/([\\w_-]+\\.[\\\
+    w\\._-]+)[:/]', 1) AS host\nFROM\n  mdfind\n  LEFT JOIN file ON mdfind.path =\
+    \ file.path\n  LEFT JOIN hash ON mdfind.path = hash.path\n  LEFT JOIN extended_attributes\
+    \ ea ON mdfind.path = ea.path\n  LEFT JOIN magic ON mdfind.path = magic.path\n\
+    \  LEFT JOIN signature ON mdfind.path = signature.path\nWHERE\n  (\n    mdfind.query\
+    \ = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.iso'\"\n    OR mdfind.query\
+    \ = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.dmg'\"\n    OR mdfind.query\
+    \ = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.pkg'\"\n  )\n  AND ea.key\
+    \ = 'where_from'\n  AND file.btime > (strftime('%s', 'now') -86400)\n  AND (\n\
+    \    file.filename LIKE 'Installer.%'\n    OR file.filename LIKE '%Player.%'\n\
+    \    OR file.filename LIKE '% AIR %'\n    OR file.filename LIKE '%Flash%'\n  \
+    \  OR file.filename LIKE '%Resume%'\n  )\nGROUP BY\n  ea.value\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

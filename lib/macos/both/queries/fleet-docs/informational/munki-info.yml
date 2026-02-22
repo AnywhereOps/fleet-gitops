@@ -1,15 +1,4 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Munki info
-  platform: darwin
+- name: Munki info
   description: Retrieves information about the last Munki run on a macOS device.
   query: "SELECT \n  version, errors, warnings \nFROM munki_info\n"
-  bash: printf "version,errors,warnings\n%s,%s,%s\n" "$(cat /Library/ManagedInstalls/ManagedInstallVersion 2>/dev/null || echo 'N/A')" "$(/usr/libexec/PlistBuddy -c \"Print Errors\" /Library/ManagedInstalls/ManagedInstallReport.plist
-    2>/dev/null | grep -E '^[[:space:]]*[0-9]+:' | wc -l | tr -d ' ')" "$(/usr/libexec/PlistBuddy -c \"Print Warnings\" /Library/ManagedInstalls/ManagedInstallReport.plist 2>/dev/null | grep -E '^[[:space:]]*[0-9]+:'
-    | wc -l | tr -d ' ')"
-  purpose: Informational
-  tags: built-in
-  discovery: munki_info
-  team: both
+  platform: darwin

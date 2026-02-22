@@ -1,17 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get network interfaces
-  platform: darwin, linux, windows
+- name: Get network interfaces
   description: Network interfaces MAC address
-  query: SELECT a.interface, a.address, d.mac FROM interface_addresses a JOIN interface_details d USING (interface) WHERE address not in ('127.0.0.1', '::1');
-  powershell: "$ipInfo = Get-NetIPAddress -ErrorAction SilentlyContinue | Where-Object { $_.IPAddress -notin ('127.0.0.1','::1') } $adapters = Get-NetAdapter -ErrorAction SilentlyContinue | Select-Object\
-    \ ifIndex, MacAddress $results = foreach ($ip in $ipInfo) {\n    $adapter = $adapters | Where-Object { $_.ifIndex -eq $ip.InterfaceIndex } | Select-Object -First 1\n    [PSCustomObject]@{\n        interface\
-    \ = $ip.InterfaceAlias\n        address   = $ip.IPAddress\n        mac       = if ($adapter) { $adapter.MacAddress } else { 'N/A' }\n    }\n} $results | Format-Table -AutoSize"
-  bash: (echo "interface,address,mac"; for iface in $(ifconfig -l); do mac=$(ifconfig "$iface" | awk '/ether/{print $2; exit}'); for ip in $(ifconfig "$iface" | awk '/inet /{if ($2!="127.0.0.1") print $2}
-    /inet6 /{if ($2!="::1") print $2}'); do echo "$iface,$ip,$mac"; done; done)
-  purpose: informational
-  tags: hunting, inventory
-  contributors: anelshaer
-  team: both
+  query: SELECT a.interface, a.address, d.mac FROM interface_addresses a JOIN interface_details
+    d USING (interface) WHERE address not in ('127.0.0.1', '::1');
+  platform: darwin, linux, windows

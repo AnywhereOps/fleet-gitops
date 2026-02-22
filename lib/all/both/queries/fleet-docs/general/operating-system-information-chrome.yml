@@ -1,23 +1,6 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Operating system information (Chrome)
-  platform: chrome
+- name: Operating system information (Chrome)
   description: Retrieves information about a ChromeOS device's operating system.
-  query: |
-    SELECT
-        os.name,
-        os.major,
-        os.minor,
-        os.patch,
-        os.build,
-        os.arch,
-        os.platform,
-        os.version AS version,
-        os.version AS kernel_version
-      FROM
-        os_version os;
-  purpose: Informational
-  tags: built-in
-  team: both
+  query: "SELECT\n    os.name,\n    os.major,\n    os.minor,\n    os.patch,\n    os.build,\n\
+    \    os.arch,\n    os.platform,\n    os.version AS version,\n    os.version AS\
+    \ kernel_version\n  FROM\n    os_version os;\n"
+  platform: chrome

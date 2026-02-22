@@ -1,242 +1,95 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected User Executables Macos
-  platform: darwin
+- name: CDK - Unexpected User Executables Macos
   description: Find unexpected in unexpected places under /Users
-  query: |
-    SELECT
-      f.path,
-      f.directory,
-      f.uid,
-      f.gid,
-      f.mode,
-      f.mtime,
-      f.atime,
-      f.btime,
-      f.ctime,
-      f.size,
-      hash.sha256,
-      REPLACE(f.directory, u.directory, '~') AS homedir,
-      REPLACE(f.path, u.directory, '~') AS homepath,
-      RTRIM(
-        COALESCE(
-          REGEX_MATCH (
-            REPLACE(f.directory, u.directory, '~'),
-            '(.*?/.*?/.*?/)',
-            1
-          ),
-          REPLACE(f.directory, u.directory, '~')
-        ),
-        "/"
-      ) AS top2_homedir,
-      magic.data,
-      signature.authority,
-      signature.identifier
-    FROM
-      file f
-      LEFT JOIN hash on f.path = hash.path
-      LEFT JOIN users u ON f.uid = u.uid
-      LEFT JOIN magic ON f.path = magic.path
-      LEFT JOIN signature ON f.path = signature.path
-    WHERE
-      -- Optimization: don't join things until we have a whittled down list of files
-      f.path IN (
-        SELECT DISTINCT
-          path
-        FROM
-          file
-        WHERE
-          (
-            directory = '/Users/Shared/'
-            OR directory = '/var/root/'
-            OR directory LIKE '/Users/%/.%'
-            OR directory LIKE '/Users/%/.%/%'
-            OR directory LIKE '/Users/%/Library'
-            OR directory LIKE '/Users/%/Library/.%'
-            OR directory LIKE '/Users/%/Library/%'
-            OR directory LIKE '/Users/%/Library/%/.%'
-            OR directory LIKE '/Users/%/Photos'
-            OR directory LIKE '/Users/%/Photos/.%'
-            OR directory LIKE '/Users/%/Photos/%'
-            OR directory LIKE '/Users/%/Public'
-            OR directory LIKE '/Users/%/Public/.%'
-            OR directory LIKE '/Users/%/Public/%'
-            OR directory LIKE '/Users/Shared/.%'
-            OR directory LIKE '/Users/Shared/%'
-            OR directory LIKE '/var/root/.%'
-            OR directory LIKE '/var/root/%'
-          )
-          AND (
-            type = 'regular'
-            AND size > 32
-            AND (
-              mode LIKE '%7%'
-              OR mode LIKE '%5%'
-              OR mode LIKE '%1%'
-            )
-          )
-          -- Prevent weird recursion
-          AND NOT path LIKE '%/../%'
-          AND NOT path LIKE '%/./%' -- Exclude very temporary files
-          AND NOT directory LIKE '/Users/%/.bin/'
-          AND NOT directory LIKE '/Users/%/.cargo/bin/'
-          AND NOT directory LIKE '/Users/%/.crc/bin/'
-          AND NOT directory LIKE '/Users/%/.go/bin/'
-          AND NOT directory LIKE '/Users/%/.venv/bin/'
-          AND NOT directory LIKE '/Users/%/.local/bin/'
-          AND NOT directory LIKE '/Users/%/.minikube/bin/'
-          AND NOT directory LIKE '/Users/%/.Trash/%'
-          AND NOT directory LIKE '/Users/%/.vim/backup/'
-          AND NOT directory LIKE '/Users/%/Library/Application Support/AutoFirma/certutil/'
-          AND NOT directory LIKE '/Users/%/Library/Caches/chainctl/'
-          AND NOT directory LIKE '/Users/%/Library/Containers/%'
-          AND NOT directory LIKE '/Users/%/Library/Daemon Containers/%'
-          AND NOT directory LIKE '/Users/%/Library/Mobile Documents/com~apple~CloudDocs/'
-          AND NOT directory LIKE '/Users/%/Library/Mobile Documents/com~apple~shoebox/%'
-          AND NOT directory LIKE '/Users/Shared/LGHUB/%'
-          AND NOT directory LIKE '/Users/Shared/LogiOptionsPlus/%'
-          AND NOT directory IN (
-            '/Users/Shared/LogiOptionsPlus/cache/',
-            '/Users/Shared/logitune/',
-            '/Users/Shared/Red Giant/Uninstall/'
-          )
-          AND NOT (strftime('%s', 'now') - ctime) < 60 -- Only executable files
-      )
-      AND (
-        magic.data IS NULL
-        OR magic.data LIKE "%executable%"
-        OR magic.data LIKE "%shared library%"
-      ) -- Filter out downloaded Linux binaries
-      AND NOT (
-        magic.data IS NOT NULL
-        AND magic.data LIKE "ELF %LSB %"
-      )
-      AND NOT (
-        magic.data IS NOT NULL
-        AND magic.data LIKE "0420 Alliant virtual executable%"
-      )
-      AND NOT (
-        magic.data IS NOT NULL
-        AND magic.data LIKE "%shell script%"
-      )
-      AND NOT (
-        magic.data IS NULL
-        AND f.size < 50000
-      )
-      AND NOT homedir LIKE '/Users/%/.provisio'
-      AND NOT homedir LIKE '~/%/bin'
-      AND NOT homedir LIKE '~/%/plugins'
-      AND NOT homedir LIKE '~/%/shims'
-      AND NOT homedir IN (
-        '/Users/Shared/LGHUB',
-        '/Users/Shared/LogiOptionsPlus',
-        '/Users/Shared/logitune',
-        '/var/root/.PenTablet',
-        '~/.amplify/bin',
-        '~/.asdf/shims',
-        '~/.bazel/bin',
-        '~/.bin',
-        '~/.cache/gitstatus',
-        '~/.config/kn',
-        '~/.config/nvim.bak',
-        '~/.docker/cli-plugins',
-        '~/.docker/scout',
-        '~/.dotnet/tools',
-        '~/.emacs.d.bak/bin',
-        '~/.oh-my-zsh/themes',
-        '~/.emacs.d/backups',
-        '~/.fig/bin',
-        '~/.fzf',
-        '~/.fzf/bin',
-        '~/.gvm/bin',
-        '~/.kn/plugins',
-        '~/.kuberlr/darwin-amd64',
-        '~/.npm/sentry-cli',
-        '~/.oh-my-zsh/tools',
-        '~/.PenTablet',
-        '~/.provisio',
-        '~/.pulumi-dev/bin',
-        '~/.pyenv/shims',
-        '~/.rbenv/shims',
-        '~/.venv/bin',
-        '~/.vs-tekton',
-        '~/.wash/downloads',
-        '~/.wrangler/bin',
-        '~/.zed/gopls',
-        '~/.zsh_snap/zsh-autocomplete',
-        '~/.zsh_snap/zsh-snap',
-        '~/Library/ApplicationSupport/iTerm2',
-        '~/Library/Dropbox/DropboxMacUpdate.app/Contents/MacOS',
-        '~/Library/Group Containers/group.com.apple.wifi.logs/previous',
-        '~/Library/Logs/Adobe',
-        '~/Library/Logs/com.logmein.GoToOpener',
-        '~/Library/Mobile Documents/com~apple~CloudDocs'
-      )
-      AND NOT top2_homedir IN (
-        '/Users/Shared/LGHUB/cache',
-        '/Users/Shared/LogiOptionsPlus/cache',
-        '/Users/Shared/Red Giant/Uninstall',
-        '~/.antigen',
-        '~/.cache/fsh',
-        '~/.docker.old/cli-plugins',
-        '~/.fzf/test',
-        '~/.iterm2',
-        '~/.kuberlr/darwin-arm64',
-        '~/.claude-code-tools',
-        '~/.magefile',
-        '~/.nvm',
-        '~/.revox/updates',
-        '~/.sdkman/libexec',
-        '~/.terraform.d',
-        '~/.wakatime',
-        '~/.terraform.versions',
-        '~/Library/Application Support',
-        '~/Library/Caches',
-        '~/Library/CloudStorage',
-        '~/Library/helm',
-        '~/Library/pnpm',
-        '~/Library/Printers',
-        '~/Library/Python',
-        '~/Library/QuickLook',
-        '~/Library/Screen Savers',
-        '~/Library/Services',
-        '~/Library/Thunderbird'
-      )
-      AND NOT homepath IN (
-        '~/.config/i3',
-        '~/.config/nvm/nvm.sh',
-        '~/.config/polybar',
-        '~/.config/i3/power-manager.sh',
-        '~/.config/polybar/launch.sh',
-        '~/.toolbase/toolbase-runner',
-        '~/Library/Group Containers/group.com.docker/unleash-repo-schema-v1-Docker Desktop.json',
-        '~/Library/Preferences/Macromedia/Flash Player/www.macromedia.com/bin/airappinstaller/airappinstaller_rsrc',
-        '~/Library/Keychains/login.keychain-db',
-        '~/Library/Logs/zoom.us/upload_history.txt',
-        '~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'
-      )
-      AND NOT top2_homedir LIKE '~/.mvnGoLang/go%.darwin-amd64'
-      AND NOT homepath LIKE '~/Library/%/%.db-wal'
-      AND NOT homepath LIKE '~/Library/%/%.db'
-      AND NOT homepath LIKE '~/Library/%/%.sqlite%'
-      AND NOT homepath LIKE '~/Library/%.aapbz'
-      AND NOT f.directory LIKE '/Users/%/.docker/cli-plugins'
-      AND NOT f.directory LIKE '/Users/%/.nix-profile/%'
-      AND NOT f.directory LIKE '/Users/%/.pkg-cache/%'
-      AND NOT f.directory LIKE '/Users/%/.npm-global/bin'
-
-      AND NOT f.directory LIKE '/var/root/Library/Caches/%/org.sparkle-project.Sparkle/%/Contents/MacOS'
-      AND NOT f.directory LIKE '/var/root/Library/Caches/%/org.sparkle-project.Sparkle/%/Sparkle.framework%'
-      AND NOT f.path LIKE '/Users/%/Library/Fonts/%.otf'
-      AND NOT f.path LIKE '/Users/%/Library/Fonts/%.ttf'
-      AND NOT f.path LIKE '/Users/%/result/activate'
-    GROUP BY
-      f.path
+  query: "SELECT\n  f.path,\n  f.directory,\n  f.uid,\n  f.gid,\n  f.mode,\n  f.mtime,\n\
+    \  f.atime,\n  f.btime,\n  f.ctime,\n  f.size,\n  hash.sha256,\n  REPLACE(f.directory,\
+    \ u.directory, '~') AS homedir,\n  REPLACE(f.path, u.directory, '~') AS homepath,\n\
+    \  RTRIM(\n    COALESCE(\n      REGEX_MATCH (\n        REPLACE(f.directory, u.directory,\
+    \ '~'),\n        '(.*?/.*?/.*?/)',\n        1\n      ),\n      REPLACE(f.directory,\
+    \ u.directory, '~')\n    ),\n    \"/\"\n  ) AS top2_homedir,\n  magic.data,\n\
+    \  signature.authority,\n  signature.identifier\nFROM\n  file f\n  LEFT JOIN hash\
+    \ on f.path = hash.path\n  LEFT JOIN users u ON f.uid = u.uid\n  LEFT JOIN magic\
+    \ ON f.path = magic.path\n  LEFT JOIN signature ON f.path = signature.path\nWHERE\n\
+    \  -- Optimization: don't join things until we have a whittled down list of files\n\
+    \  f.path IN (\n    SELECT DISTINCT\n      path\n    FROM\n      file\n    WHERE\n\
+    \      (\n        directory = '/Users/Shared/'\n        OR directory = '/var/root/'\n\
+    \        OR directory LIKE '/Users/%/.%'\n        OR directory LIKE '/Users/%/.%/%'\n\
+    \        OR directory LIKE '/Users/%/Library'\n        OR directory LIKE '/Users/%/Library/.%'\n\
+    \        OR directory LIKE '/Users/%/Library/%'\n        OR directory LIKE '/Users/%/Library/%/.%'\n\
+    \        OR directory LIKE '/Users/%/Photos'\n        OR directory LIKE '/Users/%/Photos/.%'\n\
+    \        OR directory LIKE '/Users/%/Photos/%'\n        OR directory LIKE '/Users/%/Public'\n\
+    \        OR directory LIKE '/Users/%/Public/.%'\n        OR directory LIKE '/Users/%/Public/%'\n\
+    \        OR directory LIKE '/Users/Shared/.%'\n        OR directory LIKE '/Users/Shared/%'\n\
+    \        OR directory LIKE '/var/root/.%'\n        OR directory LIKE '/var/root/%'\n\
+    \      )\n      AND (\n        type = 'regular'\n        AND size > 32\n     \
+    \   AND (\n          mode LIKE '%7%'\n          OR mode LIKE '%5%'\n         \
+    \ OR mode LIKE '%1%'\n        )\n      )\n      -- Prevent weird recursion\n \
+    \     AND NOT path LIKE '%/../%'\n      AND NOT path LIKE '%/./%' -- Exclude very\
+    \ temporary files\n      AND NOT directory LIKE '/Users/%/.bin/'\n      AND NOT\
+    \ directory LIKE '/Users/%/.cargo/bin/'\n      AND NOT directory LIKE '/Users/%/.crc/bin/'\n\
+    \      AND NOT directory LIKE '/Users/%/.go/bin/'\n      AND NOT directory LIKE\
+    \ '/Users/%/.venv/bin/'\n      AND NOT directory LIKE '/Users/%/.local/bin/'\n\
+    \      AND NOT directory LIKE '/Users/%/.minikube/bin/'\n      AND NOT directory\
+    \ LIKE '/Users/%/.Trash/%'\n      AND NOT directory LIKE '/Users/%/.vim/backup/'\n\
+    \      AND NOT directory LIKE '/Users/%/Library/Application Support/AutoFirma/certutil/'\n\
+    \      AND NOT directory LIKE '/Users/%/Library/Caches/chainctl/'\n      AND NOT\
+    \ directory LIKE '/Users/%/Library/Containers/%'\n      AND NOT directory LIKE\
+    \ '/Users/%/Library/Daemon Containers/%'\n      AND NOT directory LIKE '/Users/%/Library/Mobile\
+    \ Documents/com~apple~CloudDocs/'\n      AND NOT directory LIKE '/Users/%/Library/Mobile\
+    \ Documents/com~apple~shoebox/%'\n      AND NOT directory LIKE '/Users/Shared/LGHUB/%'\n\
+    \      AND NOT directory LIKE '/Users/Shared/LogiOptionsPlus/%'\n      AND NOT\
+    \ directory IN (\n        '/Users/Shared/LogiOptionsPlus/cache/',\n        '/Users/Shared/logitune/',\n\
+    \        '/Users/Shared/Red Giant/Uninstall/'\n      )\n      AND NOT (strftime('%s',\
+    \ 'now') - ctime) < 60 -- Only executable files\n  )\n  AND (\n    magic.data\
+    \ IS NULL\n    OR magic.data LIKE \"%executable%\"\n    OR magic.data LIKE \"\
+    %shared library%\"\n  ) -- Filter out downloaded Linux binaries\n  AND NOT (\n\
+    \    magic.data IS NOT NULL\n    AND magic.data LIKE \"ELF %LSB %\"\n  )\n  AND\
+    \ NOT (\n    magic.data IS NOT NULL\n    AND magic.data LIKE \"0420 Alliant virtual\
+    \ executable%\"\n  )\n  AND NOT (\n    magic.data IS NOT NULL\n    AND magic.data\
+    \ LIKE \"%shell script%\"\n  )\n  AND NOT (\n    magic.data IS NULL\n    AND f.size\
+    \ < 50000\n  )\n  AND NOT homedir LIKE '/Users/%/.provisio'\n  AND NOT homedir\
+    \ LIKE '~/%/bin'\n  AND NOT homedir LIKE '~/%/plugins'\n  AND NOT homedir LIKE\
+    \ '~/%/shims'\n  AND NOT homedir IN (\n    '/Users/Shared/LGHUB',\n    '/Users/Shared/LogiOptionsPlus',\n\
+    \    '/Users/Shared/logitune',\n    '/var/root/.PenTablet',\n    '~/.amplify/bin',\n\
+    \    '~/.asdf/shims',\n    '~/.bazel/bin',\n    '~/.bin',\n    '~/.cache/gitstatus',\n\
+    \    '~/.config/kn',\n    '~/.config/nvim.bak',\n    '~/.docker/cli-plugins',\n\
+    \    '~/.docker/scout',\n    '~/.dotnet/tools',\n    '~/.emacs.d.bak/bin',\n \
+    \   '~/.oh-my-zsh/themes',\n    '~/.emacs.d/backups',\n    '~/.fig/bin',\n   \
+    \ '~/.fzf',\n    '~/.fzf/bin',\n    '~/.gvm/bin',\n    '~/.kn/plugins',\n    '~/.kuberlr/darwin-amd64',\n\
+    \    '~/.npm/sentry-cli',\n    '~/.oh-my-zsh/tools',\n    '~/.PenTablet',\n  \
+    \  '~/.provisio',\n    '~/.pulumi-dev/bin',\n    '~/.pyenv/shims',\n    '~/.rbenv/shims',\n\
+    \    '~/.venv/bin',\n    '~/.vs-tekton',\n    '~/.wash/downloads',\n    '~/.wrangler/bin',\n\
+    \    '~/.zed/gopls',\n    '~/.zsh_snap/zsh-autocomplete',\n    '~/.zsh_snap/zsh-snap',\n\
+    \    '~/Library/ApplicationSupport/iTerm2',\n    '~/Library/Dropbox/DropboxMacUpdate.app/Contents/MacOS',\n\
+    \    '~/Library/Group Containers/group.com.apple.wifi.logs/previous',\n    '~/Library/Logs/Adobe',\n\
+    \    '~/Library/Logs/com.logmein.GoToOpener',\n    '~/Library/Mobile Documents/com~apple~CloudDocs'\n\
+    \  )\n  AND NOT top2_homedir IN (\n    '/Users/Shared/LGHUB/cache',\n    '/Users/Shared/LogiOptionsPlus/cache',\n\
+    \    '/Users/Shared/Red Giant/Uninstall',\n    '~/.antigen',\n    '~/.cache/fsh',\n\
+    \    '~/.docker.old/cli-plugins',\n    '~/.fzf/test',\n    '~/.iterm2',\n    '~/.kuberlr/darwin-arm64',\n\
+    \    '~/.claude-code-tools',\n    '~/.magefile',\n    '~/.nvm',\n    '~/.revox/updates',\n\
+    \    '~/.sdkman/libexec',\n    '~/.terraform.d',\n    '~/.wakatime',\n    '~/.terraform.versions',\n\
+    \    '~/Library/Application Support',\n    '~/Library/Caches',\n    '~/Library/CloudStorage',\n\
+    \    '~/Library/helm',\n    '~/Library/pnpm',\n    '~/Library/Printers',\n   \
+    \ '~/Library/Python',\n    '~/Library/QuickLook',\n    '~/Library/Screen Savers',\n\
+    \    '~/Library/Services',\n    '~/Library/Thunderbird'\n  )\n  AND NOT homepath\
+    \ IN (\n    '~/.config/i3',\n    '~/.config/nvm/nvm.sh',\n    '~/.config/polybar',\n\
+    \    '~/.config/i3/power-manager.sh',\n    '~/.config/polybar/launch.sh',\n  \
+    \  '~/.toolbase/toolbase-runner',\n    '~/Library/Group Containers/group.com.docker/unleash-repo-schema-v1-Docker\
+    \ Desktop.json',\n    '~/Library/Preferences/Macromedia/Flash Player/www.macromedia.com/bin/airappinstaller/airappinstaller_rsrc',\n\
+    \    '~/Library/Keychains/login.keychain-db',\n    '~/Library/Logs/zoom.us/upload_history.txt',\n\
+    \    '~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2'\n  )\n\
+    \  AND NOT top2_homedir LIKE '~/.mvnGoLang/go%.darwin-amd64'\n  AND NOT homepath\
+    \ LIKE '~/Library/%/%.db-wal'\n  AND NOT homepath LIKE '~/Library/%/%.db'\n  AND\
+    \ NOT homepath LIKE '~/Library/%/%.sqlite%'\n  AND NOT homepath LIKE '~/Library/%.aapbz'\n\
+    \  AND NOT f.directory LIKE '/Users/%/.docker/cli-plugins'\n  AND NOT f.directory\
+    \ LIKE '/Users/%/.nix-profile/%'\n  AND NOT f.directory LIKE '/Users/%/.pkg-cache/%'\n\
+    \  AND NOT f.directory LIKE '/Users/%/.npm-global/bin'\n\n  AND NOT f.directory\
+    \ LIKE '/var/root/Library/Caches/%/org.sparkle-project.Sparkle/%/Contents/MacOS'\n\
+    \  AND NOT f.directory LIKE '/var/root/Library/Caches/%/org.sparkle-project.Sparkle/%/Sparkle.framework%'\n\
+    \  AND NOT f.path LIKE '/Users/%/Library/Fonts/%.otf'\n  AND NOT f.path LIKE '/Users/%/Library/Fonts/%.ttf'\n\
+    \  AND NOT f.path LIKE '/Users/%/result/activate'\nGROUP BY\n  f.path\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

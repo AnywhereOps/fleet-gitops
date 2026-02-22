@@ -1,19 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Safari Extensions Macos
-  platform: darwin
+- name: CDK - Safari Extensions Macos
   description: Return the list of installed Safari extensions
-  query: |
-    SELECT
-      safari_extensions.*
-    FROM
-      users
-      JOIN safari_extensions ON users.uid = safari_extensions.uid;
+  query: "SELECT\n  safari_extensions.*\nFROM\n  users\n  JOIN safari_extensions ON\
+    \ users.uid = safari_extensions.uid;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

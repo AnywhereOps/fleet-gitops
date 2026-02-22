@@ -1,11 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: kernel_modules_and_extensions
-  description: Detect loading, unloading, and manipulating modules on Linux systems - ATT&CK T1215
-  query: ' select usr.username, sht.command, sht.history_file from shell_history sht JOIN users usr ON sht.uid = usr.uid WHERE sht.uid IN (SELECT uid from users) AND (sht.command LIKE ''%modprobe%'' OR
-    sht.command LIKE ''%insmod%'' OR sht.command  LIKE ''%lsmod%'' OR sht.command  LIKE ''%rmmod%'' OR sht.command LIKE ''%modinfo%'' OR sht.command LIKE ''%linux-headers-$%''OR sht.command LIKE ''%kernel-devel-$%'');'
-  interval: 3600
+- name: kernel_modules_and_extensions
+  description: Detect loading, unloading, and manipulating modules on Linux systems
+    - ATT&CK T1215
+  query: ' select usr.username, sht.command, sht.history_file from shell_history sht
+    JOIN users usr ON sht.uid = usr.uid WHERE sht.uid IN (SELECT uid from users) AND
+    (sht.command LIKE ''%modprobe%'' OR sht.command LIKE ''%insmod%'' OR sht.command  LIKE
+    ''%lsmod%'' OR sht.command  LIKE ''%rmmod%'' OR sht.command LIKE ''%modinfo%''
+    OR sht.command LIKE ''%linux-headers-$%''OR sht.command LIKE ''%kernel-devel-$%'');'
   platform: linux
-  team: both
+  interval: 3600

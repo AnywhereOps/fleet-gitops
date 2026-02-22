@@ -1,9 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: old_rootkits
+- name: old_rootkits
   description: old_rootkits
-  query: select * from file where path in ('/usr/include/rpc/ ../kit', '/usr/include/rpc/ ../kit2', '/usr/doc/.sl', '/usr/doc/.sp', '/usr/doc/.statnet', '/usr/doc/.logdsys', '/usr/doc/.dpct', '/usr/doc/.gifnocfi',
-    '/usr/doc/.dnif', '/usr/doc/.nigol');
-  team: both
+  query: select * from file where path in ('/usr/include/rpc/ ../kit', '/usr/include/rpc/
+    ../kit2', '/usr/doc/.sl', '/usr/doc/.sp', '/usr/doc/.statnet', '/usr/doc/.logdsys',
+    '/usr/doc/.dpct', '/usr/doc/.gifnocfi', '/usr/doc/.dnif', '/usr/doc/.nigol');

@@ -1,11 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Snaphost_Windows_Process_Listening_Port
-  platform: windows
+- name: Snaphost_Windows_Process_Listening_Port
   description: Returns the Listening port List - ATT&CK T1043,T1090,T1094,T1205,T1219,T1105,T1065,T1102
-  query: select p.name, p.path, lp.port, lp.address, lp.protocol  from listening_ports lp LEFT JOIN processes p ON lp.pid = p.pid WHERE lp.port != 0 AND p.name != '';
+  query: select p.name, p.path, lp.port, lp.address, lp.protocol  from listening_ports
+    lp LEFT JOIN processes p ON lp.pid = p.pid WHERE lp.port != 0 AND p.name != '';
+  platform: windows
   interval: 28800
-  snapshot: true
-  team: servers

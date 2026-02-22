@@ -1,16 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get authorized SSH keys
+- name: Get authorized SSH keys
+  description: Presence of authorized SSH keys may be unusual on laptops. Could be
+    completely normal on servers, but may be worth auditing for unusual keys and/or
+    changes.
+  query: SELECT username, authorized_keys. * FROM users CROSS JOIN authorized_keys
+    USING (uid);
   platform: darwin, linux
-  description: Presence of authorized SSH keys may be unusual on laptops. Could be completely normal on servers, but may be worth auditing for unusual keys and/or changes.
-  query: SELECT username, authorized_keys. * FROM users CROSS JOIN authorized_keys USING (uid);
-  bash: echo "username,authorized_key" && find /Users -maxdepth 2 -type f -name "authorized_keys" -exec sh -c 'for f in "$@"; do u=$(basename "$(dirname "$f")"); while IFS= read -r line; do echo "$u,$line";
-    done < "$f"; done' sh {} +
-  purpose: Informational
-  tags: built-in, ssh
-  contributors: mike-j-thomas
-  remediation: Check out the linked table (https://github.com/fleetdm/fleet/blob/32b4d53e7f1428ce43b0f9fa52838cbe7b413eed/handbook/queries/detect-hosts-with-high-severity-vulnerable-versions-of-openssl.md#table-of-vulnerable-openssl-versions)
-    to determine if the installed version is a high severity vulnerability and view the corresponding CVE(s)
-  team: servers

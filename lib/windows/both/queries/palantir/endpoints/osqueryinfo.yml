@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: osquery_info
+- name: osquery_info
   description: Information about the resident osquery process
   query: SELECT * FROM osquery_info;
   platform: windows
-  team: both

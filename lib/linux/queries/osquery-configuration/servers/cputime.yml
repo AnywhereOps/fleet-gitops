@@ -1,9 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: cpu_time
-  description: Displays information from /proc/stat file about the time the CPU cores spent in different parts of the system
+- name: cpu_time
+  description: Displays information from /proc/stat file about the time the CPU cores
+    spent in different parts of the system
   query: SELECT * FROM cpu_time;
   platform: linux
-  team: both

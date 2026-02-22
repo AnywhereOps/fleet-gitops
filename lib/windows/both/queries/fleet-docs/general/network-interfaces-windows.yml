@@ -1,46 +1,13 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Network interfaces (Windows)
-  platform: windows
+- name: Network interfaces (Windows)
   description: Retrieves information about network interfaces on devices running windows.
-  query: |
-    SELECT
-        ia.address,
-        id.mac
-    FROM
-        interface_addresses ia
-        JOIN interface_details id ON id.interface = ia.interface
-        JOIN routes r ON r.interface = ia.address
-    WHERE
-        (r.destination = '0.0.0.0' OR r.destination = '::') AND r.netmask = 0
-        AND r.type = 'remote'
-        AND (
-        inet_aton(ia.address) IS NOT NULL AND (
-          split(ia.address, '.', 0) = '10'
-          OR (split(ia.address, '.', 0) = '172' AND (CAST(split(ia.address, '.', 1) AS INTEGER) & 0xf0) = 16)
-          OR (split(ia.address, '.', 0) = '192' AND split(ia.address, '.', 1) = '168')
-        )
-        OR (inet_aton(ia.address) IS NULL AND regex_match(lower(ia.address), '^f[cd][0-9a-f][0-9a-f]:[0-9a-f:]+', 0) IS NOT NULL)
-      )
-    ORDER BY
-        r.metric ASC,
-      inet_aton(ia.address) IS NOT NULL DESC
-    LIMIT 1;
-  powershell: "$defaultRoutes = Get-NetRoute | Where-Object {\n    ($_.DestinationPrefix -eq '0.0.0.0/0' -or $_.DestinationPrefix -eq '::/0') -and\n    ($_.NextHop -ne '0.0.0.0' -and $_.NextHop -ne '::')\n\
-    }\n\nfunction Test-PrivateIPv4 {\n    param ([string]$ip)\n    $parts = $ip.Split('.')\n    if ($parts.Count -ne 4) { return $false }\n    if ($parts[0] -eq '10') { return $true }\n    if ($parts[0]\
-    \ -eq '172') {\n        # Convert second octet to integer and perform bitwise AND with 240. \n        $octet2 = 0\n        if ([int]::TryParse($parts[1], [ref]$octet2)) {\n            if ( ($octet2\
-    \ -band 240) -eq 16 ) { return $true }\n        }\n    }\n    if (($parts[0] -eq '192') -and ($parts[1] -eq '168')) { return $true }\n    return $false\n}\n\nfunction Test-PrivateIPv6 {\n    param ([string]$ip)\n\
-    \    # Match IPv6 ULA: fc00::/7, but osquery regex enforces fc or fd then two hex digits then colon.\n    if ($ip.ToLower() -match '^f[cd][0-9a-f]{2}:[0-9a-f:]+') { return $true }\n    return $false\n\
-    }\n\n$results = @()\n\nforeach ($route in $defaultRoutes) {\n    # Get the adapter for current route by InterfaceIndex\n    $adapter = Get-NetAdapter -InterfaceIndex $route.InterfaceIndex -ErrorAction\
-    \ SilentlyContinue\n    if (-not $adapter) { continue }\n    # Get all IP addresses for this interface\n    $ips = Get-NetIPAddress -InterfaceIndex $route.InterfaceIndex -ErrorAction SilentlyContinue\n\
-    \    if (-not $ips) { continue }\n    foreach ($ipObj in $ips) {\n        $address = $ipObj.IPAddress\n        $isIPv4 = $address.Contains('.')\n        $isValid = $false\n        if ($isIPv4) {\n \
-    \           $isValid = Test-PrivateIPv4 -ip $address\n        }\n        else {\n            $isValid = Test-PrivateIPv6 -ip $address\n        }\n        if (-not $isValid) { continue }\n        $results\
-    \ += [PSCustomObject]@{\n            Address     = $address\n            MAC         = $adapter.MacAddress\n            RouteMetric = $route.RouteMetric\n            IsIPv4      = $isIPv4\n        }\n\
-    \    }\n}\n\nif ($results.Count -gt 0) {\n    # Order by route metric ascending, then prioritize IPv4 addresses over IPv6\n    $selected = $results | Sort-Object RouteMetric, @{Expression = {$_.IsIPv4\
-    \ -eq $true} ; Descending = $true} | Select-Object -First 1\n    Write-Output (\"Address: {0}\" -f $selected.Address)\n    Write-Output (\"MAC: {0}\" -f $selected.MAC)\n} else {\n    Write-Output \"\
-    No matching interface found.\"\n}"
-  purpose: Informational
-  tags: built-in
-  team: both
+  query: "SELECT\n    ia.address,\n    id.mac\nFROM\n    interface_addresses ia\n\
+    \    JOIN interface_details id ON id.interface = ia.interface\n    JOIN routes\
+    \ r ON r.interface = ia.address\nWHERE\n    (r.destination = '0.0.0.0' OR r.destination\
+    \ = '::') AND r.netmask = 0\n    AND r.type = 'remote'\n    AND (\n    inet_aton(ia.address)\
+    \ IS NOT NULL AND (\n      split(ia.address, '.', 0) = '10'\n      OR (split(ia.address,\
+    \ '.', 0) = '172' AND (CAST(split(ia.address, '.', 1) AS INTEGER) & 0xf0) = 16)\n\
+    \      OR (split(ia.address, '.', 0) = '192' AND split(ia.address, '.', 1) = '168')\n\
+    \    )\n    OR (inet_aton(ia.address) IS NULL AND regex_match(lower(ia.address),\
+    \ '^f[cd][0-9a-f][0-9a-f]:[0-9a-f:]+', 0) IS NOT NULL)\n  )\nORDER BY\n    r.metric\
+    \ ASC,\n  inet_aton(ia.address) IS NOT NULL DESC\nLIMIT 1;\n"
+  platform: windows

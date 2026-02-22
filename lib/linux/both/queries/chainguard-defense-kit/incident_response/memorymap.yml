@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Memory Map
-  platform: linux
+- name: CDK - Memory Map
   description: Returns the OS memory region map.
-  query: |
-    SELECT
-      *
-    FROM
-      memory_map;
+  query: "SELECT\n  *\nFROM\n  memory_map;\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

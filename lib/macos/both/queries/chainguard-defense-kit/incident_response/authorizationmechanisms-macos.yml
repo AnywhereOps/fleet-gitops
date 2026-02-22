@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Authorization Mechanisms Macos
-  platform: darwin
+- name: CDK - Authorization Mechanisms Macos
   description: Retrieves entries from the macOS authorization mechanisms db
-  query: |
-    SELECT
-      *
-    FROM
-      authorization_mechanisms;
+  query: "SELECT\n  *\nFROM\n  authorization_mechanisms;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

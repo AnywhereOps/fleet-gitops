@@ -1,52 +1,21 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Executables From The Future
+- name: CDK - Executables From The Future
   description: Programs which claim to be from the future, based on (btime,ctime,mtime)
-  query: |
-    SELECT
-      p.pid,
-      p.path,
-      p.name,
-      p.cmdline,
-      p.cwd,
-      p.euid,
-      p.parent,
-      f.ctime,
-      f.btime,
-      f.mtime,
-      p.start_time,
-      f.mtime > (strftime('%s', 'now') + 43200) AS mtime_newer,
-      f.ctime > (strftime('%s', 'now') + 43200) AS ctime_newer,
-      f.btime > (strftime('%s', 'now') + 43200) AS btime_newer,
-      f.mtime - strftime('%s', 'now') AS mtime_diff,
-      f.ctime - strftime('%s', 'now') AS ctime_diff,
-      f.btime - strftime('%s', 'now') AS btime_diff,
-      strftime('%s', 'now') AS now_ts,
-      hash.sha256 AS child_hash256,
-      pp.path AS parent_path,
-      pp.cmdline AS parent_cmd,
-      pp.cwd AS parent_cwd,
-      hash.sha256 AS parent_sha256
-    FROM
-      processes p
-      LEFT JOIN file f ON p.path = f.path
-      LEFT JOIN processes pp ON p.parent = pp.pid
-      LEFT JOIN hash ON p.path = hash.path
-    WHERE
-      (
-        mtime_newer == 1
-        OR ctime_newer == 1
-        OR btime_newer == 1
-      )
-      AND NOT p.path LIKE '/Applications/Signal.app%'
-      AND NOT p.path LIKE '/private/var/db/com.apple.xpc.roleaccountd.staging/%'
-      -- 2038
-      AND NOT f.mtime > 2153484373
+  query: "SELECT\n  p.pid,\n  p.path,\n  p.name,\n  p.cmdline,\n  p.cwd,\n  p.euid,\n\
+    \  p.parent,\n  f.ctime,\n  f.btime,\n  f.mtime,\n  p.start_time,\n  f.mtime >\
+    \ (strftime('%s', 'now') + 43200) AS mtime_newer,\n  f.ctime > (strftime('%s',\
+    \ 'now') + 43200) AS ctime_newer,\n  f.btime > (strftime('%s', 'now') + 43200)\
+    \ AS btime_newer,\n  f.mtime - strftime('%s', 'now') AS mtime_diff,\n  f.ctime\
+    \ - strftime('%s', 'now') AS ctime_diff,\n  f.btime - strftime('%s', 'now') AS\
+    \ btime_diff,\n  strftime('%s', 'now') AS now_ts,\n  hash.sha256 AS child_hash256,\n\
+    \  pp.path AS parent_path,\n  pp.cmdline AS parent_cmd,\n  pp.cwd AS parent_cwd,\n\
+    \  hash.sha256 AS parent_sha256\nFROM\n  processes p\n  LEFT JOIN file f ON p.path\
+    \ = f.path\n  LEFT JOIN processes pp ON p.parent = pp.pid\n  LEFT JOIN hash ON\
+    \ p.path = hash.path\nWHERE\n  (\n    mtime_newer == 1\n    OR ctime_newer ==\
+    \ 1\n    OR btime_newer == 1\n  )\n  AND NOT p.path LIKE '/Applications/Signal.app%'\n\
+    \  AND NOT p.path LIKE '/private/var/db/com.apple.xpc.roleaccountd.staging/%'\n\
+    \  -- 2038\n  AND NOT f.mtime > 2153484373\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

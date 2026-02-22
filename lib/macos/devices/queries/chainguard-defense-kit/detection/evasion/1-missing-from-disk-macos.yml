@@ -1,92 +1,46 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Missing From Disk Macos
-  platform: darwin
+- name: CDK - Missing From Disk Macos
   description: Processes that do not exist on disk
-  query: |
-    SELECT
-      p.pid,
-      p.path,
-      p.name,
-      p.parent,
-      p.state,
-      p.cwd,
-      p.gid,
-      p.uid,
-      p.euid,
-      p.cmdline AS cmd,
-      p.cwd,
-      p.on_disk,
-      p.state,
-      strftime('%s', 'now') - p.start_time AS age,
-      pp.on_disk AS parent_on_disk,
-      pp.path AS parent_path,
-      pp.cmdline AS parent_cmd,
-      pp.cwd AS parent_cwd,
-      hash.sha256 AS parent_sha256
-    FROM
-      processes p
-      LEFT JOIN processes pp ON p.parent = pp.pid
-      LEFT JOIN hash ON pp.path = hash.path
-      LEFT JOIN file ON p.path = file.path
-    WHERE
-      -- Unlike on Linux, this also excludes processes where the binary has been replaced since start time
-      p.on_disk != 1
-      AND file.path = ''
-      AND (strftime('%s', 'now') - p.start_time) > 25000
-      AND p.pid > 0
-      AND p.parent != 2 -- kthreadd
-      AND p.state != 'Z' -- The kernel no longer has enough tracking information for this alert to be useful
-      AND NOT (
-        p.parent = 1
-        AND p.path = ''
-      )
-      AND NOT (
-        p.gid = 20
-        AND (
-          -- NOTE: p.path is typically empty when on_disk != 1, so don't depend on it.
-          cmd LIKE '/Library/Apple/System/%'
-          OR cmd LIKE '/Applications/%/Contents/%'
-          OR cmd LIKE '/Library/Apple/System/%'
-          OR cmd LIKE '/Library/Application Support/Logitech.localized/%'
-          OR cmd LIKE '/Library/Developer/CommandLineTools/%'
-          OR p.path IN (
-            '/Applications/Slack.app/Contents/Frameworks/Slack Helper.app/Contents/MacOS/Slack Helper',
-            '/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)',
-            '/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper.app/Contents/MacOS/Code Helper'
-          )
-          OR cmd LIKE '/opt/homebrew/Cellar/%'
-          OR p.path LIKE '/opt/homebrew/Cellar/%/bin/%'
-          OR p.path LIKE '/opt/homebrew/Cellar/%/libexec/%'
-          OR p.path LIKE '/private/var/folders/zz/%/T/PKInstallSandboxTrash/%.sandboxTrash/%'
-          OR p.path LIKE '/private/var/kolide-k2/k2device.kolide.com/updates/%'
-          OR p.path LIKE '/Users/%/.local/share/nvim/mason/packages/%'
-          OR p.path LIKE '/Users/%/.terraform/providers/%/terraform-provider-%'
-          OR p.path LIKE '/Users/%/go/bin/%'
-          OR p.path LIKE '/Users/%/homebrew/Cellar/%'
-          OR p.path LIKE '/Users/%/homebrew/Cellar/%/bin/%'
-          OR p.path LIKE '/Users/%/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/ipcserver.old'
-          OR p.path LIKE '/Users/%/node_modules/.pnpm/%'
-          OR p.path LIKE '/usr/local/Cellar/%/bin/%'
-          OR cmd LIKE ''
-          OR cmd LIKE '/opt/homebrew/opt/%'
-          OR cmd LIKE '/private/var/folders/%/Visual Studio Code.app/Contents/%'
-          OR cmd LIKE '/Users/%/homebrew/opt/mysql/bin/%' -- Sometimes cmd is empty also :(
-          OR cmd LIKE '%/.terraform/providers/%'
-          OR cmd LIKE '%/go/src/github.com/%'
-          OR parent_cmd LIKE '/Applications/Google Chrome.app/%'
-        )
-      )
-      AND NOT (
-        p.name = ''
-        AND parent_cmd = '/Applications/Firefox Developer Edition.app/Contents/MacOS/firefox -foreground'
-      )
-      AND NOt cmd LIKE '/opt/homebrew/opt/%'
+  query: "SELECT\n  p.pid,\n  p.path,\n  p.name,\n  p.parent,\n  p.state,\n  p.cwd,\n\
+    \  p.gid,\n  p.uid,\n  p.euid,\n  p.cmdline AS cmd,\n  p.cwd,\n  p.on_disk,\n\
+    \  p.state,\n  strftime('%s', 'now') - p.start_time AS age,\n  pp.on_disk AS parent_on_disk,\n\
+    \  pp.path AS parent_path,\n  pp.cmdline AS parent_cmd,\n  pp.cwd AS parent_cwd,\n\
+    \  hash.sha256 AS parent_sha256\nFROM\n  processes p\n  LEFT JOIN processes pp\
+    \ ON p.parent = pp.pid\n  LEFT JOIN hash ON pp.path = hash.path\n  LEFT JOIN file\
+    \ ON p.path = file.path\nWHERE\n  -- Unlike on Linux, this also excludes processes\
+    \ where the binary has been replaced since start time\n  p.on_disk != 1\n  AND\
+    \ file.path = ''\n  AND (strftime('%s', 'now') - p.start_time) > 25000\n  AND\
+    \ p.pid > 0\n  AND p.parent != 2 -- kthreadd\n  AND p.state != 'Z' -- The kernel\
+    \ no longer has enough tracking information for this alert to be useful\n  AND\
+    \ NOT (\n    p.parent = 1\n    AND p.path = ''\n  )\n  AND NOT (\n    p.gid =\
+    \ 20\n    AND (\n      -- NOTE: p.path is typically empty when on_disk != 1, so\
+    \ don't depend on it.\n      cmd LIKE '/Library/Apple/System/%'\n      OR cmd\
+    \ LIKE '/Applications/%/Contents/%'\n      OR cmd LIKE '/Library/Apple/System/%'\n\
+    \      OR cmd LIKE '/Library/Application Support/Logitech.localized/%'\n     \
+    \ OR cmd LIKE '/Library/Developer/CommandLineTools/%'\n      OR p.path IN (\n\
+    \        '/Applications/Slack.app/Contents/Frameworks/Slack Helper.app/Contents/MacOS/Slack\
+    \ Helper',\n        '/Applications/Visual Studio Code.app/Contents/Frameworks/Code\
+    \ Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)',\n        '/Applications/Visual\
+    \ Studio Code.app/Contents/Frameworks/Code Helper.app/Contents/MacOS/Code Helper'\n\
+    \      )\n      OR cmd LIKE '/opt/homebrew/Cellar/%'\n      OR p.path LIKE '/opt/homebrew/Cellar/%/bin/%'\n\
+    \      OR p.path LIKE '/opt/homebrew/Cellar/%/libexec/%'\n      OR p.path LIKE\
+    \ '/private/var/folders/zz/%/T/PKInstallSandboxTrash/%.sandboxTrash/%'\n     \
+    \ OR p.path LIKE '/private/var/kolide-k2/k2device.kolide.com/updates/%'\n    \
+    \  OR p.path LIKE '/Users/%/.local/share/nvim/mason/packages/%'\n      OR p.path\
+    \ LIKE '/Users/%/.terraform/providers/%/terraform-provider-%'\n      OR p.path\
+    \ LIKE '/Users/%/go/bin/%'\n      OR p.path LIKE '/Users/%/homebrew/Cellar/%'\n\
+    \      OR p.path LIKE '/Users/%/homebrew/Cellar/%/bin/%'\n      OR p.path LIKE\
+    \ '/Users/%/Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/ipcserver.old'\n\
+    \      OR p.path LIKE '/Users/%/node_modules/.pnpm/%'\n      OR p.path LIKE '/usr/local/Cellar/%/bin/%'\n\
+    \      OR cmd LIKE ''\n      OR cmd LIKE '/opt/homebrew/opt/%'\n      OR cmd LIKE\
+    \ '/private/var/folders/%/Visual Studio Code.app/Contents/%'\n      OR cmd LIKE\
+    \ '/Users/%/homebrew/opt/mysql/bin/%' -- Sometimes cmd is empty also :(\n    \
+    \  OR cmd LIKE '%/.terraform/providers/%'\n      OR cmd LIKE '%/go/src/github.com/%'\n\
+    \      OR parent_cmd LIKE '/Applications/Google Chrome.app/%'\n    )\n  )\n  AND\
+    \ NOT (\n    p.name = ''\n    AND parent_cmd = '/Applications/Firefox Developer\
+    \ Edition.app/Contents/MacOS/firefox -foreground'\n  )\n  AND NOt cmd LIKE '/opt/homebrew/opt/%'\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

@@ -1,11 +1,5 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: trk_rootkit
-  platform: linux
+- name: trk_rootkit
   description: trk_rootkit
   query: select * from file where path in ('/usr/bin/soucemask', '/usr/bin/sourcemask');
+  platform: linux
   interval: '3600'
-  value: Artifacts used by this malware
-  team: both

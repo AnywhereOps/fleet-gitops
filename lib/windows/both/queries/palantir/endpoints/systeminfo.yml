@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: system_info
+- name: system_info
   description: System information for identification.
   query: SELECT * FROM system_info;
   platform: windows
-  team: both

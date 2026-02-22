@@ -1,10 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: runas.exe
+- name: runas.exe
+  description: Runas Execute, Allows a user to run specific tools and programs with
+    different permissions than the user's current logon provides. - ATT&CK T1134
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
+    like '%runas%';
   platform: windows
-  description: Runas Execute, Allows a user to run specific tools and programs with different permissions than the user's current logon provides. - ATT&CK T1134
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%runas%';
   interval: 600
-  team: both

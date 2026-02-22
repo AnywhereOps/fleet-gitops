@@ -1,11 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: unTabs_2
+- name: unTabs_2
   description: (https://sensorstechforum.com/untabs-browser-extension-virus-remove-completely/)
   query: select * from chrome_extensions join users using (uid) where name like 'unTabs%';
   interval: '3600'
-  value: Artifact used by this malware
-  version: 2.2.1
-  team: devices

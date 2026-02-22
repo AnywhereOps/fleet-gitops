@@ -1,8 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: efigy
-  description: Determine if the host is running the expected EFI firmware version given their Mac hardware and OS build version (https://github.com/duo-labs/EFIgy)
+- name: efigy
+  description: Determine if the host is running the expected EFI firmware version
+    given their Mac hardware and OS build version (https://github.com/duo-labs/EFIgy)
   query: SELECT * FROM efigy;
-  team: both

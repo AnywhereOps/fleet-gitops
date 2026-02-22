@@ -1,144 +1,66 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Var Executables Macos
-  platform: darwin
+- name: CDK - Unexpected Var Executables Macos
   description: Find unexpected executables in /var
-  query: |
-    SELECT
-      file.path,
-      file.directory,
-      uid,
-      gid,
-      mode,
-      file.mtime,
-      file.size,
-      hash.sha256,
-      magic.data,
-      signature.authority,
-      signature.identifier
-    FROM
-      file
-      LEFT JOIN hash on file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-      LEFT JOIN signature ON file.path = signature.path
-    WHERE -- Optimization: don't join things until we have a whittled down list of files
-      file.path IN (
-        SELECT DISTINCT
-          path
-        FROM
-          file
-        WHERE
-          (
-            file.directory = '/var/tmp'
-            OR file.directory = '/var/spool'
-            OR file.directory LIKE '/var/spool/.%'
-            OR file.directory LIKE '/var/spool/.%/.%'
-            OR file.directory LIKE '/var/spool/.%/%'
-            OR file.directory LIKE '/var/spool/%'
-            OR file.directory LIKE '/var/spool/%/.%'
-            OR file.directory LIKE '/var/spool/%/%'
-            OR file.directory LIKE '/var/tmp/.%'
-            OR file.directory LIKE '/var/tmp/.%/.%'
-            OR file.directory LIKE '/var/tmp/.%/%'
-            OR file.directory LIKE '/var/tmp/%'
-            OR file.directory LIKE '/var/tmp/%/.%'
-            OR file.directory LIKE '/var/tmp/%/%'
-          ) -- Prevent weird recursion
-          AND NOT file.directory LIKE '%/../%'
-          AND NOT file.directory LIKE '%/./%' -- Exclude very temporary files
-          AND NOT (strftime('%s', 'now') - ctime) < 60 -- Only executable files
-          AND file.type = 'regular'
-          AND (
-            file.mode LIKE '%7%'
-            or file.mode LIKE '%5%'
-            or file.mode LIKE '%1%'
-          ) -- Rosetta cache, SIP protected
-          AND file.path NOT LIKE '/var/db/oah/%'
-          AND file.path NOT LIKE '/var/folders/%/C/com.apple.FontRegistry/annex_aux'
-          AND file.path NOT LIKE '/var/folders/%/T/freefn-%_emacs_%.eln'
-          AND file.path NOT LIKE '/var/folders/%/T/go.%.%.sum'
-          AND file.path NOT LIKE '/var/folders/%/T/iTerm2-script%'
-          AND file.path NOT LIKE '/var/folders/%/T/jansi-%-libjansi.jnilib'
-          AND file.path NOT LIKE '/var/folders/%/T/pulumi-go.%'
-          AND file.path NOT LIKE '/var/folders/%/T/sp_relauncher'
-          AND file.path NOT LIKE '/var/run/current-system/etc/profiles/per-user/%'
-          AND file.path NOT LIKE '/var/tmp/epdfinfo%'
-          AND file.path NOT LIKE '/var/tmp/IN_PROGRESS_sysdiagnose_%.tmp/mddiagnose.mdsdiagnostic/%.log'
-          AND file.path NOT LIKE '/var/tmp/sysdiagnose_%/mddiagnose.mdsdiagnostic/%.log'
-          AND file.directory NOT IN (
-            '/var/db/xcode_select_link/Makefiles/VersioningSystems/',
-            '/var/db/xcode_select_link/usr/bin',
-            '/var/db/xcode_select_link/usr/lib',
-            '/var/db/xcode_select_link/usr/libexec',
-            '/var/ossec/agentless',
-            '/var/ossec/bin',
-            '/var/ossec/wodles',
-            '/var/run/booted-system',
-            '/var/run/current-system',
-            '/var/run/current-system/sw/bin',
-            '/var/select',
-            '/var/select/X11/bin',
-            '/var/select/X11/lib',
-            '/var/select/X11/lib/dri',
-            '/var/select/X11/lib/flat_namespace',
-            '/var/select/X11/libexec',
-            '/var/spool/postfix/incoming'
-          )
-          AND file.path NOT IN (
-            '/var/log/acroUpdaterTools.log',
-            '/var/vm/sleepimage',
-            '/var/spool/postfix/incoming/D3A82F0F057'
-          )
-          AND file.size > 10
-          AND NOT (
-            file.path LIKE '/var/folders/%/T/sp_update/%'
-            AND file.gid = 20
-            AND file.uid = 501
-          ) -- JetBrains (Delve)
-          AND NOT (
-            file.path LIKE '/var/folders/%/T/dlvLauncher%.sh'
-            AND file.size < 1024
-            AND file.mode = '0744'
-          )
-          AND NOT (
-            file.path LIKE '/var/folders/%/T/libjansi-%.jnilib'
-            AND file.size < 40000
-            AND file.uid = 501
-          )
-          AND NOT (
-            file.path LIKE '/var/tmp/_bazel_%/%/install/%'
-            AND file.uid = 501
-          )
-      ) -- It's pretty rare, but some vendors install updates into /var. Spotify, I'm looking at you!
-      AND NOT signature.authority IN (
-        'Developer ID Application: Adobe Inc. (JQ525L2MZD)',
-        'Developer ID Application: Docker Inc (9BNSXJN65R)',
-        'Developer ID Application: GitHub (VEKTX9H2N7)',
-        'Developer ID Application: Google LLC (EQHXZ8M8AV)',
-        'Developer ID Application: Microsoft Corporation (UBF8T346G9)',
-        'Developer ID Application: Mozilla Corporation (43AQ936H96)',
-        'Developer ID Application: Spotify (2FNC3A47ZF)',
-        'Software Signing'
-      )
-      AND NOT (
-        file.path LIKE '/var/db/timezone/zoneinfo/%'
-        AND magic.data LIKE 'timezone%'
-        AND file.size < 3000
-        AND file.mode = '0755'
-      ) -- Epson
-      AND NOT (
-        file.path LIKE '/var/tmp/InstallLog/%.plist'
-        AND magic.data = 'Apple binary property list'
-        AND file.size < 3000
-        AND file.mode = '0777'
-      )
-    GROUP BY
-      file.path
+  query: "SELECT\n  file.path,\n  file.directory,\n  uid,\n  gid,\n  mode,\n  file.mtime,\n\
+    \  file.size,\n  hash.sha256,\n  magic.data,\n  signature.authority,\n  signature.identifier\n\
+    FROM\n  file\n  LEFT JOIN hash on file.path = hash.path\n  LEFT JOIN magic ON\
+    \ file.path = magic.path\n  LEFT JOIN signature ON file.path = signature.path\n\
+    WHERE -- Optimization: don't join things until we have a whittled down list of\
+    \ files\n  file.path IN (\n    SELECT DISTINCT\n      path\n    FROM\n      file\n\
+    \    WHERE\n      (\n        file.directory = '/var/tmp'\n        OR file.directory\
+    \ = '/var/spool'\n        OR file.directory LIKE '/var/spool/.%'\n        OR file.directory\
+    \ LIKE '/var/spool/.%/.%'\n        OR file.directory LIKE '/var/spool/.%/%'\n\
+    \        OR file.directory LIKE '/var/spool/%'\n        OR file.directory LIKE\
+    \ '/var/spool/%/.%'\n        OR file.directory LIKE '/var/spool/%/%'\n       \
+    \ OR file.directory LIKE '/var/tmp/.%'\n        OR file.directory LIKE '/var/tmp/.%/.%'\n\
+    \        OR file.directory LIKE '/var/tmp/.%/%'\n        OR file.directory LIKE\
+    \ '/var/tmp/%'\n        OR file.directory LIKE '/var/tmp/%/.%'\n        OR file.directory\
+    \ LIKE '/var/tmp/%/%'\n      ) -- Prevent weird recursion\n      AND NOT file.directory\
+    \ LIKE '%/../%'\n      AND NOT file.directory LIKE '%/./%' -- Exclude very temporary\
+    \ files\n      AND NOT (strftime('%s', 'now') - ctime) < 60 -- Only executable\
+    \ files\n      AND file.type = 'regular'\n      AND (\n        file.mode LIKE\
+    \ '%7%'\n        or file.mode LIKE '%5%'\n        or file.mode LIKE '%1%'\n  \
+    \    ) -- Rosetta cache, SIP protected\n      AND file.path NOT LIKE '/var/db/oah/%'\n\
+    \      AND file.path NOT LIKE '/var/folders/%/C/com.apple.FontRegistry/annex_aux'\n\
+    \      AND file.path NOT LIKE '/var/folders/%/T/freefn-%_emacs_%.eln'\n      AND\
+    \ file.path NOT LIKE '/var/folders/%/T/go.%.%.sum'\n      AND file.path NOT LIKE\
+    \ '/var/folders/%/T/iTerm2-script%'\n      AND file.path NOT LIKE '/var/folders/%/T/jansi-%-libjansi.jnilib'\n\
+    \      AND file.path NOT LIKE '/var/folders/%/T/pulumi-go.%'\n      AND file.path\
+    \ NOT LIKE '/var/folders/%/T/sp_relauncher'\n      AND file.path NOT LIKE '/var/run/current-system/etc/profiles/per-user/%'\n\
+    \      AND file.path NOT LIKE '/var/tmp/epdfinfo%'\n      AND file.path NOT LIKE\
+    \ '/var/tmp/IN_PROGRESS_sysdiagnose_%.tmp/mddiagnose.mdsdiagnostic/%.log'\n  \
+    \    AND file.path NOT LIKE '/var/tmp/sysdiagnose_%/mddiagnose.mdsdiagnostic/%.log'\n\
+    \      AND file.directory NOT IN (\n        '/var/db/xcode_select_link/Makefiles/VersioningSystems/',\n\
+    \        '/var/db/xcode_select_link/usr/bin',\n        '/var/db/xcode_select_link/usr/lib',\n\
+    \        '/var/db/xcode_select_link/usr/libexec',\n        '/var/ossec/agentless',\n\
+    \        '/var/ossec/bin',\n        '/var/ossec/wodles',\n        '/var/run/booted-system',\n\
+    \        '/var/run/current-system',\n        '/var/run/current-system/sw/bin',\n\
+    \        '/var/select',\n        '/var/select/X11/bin',\n        '/var/select/X11/lib',\n\
+    \        '/var/select/X11/lib/dri',\n        '/var/select/X11/lib/flat_namespace',\n\
+    \        '/var/select/X11/libexec',\n        '/var/spool/postfix/incoming'\n \
+    \     )\n      AND file.path NOT IN (\n        '/var/log/acroUpdaterTools.log',\n\
+    \        '/var/vm/sleepimage',\n        '/var/spool/postfix/incoming/D3A82F0F057'\n\
+    \      )\n      AND file.size > 10\n      AND NOT (\n        file.path LIKE '/var/folders/%/T/sp_update/%'\n\
+    \        AND file.gid = 20\n        AND file.uid = 501\n      ) -- JetBrains (Delve)\n\
+    \      AND NOT (\n        file.path LIKE '/var/folders/%/T/dlvLauncher%.sh'\n\
+    \        AND file.size < 1024\n        AND file.mode = '0744'\n      )\n     \
+    \ AND NOT (\n        file.path LIKE '/var/folders/%/T/libjansi-%.jnilib'\n   \
+    \     AND file.size < 40000\n        AND file.uid = 501\n      )\n      AND NOT\
+    \ (\n        file.path LIKE '/var/tmp/_bazel_%/%/install/%'\n        AND file.uid\
+    \ = 501\n      )\n  ) -- It's pretty rare, but some vendors install updates into\
+    \ /var. Spotify, I'm looking at you!\n  AND NOT signature.authority IN (\n   \
+    \ 'Developer ID Application: Adobe Inc. (JQ525L2MZD)',\n    'Developer ID Application:\
+    \ Docker Inc (9BNSXJN65R)',\n    'Developer ID Application: GitHub (VEKTX9H2N7)',\n\
+    \    'Developer ID Application: Google LLC (EQHXZ8M8AV)',\n    'Developer ID Application:\
+    \ Microsoft Corporation (UBF8T346G9)',\n    'Developer ID Application: Mozilla\
+    \ Corporation (43AQ936H96)',\n    'Developer ID Application: Spotify (2FNC3A47ZF)',\n\
+    \    'Software Signing'\n  )\n  AND NOT (\n    file.path LIKE '/var/db/timezone/zoneinfo/%'\n\
+    \    AND magic.data LIKE 'timezone%'\n    AND file.size < 3000\n    AND file.mode\
+    \ = '0755'\n  ) -- Epson\n  AND NOT (\n    file.path LIKE '/var/tmp/InstallLog/%.plist'\n\
+    \    AND magic.data = 'Apple binary property list'\n    AND file.size < 3000\n\
+    \    AND file.mode = '0777'\n  )\nGROUP BY\n  file.path\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

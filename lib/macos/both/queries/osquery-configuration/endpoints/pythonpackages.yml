@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: python_packages
+- name: python_packages
   description: Python packages installed in a system.
   query: SELECT * FROM python_packages;
   platform: darwin
-  team: both

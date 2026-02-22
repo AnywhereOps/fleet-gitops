@@ -1,18 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Alf Explicit Auths Macos
+- name: CDK - Alf Explicit Auths Macos
+  description: Retrieves the list of processes with explicit authorization for the
+    Application Layer Firewall.
+  query: "SELECT\n  *\nFROM\n  alf_explicit_auths;\n"
   platform: darwin
-  description: Retrieves the list of processes with explicit authorization for the Application Layer Firewall.
-  query: |
-    SELECT
-      *
-    FROM
-      alf_explicit_auths;
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: kernel_integrity
+- name: kernel_integrity
   description: Various Linux kernel integrity checked attributes.
   query: SELECT * FROM kernel_integrity;
   platform: linux
-  team: both

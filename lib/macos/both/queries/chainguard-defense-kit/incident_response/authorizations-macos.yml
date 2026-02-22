@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Authorizations Macos
-  platform: darwin
+- name: CDK - Authorizations Macos
   description: Retrieves entries from the macOS authorization rights db
-  query: |
-    SELECT
-      *
-    FROM
-      authorizations;
+  query: "SELECT\n  *\nFROM\n  authorizations;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

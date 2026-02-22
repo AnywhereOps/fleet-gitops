@@ -1,10 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: esentutl.exe
+- name: esentutl.exe
+  description: Esentutl Execute, is a legitimate built-in command-line program it
+    could be used to create a exe from dump raw source.
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
+    like '%esentutl%';
   platform: windows
-  description: Esentutl Execute, is a legitimate built-in command-line program it could be used to create a exe from dump raw source.
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%esentutl%';
   interval: 600
-  team: both

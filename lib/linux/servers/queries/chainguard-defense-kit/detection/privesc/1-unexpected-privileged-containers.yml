@@ -1,45 +1,22 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Privileged Containers
+- name: CDK - Unexpected Privileged Containers
+  description: 'Detect the execution of privileged Docker containers which can be
+    used to escape to the host. false-positives: * Nested Kubernetes Environments
+    * Containerized builds This query works on macOS as well, but is only an in-the-wild
+    security problem on Linux, where the kernel namespaces can be shared. These kind
+    of attacks tend to be'
+  query: "SELECT\n  command,\n  image_id,\n  path,\n  security_options,\n  started_at,\n\
+    \  image,\n  COALESCE(REGEX_MATCH (image, '(.*?):', 1), image) AS image_name\n\
+    FROM\n  docker_containers\nWHERE\n  privileged = 1\n  AND image_name NOT IN (\n\
+    \    'distroless.dev/melange',\n    'docker.io/library/registry',\n    'docker.io/rancher/k3s',\n\
+    \    'gcr.io/k8s-minikube/kicbase',\n    'jdk-crac',\n    'kindest/node',\n  \
+    \  'ligfx/k3d-registry-dockerd',\n    'moby/buildkit',\n    'wolfi'\n  )\n  AND\
+    \ image NOT LIKE 'cgr.dev/chainguard%'\n  AND image NOT LIKE 'ghcr.io/k3d-io/k3d-%'\n\
+    \  AND image NOT LIKE 'ghcr.io/wolfi-dev/%'\n  AND image NOT LIKE 'k3d-k3d.localhost:%'\n\
+    \  AND image NOT LIKE 'melange-%'\n  AND command NOT LIKE '/usr/bin/melange build\
+    \ %'\n  AND command != '/bin/k3s server'\n"
   platform: linux
-  description: 'Detect the execution of privileged Docker containers which can be used to escape to the host. false-positives: * Nested Kubernetes Environments * Containerized builds This query works on
-    macOS as well, but is only an in-the-wild security problem on Linux, where the kernel namespaces can be shared. These kind of attacks tend to be'
-  query: |
-    SELECT
-      command,
-      image_id,
-      path,
-      security_options,
-      started_at,
-      image,
-      COALESCE(REGEX_MATCH (image, '(.*?):', 1), image) AS image_name
-    FROM
-      docker_containers
-    WHERE
-      privileged = 1
-      AND image_name NOT IN (
-        'distroless.dev/melange',
-        'docker.io/library/registry',
-        'docker.io/rancher/k3s',
-        'gcr.io/k8s-minikube/kicbase',
-        'jdk-crac',
-        'kindest/node',
-        'ligfx/k3d-registry-dockerd',
-        'moby/buildkit',
-        'wolfi'
-      )
-      AND image NOT LIKE 'cgr.dev/chainguard%'
-      AND image NOT LIKE 'ghcr.io/k3d-io/k3d-%'
-      AND image NOT LIKE 'ghcr.io/wolfi-dev/%'
-      AND image NOT LIKE 'k3d-k3d.localhost:%'
-      AND image NOT LIKE 'melange-%'
-      AND command NOT LIKE '/usr/bin/melange build %'
-      AND command != '/bin/k3s server'
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

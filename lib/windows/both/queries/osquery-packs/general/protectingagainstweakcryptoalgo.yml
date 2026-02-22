@@ -1,13 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Protecting_Against_Weak_Crypto_Algo
-  description: Determine if Windows is configured to log certificates with weak crypto (https://technet.microsoft.com/library/dn375961(v=ws.11).aspx)
-  query: select * from registry where path like 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\OID\EncodingType 0\CertDllCreateCertificateChainEngine\Config\Default\%' AND name IN ('WeakSha1ThirdPartyFlags','WeakMd5ThirdPartyFlags')
+- name: Protecting_Against_Weak_Crypto_Algo
+  description: Determine if Windows is configured to log certificates with weak crypto
+    (https://technet.microsoft.com/library/dn375961(v=ws.11).aspx)
+  query: select * from registry where path like 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography\OID\EncodingType
+    0\CertDllCreateCertificateChainEngine\Config\Default\%' AND name IN ('WeakSha1ThirdPartyFlags','WeakMd5ThirdPartyFlags')
     AND type = 'REG_DWORD' AND data not like '-2%';
-  interval: '3600'
-  value: Artifact used by this malware
-  version: 2.2.1
   platform: windows
-  team: both
+  interval: '3600'

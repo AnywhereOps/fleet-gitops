@@ -1,10 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: cmd.exe
-  platform: windows
+- name: cmd.exe
   description: Command-Line Interface Execute, CMD execution - ATT&CK T1059
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%CMD%';
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
+    like '%CMD%';
+  platform: windows
   interval: 600
-  team: both

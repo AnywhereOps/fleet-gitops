@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Disk Encryption
+- name: CDK - Disk Encryption
   description: Retrieves the current disk encryption status for the target system.
-  query: |
-    SELECT
-      *
-    FROM
-      disk_encryption;
+  query: "SELECT\n  *\nFROM\n  disk_encryption;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

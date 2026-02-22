@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: User-Agent Switcher
+- name: User-Agent Switcher
   description: (https://chris.partridge.tech/2020/extensions-the-next-generation-of-malware/help-for-users/)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='clddifkhlkcojbojppdojfeeikdkgiae';
   interval: 3600
-  team: devices

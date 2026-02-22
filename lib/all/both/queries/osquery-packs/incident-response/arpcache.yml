@@ -1,11 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: arp_cache
+- name: arp_cache
   description: Retrieves the ARP cache values in the target system.
   query: select * from arp_cache;
   interval: '3600'
-  value: Determine if MITM in progress.
-  version: 1.4.5
-  team: both

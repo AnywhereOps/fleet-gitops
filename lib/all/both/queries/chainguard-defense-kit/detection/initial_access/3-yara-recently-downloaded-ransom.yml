@@ -1,73 +1,27 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Yara Recently Downloaded Ransom
+- name: CDK - Yara Recently Downloaded Ransom
   description: CDK - Yara Recently Downloaded Ransom
-  query: |
-    SELECT
-      file.path,
-      file.size,
-      file.btime,
-      file.ctime,
-      file.mtime,
-      magic.data,
-      hash.sha256,
-      yara.*
-    FROM
-      file
-      JOIN yara ON file.path = yara.path
-      LEFT JOIN magic ON file.path = magic.path
-      LEFT JOIN hash ON file.path = hash.path
-    WHERE
-      file.path IN (
-        SELECT
-          path
-        FROM
-          file
-        WHERE
-          (
-            file.path LIKE '/home/%/Downloads/%'
-            OR file.path LIKE '/home/%/Downloads/%/%'
-            OR file.path LIKE '/Users/%/Downloads/%'
-            OR file.path LIKE '/Users/%/Downloads/%/%'
-            OR file.path LIKE '/tmp/%'
-            OR file.path LIKE '/var/tmp/%'
-          )
-          AND file.type = "regular"
-          AND file.size > 2000
-          AND file.size < 400000
-          AND (
-            file.btime > (strftime('%s', 'now') -43200)
-            OR file.ctime > (strftime('%s', 'now') -43200)
-            OR file.mtime > (strftime('%s', 'now') -43200)
-          )
-      )
-      AND yara.sigrule = '
-        rule ransomware {
-        strings:
-            $unfortunately = "unfortunately" ascii
-            $crypted = "crypted" ascii
-            $leaked = "leaked" ascii
-            $recover = "recover your" ascii
-            $leaks = "of leaks" ascii
-            $decrypt = "will decrypt" ascii
-
-            $onion = ".onion/" ascii
-            $tor = "TOR Browser" ascii
-
-            $esxcli = "esxcli" ascii
-        condition:
-            filesize < 10MB and 3 of them
-    }'
-      AND yara.count > 0
-      AND file.path NOT LIKE "%.csv"
-      AND file.path NOT LIKE "%.txt"
-      AND file.path NOT LIKE "%.md"
-      AND file.path NOT LIKE "%.xls"
+  query: "SELECT\n  file.path,\n  file.size,\n  file.btime,\n  file.ctime,\n  file.mtime,\n\
+    \  magic.data,\n  hash.sha256,\n  yara.*\nFROM\n  file\n  JOIN yara ON file.path\
+    \ = yara.path\n  LEFT JOIN magic ON file.path = magic.path\n  LEFT JOIN hash ON\
+    \ file.path = hash.path\nWHERE\n  file.path IN (\n    SELECT\n      path\n   \
+    \ FROM\n      file\n    WHERE\n      (\n        file.path LIKE '/home/%/Downloads/%'\n\
+    \        OR file.path LIKE '/home/%/Downloads/%/%'\n        OR file.path LIKE\
+    \ '/Users/%/Downloads/%'\n        OR file.path LIKE '/Users/%/Downloads/%/%'\n\
+    \        OR file.path LIKE '/tmp/%'\n        OR file.path LIKE '/var/tmp/%'\n\
+    \      )\n      AND file.type = \"regular\"\n      AND file.size > 2000\n    \
+    \  AND file.size < 400000\n      AND (\n        file.btime > (strftime('%s', 'now')\
+    \ -43200)\n        OR file.ctime > (strftime('%s', 'now') -43200)\n        OR\
+    \ file.mtime > (strftime('%s', 'now') -43200)\n      )\n  )\n  AND yara.sigrule\
+    \ = '\n    rule ransomware {\n    strings:\n        $unfortunately = \"unfortunately\"\
+    \ ascii\n        $crypted = \"crypted\" ascii\n        $leaked = \"leaked\" ascii\n\
+    \        $recover = \"recover your\" ascii\n        $leaks = \"of leaks\" ascii\n\
+    \        $decrypt = \"will decrypt\" ascii\n\n        $onion = \".onion/\" ascii\n\
+    \        $tor = \"TOR Browser\" ascii\n\n        $esxcli = \"esxcli\" ascii\n\
+    \    condition:\n        filesize < 10MB and 3 of them\n}'\n  AND yara.count >\
+    \ 0\n  AND file.path NOT LIKE \"%.csv\"\n  AND file.path NOT LIKE \"%.txt\"\n\
+    \  AND file.path NOT LIKE \"%.md\"\n  AND file.path NOT LIKE \"%.xls\"\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

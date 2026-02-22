@@ -1,17 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Check for artifacts of the Floxif trojan
-  platform: windows
+- name: Check for artifacts of the Floxif trojan
   description: Checks for artifacts from the Floxif trojan on Windows machines.
   query: SELECT * FROM registry WHERE path LIKE 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Piriform\\Agomo%';
-  powershell: "$base = \"HKLM:\\SOFTWARE\\Piriform\"\n$searchPrefix = \"HKEY_LOCAL_MACHINE\\SOFTWARE\\Piriform\\Agomo\"\n\n# Recursively get all registry keys under the base path\nGet-ChildItem -Path $base\
-    \ -Recurse | ForEach-Object {\n    if ($_.Name -like \"$searchPrefix*\") {\n        # Open the registry key to enumerate its values.\n        $regKey = Get-Item -LiteralPath $_.PSPath\n        $valueNames\
-    \ = $regKey.GetValueNames()\n        foreach ($valName in $valueNames) {\n            $valData = $regKey.GetValue($valName)\n            $valType = $regKey.GetValueKind($valName)\n            if ($valName\
-    \ -eq \"\") {\n                $nameDisplay = \"(Default)\"\n            }\n            else {\n                $nameDisplay = $valName\n            }\n            Write-Output \"Path: $($_.Name) |\
-    \ Name: $nameDisplay | Type: $valType | Data: $valData\"\n        }\n    }\n}"
-  purpose: Informational
-  tags: hunting, malware
-  contributors: micheal-o
-  team: both
+  platform: windows

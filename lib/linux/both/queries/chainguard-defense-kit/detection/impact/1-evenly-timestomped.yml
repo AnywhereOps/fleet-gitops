@@ -1,60 +1,25 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Evenly Timestomped
+- name: CDK - Evenly Timestomped
+  description: Files where the timestamp falls along 12-hour boundaries - probably
+    caused by 'touch <date>0000'
+  query: "SELECT\n  file.path,\n  DATETIME(file.mtime, 'unixepoch', 'localtime') AS\
+    \ mod_time,\n  DATETIME(file.atime, 'unixepoch', 'localtime') AS access_time,\n\
+    \  file.inode,\n  file.type,\n  file.mode,\n  hash.sha256,\n  magic.data\nFROM\n\
+    \  file\n  LEFT JOIN hash ON file.path = hash.path\n  LEFT JOIN magic ON file.path\
+    \ = magic.path\nWHERE\n  (\n    file.path LIKE \"/bin/%%\"\n    OR file.path LIKE\
+    \ \"/etc/%%\"\n    OR file.path LIKE \"/sbin/%%\"\n    OR file.path LIKE \"/lib/%%\"\
+    \n  )\n  -- This timestamp is in UTC\n  AND file.mtime > (strftime('%s', 'now')\
+    \ - (86400 * 720))\n  AND file.mtime % 3600 = 0\n  AND file.type = 'regular'\n\
+    \  -- Narrow down to specific offsets in the users local timezone (there should\
+    \ be a better way!)\n  AND (\n    mod_time LIKE \"% 12:00:00\"\n    OR mod_time\
+    \ LIKE \"% 00:00:00\"\n  )\n  -- false positives\n  AND filename NOT IN (\n  \
+    \  '_libinput',\n    'COPYING',\n    'debian_version',\n    'installer-info.json',\n\
+    \    'master.passwd',\n    'METADATA',\n    'NEWS',\n    'printcap',\n    'strace-log-merge'\n\
+    \  )\n  AND filename NOT LIKE '%.txt'\n  AND file.path NOT LIKE '/etc/cups/%'\n\
+    \  AND file.path NOT LIKE '%/lynis%'\n  AND file.path NOT LIKE '%/yelp-xsl%'\n\
+    \  AND file.path != '/bin/VGAuthService'\n"
   platform: linux
-  description: Files where the timestamp falls along 12-hour boundaries - probably caused by 'touch <date>0000'
-  query: |
-    SELECT
-      file.path,
-      DATETIME(file.mtime, 'unixepoch', 'localtime') AS mod_time,
-      DATETIME(file.atime, 'unixepoch', 'localtime') AS access_time,
-      file.inode,
-      file.type,
-      file.mode,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        file.path LIKE "/bin/%%"
-        OR file.path LIKE "/etc/%%"
-        OR file.path LIKE "/sbin/%%"
-        OR file.path LIKE "/lib/%%"
-      )
-      -- This timestamp is in UTC
-      AND file.mtime > (strftime('%s', 'now') - (86400 * 720))
-      AND file.mtime % 3600 = 0
-      AND file.type = 'regular'
-      -- Narrow down to specific offsets in the users local timezone (there should be a better way!)
-      AND (
-        mod_time LIKE "% 12:00:00"
-        OR mod_time LIKE "% 00:00:00"
-      )
-      -- false positives
-      AND filename NOT IN (
-        '_libinput',
-        'COPYING',
-        'debian_version',
-        'installer-info.json',
-        'master.passwd',
-        'METADATA',
-        'NEWS',
-        'printcap',
-        'strace-log-merge'
-      )
-      AND filename NOT LIKE '%.txt'
-      AND file.path NOT LIKE '/etc/cups/%'
-      AND file.path NOT LIKE '%/lynis%'
-      AND file.path NOT LIKE '%/yelp-xsl%'
-      AND file.path != '/bin/VGAuthService'
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

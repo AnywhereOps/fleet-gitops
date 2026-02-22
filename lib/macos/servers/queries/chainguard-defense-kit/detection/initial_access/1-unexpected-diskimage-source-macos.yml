@@ -1,313 +1,97 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Diskimage Source Macos
-  platform: darwin
+- name: CDK - Unexpected Diskimage Source Macos
   description: Surface ISO/DMG disk images that were downloaded from unexpected places
-  query: |
-    SELECT
-      file.path,
-      file.size,
-      datetime(file.btime, 'unixepoch') AS file_created,
-      magic.data,
-      hash.sha256,
-      signature.identifier,
-      signature.authority,
-      ea.value AS url,
-      REGEX_MATCH (ea.value, '/([\w_-]+\.[\w\._-]+)[:/]', 1) AS host,
-      COALESCE(
-        REGEX_MATCH (
-          ea.value,
-          '/\/[\w_-]+\.([\w_-]+\.[\w\._-]+)[:/]',
-          1
-        ),
-        -- Fallback to hostname if no subdomain is found
-        REGEX_MATCH (ea.value, '/([\w_-]+\.[\w\._-]+)[:/]', 1)
-      ) AS subdomain
-    FROM
-      mdfind
-      LEFT JOIN file ON mdfind.path = file.path
-      LEFT JOIN hash ON mdfind.path = hash.path
-      LEFT JOIN extended_attributes ea ON mdfind.path = ea.path
-      LEFT JOIN magic ON mdfind.path = magic.path
-      LEFT JOIN signature ON mdfind.path = signature.path
-    WHERE
-      (
-        mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.iso'"
-        OR mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.dmg'"
-        OR mdfind.query = "kMDItemWhereFroms != '' && kMDItemFSName == '*.pkg'"
-      )
-      AND ea.key = 'where_from'
-      AND file.btime > (strftime('%s', 'now') -86400)
-      AND subdomain NOT IN (
-        'adguard.com',
-        'adobe.com',
-        'akmedia.digidesign.com',
-        'alfredapp.com',
-        'amazon.com',
-        'android.com',
-        'ankerwork.com',
-        'ankiweb.net',
-        'apple.com',
-        'arc.net',
-        'asana.com',
-        'astutegraphics.com',
-        'backblazeb2.com',
-        'balena.io',
-        'balsamiq.com',
-        'bblmw.com',
-        'bluestacks.com',
-        'box.com',
-        'boxcdn.net',
-        'brave.com',
-        'byfly.by',
-        'claude.ai',
-        'c-wss.com',
-        'canon.co.uk',
-        'cdn.mozilla.net',
-        'charlesproxy.com',
-        'chatgpt.com',
-        'chime.aws',
-        'cloudfront.net',
-        'cron.com',
-        'csclub.uwaterloo.ca',
-        'curseforge.com',
-        'descript.com',
-        'desktop.evernote.com',
-        'digidesign.com',
-        'discord.com',
-        'discordapp.net',
-        'dl.meitu.com',
-        'dl.sourceforge.net',
-        'docker.com',
-        'dogado.de',
-        'download.prss.microsoft.com',
-        'duckduckgo.com',
-        'eclipse.org',
-        'emeet.com',
-        'epson.com',
-        'eventideaudio.com',
-        'expensify.com',
-        'fcix.net',
-        'figma.com',
-        'foundry.com',
-        'gaomon.net',
-        'getutm.app',
-        'gimp.org',
-        'gitbutler.com',
-        'github.io',
-        'githubusercontent.com',
-        'google.ca',
-        'google.com',
-        'grammarly.com',
-        'granola.ai',
-        'imazing.com',
-        'integodownload.com',
-        'irccloud.com',
-        'jetbrains.com',
-        'kagi.com',
-        'kolide.com',
-        'libreoffice.org',
-        'live.com',
-        'lmstudio.ai',
-        'logitech.com',
-        'loom.com',
-        'macbartender.com',
-        'macroplant.com',
-        'maxon.net',
-        'microsoft.com',
-        'minecraft.net',
-        'mirrors.serverside.com',
-        'mirrorservice.org',
-        'mm.cfix.net',
-        'mm.fcix.net',
-        'mojang.com',
-        'mozilla.org',
-        'mutedeck.com',
-        'mysql.com',
-        'notion-static.com',
-        'notion.so',
-        'notion.com',
-        'obvdev.at',
-        'ocf.berkeley.edu',
-        'office.com',
-        'oobesaas.adobe.com',
-        'openra.net',
-        'oracle.com',
-        'osuosl.org',
-        'overwolf.com',
-        'pathofexile.com',
-        'perforce.com',
-        'plugable.com',
-        'poecdn.com',
-        'pqrs.org',
-        'proxmox.com',
-        'prusa3d.com',
-        'raspberrypi.com',
-        'reaper.fm',
-        'redhat.com',
-        'remarkable.com',
-        'rewind.ai',
-        's3.amazonaws.com',
-        'securew2.com',
-        'signal.org',
-        'siliconmotion.com',
-        'skype.com',
-        'slack-edge.com',
-        'slack.com',
-        'stclairsoft.com',
-        'steampowered.com',
-        'synaptics.com',
-        'tableplus.com',
-        'talos.dev',
-        'teams.cdn.office.net',
-        'techsmith.com',
-        'tweaknews.eu',
-        'ubuntu.com',
-        'ultimaker.com',
-        'umd.edu',
-        'usa.canon.com',
-        'uubyte.com',
-        'vc.logitech.com',
-        'vimcal.com',
-        'virtualbox.org',
-        'viture.dev',
-        'vmware.com',
-        'warp.dev',
-        'webex.com',
-        'whatsapp.com',
-        'xtom.com',
-        'xx.fbcdn.net',
-        'yubico.com',
-        'zoo.dev',
-        'zoom.us',
-        'zoomgov.com',
-        'zsa.io'
-      )
-      -- NOTE: Do not put all of storage.googleapis.com or similarly generic hosts here
-      AND host NOT IN (
-        'adoptium.net',
-        'arc.net',
-        'asana.com',
-        'awscli.amazonaws.com',
-        'balsamiq.com',
-        'bearly.ai',
-        'blyt.net',
-        'brave.com',
-        'calibre-ebook.com',
-        'chatgpt.com',
-        'cron.com',
-        'discord.com',
-        'dl.discordapp.net',
-        'dl.google.com',
-        'dl2.discordapp.net',
-        'duckduckgo.com',
-        'duetdownload.com',
-        'dygma.com',
-        'emacsformacosx.com',
-        'emeet.com',
-        'epson.com',
-        'evernote.com',
-        'fbcdn.net',
-        'figma.com',
-        'flipperzero.one',
-        'fnord.com',
-        'getkap.co',
-        'gitbutler.com',
-        'github.com',
-        'go.dev',
-        'imazing.com',
-        'keybase.io',
-        'kittycad.io',
-        'krisp.ai',
-        'mac.desktop.evernote.com',
-        'macroplant.com',
-        'mail.google.com',
-        'mangoslab.blob.core.windows.net',
-        'manual.canon',
-        'manytricks.com',
-        'maxon.net',
-        'mimestream.com',
-        'mnvoip.mm.fcix.net',
-        'multipass.run',
-        'mutedeck.com',
-        'muteme.com',
-        'new.expensify.com',
-        'obdev.at',
-        'obsidian.md',
-        'obsproject.com',
-        'opalcamera.com',
-        'openai.com',
-        'packages.openvpn.net',
-        'persistent.oaistatic.com',
-        'plugable.com',
-        'plugable.com',
-        'portswigger-cdn.net',
-        'posit.co',
-        'prerelease.keybase.io',
-        'presenting.app',
-        'proton.me',
-        'rancherdesktop.io',
-        'rectangleapp.com',
-        's3.amazonaws.com',
-        'scribehow.com',
-        'shottr.cc',
-        'sipapp.fra1.digitaloceanspaces.com',
-        'sipapp.io',
-        'sourceforge.net',
-        'sourcegraph.com',
-        'stclairsoft.s3.amazonaws.com',
-        'store.steampowered.com',
-        'superhuman.com',
-        'superkey.app',
-        'tableplus.com',
-        'textexpander.com',
-        'tosmediaserver.schwab.com',
-        'transmissionbt.com',
-        'ubuntu.com',
-        'ultimaker.com',
-        'universal-blue.discourse.group',
-        'us.ankerwork.com',
-        'warp-releases.storage.googleapis.com',
-        'wavebox.io',
-        'welcome.adguard.com',
-        'www.google.com',
-        'www.granola.ai',
-        'www.messenger.com',
-        'www.raycast.com',
-        'www.talos.dev',
-        'zed.dev',
-        'zoo.dev',
-        'zoom.us'
-      )
-      -- Yes, these are meant to be fairly broad.
-      AND host NOT LIKE '%.cdn.%.com'
-      AND host NOT LIKE '%.edu'
-      AND host NOT LIKE '%.org'
-      AND host NOT LIKE '%.s3.%.amazonaws.com'
-      AND host NOT LIKE '%release%.storage.googleapis.com'
-      AND host NOT LIKE '%teams.microsoft.com'
-      AND host NOT LIKE '%teams.microsoft.us'
-      AND host NOT LIKE 'cdn%'
-      AND host NOT LIKE 'dl-%'
-      AND host NOT LIKE 'dl.%'
-      AND host NOT LIKE 'download%'
-      AND host NOT LIKE 'driver.%'
-      AND host NOT LIKE 'github-production-release-asset-%.s3.amazonaws.com'
-      AND host NOT LIKE 'mirror%'
-      AND host NOT LIKE 'raycast-releases.%.r2.cloudflarestorage.com'
-      AND host NOT LIKE 's3.%.amazonaws.com'
-      AND host NOT LIKE 'software%'
-      AND host NOT LIKE 'support%'
-      AND host NOT LIKE 'www.google.%'
-      AND ea.value NOT LIKE 'https://storage.googleapis.com/copilot-mac-releases/%'
-      AND ea.value NOT LIKE 'https://storage.googleapis.com/kolide-k2-production-downloads-f414/%'
-    GROUP BY
-      ea.value
+  query: "SELECT\n  file.path,\n  file.size,\n  datetime(file.btime, 'unixepoch')\
+    \ AS file_created,\n  magic.data,\n  hash.sha256,\n  signature.identifier,\n \
+    \ signature.authority,\n  ea.value AS url,\n  REGEX_MATCH (ea.value, '/([\\w_-]+\\\
+    .[\\w\\._-]+)[:/]', 1) AS host,\n  COALESCE(\n    REGEX_MATCH (\n      ea.value,\n\
+    \      '/\\/[\\w_-]+\\.([\\w_-]+\\.[\\w\\._-]+)[:/]',\n      1\n    ),\n    --\
+    \ Fallback to hostname if no subdomain is found\n    REGEX_MATCH (ea.value, '/([\\\
+    w_-]+\\.[\\w\\._-]+)[:/]', 1)\n  ) AS subdomain\nFROM\n  mdfind\n  LEFT JOIN file\
+    \ ON mdfind.path = file.path\n  LEFT JOIN hash ON mdfind.path = hash.path\n  LEFT\
+    \ JOIN extended_attributes ea ON mdfind.path = ea.path\n  LEFT JOIN magic ON mdfind.path\
+    \ = magic.path\n  LEFT JOIN signature ON mdfind.path = signature.path\nWHERE\n\
+    \  (\n    mdfind.query = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.iso'\"\
+    \n    OR mdfind.query = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.dmg'\"\
+    \n    OR mdfind.query = \"kMDItemWhereFroms != '' && kMDItemFSName == '*.pkg'\"\
+    \n  )\n  AND ea.key = 'where_from'\n  AND file.btime > (strftime('%s', 'now')\
+    \ -86400)\n  AND subdomain NOT IN (\n    'adguard.com',\n    'adobe.com',\n  \
+    \  'akmedia.digidesign.com',\n    'alfredapp.com',\n    'amazon.com',\n    'android.com',\n\
+    \    'ankerwork.com',\n    'ankiweb.net',\n    'apple.com',\n    'arc.net',\n\
+    \    'asana.com',\n    'astutegraphics.com',\n    'backblazeb2.com',\n    'balena.io',\n\
+    \    'balsamiq.com',\n    'bblmw.com',\n    'bluestacks.com',\n    'box.com',\n\
+    \    'boxcdn.net',\n    'brave.com',\n    'byfly.by',\n    'claude.ai',\n    'c-wss.com',\n\
+    \    'canon.co.uk',\n    'cdn.mozilla.net',\n    'charlesproxy.com',\n    'chatgpt.com',\n\
+    \    'chime.aws',\n    'cloudfront.net',\n    'cron.com',\n    'csclub.uwaterloo.ca',\n\
+    \    'curseforge.com',\n    'descript.com',\n    'desktop.evernote.com',\n   \
+    \ 'digidesign.com',\n    'discord.com',\n    'discordapp.net',\n    'dl.meitu.com',\n\
+    \    'dl.sourceforge.net',\n    'docker.com',\n    'dogado.de',\n    'download.prss.microsoft.com',\n\
+    \    'duckduckgo.com',\n    'eclipse.org',\n    'emeet.com',\n    'epson.com',\n\
+    \    'eventideaudio.com',\n    'expensify.com',\n    'fcix.net',\n    'figma.com',\n\
+    \    'foundry.com',\n    'gaomon.net',\n    'getutm.app',\n    'gimp.org',\n \
+    \   'gitbutler.com',\n    'github.io',\n    'githubusercontent.com',\n    'google.ca',\n\
+    \    'google.com',\n    'grammarly.com',\n    'granola.ai',\n    'imazing.com',\n\
+    \    'integodownload.com',\n    'irccloud.com',\n    'jetbrains.com',\n    'kagi.com',\n\
+    \    'kolide.com',\n    'libreoffice.org',\n    'live.com',\n    'lmstudio.ai',\n\
+    \    'logitech.com',\n    'loom.com',\n    'macbartender.com',\n    'macroplant.com',\n\
+    \    'maxon.net',\n    'microsoft.com',\n    'minecraft.net',\n    'mirrors.serverside.com',\n\
+    \    'mirrorservice.org',\n    'mm.cfix.net',\n    'mm.fcix.net',\n    'mojang.com',\n\
+    \    'mozilla.org',\n    'mutedeck.com',\n    'mysql.com',\n    'notion-static.com',\n\
+    \    'notion.so',\n    'notion.com',\n    'obvdev.at',\n    'ocf.berkeley.edu',\n\
+    \    'office.com',\n    'oobesaas.adobe.com',\n    'openra.net',\n    'oracle.com',\n\
+    \    'osuosl.org',\n    'overwolf.com',\n    'pathofexile.com',\n    'perforce.com',\n\
+    \    'plugable.com',\n    'poecdn.com',\n    'pqrs.org',\n    'proxmox.com',\n\
+    \    'prusa3d.com',\n    'raspberrypi.com',\n    'reaper.fm',\n    'redhat.com',\n\
+    \    'remarkable.com',\n    'rewind.ai',\n    's3.amazonaws.com',\n    'securew2.com',\n\
+    \    'signal.org',\n    'siliconmotion.com',\n    'skype.com',\n    'slack-edge.com',\n\
+    \    'slack.com',\n    'stclairsoft.com',\n    'steampowered.com',\n    'synaptics.com',\n\
+    \    'tableplus.com',\n    'talos.dev',\n    'teams.cdn.office.net',\n    'techsmith.com',\n\
+    \    'tweaknews.eu',\n    'ubuntu.com',\n    'ultimaker.com',\n    'umd.edu',\n\
+    \    'usa.canon.com',\n    'uubyte.com',\n    'vc.logitech.com',\n    'vimcal.com',\n\
+    \    'virtualbox.org',\n    'viture.dev',\n    'vmware.com',\n    'warp.dev',\n\
+    \    'webex.com',\n    'whatsapp.com',\n    'xtom.com',\n    'xx.fbcdn.net',\n\
+    \    'yubico.com',\n    'zoo.dev',\n    'zoom.us',\n    'zoomgov.com',\n    'zsa.io'\n\
+    \  )\n  -- NOTE: Do not put all of storage.googleapis.com or similarly generic\
+    \ hosts here\n  AND host NOT IN (\n    'adoptium.net',\n    'arc.net',\n    'asana.com',\n\
+    \    'awscli.amazonaws.com',\n    'balsamiq.com',\n    'bearly.ai',\n    'blyt.net',\n\
+    \    'brave.com',\n    'calibre-ebook.com',\n    'chatgpt.com',\n    'cron.com',\n\
+    \    'discord.com',\n    'dl.discordapp.net',\n    'dl.google.com',\n    'dl2.discordapp.net',\n\
+    \    'duckduckgo.com',\n    'duetdownload.com',\n    'dygma.com',\n    'emacsformacosx.com',\n\
+    \    'emeet.com',\n    'epson.com',\n    'evernote.com',\n    'fbcdn.net',\n \
+    \   'figma.com',\n    'flipperzero.one',\n    'fnord.com',\n    'getkap.co',\n\
+    \    'gitbutler.com',\n    'github.com',\n    'go.dev',\n    'imazing.com',\n\
+    \    'keybase.io',\n    'kittycad.io',\n    'krisp.ai',\n    'mac.desktop.evernote.com',\n\
+    \    'macroplant.com',\n    'mail.google.com',\n    'mangoslab.blob.core.windows.net',\n\
+    \    'manual.canon',\n    'manytricks.com',\n    'maxon.net',\n    'mimestream.com',\n\
+    \    'mnvoip.mm.fcix.net',\n    'multipass.run',\n    'mutedeck.com',\n    'muteme.com',\n\
+    \    'new.expensify.com',\n    'obdev.at',\n    'obsidian.md',\n    'obsproject.com',\n\
+    \    'opalcamera.com',\n    'openai.com',\n    'packages.openvpn.net',\n    'persistent.oaistatic.com',\n\
+    \    'plugable.com',\n    'plugable.com',\n    'portswigger-cdn.net',\n    'posit.co',\n\
+    \    'prerelease.keybase.io',\n    'presenting.app',\n    'proton.me',\n    'rancherdesktop.io',\n\
+    \    'rectangleapp.com',\n    's3.amazonaws.com',\n    'scribehow.com',\n    'shottr.cc',\n\
+    \    'sipapp.fra1.digitaloceanspaces.com',\n    'sipapp.io',\n    'sourceforge.net',\n\
+    \    'sourcegraph.com',\n    'stclairsoft.s3.amazonaws.com',\n    'store.steampowered.com',\n\
+    \    'superhuman.com',\n    'superkey.app',\n    'tableplus.com',\n    'textexpander.com',\n\
+    \    'tosmediaserver.schwab.com',\n    'transmissionbt.com',\n    'ubuntu.com',\n\
+    \    'ultimaker.com',\n    'universal-blue.discourse.group',\n    'us.ankerwork.com',\n\
+    \    'warp-releases.storage.googleapis.com',\n    'wavebox.io',\n    'welcome.adguard.com',\n\
+    \    'www.google.com',\n    'www.granola.ai',\n    'www.messenger.com',\n    'www.raycast.com',\n\
+    \    'www.talos.dev',\n    'zed.dev',\n    'zoo.dev',\n    'zoom.us'\n  )\n  --\
+    \ Yes, these are meant to be fairly broad.\n  AND host NOT LIKE '%.cdn.%.com'\n\
+    \  AND host NOT LIKE '%.edu'\n  AND host NOT LIKE '%.org'\n  AND host NOT LIKE\
+    \ '%.s3.%.amazonaws.com'\n  AND host NOT LIKE '%release%.storage.googleapis.com'\n\
+    \  AND host NOT LIKE '%teams.microsoft.com'\n  AND host NOT LIKE '%teams.microsoft.us'\n\
+    \  AND host NOT LIKE 'cdn%'\n  AND host NOT LIKE 'dl-%'\n  AND host NOT LIKE 'dl.%'\n\
+    \  AND host NOT LIKE 'download%'\n  AND host NOT LIKE 'driver.%'\n  AND host NOT\
+    \ LIKE 'github-production-release-asset-%.s3.amazonaws.com'\n  AND host NOT LIKE\
+    \ 'mirror%'\n  AND host NOT LIKE 'raycast-releases.%.r2.cloudflarestorage.com'\n\
+    \  AND host NOT LIKE 's3.%.amazonaws.com'\n  AND host NOT LIKE 'software%'\n \
+    \ AND host NOT LIKE 'support%'\n  AND host NOT LIKE 'www.google.%'\n  AND ea.value\
+    \ NOT LIKE 'https://storage.googleapis.com/copilot-mac-releases/%'\n  AND ea.value\
+    \ NOT LIKE 'https://storage.googleapis.com/kolide-k2-production-downloads-f414/%'\n\
+    GROUP BY\n  ea.value\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

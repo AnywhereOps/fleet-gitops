@@ -1,18 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - User Ssh Keys
+- name: CDK - User Ssh Keys
   description: Retrieves the ssh keys per user
-  query: |
-    SELECT
-      *
-    FROM
-      users
-      JOIN user_ssh_keys USING (uid);
+  query: "SELECT\n  *\nFROM\n  users\n  JOIN user_ssh_keys USING (uid);\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

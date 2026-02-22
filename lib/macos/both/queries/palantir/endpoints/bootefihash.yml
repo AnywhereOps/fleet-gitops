@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: boot_efi_hash
+- name: boot_efi_hash
   description: MD5 hash of boot.efi
   query: SELECT path, md5 FROM hash WHERE path='/System/Library/CoreServices/boot.efi';
   platform: darwin
-  team: both

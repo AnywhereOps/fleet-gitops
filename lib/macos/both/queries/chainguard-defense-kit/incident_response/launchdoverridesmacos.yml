@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Launchd Overrides Macos
-  platform: darwin
+- name: CDK - Launchd Overrides Macos
   description: Retrieves launchd override keys per user
-  query: |
-    SELECT
-      *
-    FROM
-      launchd_overrides;
+  query: "SELECT\n  *\nFROM\n  launchd_overrides;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

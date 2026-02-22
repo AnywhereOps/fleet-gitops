@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Package Receipts Macos
-  platform: darwin
+- name: CDK - Package Receipts Macos
   description: Return macOS package receipts
-  query: |
-    SELECT
-      *
-    FROM
-      package_receipts;
+  query: "SELECT\n  *\nFROM\n  package_receipts;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

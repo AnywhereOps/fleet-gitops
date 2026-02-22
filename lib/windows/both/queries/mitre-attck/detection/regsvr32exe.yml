@@ -1,10 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: regsvr32.exe
+- name: regsvr32.exe
+  description: POWERSHELL Execute, is a powerful interactive command-line interface
+    and scripting environment included in the Windows operating system - ATT&CK T1117
+  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
+    like '%regsvr%';
   platform: windows
-  description: POWERSHELL Execute, is a powerful interactive command-line interface and scripting environment included in the Windows operating system - ATT&CK T1117
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%regsvr%';
   interval: 600
-  team: both

@@ -1,515 +1,124 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Kernel Modules Linux
-  platform: linux
+- name: CDK - Unexpected Kernel Modules Linux
   description: Find kernel modules that are not part of the expected list
-  query: |
-    SELECT
-      *
-    FROM
-      kernel_modules
-    WHERE
-      -- Filter out kernel modules that are required by another kernel module to reduce false-positives
-      used_by != NULL
-      AND name NOT IN (
-        '8021q',
-        'ac97_bus',
-        'acpi_cpufreq',
-        'acpi_pad',
-        'acpi_tad',
-        'acpi_thermal_rel',
-        'aesni_intel',
-        'af_alg',
-        'af_packet',
-        'agpgart',
-        'ahci',
-        'algif_aead',
-        'algif_hash',
-        'algif_skcipher',
-        'amd_pmc',
-        'amdgpu',
-        'apple_mfi_fastcharge',
-        'asn1_encoder',
-        'asus_ec_sensors',
-        'asus_wmi',
-        'ath',
-        'ath10k_core',
-        'ath10k_pci',
-        'atkbd',
-        'authenc',
-        'autofs4',
-        'backlight',
-        'battery',
-        'binfmt_misc',
-        'bluetooth',
-        'bnep',
-        'bpf_preload',
-        'br_netfilter',
-        'bridge',
-        'btbcm',
-        'btintel',
-        'btmtk',
-        'btrtl',
-        'btusb',
-        'button',
-        'cbc',
-        'ccm',
-        'ccp',
-        'cdc_ether',
-        'cdrom',
-        'cec',
-        'cfg80211',
-        'cmac',
-        'configfs',
-        'coretemp',
-        'cpuid',
-        'cqhci',
-        'crc_t10dif',
-        'crc16',
-        'crc32_pclmul',
-        'crc32c_generic',
-        'crc32c_intel',
-        'crct10dif_common',
-        'crct10dif_generic',
-        'crct10dif_pclmul',
-        'cros_ec_chardev',
-        'cros_ec_debugfs',
-        'cros_ec_dev',
-        'cros_ec_ishtp',
-        'cros_ec_lpcs',
-        'cros_ec_sysfs',
-        'cros_ec',
-        'cros_usbpd_charger',
-        'cros_usbpd_logger',
-        'cros_usbpd_notify',
-        'cryptd',
-        'crypto_simd',
-        'crypto_user',
-        'ctr',
-        'dca',
-        'dcdbas',
-        'deflate',
-        'dell_laptop',
-        'dell_smbios',
-        'dell_smm_hwmon',
-        'dell_wmi_descriptor',
-        'dell_wmi',
-        'des_generic',
-        'dm_bio_prison',
-        'dm_bufio',
-        'dm_crypt',
-        'dm_mod',
-        'dm_multipath',
-        'dm_persistent_data',
-        'dm_thin_pool',
-        'drm_buddy',
-        'drm_display_helper',
-        'drm_dp_helper',
-        'drm_kms_helper',
-        'drm_ttm_helper',
-        'drm',
-        'ecb',
-        'ecc',
-        'ecdh_generic',
-        'edac_core',
-        'edac_mce_amd',
-        'ee1004',
-        'eeepc_wmi',
-        'efi_pstore',
-        'efivarfs',
-        'encrypted_keys',
-        'essiv',
-        'evdev',
-        'exfat',
-        'ext4',
-        'fat',
-        'fb_sys_fops',
-        'firmware_attributes_class',
-        'fuse',
-        'garmin_gps',
-        'gf128mul',
-        'ghash_clmulni_intel',
-        'gigabyte_wmi',
-        'gpio_amdpt',
-        'gpio_generic',
-        'gpu_sched',
-        'hid_apple',
-        'hid_generic',
-        'hid_jabra',
-        'hid_logitech_dj',
-        'hid_logitech_hidpp',
-        'hid_multitouch',
-        'hid_sensor_als',
-        'hid_sensor_custom',
-        'hid_sensor_hub',
-        'hid_sensor_iio_common',
-        'hid_sensor_trigger',
-        'hid',
-        'hwmon_vid',
-        'i2c_algo_bit',
-        'i2c_core',
-        'i2c_designware_core',
-        'i2c_designware_platform',
-        'i2c_hid_acpi',
-        'i2c_hid',
-        'i2c_i801',
-        'i2c_piix4',
-        'i2c_scmi',
-        'i2c_smbus',
-        'i8042',
-        'i915',
-        'icp',
-        'idma64',
-        'igb',
-        'igc',
-        'igen6_edac',
-        'industrialio_triggered_buffer',
-        'industrialio',
-        'input_leds',
-        'int3400_thermal',
-        'int3403_thermal',
-        'int340x_thermal_zone',
-        'intel_cstate',
-        'intel_gtt',
-        'intel_hid',
-        'intel_ish_ipc',
-        'intel_ishtp_hid',
-        'intel_ishtp_loader',
-        'intel_ishtp',
-        'intel_lpss_pci',
-        'intel_lpss',
-        'intel_pch_thermal',
-        'intel_pmc_bxt',
-        'intel_pmt',
-        'intel_powerclamp',
-        'intel_rapl_common',
-        'intel_rapl_msr',
-        'intel_soc_dts_iosf',
-        'intel_spi_pci',
-        'intel_spi',
-        'intel_tcc_cooling',
-        'intel_uncore',
-        'intel_vsec',
-        'intel_wmi_thunderbolt',
-        'intel_xhci_usb_role_switch',
-        'iommu_v2',
-        'ip_set',
-        'ip_tables',
-        'ip_vs_rr',
-        'ip_vs_sh',
-        'ip_vs_wrr',
-        'ip_vs',
-        'ip6_tables',
-        'ip6t_REJECT',
-        'ip6t_rpfilter',
-        'ip6t_rt',
-        'ip6table_filter',
-        'ip6table_mangle',
-        'ip6table_nat',
-        'ip6table_raw',
-        'ip6table_security',
-        'ipheth',
-        'ipmi_devintf',
-        'ipmi_msghandler',
-        'ipt_REJECT',
-        'ipt_rpfilter',
-        'iptable_filter',
-        'iptable_mangle',
-        'iptable_nat',
-        'iptable_raw',
-        'iptable_security',
-        'irqbypass',
-        'isofs',
-        'iTCO_vendor_support',
-        'iTCO_wdt',
-        'iwlmei',
-        'iwlmvm',
-        'iwlwifi',
-        'jbd2',
-        'jc42',
-        'joydev',
-        'k10temp',
-        'kfifo_buf',
-        'kvm_amd',
-        'kvm_intel',
-        'kvm',
-        'led_class',
-        'ledtrig_audio',
-        'libaes',
-        'libahci',
-        'libarc4',
-        'libata',
-        'libcrc32c',
-        'libdes',
-        'libphy',
-        'libps2',
-        'llc',
-        'loop',
-        'lp',
-        'mac_hid',
-        'mac80211',
-        'macvlan',
-        'mbcache',
-        'mc',
-        'md_mod',
-        'md4',
-        'mdio_devres',
-        'mei_hdcp',
-        'mei_me',
-        'mei_pxp',
-        'mei_wdt',
-        'mei',
-        'mii',
-        'mmc_block',
-        'mmc_core',
-        'mousedev',
-        'msr',
-        'mtd',
-        'mxm_wmi',
-        'nct6775_core',
-        'nct6775',
-        'netlink_diag',
-        'nf_conntrack_broadcast',
-        'nf_conntrack_netbios_ns',
-        'nf_conntrack_netlink',
-        'nf_conntrack',
-        'nf_defrag_ipv4',
-        'nf_defrag_ipv6',
-        'nf_log_syslog',
-        'nf_nat',
-        'nf_reject_ipv4',
-        'nf_reject_ipv6',
-        'nf_tables',
-        'nfnetlink_log',
-        'nfnetlink_queue',
-        'nfnetlink',
-        'nft_chain_nat',
-        'nft_compat',
-        'nft_counter',
-        'nft_ct',
-        'nft_fib_inet',
-        'nft_fib_ipv4',
-        'nft_fib_ipv6',
-        'nft_fib',
-        'nft_limit',
-        'nft_objref',
-        'nft_reject_inet',
-        'nft_reject',
-        'nls_cp437',
-        'nls_iso8859_1',
-        'nvidia_drm',
-        'nvidia_modeset',
-        'nvidia_uvm',
-        'nvidia',
-        'nvme_common',
-        'nvme_core',
-        'nvme',
-        'nvram',
-        'overlay',
-        'parport_pc',
-        'parport',
-        'pcspkr',
-        'pinctrl_amd',
-        'pinctrl_sunrisepoint',
-        'pinctrl_tigerlake',
-        'pkcs8_key_parser',
-        'platform_profile',
-        'pmt_class',
-        'pmt_telemetry',
-        'polyval_clmulni',
-        'polyval_generic',
-        'ppdev',
-        'pps_core',
-        'processor_thermal_device_pci_legacy',
-        'processor_thermal_device_pci',
-        'processor_thermal_device',
-        'processor_thermal_mbox',
-        'processor_thermal_rapl',
-        'processor_thermal_rfim',
-        'psmouse',
-        'pstore_blk',
-        'pstore_zone',
-        'pstore',
-        'ptp',
-        'qrtr',
-        'r8152',
-        'r8153_ecm',
-        'r8169',
-        'raid0',
-        'ramoops',
-        'rapl',
-        'raydium_i2c_ts',
-        'rc_core',
-        'realtek',
-        'reed_solomon',
-        'rfcomm',
-        'rfkill',
-        'rndis_host',
-        'rndis_wlan',
-        'rng_core',
-        'roles',
-        'rtc_cmos',
-        'rtsx_pci_sdmmc',
-        'rtsx_pci',
-        'rtw89_8852a',
-        'rtw89_8852ae',
-        'rtw89_core',
-        'rtw89_pci',
-        'sch_fq_codel',
-        'scsi_common',
-        'scsi_mod',
-        'sdhci_pci',
-        'sdhci',
-        'serio_raw',
-        'serio',
-        'sg',
-        'snd_acp_config',
-        'snd_acp3x_pdm_dma',
-        'snd_acp3x_rn',
-        'snd_compress',
-        'snd_ctl_led',
-        'snd_hda_codec_generic',
-        'snd_hda_codec_hdmi',
-        'snd_hda_codec_idt',
-        'snd_hda_codec_realtek',
-        'snd_hda_codec',
-        'snd_hda_core',
-        'snd_hda_ext_core',
-        'snd_hda_intel',
-        'snd_hrtimer',
-        'snd_hwdep',
-        'snd_intel_dspcfg',
-        'snd_intel_sdw_acpi',
-        'snd_pci_acp3x',
-        'snd_pci_acp5x',
-        'snd_pci_acp6x',
-        'snd_pcm_dmaengine',
-        'snd_pcm',
-        'snd_rawmidi',
-        'snd_rn_pci_acp3x',
-        'snd_seq_device',
-        'snd_seq_dummy',
-        'snd_seq_midi_event',
-        'snd_seq_midi',
-        'snd_seq',
-        'snd_soc_acpi_intel_match',
-        'snd_soc_acpi',
-        'snd_soc_avs',
-        'snd_soc_core',
-        'snd_soc_dmic',
-        'snd_soc_hda_codec',
-        'snd_soc_hdac_hda',
-        'snd_soc_hdac_hdmi',
-        'snd_soc_intel_hda_dsp_common',
-        'snd_soc_skl_hda_dsp',
-        'snd_soc_skl',
-        'snd_soc_sst_dsp',
-        'snd_soc_sst_ipc',
-        'snd_sof_amd_acp',
-        'snd_sof_amd_renoir',
-        'snd_sof_intel_hda_common',
-        'snd_sof_intel_hda',
-        'snd_sof_pci_intel_tgl',
-        'snd_sof_pci',
-        'snd_sof_utils',
-        'snd_sof_xtensa_dsp',
-        'snd_sof',
-        'snd_timer',
-        'snd_usb_audio',
-        'snd_usbmidi_lib',
-        'snd',
-        'soundcore',
-        'soundwire_bus',
-        'soundwire_cadence',
-        'soundwire_generic_allocation',
-        'soundwire_intel',
-        'sp5100_tco',
-        'sparse_keymap',
-        'spi_intel_pci',
-        'spi_intel',
-        'spi_nor',
-        'spl',
-        'squashfs',
-        'stp',
-        'sunrpc',
-        'syscopyarea',
-        'sysfillrect',
-        'sysimgblt',
-        't10_pi',
-        'tap',
-        'tee',
-        'thermal',
-        'think_lmi',
-        'thinkpad_acpi',
-        'thunderbolt',
-        'tiny_power_button',
-        'tls',
-        'tpm_crb',
-        'tpm_tis_core',
-        'tpm_tis',
-        'tpm',
-        'trusted',
-        'ttm',
-        'tun',
-        'typec_ucsi',
-        'typec',
-        'uas',
-        'ucsi_acpi',
-        'uhid',
-        'uinput',
-        'usb_common',
-        'usb_storage',
-        'usbcore',
-        'usbhid',
-        'usbnet',
-        'uvcvideo',
-        'v4l2loopback',
-        'veth',
-        'vfat',
-        'video',
-        'videobuf2_common',
-        'videobuf2_memops',
-        'videobuf2_v4l2',
-        'videobuf2_vmalloc',
-        'videodev',
-        'vivaldi_fmap',
-        'watchdog',
-        'wmi_bmof',
-        'wmi',
-        'x_tables',
-        'x86_pkg_temp_thermal',
-        'xfrm_algo',
-        'xfrm_user',
-        'xfs',
-        'xhci_hcd',
-        'xhci_pci_renesas',
-        'xhci_pci',
-        'xt_addrtype',
-        'xt_comment',
-        'xt_conntrack',
-        'xt_hl',
-        'xt_limit',
-        'xt_LOG',
-        'xt_mark',
-        'xt_MASQUERADE',
-        'xt_nat',
-        'xt_pkttype',
-        'xt_statistic',
-        'xt_tcpudp',
-        'zavl',
-        'zcommon',
-        'zfs',
-        'zlua',
-        'znvpair',
-        'zram',
-        'zunicode',
-        'zzstd'
-      )
+  query: "SELECT\n  *\nFROM\n  kernel_modules\nWHERE\n  -- Filter out kernel modules\
+    \ that are required by another kernel module to reduce false-positives\n  used_by\
+    \ != NULL\n  AND name NOT IN (\n    '8021q',\n    'ac97_bus',\n    'acpi_cpufreq',\n\
+    \    'acpi_pad',\n    'acpi_tad',\n    'acpi_thermal_rel',\n    'aesni_intel',\n\
+    \    'af_alg',\n    'af_packet',\n    'agpgart',\n    'ahci',\n    'algif_aead',\n\
+    \    'algif_hash',\n    'algif_skcipher',\n    'amd_pmc',\n    'amdgpu',\n   \
+    \ 'apple_mfi_fastcharge',\n    'asn1_encoder',\n    'asus_ec_sensors',\n    'asus_wmi',\n\
+    \    'ath',\n    'ath10k_core',\n    'ath10k_pci',\n    'atkbd',\n    'authenc',\n\
+    \    'autofs4',\n    'backlight',\n    'battery',\n    'binfmt_misc',\n    'bluetooth',\n\
+    \    'bnep',\n    'bpf_preload',\n    'br_netfilter',\n    'bridge',\n    'btbcm',\n\
+    \    'btintel',\n    'btmtk',\n    'btrtl',\n    'btusb',\n    'button',\n   \
+    \ 'cbc',\n    'ccm',\n    'ccp',\n    'cdc_ether',\n    'cdrom',\n    'cec',\n\
+    \    'cfg80211',\n    'cmac',\n    'configfs',\n    'coretemp',\n    'cpuid',\n\
+    \    'cqhci',\n    'crc_t10dif',\n    'crc16',\n    'crc32_pclmul',\n    'crc32c_generic',\n\
+    \    'crc32c_intel',\n    'crct10dif_common',\n    'crct10dif_generic',\n    'crct10dif_pclmul',\n\
+    \    'cros_ec_chardev',\n    'cros_ec_debugfs',\n    'cros_ec_dev',\n    'cros_ec_ishtp',\n\
+    \    'cros_ec_lpcs',\n    'cros_ec_sysfs',\n    'cros_ec',\n    'cros_usbpd_charger',\n\
+    \    'cros_usbpd_logger',\n    'cros_usbpd_notify',\n    'cryptd',\n    'crypto_simd',\n\
+    \    'crypto_user',\n    'ctr',\n    'dca',\n    'dcdbas',\n    'deflate',\n \
+    \   'dell_laptop',\n    'dell_smbios',\n    'dell_smm_hwmon',\n    'dell_wmi_descriptor',\n\
+    \    'dell_wmi',\n    'des_generic',\n    'dm_bio_prison',\n    'dm_bufio',\n\
+    \    'dm_crypt',\n    'dm_mod',\n    'dm_multipath',\n    'dm_persistent_data',\n\
+    \    'dm_thin_pool',\n    'drm_buddy',\n    'drm_display_helper',\n    'drm_dp_helper',\n\
+    \    'drm_kms_helper',\n    'drm_ttm_helper',\n    'drm',\n    'ecb',\n    'ecc',\n\
+    \    'ecdh_generic',\n    'edac_core',\n    'edac_mce_amd',\n    'ee1004',\n \
+    \   'eeepc_wmi',\n    'efi_pstore',\n    'efivarfs',\n    'encrypted_keys',\n\
+    \    'essiv',\n    'evdev',\n    'exfat',\n    'ext4',\n    'fat',\n    'fb_sys_fops',\n\
+    \    'firmware_attributes_class',\n    'fuse',\n    'garmin_gps',\n    'gf128mul',\n\
+    \    'ghash_clmulni_intel',\n    'gigabyte_wmi',\n    'gpio_amdpt',\n    'gpio_generic',\n\
+    \    'gpu_sched',\n    'hid_apple',\n    'hid_generic',\n    'hid_jabra',\n  \
+    \  'hid_logitech_dj',\n    'hid_logitech_hidpp',\n    'hid_multitouch',\n    'hid_sensor_als',\n\
+    \    'hid_sensor_custom',\n    'hid_sensor_hub',\n    'hid_sensor_iio_common',\n\
+    \    'hid_sensor_trigger',\n    'hid',\n    'hwmon_vid',\n    'i2c_algo_bit',\n\
+    \    'i2c_core',\n    'i2c_designware_core',\n    'i2c_designware_platform',\n\
+    \    'i2c_hid_acpi',\n    'i2c_hid',\n    'i2c_i801',\n    'i2c_piix4',\n    'i2c_scmi',\n\
+    \    'i2c_smbus',\n    'i8042',\n    'i915',\n    'icp',\n    'idma64',\n    'igb',\n\
+    \    'igc',\n    'igen6_edac',\n    'industrialio_triggered_buffer',\n    'industrialio',\n\
+    \    'input_leds',\n    'int3400_thermal',\n    'int3403_thermal',\n    'int340x_thermal_zone',\n\
+    \    'intel_cstate',\n    'intel_gtt',\n    'intel_hid',\n    'intel_ish_ipc',\n\
+    \    'intel_ishtp_hid',\n    'intel_ishtp_loader',\n    'intel_ishtp',\n    'intel_lpss_pci',\n\
+    \    'intel_lpss',\n    'intel_pch_thermal',\n    'intel_pmc_bxt',\n    'intel_pmt',\n\
+    \    'intel_powerclamp',\n    'intel_rapl_common',\n    'intel_rapl_msr',\n  \
+    \  'intel_soc_dts_iosf',\n    'intel_spi_pci',\n    'intel_spi',\n    'intel_tcc_cooling',\n\
+    \    'intel_uncore',\n    'intel_vsec',\n    'intel_wmi_thunderbolt',\n    'intel_xhci_usb_role_switch',\n\
+    \    'iommu_v2',\n    'ip_set',\n    'ip_tables',\n    'ip_vs_rr',\n    'ip_vs_sh',\n\
+    \    'ip_vs_wrr',\n    'ip_vs',\n    'ip6_tables',\n    'ip6t_REJECT',\n    'ip6t_rpfilter',\n\
+    \    'ip6t_rt',\n    'ip6table_filter',\n    'ip6table_mangle',\n    'ip6table_nat',\n\
+    \    'ip6table_raw',\n    'ip6table_security',\n    'ipheth',\n    'ipmi_devintf',\n\
+    \    'ipmi_msghandler',\n    'ipt_REJECT',\n    'ipt_rpfilter',\n    'iptable_filter',\n\
+    \    'iptable_mangle',\n    'iptable_nat',\n    'iptable_raw',\n    'iptable_security',\n\
+    \    'irqbypass',\n    'isofs',\n    'iTCO_vendor_support',\n    'iTCO_wdt',\n\
+    \    'iwlmei',\n    'iwlmvm',\n    'iwlwifi',\n    'jbd2',\n    'jc42',\n    'joydev',\n\
+    \    'k10temp',\n    'kfifo_buf',\n    'kvm_amd',\n    'kvm_intel',\n    'kvm',\n\
+    \    'led_class',\n    'ledtrig_audio',\n    'libaes',\n    'libahci',\n    'libarc4',\n\
+    \    'libata',\n    'libcrc32c',\n    'libdes',\n    'libphy',\n    'libps2',\n\
+    \    'llc',\n    'loop',\n    'lp',\n    'mac_hid',\n    'mac80211',\n    'macvlan',\n\
+    \    'mbcache',\n    'mc',\n    'md_mod',\n    'md4',\n    'mdio_devres',\n  \
+    \  'mei_hdcp',\n    'mei_me',\n    'mei_pxp',\n    'mei_wdt',\n    'mei',\n  \
+    \  'mii',\n    'mmc_block',\n    'mmc_core',\n    'mousedev',\n    'msr',\n  \
+    \  'mtd',\n    'mxm_wmi',\n    'nct6775_core',\n    'nct6775',\n    'netlink_diag',\n\
+    \    'nf_conntrack_broadcast',\n    'nf_conntrack_netbios_ns',\n    'nf_conntrack_netlink',\n\
+    \    'nf_conntrack',\n    'nf_defrag_ipv4',\n    'nf_defrag_ipv6',\n    'nf_log_syslog',\n\
+    \    'nf_nat',\n    'nf_reject_ipv4',\n    'nf_reject_ipv6',\n    'nf_tables',\n\
+    \    'nfnetlink_log',\n    'nfnetlink_queue',\n    'nfnetlink',\n    'nft_chain_nat',\n\
+    \    'nft_compat',\n    'nft_counter',\n    'nft_ct',\n    'nft_fib_inet',\n \
+    \   'nft_fib_ipv4',\n    'nft_fib_ipv6',\n    'nft_fib',\n    'nft_limit',\n \
+    \   'nft_objref',\n    'nft_reject_inet',\n    'nft_reject',\n    'nls_cp437',\n\
+    \    'nls_iso8859_1',\n    'nvidia_drm',\n    'nvidia_modeset',\n    'nvidia_uvm',\n\
+    \    'nvidia',\n    'nvme_common',\n    'nvme_core',\n    'nvme',\n    'nvram',\n\
+    \    'overlay',\n    'parport_pc',\n    'parport',\n    'pcspkr',\n    'pinctrl_amd',\n\
+    \    'pinctrl_sunrisepoint',\n    'pinctrl_tigerlake',\n    'pkcs8_key_parser',\n\
+    \    'platform_profile',\n    'pmt_class',\n    'pmt_telemetry',\n    'polyval_clmulni',\n\
+    \    'polyval_generic',\n    'ppdev',\n    'pps_core',\n    'processor_thermal_device_pci_legacy',\n\
+    \    'processor_thermal_device_pci',\n    'processor_thermal_device',\n    'processor_thermal_mbox',\n\
+    \    'processor_thermal_rapl',\n    'processor_thermal_rfim',\n    'psmouse',\n\
+    \    'pstore_blk',\n    'pstore_zone',\n    'pstore',\n    'ptp',\n    'qrtr',\n\
+    \    'r8152',\n    'r8153_ecm',\n    'r8169',\n    'raid0',\n    'ramoops',\n\
+    \    'rapl',\n    'raydium_i2c_ts',\n    'rc_core',\n    'realtek',\n    'reed_solomon',\n\
+    \    'rfcomm',\n    'rfkill',\n    'rndis_host',\n    'rndis_wlan',\n    'rng_core',\n\
+    \    'roles',\n    'rtc_cmos',\n    'rtsx_pci_sdmmc',\n    'rtsx_pci',\n    'rtw89_8852a',\n\
+    \    'rtw89_8852ae',\n    'rtw89_core',\n    'rtw89_pci',\n    'sch_fq_codel',\n\
+    \    'scsi_common',\n    'scsi_mod',\n    'sdhci_pci',\n    'sdhci',\n    'serio_raw',\n\
+    \    'serio',\n    'sg',\n    'snd_acp_config',\n    'snd_acp3x_pdm_dma',\n  \
+    \  'snd_acp3x_rn',\n    'snd_compress',\n    'snd_ctl_led',\n    'snd_hda_codec_generic',\n\
+    \    'snd_hda_codec_hdmi',\n    'snd_hda_codec_idt',\n    'snd_hda_codec_realtek',\n\
+    \    'snd_hda_codec',\n    'snd_hda_core',\n    'snd_hda_ext_core',\n    'snd_hda_intel',\n\
+    \    'snd_hrtimer',\n    'snd_hwdep',\n    'snd_intel_dspcfg',\n    'snd_intel_sdw_acpi',\n\
+    \    'snd_pci_acp3x',\n    'snd_pci_acp5x',\n    'snd_pci_acp6x',\n    'snd_pcm_dmaengine',\n\
+    \    'snd_pcm',\n    'snd_rawmidi',\n    'snd_rn_pci_acp3x',\n    'snd_seq_device',\n\
+    \    'snd_seq_dummy',\n    'snd_seq_midi_event',\n    'snd_seq_midi',\n    'snd_seq',\n\
+    \    'snd_soc_acpi_intel_match',\n    'snd_soc_acpi',\n    'snd_soc_avs',\n  \
+    \  'snd_soc_core',\n    'snd_soc_dmic',\n    'snd_soc_hda_codec',\n    'snd_soc_hdac_hda',\n\
+    \    'snd_soc_hdac_hdmi',\n    'snd_soc_intel_hda_dsp_common',\n    'snd_soc_skl_hda_dsp',\n\
+    \    'snd_soc_skl',\n    'snd_soc_sst_dsp',\n    'snd_soc_sst_ipc',\n    'snd_sof_amd_acp',\n\
+    \    'snd_sof_amd_renoir',\n    'snd_sof_intel_hda_common',\n    'snd_sof_intel_hda',\n\
+    \    'snd_sof_pci_intel_tgl',\n    'snd_sof_pci',\n    'snd_sof_utils',\n    'snd_sof_xtensa_dsp',\n\
+    \    'snd_sof',\n    'snd_timer',\n    'snd_usb_audio',\n    'snd_usbmidi_lib',\n\
+    \    'snd',\n    'soundcore',\n    'soundwire_bus',\n    'soundwire_cadence',\n\
+    \    'soundwire_generic_allocation',\n    'soundwire_intel',\n    'sp5100_tco',\n\
+    \    'sparse_keymap',\n    'spi_intel_pci',\n    'spi_intel',\n    'spi_nor',\n\
+    \    'spl',\n    'squashfs',\n    'stp',\n    'sunrpc',\n    'syscopyarea',\n\
+    \    'sysfillrect',\n    'sysimgblt',\n    't10_pi',\n    'tap',\n    'tee',\n\
+    \    'thermal',\n    'think_lmi',\n    'thinkpad_acpi',\n    'thunderbolt',\n\
+    \    'tiny_power_button',\n    'tls',\n    'tpm_crb',\n    'tpm_tis_core',\n \
+    \   'tpm_tis',\n    'tpm',\n    'trusted',\n    'ttm',\n    'tun',\n    'typec_ucsi',\n\
+    \    'typec',\n    'uas',\n    'ucsi_acpi',\n    'uhid',\n    'uinput',\n    'usb_common',\n\
+    \    'usb_storage',\n    'usbcore',\n    'usbhid',\n    'usbnet',\n    'uvcvideo',\n\
+    \    'v4l2loopback',\n    'veth',\n    'vfat',\n    'video',\n    'videobuf2_common',\n\
+    \    'videobuf2_memops',\n    'videobuf2_v4l2',\n    'videobuf2_vmalloc',\n  \
+    \  'videodev',\n    'vivaldi_fmap',\n    'watchdog',\n    'wmi_bmof',\n    'wmi',\n\
+    \    'x_tables',\n    'x86_pkg_temp_thermal',\n    'xfrm_algo',\n    'xfrm_user',\n\
+    \    'xfs',\n    'xhci_hcd',\n    'xhci_pci_renesas',\n    'xhci_pci',\n    'xt_addrtype',\n\
+    \    'xt_comment',\n    'xt_conntrack',\n    'xt_hl',\n    'xt_limit',\n    'xt_LOG',\n\
+    \    'xt_mark',\n    'xt_MASQUERADE',\n    'xt_nat',\n    'xt_pkttype',\n    'xt_statistic',\n\
+    \    'xt_tcpudp',\n    'zavl',\n    'zcommon',\n    'zfs',\n    'zlua',\n    'znvpair',\n\
+    \    'zram',\n    'zunicode',\n    'zzstd'\n  )\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

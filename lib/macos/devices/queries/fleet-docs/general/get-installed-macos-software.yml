@@ -1,21 +1,15 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get installed macOS software
+- name: Get installed macOS software
+  description: Get all software installed on a macOS computer, including apps, browser
+    plugins, and installed packages. Note that this does not include other running
+    processes in the processes table.
+  query: SELECT name AS name, bundle_short_version AS version, 'Application (macOS)'
+    AS type, 'apps' AS source FROM apps UNION SELECT name AS name, version AS version,
+    'Package (Python)' AS type, 'python_packages' AS source FROM python_packages UNION
+    SELECT name AS name, version AS version, 'Browser plugin (Chrome)' AS type, 'chrome_extensions'
+    AS source FROM chrome_extensions UNION SELECT name AS name, version AS version,
+    'Browser plugin (Firefox)' AS type, 'firefox_addons' AS source FROM firefox_addons
+    UNION SELECT name As name, version AS version, 'Browser plugin (Safari)' AS type,
+    'safari_extensions' AS source FROM safari_extensions UNION SELECT name AS name,
+    version AS version, 'Package (Homebrew)' AS type, 'homebrew_packages' AS source
+    FROM homebrew_packages;
   platform: darwin
-  description: Get all software installed on a macOS computer, including apps, browser plugins, and installed packages. Note that this does not include other running processes in the processes table.
-  query: SELECT name AS name, bundle_short_version AS version, 'Application (macOS)' AS type, 'apps' AS source FROM apps UNION SELECT name AS name, version AS version, 'Package (Python)' AS type, 'python_packages'
-    AS source FROM python_packages UNION SELECT name AS name, version AS version, 'Browser plugin (Chrome)' AS type, 'chrome_extensions' AS source FROM chrome_extensions UNION SELECT name AS name, version
-    AS version, 'Browser plugin (Firefox)' AS type, 'firefox_addons' AS source FROM firefox_addons UNION SELECT name As name, version AS version, 'Browser plugin (Safari)' AS type, 'safari_extensions' AS
-    source FROM safari_extensions UNION SELECT name AS name, version AS version, 'Package (Homebrew)' AS type, 'homebrew_packages' AS source FROM homebrew_packages;
-  bash: echo "name,version,type,source"; for app in /Applications/*.app; do appName="$(basename "$app" .app)"; version=$(defaults read "$app/Contents/Info" CFBundleShortVersionString 2>/dev/null); echo
-    "$appName,$version,Application (macOS),apps"; done; pip3 freeze 2>/dev/null | awk -F'==' '{print $1 "," $2 ",Package (Python),python_packages"}'; for d in "$HOME/Library/Application Support/Google/Chrome/Default/Extensions/"*;
-    do [ -d "$d" ] && for ver in "$d"/*; do echo "$(basename "$d"),$(basename "$ver"),Browser plugin (Chrome),chrome_extensions"; done; done; for profile in "$HOME/Library/Application Support/Firefox/Profiles/"*;
-    do [ -d "$profile" ] && [ -d "$profile/extensions" ] && for ext in "$profile/extensions"/*; do echo "$(basename "$ext" .xpi),N/A,Browser plugin (Firefox),firefox_addons"; done; done; [ -d "$HOME/Library/Safari/Extensions"
-    ] && for ext in "$HOME/Library/Safari/Extensions"/*.safariextz; do echo "$(basename "$ext" .safariextz),N/A,Browser plugin (Safari),safari_extensions"; done; which brew >/dev/null 2>&1 && brew list
-    --versions | awk '{print $1 "," $2 ",Package (Homebrew),homebrew_packages"}'
-  purpose: Informational
-  tags: inventory, built-in
-  contributors: zwass
-  team: devices

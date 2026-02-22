@@ -1,18 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Kextstat Macos
+- name: CDK - Kextstat Macos
+  description: Retrieves all the information about the current kernel extensions for
+    the target OSX system.
+  query: "SELECT\n  *\nFROM\n  kernel_extensions;\n"
   platform: darwin
-  description: Retrieves all the information about the current kernel extensions for the target OSX system.
-  query: |
-    SELECT
-      *
-    FROM
-      kernel_extensions;
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

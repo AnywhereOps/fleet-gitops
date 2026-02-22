@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Suid Bin
+- name: CDK - Suid Bin
   description: Retrieves setuid-enabled executables in well-known paths
-  query: |
-    SELECT
-      *
-    FROM
-      suid_bin;
+  query: "SELECT\n  *\nFROM\n  suid_bin;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

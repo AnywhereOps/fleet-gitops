@@ -1,149 +1,55 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Library Entries Macos
-  platform: darwin
+- name: CDK - Unexpected Library Entries Macos
   description: Find unexpected files in /Library
-  query: |
-    SELECT
-      file.path,
-      file.type,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.ctime,
-      file.gid,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        file.path LIKE '/Library/%'
-        OR file.path LIKE '/Library/.%'
-        OR file.path LIKE '/Library/%/.%'
-        OR file.path LIKE '/Library/WebServer/%'
-        OR file.path LIKE '/Library/WebServer/CGI-Executables/%%'
-        OR file.path LIKE '/Library/WebServer/Documents/%%'
-      )
-      AND file.path NOT LIKE '%/../%'
-      AND file.path NOT LIKE '%/./%'
-      AND file.size > 1
-      AND file.path NOT IN (
-        '/Library/.localized',
-        '/Library/Apple/',
-        '/Library/Application Support/',
-        '/Library/Audio/',
-        '/Library/AutoBugCapture/',
-        '/Library/Automator/',
-        '/Library/Bluetooth/',
-        '/Library/Caches/',
-        '/Library/Catacomb/',
-        '/Library/ColorPickers/',
-        '/Library/ColorSync/',
-        '/Library/Components/',
-        '/Library/Compositions/.localized',
-        '/Library/Compositions/',
-        '/Library/Contextual Menu Items/',
-        '/Library/CoreAnalytics/',
-        '/Library/CoreMediaIO/',
-        '/Library/Desktop Pictures/.localizations/',
-        '/Library/Desktop Pictures/.thumbnails/',
-        '/Library/Desktop Pictures/',
-        '/Library/Developer/',
-        '/Library/DirectoryServices/',
-        '/Library/Documentation/',
-        '/Library/DriverExtensions/',
-        '/Library/DropboxHelperTools/',
-        '/Library/Extensions/',
-        '/Library/Filesystems/',
-        '/Library/Fonts/.uuid',
-        '/Library/Fonts/',
-        '/Library/Frameworks/',
-        '/Library/Google/',
-        '/Library/GPUBundles/',
-        '/Library/Graphics/',
-        '/Library/Image Capture/',
-        '/Library/Input Methods/',
-        '/Library/InstallerSandboxes/.metadata_never_index',
-        '/Library/InstallerSandboxes/.PKInstallSandboxManager/',
-        '/Library/InstallerSandboxes/',
-        '/Library/Internet Plug-Ins/',
-        '/Library/Java/',
-        '/Library/KernelCollections/.file',
-        '/Library/KernelCollections/',
-        '/Library/Keyboard Layouts/',
-        '/Library/Keychains/',
-        '/Library/LaunchAgents/',
-        '/Library/LaunchDaemons/',
-        '/Library/Logs/',
-        '/Library/Mail/',
-        '/Library/Managed Preferences/',
-        '/Library/Microsoft/',
-        '/Library/Modem Scripts/',
-        '/Library/Nessus/',
-        '/Library/Objective-See/',
-        '/Library/OpenDirectory/',
-        '/Library/OSAnalytics/.DS_Store',
-        '/Library/OSAnalytics/',
-        '/Library/Parallels/',
-        '/Library/PDF Services/',
-        '/Library/Perl/',
-        '/Library/Plug-Ins/',
-        '/Library/PreferencePanes/',
-        '/Library/Preferences/.GlobalPreferences.plist',
-        '/Library/Preferences/',
-        '/Library/Printers/',
-        '/Library/PrivilegedHelperTools/',
-        '/Library/Python/',
-        '/Library/QuickLook/',
-        '/Library/Receipts/',
-        '/Library/Ruby/',
-        '/Library/Sandbox/',
-        '/Library/Screen Savers/',
-        '/Library/ScriptingAdditions/',
-        '/Library/Scripts/',
-        '/Library/Security/',
-        '/Library/Services/',
-        '/Library/Speech/',
-        '/Library/Spotlight/',
-        '/Library/StagedDriverExtensions/',
-        '/Library/StagedExtensions/',
-        '/Library/StartupItems/',
-        '/Library/SystemExtensions/.staging/',
-        '/Library/SystemExtensions/',
-        '/Library/SystemMigration/',
-        '/Library/SystemProfiler/',
-        '/Library/Tailscale/',
-        '/Library/TeX/',
-        '/Library/ThunderboltAccessoryFirmwareUpdates/',
-        '/Library/Updates/',
-        '/Library/User Pictures/',
-        '/Library/User Template/',
-        '/Library/Video/',
-        '/Library/WebServer/',
-        '/Library/WebServer/CGI-Executables/',
-        '/Library/WebServer/Documents/',
-        '/Library/WebServer/Documents/index.html.en',
-        '/Library/WebServer/share/'
-      )
-      -- Probably Adobe copy protection, my guess is the host serial number or MAC addr.
-      AND NOT REGEX_MATCH (
-        file.path,
-        '^/Library/Caches/\.([0-9ABCDEF]{12})$',
-        1
-      ) != ""
-      AND NOT (
-        file.path = '/Library/Caches/.DS_Store'
-        AND magic.data = 'Apple Desktop Services Store'
-        AND file.size < 9000
-      )
+  query: "SELECT\n  file.path,\n  file.type,\n  file.size,\n  file.mtime,\n  file.uid,\n\
+    \  file.ctime,\n  file.gid,\n  hash.sha256,\n  magic.data\nFROM\n  file\n  LEFT\
+    \ JOIN hash ON file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\n\
+    WHERE\n  (\n    file.path LIKE '/Library/%'\n    OR file.path LIKE '/Library/.%'\n\
+    \    OR file.path LIKE '/Library/%/.%'\n    OR file.path LIKE '/Library/WebServer/%'\n\
+    \    OR file.path LIKE '/Library/WebServer/CGI-Executables/%%'\n    OR file.path\
+    \ LIKE '/Library/WebServer/Documents/%%'\n  )\n  AND file.path NOT LIKE '%/../%'\n\
+    \  AND file.path NOT LIKE '%/./%'\n  AND file.size > 1\n  AND file.path NOT IN\
+    \ (\n    '/Library/.localized',\n    '/Library/Apple/',\n    '/Library/Application\
+    \ Support/',\n    '/Library/Audio/',\n    '/Library/AutoBugCapture/',\n    '/Library/Automator/',\n\
+    \    '/Library/Bluetooth/',\n    '/Library/Caches/',\n    '/Library/Catacomb/',\n\
+    \    '/Library/ColorPickers/',\n    '/Library/ColorSync/',\n    '/Library/Components/',\n\
+    \    '/Library/Compositions/.localized',\n    '/Library/Compositions/',\n    '/Library/Contextual\
+    \ Menu Items/',\n    '/Library/CoreAnalytics/',\n    '/Library/CoreMediaIO/',\n\
+    \    '/Library/Desktop Pictures/.localizations/',\n    '/Library/Desktop Pictures/.thumbnails/',\n\
+    \    '/Library/Desktop Pictures/',\n    '/Library/Developer/',\n    '/Library/DirectoryServices/',\n\
+    \    '/Library/Documentation/',\n    '/Library/DriverExtensions/',\n    '/Library/DropboxHelperTools/',\n\
+    \    '/Library/Extensions/',\n    '/Library/Filesystems/',\n    '/Library/Fonts/.uuid',\n\
+    \    '/Library/Fonts/',\n    '/Library/Frameworks/',\n    '/Library/Google/',\n\
+    \    '/Library/GPUBundles/',\n    '/Library/Graphics/',\n    '/Library/Image Capture/',\n\
+    \    '/Library/Input Methods/',\n    '/Library/InstallerSandboxes/.metadata_never_index',\n\
+    \    '/Library/InstallerSandboxes/.PKInstallSandboxManager/',\n    '/Library/InstallerSandboxes/',\n\
+    \    '/Library/Internet Plug-Ins/',\n    '/Library/Java/',\n    '/Library/KernelCollections/.file',\n\
+    \    '/Library/KernelCollections/',\n    '/Library/Keyboard Layouts/',\n    '/Library/Keychains/',\n\
+    \    '/Library/LaunchAgents/',\n    '/Library/LaunchDaemons/',\n    '/Library/Logs/',\n\
+    \    '/Library/Mail/',\n    '/Library/Managed Preferences/',\n    '/Library/Microsoft/',\n\
+    \    '/Library/Modem Scripts/',\n    '/Library/Nessus/',\n    '/Library/Objective-See/',\n\
+    \    '/Library/OpenDirectory/',\n    '/Library/OSAnalytics/.DS_Store',\n    '/Library/OSAnalytics/',\n\
+    \    '/Library/Parallels/',\n    '/Library/PDF Services/',\n    '/Library/Perl/',\n\
+    \    '/Library/Plug-Ins/',\n    '/Library/PreferencePanes/',\n    '/Library/Preferences/.GlobalPreferences.plist',\n\
+    \    '/Library/Preferences/',\n    '/Library/Printers/',\n    '/Library/PrivilegedHelperTools/',\n\
+    \    '/Library/Python/',\n    '/Library/QuickLook/',\n    '/Library/Receipts/',\n\
+    \    '/Library/Ruby/',\n    '/Library/Sandbox/',\n    '/Library/Screen Savers/',\n\
+    \    '/Library/ScriptingAdditions/',\n    '/Library/Scripts/',\n    '/Library/Security/',\n\
+    \    '/Library/Services/',\n    '/Library/Speech/',\n    '/Library/Spotlight/',\n\
+    \    '/Library/StagedDriverExtensions/',\n    '/Library/StagedExtensions/',\n\
+    \    '/Library/StartupItems/',\n    '/Library/SystemExtensions/.staging/',\n \
+    \   '/Library/SystemExtensions/',\n    '/Library/SystemMigration/',\n    '/Library/SystemProfiler/',\n\
+    \    '/Library/Tailscale/',\n    '/Library/TeX/',\n    '/Library/ThunderboltAccessoryFirmwareUpdates/',\n\
+    \    '/Library/Updates/',\n    '/Library/User Pictures/',\n    '/Library/User\
+    \ Template/',\n    '/Library/Video/',\n    '/Library/WebServer/',\n    '/Library/WebServer/CGI-Executables/',\n\
+    \    '/Library/WebServer/Documents/',\n    '/Library/WebServer/Documents/index.html.en',\n\
+    \    '/Library/WebServer/share/'\n  )\n  -- Probably Adobe copy protection, my\
+    \ guess is the host serial number or MAC addr.\n  AND NOT REGEX_MATCH (\n    file.path,\n\
+    \    '^/Library/Caches/\\.([0-9ABCDEF]{12})$',\n    1\n  ) != \"\"\n  AND NOT\
+    \ (\n    file.path = '/Library/Caches/.DS_Store'\n    AND magic.data = 'Apple\
+    \ Desktop Services Store'\n    AND file.size < 9000\n  )\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

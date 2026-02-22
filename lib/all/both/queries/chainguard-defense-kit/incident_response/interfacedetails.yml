@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Interface Details
+- name: CDK - Interface Details
   description: Return stats on network interfaces
-  query: |
-    SELECT
-      *
-    FROM
-      interface_details
+  query: "SELECT\n  *\nFROM\n  interface_details\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

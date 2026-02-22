@@ -1,11 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: tc2_worm
-  platform: linux
+- name: tc2_worm
   description: tc2_worm
-  query: select * from file where path in ('/usr/info/.tc2k', '/usr/bin/util', '/usr/sbin/initcheck', '/usr/sbin/ldb');
+  query: select * from file where path in ('/usr/info/.tc2k', '/usr/bin/util', '/usr/sbin/initcheck',
+    '/usr/sbin/ldb');
+  platform: linux
   interval: '3600'
-  value: Artifacts used by this malware
-  team: both

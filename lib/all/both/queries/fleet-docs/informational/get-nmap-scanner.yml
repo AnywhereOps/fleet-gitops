@@ -1,24 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get Nmap scanner
+- name: Get Nmap scanner
+  description: Get Nmap scanner process, as well as its user, parent, and process
+    details.
+  query: SELECT p.pid, name, p.path, cmdline, cwd, start_time, parent, (SELECT name
+    FROM processes WHERE pid=p.parent) AS parent_name, (SELECT username FROM users
+    WHERE uid=p.uid) AS username FROM processes as p WHERE cmdline like 'nmap%';
   platform: darwin, linux, windows
-  description: Get Nmap scanner process, as well as its user, parent, and process details.
-  query: SELECT p.pid, name, p.path, cmdline, cwd, start_time, parent, (SELECT name FROM processes WHERE pid=p.parent) AS parent_name, (SELECT username FROM users WHERE uid=p.uid) AS username FROM processes
-    as p WHERE cmdline like 'nmap%';
-  powershell: "$processes = Get-WmiObject -Query \"SELECT * FROM Win32_Process WHERE CommandLine LIKE 'nmap%'\"  \nforeach ($proc in $processes) {  \n    # Get parent's name  \n    $parentName = \"\"  \n\
-    \    if ($proc.ParentProcessId) {  \n        $parentProc = Get-WmiObject Win32_Process -Filter \"ProcessId=$($proc.ParentProcessId)\" -ErrorAction SilentlyContinue  \n        if ($parentProc) {  \n\
-    \            $parentName = $parentProc.Name  \n        }  \n    }  \n\n    # Get username from process owner  \n    $username = \"\"  \n    $ownerInfo = $proc.GetOwner()  \n    if ($ownerInfo.ReturnValue\
-    \ -eq 0) {  \n        $username = \"$($ownerInfo.Domain)\\$($ownerInfo.User)\"  \n    }  \n\n    # Convert WMI creation date to readable time  \n    $startTime = $null  \n    if ($proc.CreationDate)\
-    \ {  \n        $startTime = [Management.ManagementDateTimeConverter]::ToDateTime($proc.CreationDate)  \n    }  \n\n    # cwd is not available from Win32_Process; use placeholder  \n    $cwd = \"N/A\"\
-    \  \n\n    # Create a custom object with the desired fields  \n    $result = [PSCustomObject]@{  \n        pid         = $proc.ProcessId  \n        name        = $proc.Name  \n        path        =\
-    \ $proc.ExecutablePath  \n        cmdline     = $proc.CommandLine  \n        cwd         = $cwd  \n        start_time  = $startTime  \n        parent      = $proc.ParentProcessId  \n        parent_name\
-    \ = $parentName  \n        username    = $username  \n    }  \n\n    Write-Output $result  \n}"
-  bash: echo "pid,name,path,cmdline,cwd,start_time,parent,parent_name,username"; for pid in $(ps -axo pid,args | awk '$0 ~ /^[[:space:]]*[0-9]+ nmap/ {print $1}'); do cmd=$(ps -p $pid -o args=); name=$(ps
-    -p $pid -o comm=); path=$(lsof -p $pid | awk '$4=="txt" {print $9; exit}'); cwd=$(lsof -a -p $pid -d cwd 2>/dev/null | awk 'NR==2 {print $9}'); start_time=$(ps -p $pid -o lstart=); parent=$(ps -p $pid
-    -o ppid=); parent_name=$(ps -p $parent -o comm= 2>/dev/null); user=$(ps -p $pid -o user=); echo "$pid,$name,$path,$cmd,$cwd,$start_time,$parent,$parent_name,$user"; done
-  purpose: Informational
-  tags: hunting, ATTACK, t1046
-  contributors: anelshaer
-  team: both

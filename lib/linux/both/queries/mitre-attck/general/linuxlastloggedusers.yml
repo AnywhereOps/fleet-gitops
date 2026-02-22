@@ -1,10 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: linux_last_logged_users
+- name: linux_last_logged_users
   description: Lists last logged in users - ATT&CK T1136,T1078
-  query: select datetime(time,'unixepoch','UTC') as time_utc,host,username,tty,pid,type from last;
-  interval: 3600
+  query: select datetime(time,'unixepoch','UTC') as time_utc,host,username,tty,pid,type
+    from last;
   platform: linux
-  team: both
+  interval: 3600

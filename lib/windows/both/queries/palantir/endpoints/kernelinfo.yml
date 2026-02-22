@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: kernel_info
+- name: kernel_info
   description: List the kernel path, version, etc.
   query: SELECT * FROM kernel_info;
   platform: windows
-  team: both

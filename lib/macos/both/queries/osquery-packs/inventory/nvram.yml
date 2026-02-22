@@ -1,11 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: nvram
-  platform: darwin
+- name: nvram
   description: Report on crashes, alternate boots, and boot arguments.
-  query: select * from nvram where name not in ('backlight-level', 'SystemAudioVolumeDB', 'SystemAudioVolume');
+  query: select * from nvram where name not in ('backlight-level', 'SystemAudioVolumeDB',
+    'SystemAudioVolume');
+  platform: darwin
   interval: 7200
-  version: 1.0.2
-  team: both

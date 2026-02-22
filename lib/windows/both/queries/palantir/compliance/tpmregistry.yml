@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: tpm_registry
+- name: tpm_registry
   description: Controls system TPM settings
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\TPM';
   platform: windows
-  team: both

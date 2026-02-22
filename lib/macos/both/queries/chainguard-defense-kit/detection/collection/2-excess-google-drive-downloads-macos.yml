@@ -1,39 +1,21 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Excess Google Drive Downloads Macos
+- name: CDK - Excess Google Drive Downloads Macos
+  description: Surface when a machine has downloaded an unusual number of files from
+    Google Drive
+  query: "SELECT\n  COUNT(DISTINCT file.path) AS num_downloads,\n  GROUP_CONCAT(DISTINCT\
+    \ file.path) AS paths,\n  SUM(file.size) AS total_size,\n  MIN(file.btime) AS\
+    \ first_btime,\n  MAX(file.atime) AS last_atime\nFROM\n  mdfind\n  JOIN file ON\
+    \ mdfind.path = file.path\n  JOIN extended_attributes ea ON mdfind.path = ea.path\n\
+    \  AND ea.key = \"where_from\"\nWHERE\n  query = \"kMDItemFSCreationDate >= $time.now(-86400)\"\
+    \n  -- For some reason relying on kMDItemWhereFroms omitted download word docs,\
+    \ so\n  -- this does it the slow way.\n  AND ea.value LIKE \"https://doc-%googleusercontent.com%\"\
+    \n  -- this seems excessive, but I was having issues with kMDItemFSCreationDate\
+    \ not filtering appropriately\n  AND MAX(file.btime, file.ctime, file.mtime) >\
+    \ (strftime('%s', 'now') -86400)\n  -- Common, low-risk for exfil\n  AND file.filename\
+    \ NOT LIKE '%.csv'\n  -- \"GROUP BY\" should be unnecessary, but Kolide seems\
+    \ to require it\nGROUP BY\n  ea.key\nHAVING\n  num_downloads > 8\n"
   platform: darwin
-  description: Surface when a machine has downloaded an unusual number of files from Google Drive
-  query: |
-    SELECT
-      COUNT(DISTINCT file.path) AS num_downloads,
-      GROUP_CONCAT(DISTINCT file.path) AS paths,
-      SUM(file.size) AS total_size,
-      MIN(file.btime) AS first_btime,
-      MAX(file.atime) AS last_atime
-    FROM
-      mdfind
-      JOIN file ON mdfind.path = file.path
-      JOIN extended_attributes ea ON mdfind.path = ea.path
-      AND ea.key = "where_from"
-    WHERE
-      query = "kMDItemFSCreationDate >= $time.now(-86400)"
-      -- For some reason relying on kMDItemWhereFroms omitted download word docs, so
-      -- this does it the slow way.
-      AND ea.value LIKE "https://doc-%googleusercontent.com%"
-      -- this seems excessive, but I was having issues with kMDItemFSCreationDate not filtering appropriately
-      AND MAX(file.btime, file.ctime, file.mtime) > (strftime('%s', 'now') -86400)
-      -- Common, low-risk for exfil
-      AND file.filename NOT LIKE '%.csv'
-      -- "GROUP BY" should be unnecessary, but Kolide seems to require it
-    GROUP BY
-      ea.key
-    HAVING
-      num_downloads > 8
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

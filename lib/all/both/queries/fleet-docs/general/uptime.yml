@@ -1,15 +1,4 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Uptime
-  platform: darwin, linux, windows
+- name: Uptime
   description: Retrieves the amount time passed since a device's last boot.
   query: SELECT * FROM uptime LIMIT 1
-  powershell: "$os = Get-CimInstance -ClassName 'Win32_OperatingSystem' $lastBoot = $os.LastBootUpTime $uptimeSpan = (Get-Date) - $lastBoot $seconds = [math]::Floor($uptimeSpan.TotalSeconds) $pretty = ''\
-    \ if ($uptimeSpan.Days -gt 0) { $pretty += \"$($uptimeSpan.Days) days, \" } $pretty += \"$($uptimeSpan.Hours) hours, $($uptimeSpan.Minutes) minutes, $($uptimeSpan.Seconds) seconds\" [PSCustomObject]@{\n\
-    \    seconds = $seconds\n    pretty  = $pretty\n} | Format-Table -AutoSize"
-  bash: uptime
-  purpose: Informational
-  tags: built-in
-  team: both
+  platform: darwin, linux, windows

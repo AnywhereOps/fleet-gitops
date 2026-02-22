@@ -1,374 +1,181 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Execdir Events Macos
-  platform: darwin
+- name: CDK - Unexpected Execdir Events Macos
   description: Catch applications running from unusual directories, such as /tmp
-  query: |
-    SELECT
-      COALESCE(
-        REGEX_MATCH (REPLACE(pe.path, u.directory, '~'), '(.*)/', 1),
-        pe.path
-      ) AS dir,
-      COALESCE(
-        REGEX_MATCH (
-          REPLACE(pe.path, u.directory, '~'),
-          '(~*/.*?)/',
-          1
-        ),
-        REPLACE(pe.path, u.directory, '~'),
-        '(.*)/',
-        1
-      ) AS top1_dir,
-      COALESCE(
-        REGEX_MATCH (
-          REPLACE(pe.path, u.directory, '~'),
-          '(~*/.*?/.*?/.*?)/',
-          1
-        ),
-        REPLACE(pe.path, u.directory, '~'),
-        '(.*)/',
-        1
-      ) AS top3_dir,
-      s.identifier AS s_id,
-      s.authority AS s_auth,
-      -- Child
-      pe.path AS p0_path,
-      COALESCE(REGEX_MATCH (pe.path, '.*/(.*)', 1), pe.path) AS p0_name,
-      TRIM(pe.cmdline) AS p0_cmd,
-      pe.time AS p0_time,
-      -- pe.cwd is NULL on macOS
-      p.cwd AS p0_cwd,
-      pe.pid AS p0_pid,
-      pe.euid AS p0_euid,
-      -- Parent
-      pe.parent AS p1_pid,
-      TRIM(COALESCE(p1.cmdline, pe1.cmdline)) AS p1_cmd,
-      p1.cwd AS p1_cwd,
-      COALESCE(p1.path, pe1.path) AS p1_path,
-      COALESCE(p_hash1.sha256, pe_hash1.sha256) AS p1_hash,
-      REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) AS p1_name,
-      -- Grandparent
-      COALESCE(p1.parent, pe1.parent) AS p2_pid,
-      TRIM(
-        COALESCE(p1_p2.cmdline, pe1_p2.cmdline, pe1_pe2.cmdline)
-      ) AS p2_cmd,
-      p1_p2.cwd AS p2_cwd,
-      COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path) AS p2_path,
-      COALESCE(
-        p1_p2_hash.path,
-        pe1_p2_hash.path,
-        pe1_pe2_hash.path
-      ) AS p2_hash,
-      REGEX_MATCH (
-        COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path),
-        '.*/(.*)',
-        1
-      ) AS p2_name
-    FROM
-      process_events pe
-      LEFT JOIN file f ON pe.path = f.path
-      LEFT JOIN signature S ON pe.path = s.path
-      LEFT JOIN users u ON pe.uid = u.uid
-      LEFT JOIN processes p ON pe.pid = p.pid -- Parents (via two paths)
-      LEFT JOIN processes p1 ON pe.parent = p1.pid
-      LEFT JOIN hash p_hash1 ON p1.path = p_hash1.path
-      LEFT JOIN process_events pe1 ON pe.parent = pe1.pid
-      AND pe1.cmdline != ''
-      LEFT JOIN hash pe_hash1 ON pe1.path = pe_hash1.path -- Grandparents (via 3 paths)
-      LEFT JOIN processes p1_p2 ON p1.parent = p1_p2.pid -- Current grandparent via parent processes
-      LEFT JOIN processes pe1_p2 ON pe1.parent = pe1_p2.pid -- Current grandparent via parent events
-      LEFT JOIN process_events pe1_pe2 ON pe1.parent = pe1_p2.pid
-      AND pe1_pe2.cmdline != '' -- Past grandparent via parent events
-      LEFT JOIN hash p1_p2_hash ON p1_p2.path = p1_p2_hash.path
-      LEFT JOIN hash pe1_p2_hash ON pe1_p2.path = pe1_p2_hash.path
-      LEFT JOIN hash pe1_pe2_hash ON pe1_pe2.path = pe1_pe2_hash.path
-    WHERE
-      pe.time > (strftime('%s', 'now') -240)
-      AND pe.status = 0
-      AND pe.cmdline != ''
-      AND pe.cmdline IS NOT NULL
-      AND top1_dir NOT IN (
-        '/Applications',
-        '/nix',
-        '/System',
-        '~/.cargo',
-        '~/.config',
-        '~/.gimme',
-        '~/.gradle',
-        '~/.kuberlr',
-        '~/.local',
-        '~/.provisio',
-        '~/.pulumi',
-        '~/.pyenv',
-        '~/.rustup',
-        '~/.steampipe',
-        '~/.tflint.d',
-        '~/.vs-kubernetes',
-        '~/.vscode-insiders',
-        '~/.vscode',
-        '~/anaconda3',
-        '~/Applications (Parallels)',
-        '~/Applications',
-        '~/bin',
-        '~/chainctl',
-        '~/chainguard',
-        '~/code',
-        '~/Code',
-        '~/dev',
-        '~/git',
-        '~/github',
-        '~/go',
-        '~/google-cloud-sdk',
-        '~/homebrew',
-        --  '~/Library',
-        '~/melange',
-        '~/Parallels',
-        '~/proj',
-        '~/projects',
-        '~/Projects',
-        '~/src',
-        '~/workspace'
-      )
-      AND top3_dir NOT IN (
-        '/Library/Apple/System',
-        '/Library/Application Support/AdGuard Software',
-        '/Library/Application Support/Adobe',
-        '/Library/Application Support/Blackmagic Design',
-        '/Library/Application Support/Canon_Inc_IC',
-        '/Library/Application Support/com.canonical.multipass',
-        '/Library/Application Support/EcammLive',
-        '/Library/Application Support/Fortinet',
-        '/Library/Application Support/GPGTools',
-        '/Library/Application Support/org.pqrs',
-        '/Library/Developer/CommandLineTools',
-        '/Library/Elastic/Agent',
-        '/Library/Frameworks/Python.framework',
-        '/Library/Google/GoogleSoftwareUpdate',
-        '/Library/Java/JavaVirtualMachines',
-        '/Library/Plug-Ins/FxPlug',
-        '/Library/Printers/Brother',
-        '/Library/Printers/Canon',
-        '/Library/Screen Savers/XScreenSaverUpdater.app',
-        '/opt/Elastic/Endpoint',
-        '/opt/homebrew/Caskroom',
-        '/opt/homebrew/Cellar',
-        '/opt/homebrew/Library',
-        '/opt/rapid7/ir_agent',
-        '/private/tmp/golangci-lint',
-        '/private/var/kolide-k2',
-        '/usr/libexec/AssetCache',
-        '/usr/libexec/rosetta',
-        '/usr/local/Cellar',
-        '/usr/local/crc',
-        '/usr/local/kolide-k2',
-        '/Volumes/Google Chrome/Google Chrome.app',
-        '/Volumes/Slack/Slack.app',
-        '~/.docker/cli-plugins',
-        '~/.docker/cli-plugins/docker-sbom',
-        '~/.wdm/drivers/chromedriver',
-        '~/Library/Application Support/Box',
-        '~/Library/Application Support/BraveSoftware',
-        '~/Library/Application Support/CleanMyMac X',
-        '~/Library/Application Support/Code',
-        '~/Library/Application Support/com.elgato.StreamDeck',
-        '~/Library/Application Support/com.grammarly.ProjectLlama',
-        '~/Library/Application Support/Foxit Software',
-        '~/Library/Application Support/InstantView',
-        '~/Library/Application Support/JetBrains',
-        '~/Library/Application Support/LogMeInInc',
-        '~/Library/Application Support/minecraft',
-        '~/Library/Application Support/OpenLens',
-        '~/Library/Application Support/Steam',
-        '~/Library/Application Support/zoom.us',
-        '~/Library/Caches/com.knollsoft.Rectangle',
-        '~/Library/Caches/com.mimestream.Mimestream',
-        '~/Library/Caches/Cypress',
-        '~/Library/Caches/dagger',
-        '~/Library/Caches/JetBrains',
-        '~/Library/Caches/snyk',
-        '~/Library/Developer/Xcode',
-        '~/Library/Google/GoogleSoftwareUpdate',
-        '~/Library/Services/UE4EditorServices.app',
-        '~/syft/.tool/binny'
-      )
-      AND dir NOT IN (
-        '/bin',
-        '/Library/Application Support/Fortinet/FortiClient/bin',
-        '/Library/Application Support/Kandji/Kandji Menu/Kandji Menu.app/Contents/MacOS',
-        '/Library/Application Support/Logitech.localized/LogiOptionsPlus/logioptionsplus_agent.app/Contents/MacOS',
-        '/Library/Application Support/Logitech.localized/Logitech Options.localized/LogiMgrUpdater.app/Contents/Resources',
-        '/Library/Application Support/X-Rite/Frameworks/XRiteDevice.framework/Versions/B/Resources/XRD Software Update.app/Contents/MacOS',
-        '/Library/Audio/Plug-Ins/HAL/ACE.driver/Contents/Resources',
-        '/Library/Audio/Plug-Ins/HAL/ACE.driver/Contents/Resources/aceagent.app/Contents/MacOS',
-        '/Library/Audio/Plug-Ins/HAL/SolsticeDesktopSpeakers.driver/Contents/XPCServices/RelayXpc.xpc/Contents/MacOS',
-        '/Library/DropboxHelperTools/Dropbox_u501',
-        '/Library/Filesystems/kbfuse.fs/Contents/Resources',
-        '/Library/Filesystems/macfuse.fs/Contents/Resources',
-        '/Library/Frameworks/Python.framework/Versions/3.10/bin',
-        '/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Helpers.app/Contents/MacOS',
-        '/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Helpers/GoogleSoftwareUpdateAgent.app/Contents/MacOS',
-        '/Library/Image Capture/Devices/EPSON Scanner.app/Contents/MacOS',
-        '/Library/Kandji/Kandji Agent.app/Contents/MacOS',
-        '/Library/Kandji/Kandji Agent.app/Contents/MacOS/',
-        '/Library/Printers/Brother/Filter/rastertobrother2130.bundle/Contents/MacOS',
-        '/Library/Printers/Brother/Filter/rastertobrother2300.bundle/Contents/MacOS',
-        '/Library/Printers/Brother/Utilities/Server/LOGINserver.app/Contents/MacOS',
-        '/Library/Printers/Brother/Utilities/Server/NETserver.app/Contents/MacOS',
-        '/Library/Printers/Brother/Utilities/Server/USBAppControl.app/Contents/MacOS',
-        '/Library/Printers/Brother/Utilities/Server/WorkflowAppControl.app/Contents/MacOS',
-        '/Library/Printers/DYMO/Utilities',
-        '/Library/Printers/EPSON/InkjetPrinter2/Filter/commandtoescp.app/Contents/MacOS',
-        '/Library/PrivilegedHelperTools',
-        '/Library/TeX/texbin',
-        '/node_modules/.bin',
-        '/opt/custom-cli-tools',
-        '/opt/homebrew/bin',
-        '/opt/osquery/lib/osquery.app/Contents/MacOS',
-        '/opt/usr/bin',
-        '/opt/X11/bin',
-        '/opt/X11/libexec',
-        '/run/current-system/sw/bin',
-        '/sbin',
-        '/tmp/bin',
-        '/usr/bin',
-        '/usr/lib',
-        '/usr/lib/bluetooth',
-        '/usr/lib/cups/notifier',
-        '/usr/lib/fwupd',
-        '/usr/lib/ibus',
-        '/usr/lib/system',
-        '/usr/libexec',
-        '/usr/libexec/ApplicationFirewall',
-        '/usr/libexec/AssetCache',
-        '/usr/libexec/cups/backend',
-        '/usr/libexec/firmwarecheckers',
-        '/usr/libexec/firmwarecheckers/eficheck',
-        '/usr/libexec/rosetta',
-        '/usr/local/aws-cli',
-        '/usr/local/bin',
-        '/usr/local/MacGPG2/bin',
-        '/usr/sbin',
-        '/Volumes/Grammarly/Grammarly Installer.app/Contents/MacOS',
-        '~/.cache/gitstatus',
-        '~/.docker/cli-plugins',
-        '~/.local/bin',
-        '~/.magefile',
-        '~/bin',
-        '~/code/bin',
-        '~/Downloads/google-cloud-sdk/bin',
-        '~/Downloads/protoc/bin',
-        '~/go/bin',
-        '~/Library/Application Support/Alfred/Assistant',
-        '~/Library/Application Support/cloud-code/installer/google-cloud-sdk/bin',
-        '~/Library/Application Support/dev.warp.Warp-Stable',
-        '~/Library/Application Support/minecraft/launcher/launcher.bundle/Contents/Frameworks/launcher-Helper (GPU).app/Contents/MacOS',
-        '~/Library/Application Support/snyk-ls',
-        '~/melange',
-        '~/projects/go/bin'
-      ) -- Locally built executables
-      AND NOT (
-        s.identifier = 'a.out'
-        AND (
-          dir LIKE '~/%'
-          OR dir LIKE '/Users/%'
-        )
-        AND p1_name IN ('fish', 'sh', 'bash', 'zsh', 'terraform', 'code')
-      )
-      AND NOT (
-        s.authority = ''
-        AND dir LIKE '~/%'
-        AND p1_name IN ('fish', 'sh', 'bash', 'zsh')
-        AND p.cmdline LIKE './%'
-      ) -- Spotify
-      AND pe.path NOT LIKE '/private/tmp%/cloud_sql_proxy'
-      AND pe.path NOT LIKE '/private/var/folders/%/T/sp_relauncher' -- Sparkle updater
-      AND pe.path NOT LIKE '/Users/%/Library/Caches/%/org.sparkle-project.Sparkle/Launcher/%/Updater.app/Contents/MacOS/Updater'
-      AND dir NOT LIKE '/Applications/%'
-      AND dir NOT LIKE '/Library/SystemExtensions/%-%/%.systemextension/Contents/MacOS'
-      AND dir NOT LIKE '/opt/%/bin'
-      AND dir NOT LIKE '/private/tmp/%.app/Contents/MacOS'
-      AND dir NOT LIKE '/private/tmp/go-build%/exe'
-      AND dir NOT LIKE '/private/tmp/KSInstallAction.%/Install Google Software Update.app/Contents/Helpers'
-      AND dir NOT LIKE '/private/tmp/nix-build-%'
-      AND dir NOT LIKE '/private/tmp/PKInstallSandbox.%/Scripts/com.microsoft.OneDrive.%'
-      AND dir NOT LIKE '/private/var/db/com.apple.xpc.roleaccountd.staging/%.xpc/Contents/MacOS'
-      AND dir NOT LIKE '/private/var/folders/%/bin'
-      AND dir NOT LIKE '/private/var/folders/%/Contents/%'
-      AND dir NOT LIKE '/private/var/folders/%/d/Wrapper/%.app%'
-      AND dir NOT LIKE '/private/var/folders/%/go-build%'
-      AND dir NOT LIKE '/private/var/folders/%/GoLand'
-      AND dir NOT LIKE '/private/var/folders/%/T/cargo-install%'
-      AND dir NOT LIKE '/private/var/kolide-k2/k2device.kolide.com/updates/osqueryd/%'
-      AND dir NOT LIKE '/Volumes/com.getdropbox.dropbox-%' -- These signers can run from wherever the hell they want.
-      AND dir NOT LIKE '%/.terraform/providers/%'
-      AND dir NOT LIKE '%/go/bin'
-      AND dir NOT LIKE '~/.local/%/packages/%'
-      AND dir NOT LIKE '~/%/bin'
-      AND dir NOT LIKE '~/%/google-cloud-sdk/bin/%'
-      AND dir NOT LIKE '~/%/node_modules/%'
-      AND dir NOT LIKE '~/%repo%' -- When running code as root
-      AND dir NOT LIKE '~/%sigstore%'
-      AND dir NOT LIKE '~/Documents/%/build/%'
-      AND dir NOT LIKE '~/Documents/%/target/%'
-      AND dir NOT LIKE '~/Downloads/%.app/Contents/MacOS'
-      AND dir NOT LIKE '~/Library/Arduino%/packages/%'
-      AND dir NOT LIKE '~/Library/Caches/ms-playwright/%'
-      AND dir NOT LIKE '~/Library/Printers/%/Contents/MacOS'
-      AND s.identifier != 'org.sparkle-project.Sparkle.Autoupdate'
-      AND s.authority NOT IN (
-        'Apple iPhone OS Application Signing',
-        'Apple Mac OS Application Signing',
-        'Developer ID Application: Adobe Inc. (JQ525L2MZD)',
-        'Developer ID Application: Azul Systems, Inc. (TDTHCUPYFR)',
-        'Developer ID Application: Bitdefender SRL (GUNFMW623Y)',
-        'Developer ID Application: Brother Industries, LTD. (5HCL85FLGW)',
-        'Developer ID Application: Canon Inc. (XE2XNRRXZ5)',
-        'Developer ID Application: Canonical Group Limited (X4QN7LTP59)',
-        'Developer ID Application: Cisco (DE8Y96K9QP)',
-        'Developer ID Application: CodeWeavers Inc. (9C6B7X7Z8E)',
-        'Developer ID Application: Corsair Memory, Inc. (Y93VXCB8Q5)',
-        'Developer ID Application: Docker Inc (9BNSXJN65R)',
-        'Developer ID Application: Dropbox, Inc. (G7HH3F8CAK)',
-        'Developer ID Application: Epic Games International, S.a.r.l. (96DBZ92D3Y)',
-        'Developer ID Application: Figma, Inc. (T8RA8NE3B7)',
-        'Developer ID Application: Fortinet, Inc (AH4XFXJ7DK)',
-        'Developer ID Application: GEORGE NACHMAN (H7V7XYVQ7D)',
-        'Developer ID Application: Google LLC (EQHXZ8M8AV)',
-        'Developer ID Application: Hashicorp, Inc. (D38WU7D763)',
-        'Developer ID Application: Keybase, Inc. (99229SGT5K)',
-        'Developer ID Application: LG Electronics (5SKT5H4CPQ)',
-        'Developer ID Application: Logitech Inc. (QED4VVPZWA)',
-        'Developer ID Application: MacPaw Inc. (S8EX82NJP6)',
-        'Developer ID Application: Microsoft Corporation (UBF8T346G9)',
-        'Developer ID Application: Mojang AB (HR992ZEAE6)',
-        'Developer ID Application: Ned Deily (DJ3H93M7VJ)',
-        'Developer ID Application: Node.js Foundation (HX7739G8FX)',
-        'Developer ID Application: Objective Development Software GmbH (MLZF7K7B5R)',
-        'Developer ID Application: Objective-See, LLC (VBG97UB4TA)',
-        'Developer ID Application: Opal Camera Inc (97Z3HJWCRT)',
-        'Developer ID Application: Oracle America, Inc. (VB5E2TV963)',
-        'Developer ID Application: Rapid7 LLC (UL6CGN7MAL)',
-        'Developer ID Application: reMarkable AS (4FFUD2H2F6)',
-        'Developer ID Application: Rogue Amoeba Software, LLC (7266XEXAPM)',
-        'Developer ID Application: Silicon Laboratories Inc (52444FG85C)',
-        'Developer ID Application: SILICON MOTION, INC. (JAGYSS7E9A)',
-        'Developer ID Application: Snyk Limited (97QYW7LHSF)',
-        'Developer ID Application: Sublime HQ Pty Ltd (Z6D26JE4Y4)',
-        'Developer ID Application: TablePlus Inc (3X57WP8E8V)',
-        'Developer ID Application: Tenable, Inc. (4B8J598M7U)',
-        'Developer ID Application: Valve Corporation (MXGJJ98X76)',
-        'Developer ID Application: Wireshark Foundation, Inc. (7Z6EMTD2C6)',
-        'Software Signing'
-      ) -- Don't spam alerts with repeated invocations of the same command-line
-    GROUP BY
-      p.cmdline,
-      p.cwd,
-      p.euid;
+  query: "SELECT\n  COALESCE(\n    REGEX_MATCH (REPLACE(pe.path, u.directory, '~'),\
+    \ '(.*)/', 1),\n    pe.path\n  ) AS dir,\n  COALESCE(\n    REGEX_MATCH (\n   \
+    \   REPLACE(pe.path, u.directory, '~'),\n      '(~*/.*?)/',\n      1\n    ),\n\
+    \    REPLACE(pe.path, u.directory, '~'),\n    '(.*)/',\n    1\n  ) AS top1_dir,\n\
+    \  COALESCE(\n    REGEX_MATCH (\n      REPLACE(pe.path, u.directory, '~'),\n \
+    \     '(~*/.*?/.*?/.*?)/',\n      1\n    ),\n    REPLACE(pe.path, u.directory,\
+    \ '~'),\n    '(.*)/',\n    1\n  ) AS top3_dir,\n  s.identifier AS s_id,\n  s.authority\
+    \ AS s_auth,\n  -- Child\n  pe.path AS p0_path,\n  COALESCE(REGEX_MATCH (pe.path,\
+    \ '.*/(.*)', 1), pe.path) AS p0_name,\n  TRIM(pe.cmdline) AS p0_cmd,\n  pe.time\
+    \ AS p0_time,\n  -- pe.cwd is NULL on macOS\n  p.cwd AS p0_cwd,\n  pe.pid AS p0_pid,\n\
+    \  pe.euid AS p0_euid,\n  -- Parent\n  pe.parent AS p1_pid,\n  TRIM(COALESCE(p1.cmdline,\
+    \ pe1.cmdline)) AS p1_cmd,\n  p1.cwd AS p1_cwd,\n  COALESCE(p1.path, pe1.path)\
+    \ AS p1_path,\n  COALESCE(p_hash1.sha256, pe_hash1.sha256) AS p1_hash,\n  REGEX_MATCH\
+    \ (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) AS p1_name,\n  -- Grandparent\n\
+    \  COALESCE(p1.parent, pe1.parent) AS p2_pid,\n  TRIM(\n    COALESCE(p1_p2.cmdline,\
+    \ pe1_p2.cmdline, pe1_pe2.cmdline)\n  ) AS p2_cmd,\n  p1_p2.cwd AS p2_cwd,\n \
+    \ COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path) AS p2_path,\n  COALESCE(\n \
+    \   p1_p2_hash.path,\n    pe1_p2_hash.path,\n    pe1_pe2_hash.path\n  ) AS p2_hash,\n\
+    \  REGEX_MATCH (\n    COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path),\n    '.*/(.*)',\n\
+    \    1\n  ) AS p2_name\nFROM\n  process_events pe\n  LEFT JOIN file f ON pe.path\
+    \ = f.path\n  LEFT JOIN signature S ON pe.path = s.path\n  LEFT JOIN users u ON\
+    \ pe.uid = u.uid\n  LEFT JOIN processes p ON pe.pid = p.pid -- Parents (via two\
+    \ paths)\n  LEFT JOIN processes p1 ON pe.parent = p1.pid\n  LEFT JOIN hash p_hash1\
+    \ ON p1.path = p_hash1.path\n  LEFT JOIN process_events pe1 ON pe.parent = pe1.pid\n\
+    \  AND pe1.cmdline != ''\n  LEFT JOIN hash pe_hash1 ON pe1.path = pe_hash1.path\
+    \ -- Grandparents (via 3 paths)\n  LEFT JOIN processes p1_p2 ON p1.parent = p1_p2.pid\
+    \ -- Current grandparent via parent processes\n  LEFT JOIN processes pe1_p2 ON\
+    \ pe1.parent = pe1_p2.pid -- Current grandparent via parent events\n  LEFT JOIN\
+    \ process_events pe1_pe2 ON pe1.parent = pe1_p2.pid\n  AND pe1_pe2.cmdline !=\
+    \ '' -- Past grandparent via parent events\n  LEFT JOIN hash p1_p2_hash ON p1_p2.path\
+    \ = p1_p2_hash.path\n  LEFT JOIN hash pe1_p2_hash ON pe1_p2.path = pe1_p2_hash.path\n\
+    \  LEFT JOIN hash pe1_pe2_hash ON pe1_pe2.path = pe1_pe2_hash.path\nWHERE\n  pe.time\
+    \ > (strftime('%s', 'now') -240)\n  AND pe.status = 0\n  AND pe.cmdline != ''\n\
+    \  AND pe.cmdline IS NOT NULL\n  AND top1_dir NOT IN (\n    '/Applications',\n\
+    \    '/nix',\n    '/System',\n    '~/.cargo',\n    '~/.config',\n    '~/.gimme',\n\
+    \    '~/.gradle',\n    '~/.kuberlr',\n    '~/.local',\n    '~/.provisio',\n  \
+    \  '~/.pulumi',\n    '~/.pyenv',\n    '~/.rustup',\n    '~/.steampipe',\n    '~/.tflint.d',\n\
+    \    '~/.vs-kubernetes',\n    '~/.vscode-insiders',\n    '~/.vscode',\n    '~/anaconda3',\n\
+    \    '~/Applications (Parallels)',\n    '~/Applications',\n    '~/bin',\n    '~/chainctl',\n\
+    \    '~/chainguard',\n    '~/code',\n    '~/Code',\n    '~/dev',\n    '~/git',\n\
+    \    '~/github',\n    '~/go',\n    '~/google-cloud-sdk',\n    '~/homebrew',\n\
+    \    --  '~/Library',\n    '~/melange',\n    '~/Parallels',\n    '~/proj',\n \
+    \   '~/projects',\n    '~/Projects',\n    '~/src',\n    '~/workspace'\n  )\n \
+    \ AND top3_dir NOT IN (\n    '/Library/Apple/System',\n    '/Library/Application\
+    \ Support/AdGuard Software',\n    '/Library/Application Support/Adobe',\n    '/Library/Application\
+    \ Support/Blackmagic Design',\n    '/Library/Application Support/Canon_Inc_IC',\n\
+    \    '/Library/Application Support/com.canonical.multipass',\n    '/Library/Application\
+    \ Support/EcammLive',\n    '/Library/Application Support/Fortinet',\n    '/Library/Application\
+    \ Support/GPGTools',\n    '/Library/Application Support/org.pqrs',\n    '/Library/Developer/CommandLineTools',\n\
+    \    '/Library/Elastic/Agent',\n    '/Library/Frameworks/Python.framework',\n\
+    \    '/Library/Google/GoogleSoftwareUpdate',\n    '/Library/Java/JavaVirtualMachines',\n\
+    \    '/Library/Plug-Ins/FxPlug',\n    '/Library/Printers/Brother',\n    '/Library/Printers/Canon',\n\
+    \    '/Library/Screen Savers/XScreenSaverUpdater.app',\n    '/opt/Elastic/Endpoint',\n\
+    \    '/opt/homebrew/Caskroom',\n    '/opt/homebrew/Cellar',\n    '/opt/homebrew/Library',\n\
+    \    '/opt/rapid7/ir_agent',\n    '/private/tmp/golangci-lint',\n    '/private/var/kolide-k2',\n\
+    \    '/usr/libexec/AssetCache',\n    '/usr/libexec/rosetta',\n    '/usr/local/Cellar',\n\
+    \    '/usr/local/crc',\n    '/usr/local/kolide-k2',\n    '/Volumes/Google Chrome/Google\
+    \ Chrome.app',\n    '/Volumes/Slack/Slack.app',\n    '~/.docker/cli-plugins',\n\
+    \    '~/.docker/cli-plugins/docker-sbom',\n    '~/.wdm/drivers/chromedriver',\n\
+    \    '~/Library/Application Support/Box',\n    '~/Library/Application Support/BraveSoftware',\n\
+    \    '~/Library/Application Support/CleanMyMac X',\n    '~/Library/Application\
+    \ Support/Code',\n    '~/Library/Application Support/com.elgato.StreamDeck',\n\
+    \    '~/Library/Application Support/com.grammarly.ProjectLlama',\n    '~/Library/Application\
+    \ Support/Foxit Software',\n    '~/Library/Application Support/InstantView',\n\
+    \    '~/Library/Application Support/JetBrains',\n    '~/Library/Application Support/LogMeInInc',\n\
+    \    '~/Library/Application Support/minecraft',\n    '~/Library/Application Support/OpenLens',\n\
+    \    '~/Library/Application Support/Steam',\n    '~/Library/Application Support/zoom.us',\n\
+    \    '~/Library/Caches/com.knollsoft.Rectangle',\n    '~/Library/Caches/com.mimestream.Mimestream',\n\
+    \    '~/Library/Caches/Cypress',\n    '~/Library/Caches/dagger',\n    '~/Library/Caches/JetBrains',\n\
+    \    '~/Library/Caches/snyk',\n    '~/Library/Developer/Xcode',\n    '~/Library/Google/GoogleSoftwareUpdate',\n\
+    \    '~/Library/Services/UE4EditorServices.app',\n    '~/syft/.tool/binny'\n \
+    \ )\n  AND dir NOT IN (\n    '/bin',\n    '/Library/Application Support/Fortinet/FortiClient/bin',\n\
+    \    '/Library/Application Support/Kandji/Kandji Menu/Kandji Menu.app/Contents/MacOS',\n\
+    \    '/Library/Application Support/Logitech.localized/LogiOptionsPlus/logioptionsplus_agent.app/Contents/MacOS',\n\
+    \    '/Library/Application Support/Logitech.localized/Logitech Options.localized/LogiMgrUpdater.app/Contents/Resources',\n\
+    \    '/Library/Application Support/X-Rite/Frameworks/XRiteDevice.framework/Versions/B/Resources/XRD\
+    \ Software Update.app/Contents/MacOS',\n    '/Library/Audio/Plug-Ins/HAL/ACE.driver/Contents/Resources',\n\
+    \    '/Library/Audio/Plug-Ins/HAL/ACE.driver/Contents/Resources/aceagent.app/Contents/MacOS',\n\
+    \    '/Library/Audio/Plug-Ins/HAL/SolsticeDesktopSpeakers.driver/Contents/XPCServices/RelayXpc.xpc/Contents/MacOS',\n\
+    \    '/Library/DropboxHelperTools/Dropbox_u501',\n    '/Library/Filesystems/kbfuse.fs/Contents/Resources',\n\
+    \    '/Library/Filesystems/macfuse.fs/Contents/Resources',\n    '/Library/Frameworks/Python.framework/Versions/3.10/bin',\n\
+    \    '/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Helpers.app/Contents/MacOS',\n\
+    \    '/Library/Google/GoogleSoftwareUpdate/GoogleSoftwareUpdate.bundle/Contents/Helpers/GoogleSoftwareUpdateAgent.app/Contents/MacOS',\n\
+    \    '/Library/Image Capture/Devices/EPSON Scanner.app/Contents/MacOS',\n    '/Library/Kandji/Kandji\
+    \ Agent.app/Contents/MacOS',\n    '/Library/Kandji/Kandji Agent.app/Contents/MacOS/',\n\
+    \    '/Library/Printers/Brother/Filter/rastertobrother2130.bundle/Contents/MacOS',\n\
+    \    '/Library/Printers/Brother/Filter/rastertobrother2300.bundle/Contents/MacOS',\n\
+    \    '/Library/Printers/Brother/Utilities/Server/LOGINserver.app/Contents/MacOS',\n\
+    \    '/Library/Printers/Brother/Utilities/Server/NETserver.app/Contents/MacOS',\n\
+    \    '/Library/Printers/Brother/Utilities/Server/USBAppControl.app/Contents/MacOS',\n\
+    \    '/Library/Printers/Brother/Utilities/Server/WorkflowAppControl.app/Contents/MacOS',\n\
+    \    '/Library/Printers/DYMO/Utilities',\n    '/Library/Printers/EPSON/InkjetPrinter2/Filter/commandtoescp.app/Contents/MacOS',\n\
+    \    '/Library/PrivilegedHelperTools',\n    '/Library/TeX/texbin',\n    '/node_modules/.bin',\n\
+    \    '/opt/custom-cli-tools',\n    '/opt/homebrew/bin',\n    '/opt/osquery/lib/osquery.app/Contents/MacOS',\n\
+    \    '/opt/usr/bin',\n    '/opt/X11/bin',\n    '/opt/X11/libexec',\n    '/run/current-system/sw/bin',\n\
+    \    '/sbin',\n    '/tmp/bin',\n    '/usr/bin',\n    '/usr/lib',\n    '/usr/lib/bluetooth',\n\
+    \    '/usr/lib/cups/notifier',\n    '/usr/lib/fwupd',\n    '/usr/lib/ibus',\n\
+    \    '/usr/lib/system',\n    '/usr/libexec',\n    '/usr/libexec/ApplicationFirewall',\n\
+    \    '/usr/libexec/AssetCache',\n    '/usr/libexec/cups/backend',\n    '/usr/libexec/firmwarecheckers',\n\
+    \    '/usr/libexec/firmwarecheckers/eficheck',\n    '/usr/libexec/rosetta',\n\
+    \    '/usr/local/aws-cli',\n    '/usr/local/bin',\n    '/usr/local/MacGPG2/bin',\n\
+    \    '/usr/sbin',\n    '/Volumes/Grammarly/Grammarly Installer.app/Contents/MacOS',\n\
+    \    '~/.cache/gitstatus',\n    '~/.docker/cli-plugins',\n    '~/.local/bin',\n\
+    \    '~/.magefile',\n    '~/bin',\n    '~/code/bin',\n    '~/Downloads/google-cloud-sdk/bin',\n\
+    \    '~/Downloads/protoc/bin',\n    '~/go/bin',\n    '~/Library/Application Support/Alfred/Assistant',\n\
+    \    '~/Library/Application Support/cloud-code/installer/google-cloud-sdk/bin',\n\
+    \    '~/Library/Application Support/dev.warp.Warp-Stable',\n    '~/Library/Application\
+    \ Support/minecraft/launcher/launcher.bundle/Contents/Frameworks/launcher-Helper\
+    \ (GPU).app/Contents/MacOS',\n    '~/Library/Application Support/snyk-ls',\n \
+    \   '~/melange',\n    '~/projects/go/bin'\n  ) -- Locally built executables\n\
+    \  AND NOT (\n    s.identifier = 'a.out'\n    AND (\n      dir LIKE '~/%'\n  \
+    \    OR dir LIKE '/Users/%'\n    )\n    AND p1_name IN ('fish', 'sh', 'bash',\
+    \ 'zsh', 'terraform', 'code')\n  )\n  AND NOT (\n    s.authority = ''\n    AND\
+    \ dir LIKE '~/%'\n    AND p1_name IN ('fish', 'sh', 'bash', 'zsh')\n    AND p.cmdline\
+    \ LIKE './%'\n  ) -- Spotify\n  AND pe.path NOT LIKE '/private/tmp%/cloud_sql_proxy'\n\
+    \  AND pe.path NOT LIKE '/private/var/folders/%/T/sp_relauncher' -- Sparkle updater\n\
+    \  AND pe.path NOT LIKE '/Users/%/Library/Caches/%/org.sparkle-project.Sparkle/Launcher/%/Updater.app/Contents/MacOS/Updater'\n\
+    \  AND dir NOT LIKE '/Applications/%'\n  AND dir NOT LIKE '/Library/SystemExtensions/%-%/%.systemextension/Contents/MacOS'\n\
+    \  AND dir NOT LIKE '/opt/%/bin'\n  AND dir NOT LIKE '/private/tmp/%.app/Contents/MacOS'\n\
+    \  AND dir NOT LIKE '/private/tmp/go-build%/exe'\n  AND dir NOT LIKE '/private/tmp/KSInstallAction.%/Install\
+    \ Google Software Update.app/Contents/Helpers'\n  AND dir NOT LIKE '/private/tmp/nix-build-%'\n\
+    \  AND dir NOT LIKE '/private/tmp/PKInstallSandbox.%/Scripts/com.microsoft.OneDrive.%'\n\
+    \  AND dir NOT LIKE '/private/var/db/com.apple.xpc.roleaccountd.staging/%.xpc/Contents/MacOS'\n\
+    \  AND dir NOT LIKE '/private/var/folders/%/bin'\n  AND dir NOT LIKE '/private/var/folders/%/Contents/%'\n\
+    \  AND dir NOT LIKE '/private/var/folders/%/d/Wrapper/%.app%'\n  AND dir NOT LIKE\
+    \ '/private/var/folders/%/go-build%'\n  AND dir NOT LIKE '/private/var/folders/%/GoLand'\n\
+    \  AND dir NOT LIKE '/private/var/folders/%/T/cargo-install%'\n  AND dir NOT LIKE\
+    \ '/private/var/kolide-k2/k2device.kolide.com/updates/osqueryd/%'\n  AND dir NOT\
+    \ LIKE '/Volumes/com.getdropbox.dropbox-%' -- These signers can run from wherever\
+    \ the hell they want.\n  AND dir NOT LIKE '%/.terraform/providers/%'\n  AND dir\
+    \ NOT LIKE '%/go/bin'\n  AND dir NOT LIKE '~/.local/%/packages/%'\n  AND dir NOT\
+    \ LIKE '~/%/bin'\n  AND dir NOT LIKE '~/%/google-cloud-sdk/bin/%'\n  AND dir NOT\
+    \ LIKE '~/%/node_modules/%'\n  AND dir NOT LIKE '~/%repo%' -- When running code\
+    \ as root\n  AND dir NOT LIKE '~/%sigstore%'\n  AND dir NOT LIKE '~/Documents/%/build/%'\n\
+    \  AND dir NOT LIKE '~/Documents/%/target/%'\n  AND dir NOT LIKE '~/Downloads/%.app/Contents/MacOS'\n\
+    \  AND dir NOT LIKE '~/Library/Arduino%/packages/%'\n  AND dir NOT LIKE '~/Library/Caches/ms-playwright/%'\n\
+    \  AND dir NOT LIKE '~/Library/Printers/%/Contents/MacOS'\n  AND s.identifier\
+    \ != 'org.sparkle-project.Sparkle.Autoupdate'\n  AND s.authority NOT IN (\n  \
+    \  'Apple iPhone OS Application Signing',\n    'Apple Mac OS Application Signing',\n\
+    \    'Developer ID Application: Adobe Inc. (JQ525L2MZD)',\n    'Developer ID Application:\
+    \ Azul Systems, Inc. (TDTHCUPYFR)',\n    'Developer ID Application: Bitdefender\
+    \ SRL (GUNFMW623Y)',\n    'Developer ID Application: Brother Industries, LTD.\
+    \ (5HCL85FLGW)',\n    'Developer ID Application: Canon Inc. (XE2XNRRXZ5)',\n \
+    \   'Developer ID Application: Canonical Group Limited (X4QN7LTP59)',\n    'Developer\
+    \ ID Application: Cisco (DE8Y96K9QP)',\n    'Developer ID Application: CodeWeavers\
+    \ Inc. (9C6B7X7Z8E)',\n    'Developer ID Application: Corsair Memory, Inc. (Y93VXCB8Q5)',\n\
+    \    'Developer ID Application: Docker Inc (9BNSXJN65R)',\n    'Developer ID Application:\
+    \ Dropbox, Inc. (G7HH3F8CAK)',\n    'Developer ID Application: Epic Games International,\
+    \ S.a.r.l. (96DBZ92D3Y)',\n    'Developer ID Application: Figma, Inc. (T8RA8NE3B7)',\n\
+    \    'Developer ID Application: Fortinet, Inc (AH4XFXJ7DK)',\n    'Developer ID\
+    \ Application: GEORGE NACHMAN (H7V7XYVQ7D)',\n    'Developer ID Application: Google\
+    \ LLC (EQHXZ8M8AV)',\n    'Developer ID Application: Hashicorp, Inc. (D38WU7D763)',\n\
+    \    'Developer ID Application: Keybase, Inc. (99229SGT5K)',\n    'Developer ID\
+    \ Application: LG Electronics (5SKT5H4CPQ)',\n    'Developer ID Application: Logitech\
+    \ Inc. (QED4VVPZWA)',\n    'Developer ID Application: MacPaw Inc. (S8EX82NJP6)',\n\
+    \    'Developer ID Application: Microsoft Corporation (UBF8T346G9)',\n    'Developer\
+    \ ID Application: Mojang AB (HR992ZEAE6)',\n    'Developer ID Application: Ned\
+    \ Deily (DJ3H93M7VJ)',\n    'Developer ID Application: Node.js Foundation (HX7739G8FX)',\n\
+    \    'Developer ID Application: Objective Development Software GmbH (MLZF7K7B5R)',\n\
+    \    'Developer ID Application: Objective-See, LLC (VBG97UB4TA)',\n    'Developer\
+    \ ID Application: Opal Camera Inc (97Z3HJWCRT)',\n    'Developer ID Application:\
+    \ Oracle America, Inc. (VB5E2TV963)',\n    'Developer ID Application: Rapid7 LLC\
+    \ (UL6CGN7MAL)',\n    'Developer ID Application: reMarkable AS (4FFUD2H2F6)',\n\
+    \    'Developer ID Application: Rogue Amoeba Software, LLC (7266XEXAPM)',\n  \
+    \  'Developer ID Application: Silicon Laboratories Inc (52444FG85C)',\n    'Developer\
+    \ ID Application: SILICON MOTION, INC. (JAGYSS7E9A)',\n    'Developer ID Application:\
+    \ Snyk Limited (97QYW7LHSF)',\n    'Developer ID Application: Sublime HQ Pty Ltd\
+    \ (Z6D26JE4Y4)',\n    'Developer ID Application: TablePlus Inc (3X57WP8E8V)',\n\
+    \    'Developer ID Application: Tenable, Inc. (4B8J598M7U)',\n    'Developer ID\
+    \ Application: Valve Corporation (MXGJJ98X76)',\n    'Developer ID Application:\
+    \ Wireshark Foundation, Inc. (7Z6EMTD2C6)',\n    'Software Signing'\n  ) -- Don't\
+    \ spam alerts with repeated invocations of the same command-line\nGROUP BY\n \
+    \ p.cmdline,\n  p.cwd,\n  p.euid;\n"
+  platform: darwin
   interval: 240
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

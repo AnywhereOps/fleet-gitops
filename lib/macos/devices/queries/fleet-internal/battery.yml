@@ -1,17 +1,6 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Battery
+- name: Battery
+  description: Determines battery health based on the cycle count, designed capacity,
+    and max capacity of the battery.
+  query: "SELECT \n  serial_number, cycle_count, designed_capacity, max_capacity \n\
+    FROM battery\n"
   platform: windows, darwin
-  description: Determines battery health based on the cycle count, designed capacity, and max capacity of the battery.
-  query: "SELECT \n  serial_number, cycle_count, designed_capacity, max_capacity \nFROM battery\n"
-  powershell: "$battery = Get-CimInstance Win32_Battery\nif (-not $battery) {\n    Write-Output \"No battery information available.\"\n    exit\n}\n$battery | Select-Object `\n    @{Name='serial_number';Expression={$_.SerialNumber}},\
-    \ `\n    @{Name='cycle_count';Expression={$_.CycleCount}}, `\n    @{Name='designed_capacity';Expression={$_.DesignCapacity}}, `\n    @{Name='max_capacity';Expression={$_.FullChargeCapacity}} | Format-Table\
-    \ -AutoSize"
-  bash: echo "serial_number,cycle_count,designed_capacity,max_capacity" && ioreg -rn AppleSmartBattery -w0 | awk -F' = ' '/BatterySerialNumber/ {gsub(/"/,"",$2); sn=$2} /CycleCount/ {cc=$2} /DesignCapacity/
-    {dc=$2} /MaxCapacity/ {mc=$2} END {print sn","cc","dc","mc}'
-  purpose: Informational
-  tags: built-in
-  discovery: battery
-  team: devices

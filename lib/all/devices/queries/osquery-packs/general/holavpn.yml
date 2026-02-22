@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: HolaVPN
+- name: HolaVPN
   description: (http://adios-hola.org)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='gkojfkhlekighikafcpjkiklfbnlmeio';
   interval: 3600
-  team: devices

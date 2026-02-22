@@ -1,94 +1,37 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Hidden Cwd Events Linux
+- name: CDK - Hidden Cwd Events Linux
+  description: 'Programs running with a hidden current working directory (event-based)
+    NOTES: * Disabled on macOS, as the cwd field as NULL there'
+  query: "SELECT\n  COALESCE(\n    REGEX_MATCH (TRIM(pe.cwd, '\"'), \"/(\\..*?)\\\
+    /\", 1),\n    REGEX_MATCH (TRIM(pe.cwd, '\"'), \"/(\\..*)\", 1)\n  ) AS hidden_base,\n\
+    \  REGEX_MATCH (TRIM(pe.cwd, '\"'), \"/(\\..*)\", 1) AS hidden_part,\n  COALESCE(\n\
+    \    REGEX_MATCH (TRIM(pe.cwd, '\"'), '.*/(.*)', 1),\n    pe.cwd\n  ) AS basename,\n\
+    \  CONCAT (\n    COALESCE(\n      REGEX_MATCH (TRIM(pe.path, '\"'), '.*/(.*)',\
+    \ 1),\n      pe.path\n    ),\n    ',',\n    REGEX_MATCH (TRIM(pe.cwd, '\"'), \"\
+    /(\\..*?)\\/\", 1),\n    REGEX_MATCH (TRIM(pe.cwd, '\"'), \"/(\\..*)\", 1)\n \
+    \ ) AS exception_key,\n  -- Child\n  pe.path AS p0_path,\n  COALESCE(REGEX_MATCH\
+    \ (pe.path, '.*/(.*)', 1), pe.path) AS p0_name,\n  TRIM(pe.cmdline) AS p0_cmd,\n\
+    \  TRIM(pe.cwd, '\"') AS p0_cwd,\n  pe.status AS p0_status,\n  pe.time AS p0_time,\n\
+    \  pe.pid AS p0_pid,\n  pe.euid AS p0_euid,\n  -- Parent\n  pe.parent AS p1_pid,\n\
+    \  TRIM(COALESCE(p1.cmdline, pe1.cmdline)) AS p1_cmd,\n  p1.cwd AS p1_cwd,\n \
+    \ COALESCE(p1.path, pe1.path) AS p1_path,\n  COALESCE(p_hash1.sha256, pe_hash1.sha256)\
+    \ AS p1_hash,\n  REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) AS p1_name\n\
+    FROM\n  process_events pe\n  LEFT JOIN users u ON pe.uid = u.uid\n  LEFT JOIN\
+    \ processes p ON pe.pid = p.pid -- Parents (via two paths)\n  LEFT JOIN processes\
+    \ p1 ON pe.parent = p1.pid\n  LEFT JOIN hash p_hash1 ON p1.path = p_hash1.path\n\
+    \  LEFT JOIN process_events pe1 ON pe.parent = pe1.pid\n  AND pe1.time > (strftime('%s',\
+    \ 'now') -60660)\n  AND pe1.cmdline != ''\n  LEFT JOIN hash pe_hash1 ON pe1.path\
+    \ = pe_hash1.path\nWHERE\n  pe.time > (strftime('%s', 'now') -60600)\n  AND pe.cwd\
+    \ LIKE '%/.%'\n  AND NOT (\n    hidden_base IN (\n      '.cache',\n      '.cargo',\n\
+    \      '.config',\n      '.docker',\n      '.emacs.d',\n      '.gimme',\n    \
+    \  '.git',\n      '.github',\n      '.gmailctl',\n      '.gradle',\n      '.kotlin',\n\
+    \      '.linuxbrew',\n      '.local',\n      '.npm',\n      '.oh-my-zsh',\n  \
+    \    '.provisio',\n      '.terraform.d',\n      '.vim',\n      '.vscode-oss',\n\
+    \      '.vscode',\n      '.zsh'\n    )\n    OR exception_key LIKE '%sh,~/.Trash'\n\
+    \    OR exception_key IN ('git,.test')\n  )\n  AND NOT pe.cwd LIKE '%/build/%'\n\
+    \  AND NOT pe.cwd LIKE '%/out/%'\nGROUP BY\n  p.cmdline,\n  p.cwd;\n"
   platform: linux
-  description: 'Programs running with a hidden current working directory (event-based) NOTES: * Disabled on macOS, as the cwd field as NULL there'
-  query: |
-    SELECT
-      COALESCE(
-        REGEX_MATCH (TRIM(pe.cwd, '"'), "/(\..*?)\/", 1),
-        REGEX_MATCH (TRIM(pe.cwd, '"'), "/(\..*)", 1)
-      ) AS hidden_base,
-      REGEX_MATCH (TRIM(pe.cwd, '"'), "/(\..*)", 1) AS hidden_part,
-      COALESCE(
-        REGEX_MATCH (TRIM(pe.cwd, '"'), '.*/(.*)', 1),
-        pe.cwd
-      ) AS basename,
-      CONCAT (
-        COALESCE(
-          REGEX_MATCH (TRIM(pe.path, '"'), '.*/(.*)', 1),
-          pe.path
-        ),
-        ',',
-        REGEX_MATCH (TRIM(pe.cwd, '"'), "/(\..*?)\/", 1),
-        REGEX_MATCH (TRIM(pe.cwd, '"'), "/(\..*)", 1)
-      ) AS exception_key,
-      -- Child
-      pe.path AS p0_path,
-      COALESCE(REGEX_MATCH (pe.path, '.*/(.*)', 1), pe.path) AS p0_name,
-      TRIM(pe.cmdline) AS p0_cmd,
-      TRIM(pe.cwd, '"') AS p0_cwd,
-      pe.status AS p0_status,
-      pe.time AS p0_time,
-      pe.pid AS p0_pid,
-      pe.euid AS p0_euid,
-      -- Parent
-      pe.parent AS p1_pid,
-      TRIM(COALESCE(p1.cmdline, pe1.cmdline)) AS p1_cmd,
-      p1.cwd AS p1_cwd,
-      COALESCE(p1.path, pe1.path) AS p1_path,
-      COALESCE(p_hash1.sha256, pe_hash1.sha256) AS p1_hash,
-      REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) AS p1_name
-    FROM
-      process_events pe
-      LEFT JOIN users u ON pe.uid = u.uid
-      LEFT JOIN processes p ON pe.pid = p.pid -- Parents (via two paths)
-      LEFT JOIN processes p1 ON pe.parent = p1.pid
-      LEFT JOIN hash p_hash1 ON p1.path = p_hash1.path
-      LEFT JOIN process_events pe1 ON pe.parent = pe1.pid
-      AND pe1.time > (strftime('%s', 'now') -60660)
-      AND pe1.cmdline != ''
-      LEFT JOIN hash pe_hash1 ON pe1.path = pe_hash1.path
-    WHERE
-      pe.time > (strftime('%s', 'now') -60600)
-      AND pe.cwd LIKE '%/.%'
-      AND NOT (
-        hidden_base IN (
-          '.cache',
-          '.cargo',
-          '.config',
-          '.docker',
-          '.emacs.d',
-          '.gimme',
-          '.git',
-          '.github',
-          '.gmailctl',
-          '.gradle',
-          '.kotlin',
-          '.linuxbrew',
-          '.local',
-          '.npm',
-          '.oh-my-zsh',
-          '.provisio',
-          '.terraform.d',
-          '.vim',
-          '.vscode-oss',
-          '.vscode',
-          '.zsh'
-        )
-        OR exception_key LIKE '%sh,~/.Trash'
-        OR exception_key IN ('git,.test')
-      )
-      AND NOT pe.cwd LIKE '%/build/%'
-      AND NOT pe.cwd LIKE '%/out/%'
-    GROUP BY
-      p.cmdline,
-      p.cwd;
   interval: 600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

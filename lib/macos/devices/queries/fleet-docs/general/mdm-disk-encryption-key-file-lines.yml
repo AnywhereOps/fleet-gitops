@@ -1,16 +1,8 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: MDM Disk encryption key file lines
+- name: MDM Disk encryption key file lines
+  description: Retrieves the encrypted FileVault recovery key and checks for related
+    file data on managed macOS devices.
+  query: "WITH\n    de AS (SELECT IFNULL((SELECT 1 FROM disk_encryption WHERE user_uuid\
+    \ IS NOT \"\" AND filevault_status = 'on' LIMIT 1), 0) as encrypted),\n    fl\
+    \ AS (SELECT line FROM file_lines WHERE path = '/var/db/FileVaultPRK.dat')\n \
+    \ SELECT encrypted, hex(line) as hex_line FROM de LEFT JOIN fl;\n"
   platform: darwin
-  description: Retrieves the encrypted FileVault recovery key and checks for related file data on managed macOS devices.
-  query: |
-    WITH
-        de AS (SELECT IFNULL((SELECT 1 FROM disk_encryption WHERE user_uuid IS NOT "" AND filevault_status = 'on' LIMIT 1), 0) as encrypted),
-        fl AS (SELECT line FROM file_lines WHERE path = '/var/db/FileVaultPRK.dat')
-      SELECT encrypted, hex(line) as hex_line FROM de LEFT JOIN fl;
-  purpose: Informational
-  tags: built-in
-  discovery: filevault_prk
-  team: devices

@@ -1,8 +1,3 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: system_info_snapshot
+- name: system_info_snapshot
   description: System info snapshot query
   query: SELECT * FROM system_info;
-  team: both

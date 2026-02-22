@@ -1,25 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get unencrypted SSH keys for domain-joined accounts
+- name: Get unencrypted SSH keys for domain-joined accounts
+  description: Identify SSH keys created without a passphrase which can be used in
+    Lateral Movement (MITRE. TA0008)
+  query: SELECT uid, username, description, path, encrypted FROM users CROSS JOIN
+    user_ssh_keys using (uid) WHERE encrypted=0 and username in (SELECT distinct(username)
+    FROM last);
   platform: darwin, linux, windows
-  description: Identify SSH keys created without a passphrase which can be used in Lateral Movement (MITRE. TA0008)
-  query: SELECT uid, username, description, path, encrypted FROM users CROSS JOIN user_ssh_keys using (uid) WHERE encrypted=0 and username in (SELECT distinct(username) FROM last);
-  powershell: "$lastOutput = & last\n$lastUsernames = $lastOutput | ForEach-Object {\n    if ($_ -match '^\\s*(\\S+)') { $matches[1] }\n} | Select-Object -Unique\n\n$passwdFile = \"/etc/passwd\"\nif (Test-Path\
-    \ $passwdFile) {\n    $lines = Get-Content $passwdFile\n    foreach ($line in $lines) {\n        # /etc/passwd format: username:password:UID:GID:GECOS:home_directory:shell\n        $fields = $line -split\
-    \ \":\"\n        if ($fields.Length -ge 7) {\n            $username = $fields[0]\n            $uid = $fields[2]\n            $description = $fields[4]\n            $homeDir = $fields[5]\n\n        \
-    \    if ($lastUsernames -contains $username) {\n                # Assume the user's SSH authorized_keys file is in .ssh/authorized_keys in their home directory\n                $sshKeyPath = Join-Path\
-    \ $homeDir \".ssh/authorized_keys\"\n                if (Test-Path $sshKeyPath) {\n                    $keyLines = Get-Content $sshKeyPath\n                    foreach ($keyLine in $keyLines) {\n  \
-    \                      if ([string]::IsNullOrWhiteSpace($keyLine)) {\n                            continue\n                        }\n                        # Determine if the key is encrypted by\
-    \ looking for the keyword \"ENCRYPTED\"\n                        $encrypted = if ($keyLine -match \"ENCRYPTED\") { 1 } else { 0 }\n                        if ($encrypted -eq 0) {\n                 \
-    \           $result = [PSCustomObject]@{\n                                uid         = $uid\n                                username    = $username\n                                description = $description\n\
-    \                                path        = $sshKeyPath\n                                encrypted   = $encrypted\n                            }\n                            Write-Output $result\n\
-    \                        }\n                    }\n                }\n            }\n        }\n    }\n}"
-  bash: 'printf "uid,username,description,path,encrypted\n"; for u in $(last | awk ''{print $1}'' | grep -vE ''^(wtmp|reboot)$'' | sort -u); do [ -d "/Users/$u/.ssh" ] && for f in $(find "/Users/$u/.ssh"
-    -type f -name "authorized_keys*" 2>/dev/null); do uid=$(id -u "$u"); desc=$(dscl . -read /Users/"$u" RealName 2>/dev/null | cut -d: -f2- | sed ''s/^ //''); echo "$uid,$u,$desc,$f,0"; done; done'
-  purpose: Informational
-  tags: inventory, compliance, ssh, active directory
-  contributors: anelshaer
-  remediation: First, make the user aware about the impact of SSH keys.  Then rotate the unencrypted keys detected.
-  team: servers

@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Preferences Macos
-  platform: darwin
+- name: CDK - Preferences Macos
   description: Retrieves entries from the macOS preferences database
-  query: |
-    SELECT
-      *
-    FROM
-      preferences;
+  query: "SELECT\n  *\nFROM\n  preferences;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

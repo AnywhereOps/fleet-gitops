@@ -1,20 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Files Etc
+- name: CDK - Files Etc
   description: Returns a list of file information from /etc (non-hidden only)
-  query: |
-    SELECT
-      *
-    FROM
-      file
-      JOIN hash ON file.path = hash.path
-    WHERE
-      file.path LIKE "/etc/%%";
+  query: "SELECT\n  *\nFROM\n  file\n  JOIN hash ON file.path = hash.path\nWHERE\n\
+    \  file.path LIKE \"/etc/%%\";\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

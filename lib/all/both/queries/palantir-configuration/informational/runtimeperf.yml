@@ -1,10 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: runtime_perf
+- name: runtime_perf
   description: Records system/user time, db size, and many other system metrics
-  query: SELECT ov.version AS os_version, ov.platform AS os_platform, ov.codename AS os_codename, i.*, p.resident_size, p.user_time, p.system_time, time.minutes AS counter, db.db_size_mb AS database_size
-    from osquery_info i, os_version ov, processes p, time, (SELECT (SUM(size) / 1024) / 1024.0 AS db_size_mb FROM (SELECT value FROM osquery_flags WHERE name = 'database_path' LIMIT 1) flags, file WHERE
+  query: SELECT ov.version AS os_version, ov.platform AS os_platform, ov.codename
+    AS os_codename, i.*, p.resident_size, p.user_time, p.system_time, time.minutes
+    AS counter, db.db_size_mb AS database_size from osquery_info i, os_version ov,
+    processes p, time, (SELECT (SUM(size) / 1024) / 1024.0 AS db_size_mb FROM (SELECT
+    value FROM osquery_flags WHERE name = 'database_path' LIMIT 1) flags, file WHERE
     path LIKE flags.value || '%%' AND type = 'regular') db WHERE p.pid = i.pid;
-  team: both

@@ -1,100 +1,37 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Dev Executables Linux
-  platform: linux
+- name: CDK - Unexpected Dev Executables Linux
   description: Find unexpected executables in /dev
-  query: |
-    SELECT
-      file.path,
-      file.directory,
-      uid,
-      gid,
-      mode,
-      file.mtime,
-      file.size,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash on file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        -- This list is the result of multiple queries combined and can likely be minimized
-        file.path LIKE '/dev/%%'
-        OR file.path LIKE '/dev/%%/%%'
-        OR file.path LIKE '/dev/mqueue/.%/%%'
-        OR file.path LIKE '/dev/mqueue/%/.%/%%'
-        OR file.path LIKE '/dev/mqueue/%/%/.%'
-        OR file.path LIKE '/dev/mqueue/%/%%'
-        OR file.path LIKE '/dev/mqueue/%%'
-        OR file.path LIKE '/dev/shm/.%/%%'
-        OR file.path LIKE '/dev/shm/%/.%/%%'
-        OR file.path LIKE '/dev/shm/%/%/.%'
-        OR file.path LIKE '/dev/shm/%/%%'
-        OR file.path LIKE '/dev/shm/%%'
-      )
-      AND file.type = 'regular'
-      AND file.size > 64
-      AND file.path NOT LIKE '%/../%'
-      AND file.path NOT LIKE '%/./%'
-      AND (
-        file.mode LIKE '%7%'
-        or file.mode LIKE '%5%'
-        or file.mode LIKE '%1%'
-      ) -- Seen on Ubuntu
-      AND NOT (
-        file.uid = 1000
-        AND file.gid = 1000
-        AND file.mode = '0700'
-        AND (
-          magic.data IS NULL
-          OR magic.data = 'data'
-        )
-        AND file.path LIKE '/dev/shm/pulse-shm-%'
-        AND file.size > 60000000
-      ) -- Seen with Steam
-      AND NOT (
-        file.uid = 1000
-        AND file.gid IN (100, 1000)
-        AND file.mode IN ('0755', '0775')
-        AND file.path LIKE '/dev/shm/u1000-Shm_%'
-        AND (
-          magic.data IS NULL
-          OR magic.data NOT LIKE "%executable%"
-          OR magic.data IN (
-            'Applesoft BASIC program data, first line number 86',
-            'data',
-            'DOS executable (COM)',
-            'mc68k executable (shared)'
-          )
-        )
-      )
-      AND NOT (
-        file.uid = 1000
-        AND file.gid IN (100, 1000)
-        AND file.mode IN ('0755', '0775')
-        AND magic.data IS NULL
-        AND file.path LIKE '/dev/shm/u1000-Shm_%'
-      )
-      AND NOT (
-        file.uid = 1000
-        AND file.gid IN (100, 1000)
-        AND file.mode IN ('0755', '0775')
-        AND file.path = '/dev/shm/u1000-ValveIPCSharedObj-Steam'
-        AND file.size > 2000000
-      )
-      AND NOT (
-        file.uid = 1000
-        AND file.mode = '0755'
-        AND file.path LIKE '/dev/shm/flatpak-com.valvesoftware.Steam-%/u1000-Shm_%'
-        AND file.size > 1000000
-      )
+  query: "SELECT\n  file.path,\n  file.directory,\n  uid,\n  gid,\n  mode,\n  file.mtime,\n\
+    \  file.size,\n  hash.sha256,\n  magic.data\nFROM\n  file\n  LEFT JOIN hash on\
+    \ file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\nWHERE\n\
+    \  (\n    -- This list is the result of multiple queries combined and can likely\
+    \ be minimized\n    file.path LIKE '/dev/%%'\n    OR file.path LIKE '/dev/%%/%%'\n\
+    \    OR file.path LIKE '/dev/mqueue/.%/%%'\n    OR file.path LIKE '/dev/mqueue/%/.%/%%'\n\
+    \    OR file.path LIKE '/dev/mqueue/%/%/.%'\n    OR file.path LIKE '/dev/mqueue/%/%%'\n\
+    \    OR file.path LIKE '/dev/mqueue/%%'\n    OR file.path LIKE '/dev/shm/.%/%%'\n\
+    \    OR file.path LIKE '/dev/shm/%/.%/%%'\n    OR file.path LIKE '/dev/shm/%/%/.%'\n\
+    \    OR file.path LIKE '/dev/shm/%/%%'\n    OR file.path LIKE '/dev/shm/%%'\n\
+    \  )\n  AND file.type = 'regular'\n  AND file.size > 64\n  AND file.path NOT LIKE\
+    \ '%/../%'\n  AND file.path NOT LIKE '%/./%'\n  AND (\n    file.mode LIKE '%7%'\n\
+    \    or file.mode LIKE '%5%'\n    or file.mode LIKE '%1%'\n  ) -- Seen on Ubuntu\n\
+    \  AND NOT (\n    file.uid = 1000\n    AND file.gid = 1000\n    AND file.mode\
+    \ = '0700'\n    AND (\n      magic.data IS NULL\n      OR magic.data = 'data'\n\
+    \    )\n    AND file.path LIKE '/dev/shm/pulse-shm-%'\n    AND file.size > 60000000\n\
+    \  ) -- Seen with Steam\n  AND NOT (\n    file.uid = 1000\n    AND file.gid IN\
+    \ (100, 1000)\n    AND file.mode IN ('0755', '0775')\n    AND file.path LIKE '/dev/shm/u1000-Shm_%'\n\
+    \    AND (\n      magic.data IS NULL\n      OR magic.data NOT LIKE \"%executable%\"\
+    \n      OR magic.data IN (\n        'Applesoft BASIC program data, first line\
+    \ number 86',\n        'data',\n        'DOS executable (COM)',\n        'mc68k\
+    \ executable (shared)'\n      )\n    )\n  )\n  AND NOT (\n    file.uid = 1000\n\
+    \    AND file.gid IN (100, 1000)\n    AND file.mode IN ('0755', '0775')\n    AND\
+    \ magic.data IS NULL\n    AND file.path LIKE '/dev/shm/u1000-Shm_%'\n  )\n  AND\
+    \ NOT (\n    file.uid = 1000\n    AND file.gid IN (100, 1000)\n    AND file.mode\
+    \ IN ('0755', '0775')\n    AND file.path = '/dev/shm/u1000-ValveIPCSharedObj-Steam'\n\
+    \    AND file.size > 2000000\n  )\n  AND NOT (\n    file.uid = 1000\n    AND file.mode\
+    \ = '0755'\n    AND file.path LIKE '/dev/shm/flatpak-com.valvesoftware.Steam-%/u1000-Shm_%'\n\
+    \    AND file.size > 1000000\n  )\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

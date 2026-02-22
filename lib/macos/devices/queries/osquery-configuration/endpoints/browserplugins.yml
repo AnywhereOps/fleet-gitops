@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: browser_plugins
+- name: browser_plugins
   description: All C/NPAPI browser plugin details for all users.
   query: SELECT * FROM users CROSS JOIN browser_plugins USING (uid);
   platform: darwin
-  team: devices

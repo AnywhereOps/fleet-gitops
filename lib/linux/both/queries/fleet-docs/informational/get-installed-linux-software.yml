@@ -1,15 +1,15 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get installed Linux software
+- name: Get installed Linux software
+  description: Get all software installed on a Linux computer, including browser plugins
+    and installed packages. Note that this does not include other running processes
+    in the processes table.
+  query: SELECT name AS name, version AS version, 'Package (APT)' AS type, 'apt_sources'
+    AS source FROM apt_sources UNION SELECT name AS name, version AS version, 'Package
+    (deb)' AS type, 'deb_packages' AS source FROM deb_packages UNION SELECT package
+    AS name, version AS version, 'Package (Portage)' AS type, 'portage_packages' AS
+    source FROM portage_packages UNION SELECT name AS name, version AS version, 'Package
+    (RPM)' AS type, 'rpm_packages' AS source FROM rpm_packages UNION SELECT name AS
+    name, '' AS version, 'Package (YUM)' AS type, 'yum_sources' AS source FROM yum_sources
+    UNION SELECT name AS name, version AS version, 'Package (NPM)' AS type, 'npm_packages'
+    AS source FROM npm_packages UNION SELECT name AS name, version AS version, 'Package
+    (Python)' AS type, 'python_packages' AS source FROM python_packages;
   platform: linux
-  description: Get all software installed on a Linux computer, including browser plugins and installed packages. Note that this does not include other running processes in the processes table.
-  query: SELECT name AS name, version AS version, 'Package (APT)' AS type, 'apt_sources' AS source FROM apt_sources UNION SELECT name AS name, version AS version, 'Package (deb)' AS type, 'deb_packages'
-    AS source FROM deb_packages UNION SELECT package AS name, version AS version, 'Package (Portage)' AS type, 'portage_packages' AS source FROM portage_packages UNION SELECT name AS name, version AS version,
-    'Package (RPM)' AS type, 'rpm_packages' AS source FROM rpm_packages UNION SELECT name AS name, '' AS version, 'Package (YUM)' AS type, 'yum_sources' AS source FROM yum_sources UNION SELECT name AS name,
-    version AS version, 'Package (NPM)' AS type, 'npm_packages' AS source FROM npm_packages UNION SELECT name AS name, version AS version, 'Package (Python)' AS type, 'python_packages' AS source FROM python_packages;
-  purpose: Informational
-  tags: inventory, built-in
-  contributors: zwass
-  team: both

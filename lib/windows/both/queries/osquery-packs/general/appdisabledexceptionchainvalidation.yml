@@ -1,11 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: App_disabledExceptionChainValidation
+- name: App_disabledExceptionChainValidation
   description: Check Applications not supporting SEHOP
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows NT\CurrentVersion\Image File Execution Options\%\DisableExceptionChainValidation'
-  interval: '86400'
-  snapshot: true
+  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
+    NT\CurrentVersion\Image File Execution Options\%\DisableExceptionChainValidation'
   platform: windows
-  team: both
+  interval: '86400'

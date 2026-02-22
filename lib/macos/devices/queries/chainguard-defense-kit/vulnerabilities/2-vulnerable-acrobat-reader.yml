@@ -1,34 +1,14 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Vulnerable Acrobat Reader
-  platform: darwin
+- name: CDK - Vulnerable Acrobat Reader
   description: Vulnerable version of Adobe Acrobat Reader is installed
-  query: |
-    SELECT
-      name,
-      path,
-      bundle_version,
-      TRIM(REGEX_MATCH (bundle_version, "^(\d+)\.", 1)) AS major,
-      TRIM(REGEX_MATCH (bundle_version, "\.(\d+)$", 1)) AS patch
-    FROM
-      apps
-    WHERE
-      name LIKE "%Acrobat%"
-      AND (
-        (
-          major = "23"
-          AND CAST(patch AS integer) < 20285
-        )
-        OR (
-          major = "20"
-          AND CAST(patch AS integer) < 30517
-        )
-      )
+  query: "SELECT\n  name,\n  path,\n  bundle_version,\n  TRIM(REGEX_MATCH (bundle_version,\
+    \ \"^(\\d+)\\.\", 1)) AS major,\n  TRIM(REGEX_MATCH (bundle_version, \"\\.(\\\
+    d+)$\", 1)) AS patch\nFROM\n  apps\nWHERE\n  name LIKE \"%Acrobat%\"\n  AND (\n\
+    \    (\n      major = \"23\"\n      AND CAST(patch AS integer) < 20285\n    )\n\
+    \    OR (\n      major = \"20\"\n      AND CAST(patch AS integer) < 30517\n  \
+    \  )\n  )\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: devices

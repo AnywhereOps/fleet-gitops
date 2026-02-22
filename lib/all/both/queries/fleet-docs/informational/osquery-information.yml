@@ -1,13 +1,4 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Osquery information
-  platform: darwin, windows, linux
+- name: Osquery information
   description: Gathers information about the osquery process running on a device.
   query: SELECT * FROM osquery_info LIMIT 1
-  powershell: "$process = Get-Process -Id $PID\n$result = [PSCustomObject]@{\n    version     = $PSVersionTable.PSVersion.ToString()\n    pid         = $PID\n    start_time  = $process.StartTime\n    config_hash\
-    \ = \"N/A\"\n}\n$result | Format-Table -AutoSize | Out-String | Write-Output"
-  purpose: Informational
-  tags: built-in
-  team: both
+  platform: darwin, windows, linux

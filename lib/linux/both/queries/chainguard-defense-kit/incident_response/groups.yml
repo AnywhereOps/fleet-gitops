@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Groups
-  platform: linux
+- name: CDK - Groups
   description: Return the list of POSIX groups on the system
-  query: |
-    SELECT
-      *
-    FROM
-      groups;
+  query: "SELECT\n  *\nFROM\n  groups;\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

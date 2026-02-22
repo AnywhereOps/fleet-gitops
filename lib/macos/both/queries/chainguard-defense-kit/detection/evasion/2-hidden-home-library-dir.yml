@@ -1,71 +1,33 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Hidden Home Library Dir
-  platform: darwin
+- name: CDK - Hidden Home Library Dir
   description: Find unexpected hidden files in a users Library directory
-  query: |
-    SELECT
-      file.path,
-      file.type,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.ctime,
-      REPLACE(file.directory, u.directory, '~') AS homedir,
-      file.gid,
-      hash.sha256,
-      magic.data,
-      signature.identifier,
-      signature.authority
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN users u ON file.uid = u.uid
-      LEFT JOIN magic ON file.path = magic.path
-      LEFT JOIN signature ON file.path = signature.path
-    WHERE
-      (
-        file.path LIKE '/Users/%/Library/%%/.%/%%'
-        OR file.path LIKE '/Users/%/Library/.%/%%'
-        OR file.path LIKE '/Users/%/Library/%%/.%/.%'
-      )
-      AND file.path NOT LIKE '%/../%'
-      AND file.path NOT LIKE '%/./%'
-      AND NOT homedir IN (
-        '~/Library/Accessibility/.com.apple.RTTTranscripts_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/Application Support/.keymapp',
-        '~/Library/Caches/.adobe/c2pa_cache',
-        '~/Library/Caches/.sigstore/gitsign',
-        '~/Library/com.apple.groupkitd/.syncedGroupStore_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/com.apple.groupkitd/.syncedGroupStore_SUPPORT/_EXTERNAL_DATA/',
-        '~/Library/Finance/.finance_cloud_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/Finance/.finance_dropbox_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/Finance/.finance_local_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/Group Containers/.SiriTodayViewExtension',
-        '~/Library/Group Containers/.SiriTodayViewExtension/Library',
-        '~/Library/GroupContainersAlias/.SiriTodayViewExtension',
-        '~/Library/GroupContainersAlias/.SiriTodayViewExtension/Library',
-        '~/Library/HomeKit/.core-cloudkit-shared_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/HomeKit/.core-cloudkit_SUPPORT/_EXTERNAL_DATA',
-        '~/Library/pnpm/.tools/pnpm',
-        '~/Library/Preferences/.wrangler',
-        '~/Library/Preferences/.wrangler/config',
-        '~/Library/Saved Searches/.DockTags',
-        '~/Library/Stickers/.stickers_SUPPORT/_EXTERNAL_DATA'
-      )
-      AND NOT homedir LIKE '~/Library/.icedove/%'
-      AND NOT homedir LIKE '~/Library/%/.%_SUPPORT/_EXTERNAL_DATA'
-      AND NOT homedir LIKe '~/Library/Caches/.git%'
-      AND NOT homedir LIKE '~/Library/Mobile Documents/.Trash%'
-      -- ugh
-      AND NOT file.path LIKE '/Library/Application Scripts/.%-%-%-%-%/.%'
-      AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%'
-      AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%/.%'
+  query: "SELECT\n  file.path,\n  file.type,\n  file.size,\n  file.mtime,\n  file.uid,\n\
+    \  file.ctime,\n  REPLACE(file.directory, u.directory, '~') AS homedir,\n  file.gid,\n\
+    \  hash.sha256,\n  magic.data,\n  signature.identifier,\n  signature.authority\n\
+    FROM\n  file\n  LEFT JOIN hash ON file.path = hash.path\n  LEFT JOIN users u ON\
+    \ file.uid = u.uid\n  LEFT JOIN magic ON file.path = magic.path\n  LEFT JOIN signature\
+    \ ON file.path = signature.path\nWHERE\n  (\n    file.path LIKE '/Users/%/Library/%%/.%/%%'\n\
+    \    OR file.path LIKE '/Users/%/Library/.%/%%'\n    OR file.path LIKE '/Users/%/Library/%%/.%/.%'\n\
+    \  )\n  AND file.path NOT LIKE '%/../%'\n  AND file.path NOT LIKE '%/./%'\n  AND\
+    \ NOT homedir IN (\n    '~/Library/Accessibility/.com.apple.RTTTranscripts_SUPPORT/_EXTERNAL_DATA',\n\
+    \    '~/Library/Application Support/.keymapp',\n    '~/Library/Caches/.adobe/c2pa_cache',\n\
+    \    '~/Library/Caches/.sigstore/gitsign',\n    '~/Library/com.apple.groupkitd/.syncedGroupStore_SUPPORT/_EXTERNAL_DATA',\n\
+    \    '~/Library/com.apple.groupkitd/.syncedGroupStore_SUPPORT/_EXTERNAL_DATA/',\n\
+    \    '~/Library/Finance/.finance_cloud_SUPPORT/_EXTERNAL_DATA',\n    '~/Library/Finance/.finance_dropbox_SUPPORT/_EXTERNAL_DATA',\n\
+    \    '~/Library/Finance/.finance_local_SUPPORT/_EXTERNAL_DATA',\n    '~/Library/Group\
+    \ Containers/.SiriTodayViewExtension',\n    '~/Library/Group Containers/.SiriTodayViewExtension/Library',\n\
+    \    '~/Library/GroupContainersAlias/.SiriTodayViewExtension',\n    '~/Library/GroupContainersAlias/.SiriTodayViewExtension/Library',\n\
+    \    '~/Library/HomeKit/.core-cloudkit-shared_SUPPORT/_EXTERNAL_DATA',\n    '~/Library/HomeKit/.core-cloudkit_SUPPORT/_EXTERNAL_DATA',\n\
+    \    '~/Library/pnpm/.tools/pnpm',\n    '~/Library/Preferences/.wrangler',\n \
+    \   '~/Library/Preferences/.wrangler/config',\n    '~/Library/Saved Searches/.DockTags',\n\
+    \    '~/Library/Stickers/.stickers_SUPPORT/_EXTERNAL_DATA'\n  )\n  AND NOT homedir\
+    \ LIKE '~/Library/.icedove/%'\n  AND NOT homedir LIKE '~/Library/%/.%_SUPPORT/_EXTERNAL_DATA'\n\
+    \  AND NOT homedir LIKe '~/Library/Caches/.git%'\n  AND NOT homedir LIKE '~/Library/Mobile\
+    \ Documents/.Trash%'\n  -- ugh\n  AND NOT file.path LIKE '/Library/Application\
+    \ Scripts/.%-%-%-%-%/.%'\n  AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%'\n\
+    \  AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%/.%'\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

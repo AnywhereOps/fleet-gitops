@@ -1,10 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: winlogon.exe_incorrect_path
-  description: Detect processes masquerading as legitimate Windows processes - ATT&CK T1034
-  query: SELECT * FROM processes WHERE LOWER(name)='winlogon.exe' AND LOWER(path)!='c:\windows\system32\winlogon.exe' AND path!='';
+- name: winlogon.exe_incorrect_path
+  description: Detect processes masquerading as legitimate Windows processes - ATT&CK
+    T1034
+  query: SELECT * FROM processes WHERE LOWER(name)='winlogon.exe' AND LOWER(path)!='c:\windows\system32\winlogon.exe'
+    AND path!='';
   interval: 3600
-  removed: false
-  team: both

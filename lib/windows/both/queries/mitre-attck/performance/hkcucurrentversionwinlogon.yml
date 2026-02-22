@@ -1,11 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: HKCU_CurrentVersion_Winlogon
-  description: Returns the content of the key HKCU_Software_Microsoft_WindowsNT_CurrentVersion_winlogon - ATT&CK T1004
-  query: select name,type,data from registry where key='HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\Winlogon';
-  interval: 3600
-  removed: false
+- name: HKCU_CurrentVersion_Winlogon
+  description: Returns the content of the key HKCU_Software_Microsoft_WindowsNT_CurrentVersion_winlogon
+    - ATT&CK T1004
+  query: select name,type,data from registry where key='HKEY_CURRENT_USER\Software\Microsoft\Windows
+    NT\CurrentVersion\Winlogon';
   platform: windows
-  team: both
+  interval: 3600

@@ -1,8 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: appcompat_shims
+- name: appcompat_shims
   description: Appcompat shims (.sdb files) installed on Windows hosts.
-  query: SELECT * FROM appcompat_shims WHERE description!='EMET_Database' AND executable NOT IN ('setuphost.exe','setupprep.exe','iisexpress.exe');
-  team: both
+  query: SELECT * FROM appcompat_shims WHERE description!='EMET_Database' AND executable
+    NOT IN ('setuphost.exe','setupprep.exe','iisexpress.exe');

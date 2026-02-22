@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: drivers
+- name: drivers
   description: List in-use Windows drivers
   query: SELECT * FROM drivers;
   platform: windows
-  team: both

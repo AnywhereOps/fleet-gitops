@@ -1,149 +1,56 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Volume Contents
-  platform: darwin
+- name: CDK - Unexpected Volume Contents
   description: Scan removable volumes for sketchy files
-  query: |
-    SELECT
-      RTRIM(file.path, '/') AS trimpath,
-      uid,
-      filename,
-      gid,
-      mode,
-      REGEX_MATCH (file.path, '(.*)/', 1) AS dirname,
-      REGEX_MATCH (RTRIM(file.path, '/'), '.*/(.*?)$', 1) AS basename,
-      REGEX_MATCH (RTRIM(file.path, '/'), '.*\.(.*?)$', 1) AS extension,
-      mtime,
-      ctime,
-      symlink,
-      type,
-      size,
-      hash.sha256,
-      magic.data,
-      signature.identifier,
-      signature.authority
-    FROM
-      file
-      LEFT JOIN hash on file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-      LEFT JOIN signature ON file.path = signature.path
-    WHERE
-      (
-        file.path LIKE '/Volumes/%/%'
-        OR file.path LIKE '/Volumes/%/.%'
-      )
-      AND file.path NOT LIKE '/Volumes/Macintosh HD%'
-      AND file.path NOT LIKE '/Volumes/%/.com.apple.timemachine%'
-      AND (
-        extension IN (
-          'command',
-          'dmg',
-          'gcode',
-          'gz',
-          'iso',
-          'lnk',
-          'mpkg',
-          'pkg',
-          'scpt',
-          'sh',
-          'sql'
-        )
-        OR file.symlink != 0
-        OR basename LIKE '.%'
-        OR basename LIKE '%.sql%'
-        OR basename LIKE '%Chrome%'
-        OR basename LIKE '%enforce%'
-        OR basename LIKE '%Extension%'
-        OR basename LIKE '%guard%'
-        OR basename LIKE '%hidden%'
-        OR basename LIKE '%Installer%'
-        OR basename LIKE '%mono%'
-        OR basename LIKE '%secret%'
-        OR basename LIKE '%sql%'
-        OR basename LIKE 'cg%'
-      ) -- exceptions go here
-      AND basename NOT IN (
-        '.',
-        '..',
-        '._.apdisk',
-        '._.TemporaryItems',
-        '._.Trashes',
-        '._AUTORUN.INF',
-        '._Id.txt',
-        '.actrc',
-        '.angular-config.json',
-        '.apdisk',
-        '.background',
-        '.background.png',
-        '.background.tiff',
-        '.bash_history',
-        '.bashrc',
-        '.CFUserTextEncoding',
-        '.dbshell',
-        '.disk_label',
-        '.disk_label_2x',
-        '.DS_Store',
-        '.file',
-        '.file-revisions-by-id',
-        '.flyrc',
-        '.gitconfig',
-        '.iotest',
-        '.keystone_install',
-        '.lesshst',
-        '.metadata_never_index_unless_rootfs',
-        '.mysql_history',
-        '.pdfbox.cache',
-        '.shortcut-targets-by-id',
-        '.TemporaryItems',
-        '.Trashes',
-        '.vol',
-        '.VolumeIcon.icns',
-        '.zsh_history',
-        'GTechnologyFormatWizard_Installer.msi',
-        'KBFS_NOT_RUNNING',
-        'LogiPresentation Installer.app',
-        'pve-installer.squashfs',
-        'Seagate Dashboard Installer.exe',
-        'UFRII_LT_LIPS_LX_Installer.pkg'
-      )
-      AND authority NOT IN (
-        'Developer ID Application: Adobe Inc. (JQ525L2MZD)',
-        'Developer ID Application: BlueStack Systems, Inc. (QX5T8D6EDU)',
-        'Developer ID Application: Canon Inc. (XE2XNRRXZ5)',
-        'Developer ID Application: Cisco (DE8Y96K9QP)',
-        'Developer ID Application: Dropbox, Inc. (G7HH3F8CAK)',
-        'Developer ID Application: Google LLC (EQHXZ8M8AV)',
-        'Developer ID Application: Logitech Inc. (QED4VVPZWA)',
-        'Developer ID Application: Martijn Smit (GX645XXEAX)'
-      ) -- Unsigned programs here
-      AND trimpath NOT IN (
-        '/Volumes/Garmin Express/Install Garmin Express.pkg',
-        '/Volumes/Google Chrome Canary/.keystone_install',
-        '/Volumes/Google Chrome/.keystone_install',
-        '/Volumes/Jabra Direct Setup/JabraDirectSetup.pkg',
-        '/Volumes/macFUSE/.engine_install',
-        '/Volumes/macFUSE/Install macFUSE.pkg',
-        '/Volumes/PMHOME_3601DL/PMH_INST.pkg'
-      )
-      AND trimpath NOT LIKE '/Volumes/Blackmagic DaVinci Resolve/Install Resolve %.pkg'
-      AND trimpath NOT LIKE '/Volumes/Google Earth Pro%/Install Google Earth Pro%.pkg'
-      AND trimpath NOT LIKE '/Volumes/JDK %/JDK %.pkg'
-      AND trimpath NOT LIKE '/Volumes/mysql-shell-%/mysql-shell-%.pkg'
-      AND trimpath NOT LIKE '/Volumes/Splunk %/Install Splunk'
-      AND magic.data NOT LIKE 'ASCII text%'
-      AND NOT (
-        magic.data = 'AppleDouble encoded Macintosh file'
-        AND basename LIKE '._%'
-      )
-      AND NOT (
-        filename = ".install"
-        AND size = 0
-      )
+  query: "SELECT\n  RTRIM(file.path, '/') AS trimpath,\n  uid,\n  filename,\n  gid,\n\
+    \  mode,\n  REGEX_MATCH (file.path, '(.*)/', 1) AS dirname,\n  REGEX_MATCH (RTRIM(file.path,\
+    \ '/'), '.*/(.*?)$', 1) AS basename,\n  REGEX_MATCH (RTRIM(file.path, '/'), '.*\\\
+    .(.*?)$', 1) AS extension,\n  mtime,\n  ctime,\n  symlink,\n  type,\n  size,\n\
+    \  hash.sha256,\n  magic.data,\n  signature.identifier,\n  signature.authority\n\
+    FROM\n  file\n  LEFT JOIN hash on file.path = hash.path\n  LEFT JOIN magic ON\
+    \ file.path = magic.path\n  LEFT JOIN signature ON file.path = signature.path\n\
+    WHERE\n  (\n    file.path LIKE '/Volumes/%/%'\n    OR file.path LIKE '/Volumes/%/.%'\n\
+    \  )\n  AND file.path NOT LIKE '/Volumes/Macintosh HD%'\n  AND file.path NOT LIKE\
+    \ '/Volumes/%/.com.apple.timemachine%'\n  AND (\n    extension IN (\n      'command',\n\
+    \      'dmg',\n      'gcode',\n      'gz',\n      'iso',\n      'lnk',\n     \
+    \ 'mpkg',\n      'pkg',\n      'scpt',\n      'sh',\n      'sql'\n    )\n    OR\
+    \ file.symlink != 0\n    OR basename LIKE '.%'\n    OR basename LIKE '%.sql%'\n\
+    \    OR basename LIKE '%Chrome%'\n    OR basename LIKE '%enforce%'\n    OR basename\
+    \ LIKE '%Extension%'\n    OR basename LIKE '%guard%'\n    OR basename LIKE '%hidden%'\n\
+    \    OR basename LIKE '%Installer%'\n    OR basename LIKE '%mono%'\n    OR basename\
+    \ LIKE '%secret%'\n    OR basename LIKE '%sql%'\n    OR basename LIKE 'cg%'\n\
+    \  ) -- exceptions go here\n  AND basename NOT IN (\n    '.',\n    '..',\n   \
+    \ '._.apdisk',\n    '._.TemporaryItems',\n    '._.Trashes',\n    '._AUTORUN.INF',\n\
+    \    '._Id.txt',\n    '.actrc',\n    '.angular-config.json',\n    '.apdisk',\n\
+    \    '.background',\n    '.background.png',\n    '.background.tiff',\n    '.bash_history',\n\
+    \    '.bashrc',\n    '.CFUserTextEncoding',\n    '.dbshell',\n    '.disk_label',\n\
+    \    '.disk_label_2x',\n    '.DS_Store',\n    '.file',\n    '.file-revisions-by-id',\n\
+    \    '.flyrc',\n    '.gitconfig',\n    '.iotest',\n    '.keystone_install',\n\
+    \    '.lesshst',\n    '.metadata_never_index_unless_rootfs',\n    '.mysql_history',\n\
+    \    '.pdfbox.cache',\n    '.shortcut-targets-by-id',\n    '.TemporaryItems',\n\
+    \    '.Trashes',\n    '.vol',\n    '.VolumeIcon.icns',\n    '.zsh_history',\n\
+    \    'GTechnologyFormatWizard_Installer.msi',\n    'KBFS_NOT_RUNNING',\n    'LogiPresentation\
+    \ Installer.app',\n    'pve-installer.squashfs',\n    'Seagate Dashboard Installer.exe',\n\
+    \    'UFRII_LT_LIPS_LX_Installer.pkg'\n  )\n  AND authority NOT IN (\n    'Developer\
+    \ ID Application: Adobe Inc. (JQ525L2MZD)',\n    'Developer ID Application: BlueStack\
+    \ Systems, Inc. (QX5T8D6EDU)',\n    'Developer ID Application: Canon Inc. (XE2XNRRXZ5)',\n\
+    \    'Developer ID Application: Cisco (DE8Y96K9QP)',\n    'Developer ID Application:\
+    \ Dropbox, Inc. (G7HH3F8CAK)',\n    'Developer ID Application: Google LLC (EQHXZ8M8AV)',\n\
+    \    'Developer ID Application: Logitech Inc. (QED4VVPZWA)',\n    'Developer ID\
+    \ Application: Martijn Smit (GX645XXEAX)'\n  ) -- Unsigned programs here\n  AND\
+    \ trimpath NOT IN (\n    '/Volumes/Garmin Express/Install Garmin Express.pkg',\n\
+    \    '/Volumes/Google Chrome Canary/.keystone_install',\n    '/Volumes/Google\
+    \ Chrome/.keystone_install',\n    '/Volumes/Jabra Direct Setup/JabraDirectSetup.pkg',\n\
+    \    '/Volumes/macFUSE/.engine_install',\n    '/Volumes/macFUSE/Install macFUSE.pkg',\n\
+    \    '/Volumes/PMHOME_3601DL/PMH_INST.pkg'\n  )\n  AND trimpath NOT LIKE '/Volumes/Blackmagic\
+    \ DaVinci Resolve/Install Resolve %.pkg'\n  AND trimpath NOT LIKE '/Volumes/Google\
+    \ Earth Pro%/Install Google Earth Pro%.pkg'\n  AND trimpath NOT LIKE '/Volumes/JDK\
+    \ %/JDK %.pkg'\n  AND trimpath NOT LIKE '/Volumes/mysql-shell-%/mysql-shell-%.pkg'\n\
+    \  AND trimpath NOT LIKE '/Volumes/Splunk %/Install Splunk'\n  AND magic.data\
+    \ NOT LIKE 'ASCII text%'\n  AND NOT (\n    magic.data = 'AppleDouble encoded Macintosh\
+    \ file'\n    AND basename LIKE '._%'\n  )\n  AND NOT (\n    filename = \".install\"\
+    \n    AND size = 0\n  )\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

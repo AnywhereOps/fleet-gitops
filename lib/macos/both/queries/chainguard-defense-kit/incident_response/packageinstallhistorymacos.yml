@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Package Install History Macos
-  platform: darwin
+- name: CDK - Package Install History Macos
   description: Return macOS package install history
-  query: |
-    SELECT
-      *
-    FROM
-      package_install_history;
+  query: "SELECT\n  *\nFROM\n  package_install_history;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

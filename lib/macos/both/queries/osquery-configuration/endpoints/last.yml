@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: last
+- name: last
   description: System logins and logouts.
   query: SELECT * FROM last;
   platform: darwin
-  team: both

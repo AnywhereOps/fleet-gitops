@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CopyFish
+- name: CopyFish
   description: (https://www.bleepingcomputer.com/news/security/copyfish-chrome-extension-hijacked-to-show-adware/)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='eenjdnjldapjajjofmldgmkjaienebbj';
   interval: 3600
-  team: devices

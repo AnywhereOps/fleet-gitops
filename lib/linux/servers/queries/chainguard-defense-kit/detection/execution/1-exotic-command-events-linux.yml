@@ -1,214 +1,88 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Exotic Command Events Linux
-  platform: linux
+- name: CDK - Exotic Command Events Linux
   description: Pick out exotic processes based on their command-line (events-based)
-  query: |
-    SELECT -- Child
-      pe.path AS p0_path,
-      pe.time AS p0_time,
-      pe.uptime AS p0_uptime,
-      REGEX_MATCH (pe.path, '.*/(.*)', 1) AS p0_name,
-      TRIM(pe.cmdline) AS p0_cmd,
-      pe.cwd AS p0_cwd,
-      pe.pid AS p0_pid,
-      p.cgroup_path AS p0_cgroup,
-      -- Parent
-      pe.parent AS p1_pid,
-      p1.cgroup_path AS p1_cgroup,
-      TRIM(COALESCE(p1.cmdline, pe1.cmdline)) AS p1_cmd,
-      COALESCE(p1.path, pe1.path) AS p1_path,
-      COALESCE(p_hash1.sha256, pe_hash1.sha256) AS p1_hash,
-      REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) AS p1_name,
-      -- Grandparent
-      COALESCE(p1.parent, pe1.parent) AS p2_pid,
-      COALESCE(p1_p2.cgroup_path, pe1_p2.cgroup_path) AS p2_cgroup,
-      TRIM(
-        COALESCE(p1_p2.cmdline, pe1_p2.cmdline, pe1_pe2.cmdline)
-      ) AS p2_cmd,
-      COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path) AS p2_path,
-      REGEX_MATCH (
-        COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path),
-        '.*/(.*)',
-        1
-      ) AS p2_name,
-      -- Exception key
-      REGEX_MATCH (pe.path, '.*/(.*)', 1) || ',' || MIN(pe.euid, 500) || ',' || REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)', 1) || ',' || REGEX_MATCH (
-        COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path),
-        '.*/(.*)',
-        1
-      ) AS exception_key
-    FROM
-      process_events pe
-      LEFT JOIN processes p ON pe.pid = p.pid -- Parents (via two paths)
-      LEFT JOIN processes p1 ON pe.parent = p1.pid
-      AND p1.start_time <= pe.time
-      LEFT JOIN hash p_hash1 ON p1.path = p_hash1.path
-      LEFT JOIN process_events pe1 ON pe.parent = pe1.pid
-      AND pe1.time <= pe.time
-      AND pe1.cmdline != ""
-      AND pe1.cwd != ""
-      LEFT JOIN hash pe_hash1 ON pe1.path = pe_hash1.path -- Grandparents (via 3 paths)
-      LEFT JOIN processes p1_p2 ON p1.parent = p1_p2.pid -- Current grandparent via parent processes
-      AND p1_p2.start_time <= p1.start_time
-      LEFT JOIN processes pe1_p2 ON pe1.parent = pe1_p2.pid -- Current grandparent via parent events
-      AND pe1_p2.start_time <= pe1.time
-      LEFT JOIN process_events pe1_pe2 ON pe1.parent = pe1_p2.pid
-      AND pe1_pe2.cmdline != ""
-      AND pe1_pe2.cwd != ""
-    WHERE
-      pe.time > (strftime('%s', 'now') -600)
-      AND pe.cmdline != ""
-      AND pe.cwd != ""
-      AND (
-        p0_name IN (
-          'bitspin',
-          'bpftool',
-          'cpuminer-multi',
-          'cpuminer',
-          'dnscat2',
-          'esxcli',
-          'heyoka',
-          'httpdns',
-          'incbit',
-          'insmod',
-          'iodine',
-          'kmod',
-          'lushput',
-          'minerd',
-          'mkfifo',
-          'msfvenom',
-          'nc',
-          'nstx',
-          'rsh',
-          'rshell',
-          'socat',
-          'tuns',
-          'vim-cmd',
-          'xmrig'
-        ) -- Chrome Stealer
-        OR p0_name LIKE '%attack%' -- Unusual behaviors
-        OR p0_name LIKE '%pwn%'
-        OR p0_cmd LIKE '%cat /dev/null >%'
-        OR p0_cmd LIKE '%chattr -i%'
-        OR p0_cmd LIKE '%chrome%-load-extension%' -- Known attack scripts
-        OR p0_cmd LIKE '%dd if=/dev/%'
-        OR p0_cmd LIKE '%iptables -F%'
-        OR p0_cmd LIKE '%iptables -P % ACCEPT%'
-        OR p0_cmd LIKE '%iptables stop'
-        OR p0_cmd LIKE '%setenforce 0'
-        OR p0_cmd LIKE '%truncate -s0 %'
-        OR p0_cmd LIKE '%ufw disable%'
-        OR (
-          INSTR(p0_cmd, 'history') > 0
-          AND p0_cmd LIKE '%history'
-          AND p0_cmd NOT LIKE 'man %'
-        )
-        OR p0_cmd LIKE '%.aws/%'
-        OR p0_cmd LIKE '%.config/%chrome%'
-        OR p0_cmd LIKE '%.config%gcloud%'
-        OR p0_cmd LIKE '%ld.so.preload%'
-        OR p0_cmd LIKE '%nohup%tmp%'
-        OR p0_cmd LIKE '%pkill -f%'
-        OR p0_cmd LIKE '%systemctl disable firewalld%'
-        OR p0_cmd LIKE '%systemctl stop firewalld%'
-        OR p0_cmd LIKE '%tar % .%'
-        OR p0_cmd LIKE '%tar %/.%'
-        OR p0_cmd LIKE '%touch -r%'
-        OR p0_cmd LIKE '%touch%acmr%'
-        OR p0_cmd LIKE '%urllib.urlopen%'
-        OR (
-          p0_cmd LIKE '%xargs kill -9%'
-          AND pe.euid = 0
-        )
-        OR p0_cmd LIKE '%@reboot%crontab%'
-        OR p0_cmd LIKE '%/dev/%cp/%'
-        OR p0_cmd LIKE '%echo%|%base64%-d% %|%'
-        OR p0_cmd LIKE '%fsockopen%'
-        OR p0_cmd LIKE '%monero%'
-        OR p0_cmd LIKE '%nanopool%'
-        OR p0_cmd LIKE '%nicehash%'
-        OR p0_cmd LIKE '%nohup /bin/bash%'
-        OR p0_cmd LIKE '%openssl%quiet%'
-        OR p0_cmd LIKE '%pty.spawn%'
-        OR p0_cmd LIKE '%stratum%'
-        OR p0_cmd LIKE '%UserKnownHostsFile=/dev/null%' -- Crypto miners
-        OR (
-          p0_cmd LIKE '%sh -i'
-          AND NOT p1_name IN ('sh', 'java')
-        )
-        OR p0_cmd LIKE '%SOCK_STREAM%'
-        OR INSTR(p0_cmd, 'Socket.') > 0
-        OR (
-          p0_cmd LIKE '%tail -f /dev/null%'
-          AND p.cgroup_path NOT LIKE '/system.slice/docker-%'
-        )
-      ) -- Things that could reasonably happen at boot.
-      AND NOT (
-        pe.path IN ('/usr/bin/kmod', '/bin/kmod')
-        AND p1_path = '/usr/lib/systemd/systemd'
-        AND p1_cmd = '/sbin/init'
-      )
-      AND NOT (
-        pe.path IN ('/usr/bin/kmod', '/bin/kmod')
-        AND p1_name IN (
-          'dockerd',
-          'firewalld',
-          'kube-proxy',
-          'mkinitramfs',
-          'systemd'
-        )
-      )
-      AND NOT (
-        p0_cmd LIKE '/usr/bin/modprobe %'
-        AND p1_cgroup = '/system.slice/firewalld.service'
-      )
-      AND NOT (
-        pe.path IN ('/usr/bin/kmod', '/bin/kmod')
-        AND pe.uptime < 15
-      )
-      AND NOT (
-        pe.path = '/usr/bin/mkfifo'
-        AND (
-          p0_cmd LIKE '%/org.gpgtools.log.%/fifo'
-          OR p0_cmd LIKE 'mkfifo -- %/gitstatus.POWERLEVEL9K%.fifo'
-          OR p0_cmd LIKE '%/p10k.%'
-        )
-      )
-      AND NOT p0_cmd IN (
-        'lsmod',
-        'dd if=/dev/stdin conv=unblock cbs=79',
-        '/usr/bin/socat STDIN UNIX-CONNECT:/run/user/1000/kwallet5.socket',
-        'socat STDIN UNIX-CONNECT:/run/user/1000/kwallet5.socket'
-      )
-      AND NOT p0_cmd LIKE '%/usr/bin/cmake%Socket%'
-      AND NOT p0_cmd LIKE '%modprobe -va%'
-      AND NOT p0_cmd LIKE '%modprobe aufs'
-      AND NOT p0_cmd LIKE '%modprobe nf_nat_netbios_ns'
-      AND NOT p0_cmd LIKE '%modprobe overlay'
-      AND NOT p0_cmd LIKE '%touch -r /tmp/cc%.o %'
-      AND NOT p0_cmd LIKE 'find . -executable -type f -name %grep -l GNU Libtool%touch -r%'
-      AND NOT p0_cmd LIKE 'modinfo -k%'
-      AND NOT p0_cmd LIKE 'modprobe --all%'
-      AND NOT p0_cmd LIKE 'modprobe -ab%'
-      AND NOT p0_cmd LIKE 'pkill -f cut -c3%'
-      AND NOT p0_name IN ('ar', 'cc1', 'cc1plus', 'cmake', 'compile')
-      AND NOT exception_key IN (
-        'bash,0,bash,containerd-shim-runc-v2',
-        'bash,500,ninja,bash',
-        'bwrap,500,melange,dash',
-        'chrome_crashpad_handler,500,systemd,systemd',
-        'grep,500,fish,konsole',
-        'kmod,0,incusd,systemd',
-        'ls,500,zsh,alacritty',
-        'nc,500,fish,konsole',
-        'tar,0,incusd,systemd'
-      )
+  query: "SELECT -- Child\n  pe.path AS p0_path,\n  pe.time AS p0_time,\n  pe.uptime\
+    \ AS p0_uptime,\n  REGEX_MATCH (pe.path, '.*/(.*)', 1) AS p0_name,\n  TRIM(pe.cmdline)\
+    \ AS p0_cmd,\n  pe.cwd AS p0_cwd,\n  pe.pid AS p0_pid,\n  p.cgroup_path AS p0_cgroup,\n\
+    \  -- Parent\n  pe.parent AS p1_pid,\n  p1.cgroup_path AS p1_cgroup,\n  TRIM(COALESCE(p1.cmdline,\
+    \ pe1.cmdline)) AS p1_cmd,\n  COALESCE(p1.path, pe1.path) AS p1_path,\n  COALESCE(p_hash1.sha256,\
+    \ pe_hash1.sha256) AS p1_hash,\n  REGEX_MATCH (COALESCE(p1.path, pe1.path), '.*/(.*)',\
+    \ 1) AS p1_name,\n  -- Grandparent\n  COALESCE(p1.parent, pe1.parent) AS p2_pid,\n\
+    \  COALESCE(p1_p2.cgroup_path, pe1_p2.cgroup_path) AS p2_cgroup,\n  TRIM(\n  \
+    \  COALESCE(p1_p2.cmdline, pe1_p2.cmdline, pe1_pe2.cmdline)\n  ) AS p2_cmd,\n\
+    \  COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path) AS p2_path,\n  REGEX_MATCH\
+    \ (\n    COALESCE(p1_p2.path, pe1_p2.path, pe1_pe2.path),\n    '.*/(.*)',\n  \
+    \  1\n  ) AS p2_name,\n  -- Exception key\n  REGEX_MATCH (pe.path, '.*/(.*)',\
+    \ 1) || ',' || MIN(pe.euid, 500) || ',' || REGEX_MATCH (COALESCE(p1.path, pe1.path),\
+    \ '.*/(.*)', 1) || ',' || REGEX_MATCH (\n    COALESCE(p1_p2.path, pe1_p2.path,\
+    \ pe1_pe2.path),\n    '.*/(.*)',\n    1\n  ) AS exception_key\nFROM\n  process_events\
+    \ pe\n  LEFT JOIN processes p ON pe.pid = p.pid -- Parents (via two paths)\n \
+    \ LEFT JOIN processes p1 ON pe.parent = p1.pid\n  AND p1.start_time <= pe.time\n\
+    \  LEFT JOIN hash p_hash1 ON p1.path = p_hash1.path\n  LEFT JOIN process_events\
+    \ pe1 ON pe.parent = pe1.pid\n  AND pe1.time <= pe.time\n  AND pe1.cmdline !=\
+    \ \"\"\n  AND pe1.cwd != \"\"\n  LEFT JOIN hash pe_hash1 ON pe1.path = pe_hash1.path\
+    \ -- Grandparents (via 3 paths)\n  LEFT JOIN processes p1_p2 ON p1.parent = p1_p2.pid\
+    \ -- Current grandparent via parent processes\n  AND p1_p2.start_time <= p1.start_time\n\
+    \  LEFT JOIN processes pe1_p2 ON pe1.parent = pe1_p2.pid -- Current grandparent\
+    \ via parent events\n  AND pe1_p2.start_time <= pe1.time\n  LEFT JOIN process_events\
+    \ pe1_pe2 ON pe1.parent = pe1_p2.pid\n  AND pe1_pe2.cmdline != \"\"\n  AND pe1_pe2.cwd\
+    \ != \"\"\nWHERE\n  pe.time > (strftime('%s', 'now') -600)\n  AND pe.cmdline !=\
+    \ \"\"\n  AND pe.cwd != \"\"\n  AND (\n    p0_name IN (\n      'bitspin',\n  \
+    \    'bpftool',\n      'cpuminer-multi',\n      'cpuminer',\n      'dnscat2',\n\
+    \      'esxcli',\n      'heyoka',\n      'httpdns',\n      'incbit',\n      'insmod',\n\
+    \      'iodine',\n      'kmod',\n      'lushput',\n      'minerd',\n      'mkfifo',\n\
+    \      'msfvenom',\n      'nc',\n      'nstx',\n      'rsh',\n      'rshell',\n\
+    \      'socat',\n      'tuns',\n      'vim-cmd',\n      'xmrig'\n    ) -- Chrome\
+    \ Stealer\n    OR p0_name LIKE '%attack%' -- Unusual behaviors\n    OR p0_name\
+    \ LIKE '%pwn%'\n    OR p0_cmd LIKE '%cat /dev/null >%'\n    OR p0_cmd LIKE '%chattr\
+    \ -i%'\n    OR p0_cmd LIKE '%chrome%-load-extension%' -- Known attack scripts\n\
+    \    OR p0_cmd LIKE '%dd if=/dev/%'\n    OR p0_cmd LIKE '%iptables -F%'\n    OR\
+    \ p0_cmd LIKE '%iptables -P % ACCEPT%'\n    OR p0_cmd LIKE '%iptables stop'\n\
+    \    OR p0_cmd LIKE '%setenforce 0'\n    OR p0_cmd LIKE '%truncate -s0 %'\n  \
+    \  OR p0_cmd LIKE '%ufw disable%'\n    OR (\n      INSTR(p0_cmd, 'history') >\
+    \ 0\n      AND p0_cmd LIKE '%history'\n      AND p0_cmd NOT LIKE 'man %'\n   \
+    \ )\n    OR p0_cmd LIKE '%.aws/%'\n    OR p0_cmd LIKE '%.config/%chrome%'\n  \
+    \  OR p0_cmd LIKE '%.config%gcloud%'\n    OR p0_cmd LIKE '%ld.so.preload%'\n \
+    \   OR p0_cmd LIKE '%nohup%tmp%'\n    OR p0_cmd LIKE '%pkill -f%'\n    OR p0_cmd\
+    \ LIKE '%systemctl disable firewalld%'\n    OR p0_cmd LIKE '%systemctl stop firewalld%'\n\
+    \    OR p0_cmd LIKE '%tar % .%'\n    OR p0_cmd LIKE '%tar %/.%'\n    OR p0_cmd\
+    \ LIKE '%touch -r%'\n    OR p0_cmd LIKE '%touch%acmr%'\n    OR p0_cmd LIKE '%urllib.urlopen%'\n\
+    \    OR (\n      p0_cmd LIKE '%xargs kill -9%'\n      AND pe.euid = 0\n    )\n\
+    \    OR p0_cmd LIKE '%@reboot%crontab%'\n    OR p0_cmd LIKE '%/dev/%cp/%'\n  \
+    \  OR p0_cmd LIKE '%echo%|%base64%-d% %|%'\n    OR p0_cmd LIKE '%fsockopen%'\n\
+    \    OR p0_cmd LIKE '%monero%'\n    OR p0_cmd LIKE '%nanopool%'\n    OR p0_cmd\
+    \ LIKE '%nicehash%'\n    OR p0_cmd LIKE '%nohup /bin/bash%'\n    OR p0_cmd LIKE\
+    \ '%openssl%quiet%'\n    OR p0_cmd LIKE '%pty.spawn%'\n    OR p0_cmd LIKE '%stratum%'\n\
+    \    OR p0_cmd LIKE '%UserKnownHostsFile=/dev/null%' -- Crypto miners\n    OR\
+    \ (\n      p0_cmd LIKE '%sh -i'\n      AND NOT p1_name IN ('sh', 'java')\n   \
+    \ )\n    OR p0_cmd LIKE '%SOCK_STREAM%'\n    OR INSTR(p0_cmd, 'Socket.') > 0\n\
+    \    OR (\n      p0_cmd LIKE '%tail -f /dev/null%'\n      AND p.cgroup_path NOT\
+    \ LIKE '/system.slice/docker-%'\n    )\n  ) -- Things that could reasonably happen\
+    \ at boot.\n  AND NOT (\n    pe.path IN ('/usr/bin/kmod', '/bin/kmod')\n    AND\
+    \ p1_path = '/usr/lib/systemd/systemd'\n    AND p1_cmd = '/sbin/init'\n  )\n \
+    \ AND NOT (\n    pe.path IN ('/usr/bin/kmod', '/bin/kmod')\n    AND p1_name IN\
+    \ (\n      'dockerd',\n      'firewalld',\n      'kube-proxy',\n      'mkinitramfs',\n\
+    \      'systemd'\n    )\n  )\n  AND NOT (\n    p0_cmd LIKE '/usr/bin/modprobe\
+    \ %'\n    AND p1_cgroup = '/system.slice/firewalld.service'\n  )\n  AND NOT (\n\
+    \    pe.path IN ('/usr/bin/kmod', '/bin/kmod')\n    AND pe.uptime < 15\n  )\n\
+    \  AND NOT (\n    pe.path = '/usr/bin/mkfifo'\n    AND (\n      p0_cmd LIKE '%/org.gpgtools.log.%/fifo'\n\
+    \      OR p0_cmd LIKE 'mkfifo -- %/gitstatus.POWERLEVEL9K%.fifo'\n      OR p0_cmd\
+    \ LIKE '%/p10k.%'\n    )\n  )\n  AND NOT p0_cmd IN (\n    'lsmod',\n    'dd if=/dev/stdin\
+    \ conv=unblock cbs=79',\n    '/usr/bin/socat STDIN UNIX-CONNECT:/run/user/1000/kwallet5.socket',\n\
+    \    'socat STDIN UNIX-CONNECT:/run/user/1000/kwallet5.socket'\n  )\n  AND NOT\
+    \ p0_cmd LIKE '%/usr/bin/cmake%Socket%'\n  AND NOT p0_cmd LIKE '%modprobe -va%'\n\
+    \  AND NOT p0_cmd LIKE '%modprobe aufs'\n  AND NOT p0_cmd LIKE '%modprobe nf_nat_netbios_ns'\n\
+    \  AND NOT p0_cmd LIKE '%modprobe overlay'\n  AND NOT p0_cmd LIKE '%touch -r /tmp/cc%.o\
+    \ %'\n  AND NOT p0_cmd LIKE 'find . -executable -type f -name %grep -l GNU Libtool%touch\
+    \ -r%'\n  AND NOT p0_cmd LIKE 'modinfo -k%'\n  AND NOT p0_cmd LIKE 'modprobe --all%'\n\
+    \  AND NOT p0_cmd LIKE 'modprobe -ab%'\n  AND NOT p0_cmd LIKE 'pkill -f cut -c3%'\n\
+    \  AND NOT p0_name IN ('ar', 'cc1', 'cc1plus', 'cmake', 'compile')\n  AND NOT\
+    \ exception_key IN (\n    'bash,0,bash,containerd-shim-runc-v2',\n    'bash,500,ninja,bash',\n\
+    \    'bwrap,500,melange,dash',\n    'chrome_crashpad_handler,500,systemd,systemd',\n\
+    \    'grep,500,fish,konsole',\n    'kmod,0,incusd,systemd',\n    'ls,500,zsh,alacritty',\n\
+    \    'nc,500,fish,konsole',\n    'tar,0,incusd,systemd'\n  )\n"
+  platform: linux
   interval: 600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

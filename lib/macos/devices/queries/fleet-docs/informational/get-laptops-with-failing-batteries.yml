@@ -1,14 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get laptops with failing batteries
-  platform: darwin
+- name: Get laptops with failing batteries
   description: Lists all laptops with under-performing or failing batteries.
   query: SELECT * FROM battery WHERE health != 'Good' AND condition NOT IN ('', 'Normal');
-  bash: 'h=$(system_profiler SPPowerDataType | awk -F": " ''/Battery Health/{print $2; exit}''); c=$(system_profiler SPPowerDataType | awk -F": " ''/Condition:/{print $2; exit}''); if [[ "$h" != "Good"
-    && -n "$c" && "$c" != "Normal" ]]; then echo "Battery Health,Condition"; echo "$h,$c"; fi'
-  purpose: Informational
-  tags: troubleshooting, hardware, inventory
-  contributors: zwass
-  team: devices
+  platform: darwin

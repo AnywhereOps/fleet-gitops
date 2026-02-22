@@ -1,37 +1,12 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Operating system version (Windows)
-  platform: windows
+- name: Operating system version (Windows)
   description: Retrieves operating system version information from a Windows device.
-  query: |
-    WITH display_version_table AS (
-          SELECT data as display_version
-          FROM registry
-          WHERE path = 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\DisplayVersion'
-        ),
-        ubr_table AS (
-          SELECT data AS ubr
-          FROM registry
-          WHERE path ='HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\UBR'
-        )
-        SELECT
-          os.name,
-          COALESCE(d.display_version, '') AS display_version,
-          COALESCE(CONCAT((SELECT version FROM os_version), '.', u.ubr), k.version) AS version
-        FROM
-          os_version os,
-          kernel_info k
-        LEFT JOIN
-          display_version_table d
-        LEFT JOIN
-          ubr_table u
-  powershell: "$os = Get-CimInstance -ClassName Win32_OperatingSystem\n$osName = $os.Caption\n$osVersion = $os.Version\n\n$regPath = 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion'\n\ntry {\n \
-    \   $displayVersionObj = Get-ItemProperty -Path $regPath -Name 'DisplayVersion' -ErrorAction Stop\n    $displayVersion = $displayVersionObj.DisplayVersion\n} catch {\n    $displayVersion = \"\"\n}\n\
-    \ntry {\n    $ubrObj = Get-ItemProperty -Path $regPath -Name 'UBR' -ErrorAction Stop\n    $ubr = $ubrObj.UBR\n} catch {\n    $ubr = $null\n}\n\n$kernelVersion = [System.Environment]::OSVersion.Version.ToString()\n\
-    \nif ($ubr) {\n    $finalVersion = \"$osVersion.$ubr\"\n} else {\n    $finalVersion = $kernelVersion\n}\n\nWrite-Output \"Name: $osName\"\nWrite-Output \"DisplayVersion: $displayVersion\"\nWrite-Output\
-    \ \"Version: $finalVersion\""
-  purpose: Informational
-  tags: built-in
-  team: both
+  query: "WITH display_version_table AS (\n      SELECT data as display_version\n\
+    \      FROM registry\n      WHERE path = 'HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\
+    \\Windows NT\\\\CurrentVersion\\\\DisplayVersion'\n    ),\n    ubr_table AS (\n\
+    \      SELECT data AS ubr\n      FROM registry\n      WHERE path ='HKEY_LOCAL_MACHINE\\\
+    \\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\UBR'\n    )\n    SELECT\n\
+    \      os.name,\n      COALESCE(d.display_version, '') AS display_version,\n \
+    \     COALESCE(CONCAT((SELECT version FROM os_version), '.', u.ubr), k.version)\
+    \ AS version\n    FROM\n      os_version os,\n      kernel_info k\n    LEFT JOIN\n\
+    \      display_version_table d\n    LEFT JOIN\n      ubr_table u\n"
+  platform: windows

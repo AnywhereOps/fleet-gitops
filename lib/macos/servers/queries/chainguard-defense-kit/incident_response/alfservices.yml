@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Alf Services
-  platform: darwin
+- name: CDK - Alf Services
   description: Retrieves the services for the Application Layer Firewall in OSX.
-  query: |
-    SELECT
-      *
-    FROM
-      alf_services;
+  query: "SELECT\n  *\nFROM\n  alf_services;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

@@ -1,25 +1,10 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Logged In Users
-  description: Retrieves the list of all the currently logged in users in the target system.
-  query: |
-    SELECT
-      liu.*,
-      p.name,
-      p.cmdline,
-      p.cwd,
-      p.start_time,
-      p.root
-    FROM
-      logged_in_users liu,
-      processes p
-    WHERE
-      liu.pid = p.pid;
+- name: CDK - Logged In Users
+  description: Retrieves the list of all the currently logged in users in the target
+    system.
+  query: "SELECT\n  liu.*,\n  p.name,\n  p.cmdline,\n  p.cwd,\n  p.start_time,\n \
+    \ p.root\nFROM\n  logged_in_users liu,\n  processes p\nWHERE\n  liu.pid = p.pid;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

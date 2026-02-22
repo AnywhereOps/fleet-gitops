@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Process Env
+- name: CDK - Process Env
   description: Retrieves all the environment variables per process in the target system.
-  query: |
-    SELECT
-      *
-    FROM
-      process_envs;
+  query: "SELECT\n  *\nFROM\n  process_envs;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

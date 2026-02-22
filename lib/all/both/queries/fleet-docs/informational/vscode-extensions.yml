@@ -1,51 +1,14 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: VScode extensions
+- name: VScode extensions
+  description: Gathers information about Visual Studio Code extensions installed on
+    a device.
+  query: "WITH cached_users AS (WITH cached_groups AS (select * from groups)\n SELECT\
+    \ uid, uuid, username, type, groupname, shell\n FROM users LEFT JOIN cached_groups\
+    \ USING (gid)\n WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell\
+    \ NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt'\
+    \ AND username NOT LIKE '%$' AND username NOT LIKE '\\_%' ESCAPE '\\' AND NOT\
+    \ (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))\nSELECT\n  name,\n\
+    \  version,\n  '' AS bundle_identifier,\n  uuid AS extension_id,\n  '' AS browser,\n\
+    \  'vscode_extensions' AS source,\n  publisher AS vendor,\n  '' AS last_opened_at,\n\
+    \  path AS installed_path\nFROM cached_users CROSS JOIN vscode_extensions USING\
+    \ (uid)\n"
   platform: darwin, windows, linux
-  description: Gathers information about Visual Studio Code extensions installed on a device.
-  query: |
-    WITH cached_users AS (WITH cached_groups AS (select * from groups)
-     SELECT uid, uuid, username, type, groupname, shell
-     FROM users LEFT JOIN cached_groups USING (gid)
-     WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt' AND username NOT LIKE '%$' AND username NOT LIKE '\_%' ESCAPE '\' AND NOT (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))
-    SELECT
-      name,
-      version,
-      '' AS bundle_identifier,
-      uuid AS extension_id,
-      '' AS browser,
-      'vscode_extensions' AS source,
-      publisher AS vendor,
-      '' AS last_opened_at,
-      path AS installed_path
-    FROM cached_users CROSS JOIN vscode_extensions USING (uid)
-  powershell: "$groups = @{}\nif (Test-Path \"/etc/group\") {\n    foreach ($line in Get-Content \"/etc/group\") {\n        if ($line -match \"^\\s*#\") { continue }\n        $parts = $line -split \":\"\
-    \n        if ($parts.Count -ge 3) {\n            $gid = $parts[2]\n            $groupName = $parts[0]\n            $groups[$gid] = $groupName\n        }\n    }\n}\n\n$users = @()\nif (Test-Path \"/etc/passwd\"\
-    ) {\n    foreach ($line in Get-Content \"/etc/passwd\") {\n        if ($line -match \"^\\s*#\") { continue }\n        $parts = $line -split \":\"\n        if ($parts.Count -ge 7) {\n            $username\
-    \ = $parts[0]\n            $password = $parts[1]\n            $uid = [int]$parts[2]\n            $gid = $parts[3]\n            $gecos = $parts[4]\n            $directory = $parts[5]\n            $shell\
-    \ = $parts[6]\n            # Approximate type determination: treat users with uid < 1000 as \"special\"\n            $type = if ($uid -lt 1000) { \"special\" } else { \"normal\" }\n            # Filter\
-    \ out \"special\" users\n            if ($type -eq \"special\") { continue }\n            # Exclude users with shells containing /false, /nologin, /shutdown, or /halt\n            if ($shell -like \"\
-    *\\/false*\") { continue }\n            if ($shell -like \"*\\/nologin*\") { continue }\n            if ($shell -like \"*\\/shutdown*\") { continue }\n            if ($shell -like \"*\\/halt*\") { continue\
-    \ }\n            # Exclude usernames ending with '$' or beginning with '_'\n            if ($username.EndsWith('$')) { continue }\n            if ($username.StartsWith('_')) { continue }\n         \
-    \   # Exclude the sync user with specific shell and non-empty directory\n            if (($username -eq \"sync\") -and ($shell -eq \"/bin/sync\") -and ($directory -ne \"\")) { continue }\n         \
-    \   $groupname = $null\n            if ($groups.ContainsKey($gid)) { $groupname = $groups[$gid] }\n            $users += [pscustomobject]@{\n                uid       = $uid\n                username\
-    \  = $username\n                type      = $type\n                groupname = $groupname\n                shell     = $shell\n                directory = $directory\n            }\n        }\n    }\n\
-    }\n\n$results = @()\n\nforeach ($user in $users) {\n    # Assume VSCode extensions are installed under the user's home directory in \".vscode/extensions\"\n    $extDir = Join-Path $user.directory \"\
-    .vscode/extensions\"\n    if (Test-Path $extDir) {\n        $extensionDirs = Get-ChildItem -Path $extDir -Directory -ErrorAction SilentlyContinue\n        foreach ($ext in $extensionDirs) {\n      \
-    \      $packageJsonPath = Join-Path $ext.FullName \"package.json\"\n            if (Test-Path $packageJsonPath) {\n                try {\n                    $package = Get-Content $packageJsonPath\
-    \ -Raw | ConvertFrom-Json\n                } catch {\n                    continue\n                }\n                $name = $package.name\n                $version = $package.version\n          \
-    \      # Use the \"uuid\" from package.json if it exists; otherwise, use the extension folder name as an identifier.\n                $uuid = if ($package.uuid) { $package.uuid } else { $ext.Name }\n\
-    \                $publisher = $package.publisher\n                $results += [pscustomobject]@{\n                    name              = $name\n                    version           = $version\n  \
-    \                  bundle_identifier = \"\"\n                    extension_id      = $uuid\n                    browser           = \"\"\n                    source            = \"vscode_extensions\"\
-    \n                    vendor            = $publisher\n                    last_opened_at    = \"\"\n                    installed_path    = $ext.FullName\n                }\n            }\n        }\n\
-    \    }\n}\n\n# Write the comparable result to stdout\n$results | Format-Table -AutoSize"
-  bash: bash -c "sqlite3 -header -csv /path/to/database.db \"WITH cached_users AS (WITH cached_groups AS (SELECT * FROM groups) SELECT uid, username, type, groupname, shell FROM users LEFT JOIN cached_groups
-    USING(gid) WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt' AND username NOT LIKE '%\$' AND username NOT
-    LIKE '\\_%' ESCAPE '\\' AND NOT (username = 'sync' AND shell = '/bin/sync' AND directory <> '')) SELECT name, version, '' AS bundle_identifier, uuid AS extension_id, '' AS browser, 'vscode_extensions'
-    AS source, publisher AS vendor, '' AS last_opened_at, path AS installed_path FROM cached_users CROSS JOIN vscode_extensions USING(uid)\""
-  purpose: Informational
-  tags: built-in
-  discovery: vscode_extensions
-  team: both

@@ -1,20 +1,22 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Disk space
+- name: Disk space
+  description: Retrieves total amount of free disk space, percentage of free disk
+    space, and total available disk space on a host.
+  query: "SELECT (blocks_available * 100 / blocks) AS percent_disk_space_available,\n\
+    \  round((blocks_available * blocks_size * 10e-10),2) AS gigs_disk_space_available,\n\
+    \  round((blocks * blocks_size * 10e-10),2) AS gigs_total_disk_space,\n  (SELECT\
+    \ round(SUM(blocks * blocks_size) * 10e-10, 2) FROM mounts WHERE\n-- exclude mounts\
+    \ with no space\nblocks > 0\nAND blocks_size > 0\n\n-- exclude external storage\n\
+    AND path NOT LIKE '/media%' AND path NOT LIKE '/mnt%'\n-- exclude device drivers\n\
+    AND path NOT LIKE '/dev%' \n\n-- exclude kernel-related mounts\nAND path NOT LIKE\
+    \ '/proc%'\nAND path NOT LIKE '/sys%'\n\n-- exclude process files\nAND path NOT\
+    \ LIKE '/run%'\nAND path NOT LIKE '/var/run%'\n\n-- exclude boot files\nAND path\
+    \ NOT LIKE '/boot%' \n\n-- exclude snap packages\nAND path NOT LIKE '/snap%' AND\
+    \ path NOT LIKE '/var/snap%'\n\n-- exclude virtualized mounts, would double-count\
+    \ bare metal storage\nAND path NOT LIKE '/var/lib/docker%'\nAND path NOT LIKE\
+    \ '/var/lib/containers%'\n\nAND type IN (\n'ext4', \n'ext3', \n'ext2', \n'xfs',\
+    \ \n'btrfs', \n'ntfs', \n'vfat',\n'fuseblk', --seen on NTFS and exFAT volumes\
+    \ mounted via FUSE\n'zfs' --also valid storage\n)\nAND (\ndevice LIKE '/dev/sd%'\
+    \ \nOR device LIKE '/dev/hd%' \nOR device LIKE '/dev/vd%' \nOR device LIKE '/dev/nvme%'\
+    \ \nOR device LIKE '/dev/mapper%'\nOR device LIKE '/dev/md%'\nOR device LIKE '/dev/dm-%'\n\
+    )) AS gigs_all_disk_space\nFROM mounts WHERE path = '/' LIMIT 1;\n"
   platform: linux, darwin
-  description: Retrieves total amount of free disk space, percentage of free disk space, and total available disk space on a host.
-  query: "SELECT (blocks_available * 100 / blocks) AS percent_disk_space_available,\n  round((blocks_available * blocks_size * 10e-10),2) AS gigs_disk_space_available,\n  round((blocks * blocks_size * 10e-10),2)\
-    \ AS gigs_total_disk_space,\n  (SELECT round(SUM(blocks * blocks_size) * 10e-10, 2) FROM mounts WHERE\n-- exclude mounts with no space\nblocks > 0\nAND blocks_size > 0\n\n-- exclude external storage\n\
-    AND path NOT LIKE '/media%' AND path NOT LIKE '/mnt%'\n-- exclude device drivers\nAND path NOT LIKE '/dev%' \n\n-- exclude kernel-related mounts\nAND path NOT LIKE '/proc%'\nAND path NOT LIKE '/sys%'\n\
-    \n-- exclude process files\nAND path NOT LIKE '/run%'\nAND path NOT LIKE '/var/run%'\n\n-- exclude boot files\nAND path NOT LIKE '/boot%' \n\n-- exclude snap packages\nAND path NOT LIKE '/snap%' AND\
-    \ path NOT LIKE '/var/snap%'\n\n-- exclude virtualized mounts, would double-count bare metal storage\nAND path NOT LIKE '/var/lib/docker%'\nAND path NOT LIKE '/var/lib/containers%'\n\nAND type IN (\n\
-    'ext4', \n'ext3', \n'ext2', \n'xfs', \n'btrfs', \n'ntfs', \n'vfat',\n'fuseblk', --seen on NTFS and exFAT volumes mounted via FUSE\n'zfs' --also valid storage\n)\nAND (\ndevice LIKE '/dev/sd%' \nOR device\
-    \ LIKE '/dev/hd%' \nOR device LIKE '/dev/vd%' \nOR device LIKE '/dev/nvme%' \nOR device LIKE '/dev/mapper%'\nOR device LIKE '/dev/md%'\nOR device LIKE '/dev/dm-%'\n)) AS gigs_all_disk_space\nFROM mounts\
-    \ WHERE path = '/' LIMIT 1;\n"
-  bash: df -P / | awk 'NR==2 { blocks=$2; blocks_available=$4; blocks_size=$2/$3 } END { printf "percent_disk_space_available=%.2f\n", (blocks_available * 100 / blocks); printf "gigs_disk_space_available=%.2f\n",
-    (blocks_available * blocks_size * 10e-10); printf "gigs_total_disk_space=%.2f\n", (blocks * blocks_size * 10e-10) }'
-  purpose: Informational
-  tags: built-in
-  team: servers

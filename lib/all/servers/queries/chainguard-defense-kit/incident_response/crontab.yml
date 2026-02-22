@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Crontab
+- name: CDK - Crontab
   description: Crontab entries
-  query: |
-    SELECT
-      *
-    FROM
-      crontab
+  query: "SELECT\n  *\nFROM\n  crontab\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

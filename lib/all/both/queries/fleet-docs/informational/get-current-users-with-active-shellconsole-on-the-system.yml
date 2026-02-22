@@ -1,20 +1,7 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get current users with active shell/console on the system
+- name: Get current users with active shell/console on the system
+  description: Get current users with active shell/console on the system and associated
+    process
+  query: SELECT user,host,time, p.name, p.cmdline, p.cwd, p.root FROM logged_in_users
+    liu, processes p WHERE liu.pid = p.pid and liu.type='user' and liu.user <> ''
+    ORDER BY time;
   platform: darwin, linux, windows
-  description: Get current users with active shell/console on the system and associated process
-  query: SELECT user,host,time, p.name, p.cmdline, p.cwd, p.root FROM logged_in_users liu, processes p WHERE liu.pid = p.pid and liu.type='user' and liu.user <> '' ORDER BY time;
-  powershell: "$computerName = $env:COMPUTERNAME\n$results = @()\nGet-CimInstance Win32_Process | ForEach-Object {\n    $proc = $_\n    # Get owner information\n    $ownerInfo = $proc | Invoke-CimMethod\
-    \ -MethodName GetOwner\n    if ($ownerInfo.ReturnValue -eq 0 -and -not [string]::IsNullOrEmpty($ownerInfo.User)) {\n        # Create a custom object with the desired fields.\n        # Note: Windows\
-    \ does not expose current working directory (cwd) or process root via WMI,\n        # so these fields will be returned empty.\n        $results += [PSCustomObject]@{\n            user    = $ownerInfo.User\n\
-    \            host    = $computerName\n            time    = $proc.CreationDate\n            name    = $proc.Name\n            cmdline = $proc.CommandLine\n            cwd     = \"\"\n            root\
-    \    = \"\"\n        }\n    }\n}\n# Sort the results by time (process creation date) and output to stdout.\n$results | Sort-Object time | Format-Table -AutoSize"
-  bash: echo "User,Host,Time,Name,Cmdline,Cwd,Root"; while read u tty d t r; do host=$(echo "$r" | sed -E 's/^\((.*)\)$/\1/'); pid=$(ps -t "$tty" -o pid= | head -n1 | awk '{print $1}'); if [ -n "$pid" ];
-    then name=$(ps -p "$pid" -o comm= | xargs); cmd=$(ps -p "$pid" -o command= | cut -d' ' -f2-); else name="N/A"; cmd="N/A"; fi; if [ -z "$host" ]; then host="N/A"; fi; echo "$u,$host,$d $t,$name,$cmd,N/A,N/A";
-    done < <(who)
-  purpose: Informational
-  tags: hunting, built-in
-  contributors: anelshaer
-  team: both

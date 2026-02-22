@@ -1,35 +1,16 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Salesforce Large Download Spotlight
-  platform: darwin
+- name: CDK - Salesforce Large Download Spotlight
   description: Surface Salesforce exports (possible data exfiltration)
-  query: |
-    SELECT
-      file.path,
-      file.size,
-      datetime(file.btime, 'unixepoch') AS file_created,
-      datetime(file.atime, 'unixepoch') AS file_accessed,
-      hash.sha256,
-      ea.value
-    FROM
-      mdfind
-      LEFT JOIN file ON mdfind.path = file.path
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN extended_attributes ea ON mdfind.path = ea.path
-    WHERE
-      mdfind.query = 'kMDItemWhereFroms == ''*https://*.my.salesforce.com/*'''
-      AND ea.key = 'where_from'
-      -- Software downloads
-      AND ea.value NOT LIKE "%/sfc/dist/version/download/%"
-      AND file.btime > (strftime('%s', 'now') -86400)
-      AND file.size > 500000
-    GROUP BY
-      file.path
+  query: "SELECT\n  file.path,\n  file.size,\n  datetime(file.btime, 'unixepoch')\
+    \ AS file_created,\n  datetime(file.atime, 'unixepoch') AS file_accessed,\n  hash.sha256,\n\
+    \  ea.value\nFROM\n  mdfind\n  LEFT JOIN file ON mdfind.path = file.path\n  LEFT\
+    \ JOIN hash ON file.path = hash.path\n  LEFT JOIN extended_attributes ea ON mdfind.path\
+    \ = ea.path\nWHERE\n  mdfind.query = 'kMDItemWhereFroms == ''*https://*.my.salesforce.com/*'''\n\
+    \  AND ea.key = 'where_from'\n  -- Software downloads\n  AND ea.value NOT LIKE\
+    \ \"%/sfc/dist/version/download/%\"\n  AND file.btime > (strftime('%s', 'now')\
+    \ -86400)\n  AND file.size > 500000\nGROUP BY\n  file.path\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

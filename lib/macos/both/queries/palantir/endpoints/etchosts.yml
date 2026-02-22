@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: etc_hosts
+- name: etc_hosts
   description: List the contents of /etc/hosts
   query: SELECT * FROM etc_hosts;
   platform: darwin
-  team: both

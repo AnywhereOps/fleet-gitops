@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: chocolatey_packages
+- name: chocolatey_packages
   description: List installed Chocolatey packages
   query: SELECT * FROM chocolatey_packages;
   platform: windows
-  team: both

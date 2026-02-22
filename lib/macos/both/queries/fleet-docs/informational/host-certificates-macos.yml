@@ -1,32 +1,10 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Host certificates (macOS)
-  platform: darwin
+- name: Host certificates (macOS)
   description: Retrieves certificates from an Apple device.
-  query: |
-    SELECT
-       ca, common_name, subject, issuer,
-       key_algorithm, key_strength, key_usage, signing_algorithm,
-       not_valid_after, not_valid_before,
-       serial, sha1, "system" as source,
-       path
-     FROM
-       certificates
-     WHERE
-       path = '/Library/Keychains/System.keychain'
-     UNION
-     SELECT
-       ca, common_name, subject, issuer,
-       key_algorithm, key_strength, key_usage, signing_algorithm,
-       not_valid_after, not_valid_before,
-       serial, sha1, "user" as source,
-       path
-     FROM
-       certificates
-     WHERE
-       path LIKE '/Users/%/Library/Keychains/login.keychain-db';
-  purpose: Informational
-  tags: built-in
-  team: both
+  query: "SELECT\n   ca, common_name, subject, issuer,\n   key_algorithm, key_strength,\
+    \ key_usage, signing_algorithm,\n   not_valid_after, not_valid_before,\n   serial,\
+    \ sha1, \"system\" as source,\n   path\n FROM\n   certificates\n WHERE\n   path\
+    \ = '/Library/Keychains/System.keychain'\n UNION\n SELECT\n   ca, common_name,\
+    \ subject, issuer,\n   key_algorithm, key_strength, key_usage, signing_algorithm,\n\
+    \   not_valid_after, not_valid_before,\n   serial, sha1, \"user\" as source,\n\
+    \   path\n FROM\n   certificates\n WHERE\n   path LIKE '/Users/%/Library/Keychains/login.keychain-db';\n"
+  platform: darwin

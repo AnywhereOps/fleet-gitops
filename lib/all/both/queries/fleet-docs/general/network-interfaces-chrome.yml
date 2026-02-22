@@ -1,11 +1,4 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Network interfaces (Chrome)
-  platform: chrome
+- name: Network interfaces (Chrome)
   description: Retrieves information about a ChromeOS device's current network.
   query: "SELECT \nipv4 AS address, mac \nFROM network_interfaces LIMIT 1\n"
-  purpose: Informational
-  tags: built-in
-  team: both
+  platform: chrome

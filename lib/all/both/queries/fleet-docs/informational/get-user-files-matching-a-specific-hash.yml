@@ -1,14 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Get user files matching a specific hash
+- name: Get user files matching a specific hash
+  description: Looks for specific hash in the Users/ directories for files that are
+    less than 50MB (osquery file size limitation.)
+  query: SELECT path, sha256 FROM hash WHERE path IN (SELECT path FROM file WHERE
+    size < 50000000 AND path LIKE '/Users/%/Documents/%%') AND sha256 = '16d28cd1d78b823c4f961a6da78d67a8975d66cde68581798778ed1f98a56d75';
   platform: darwin, linux
-  description: Looks for specific hash in the Users/ directories for files that are less than 50MB (osquery file size limitation.)
-  query: SELECT path, sha256 FROM hash WHERE path IN (SELECT path FROM file WHERE size < 50000000 AND path LIKE '/Users/%/Documents/%%') AND sha256 = '16d28cd1d78b823c4f961a6da78d67a8975d66cde68581798778ed1f98a56d75';
-  bash: r=$(find /Users -type f -path "/Users/*/Documents/*" -size -50M -print0 | xargs -0 -I {} sh -c 's=$(shasum -a 256 "{}" | awk "{print \$1}"); [ "$s" = "16d28cd1d78b823c4f961a6da78d67a8975d66cde68581798778ed1f98a56d75"
-    ] && echo "{},$s"'); [ -n "$r" ] && echo "path,sha256" && echo "$r" || echo "$r"
-  purpose: Informational
-  tags: hunting, built-in
-  contributors: alphabrevity
-  team: both

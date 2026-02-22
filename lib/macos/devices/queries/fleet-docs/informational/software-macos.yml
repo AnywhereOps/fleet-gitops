@@ -1,91 +1,33 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Software (macOS)
-  platform: darwin
+- name: Software (macOS)
   description: Gathers information about software installed on a device running macOS.
-  query: |
-    WITH cached_users AS (WITH cached_groups AS (select * from groups)
-     SELECT uid, uuid, username, type, groupname, shell
-     FROM users LEFT JOIN cached_groups USING (gid)
-     WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt' AND username NOT LIKE '%$' AND username NOT LIKE '\_%' ESCAPE '\' AND NOT (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))
-    SELECT
-      COALESCE(NULLIF(display_name, ''), NULLIF(bundle_name, ''), NULLIF(bundle_executable, ''), TRIM(name, '.app') ) AS name,
-      COALESCE(NULLIF(bundle_short_version, ''), bundle_version) AS version,
-      bundle_identifier AS bundle_identifier,
-      '' AS extension_id,
-      '' AS browser,
-      'apps' AS source,
-      '' AS vendor,
-      last_opened_time AS last_opened_at,
-      path AS installed_path
-    FROM apps
-    UNION
-    SELECT
-      name AS name,
-      version AS version,
-      '' AS bundle_identifier,
-      identifier AS extension_id,
-      browser_type AS browser,
-      'chrome_extensions' AS source,
-      '' AS vendor,
-      0 AS last_opened_at,
-      path AS installed_path
-    FROM cached_users CROSS JOIN chrome_extensions USING (uid)
-    UNION
-    SELECT
-      name AS name,
-      version AS version,
-      '' AS bundle_identifier,
-      identifier AS extension_id,
-      'firefox' AS browser,
-      'firefox_addons' AS source,
-      '' AS vendor,
-      0 AS last_opened_at,
-      path AS installed_path
-    FROM cached_users CROSS JOIN firefox_addons USING (uid)
-    UNION
-    SELECT
-      name As name,
-      version AS version,
-      '' AS bundle_identifier,
-      '' AS extension_id,
-      '' AS browser,
-      'safari_extensions' AS source,
-      '' AS vendor,
-      0 AS last_opened_at,
-      path AS installed_path
-    FROM cached_users CROSS JOIN safari_extensions USING (uid)
-    UNION
-    SELECT
-      name AS name,
-      version AS version,
-      '' AS bundle_identifier,
-      '' AS extension_id,
-      '' AS browser,
-      'homebrew_packages' AS source,
-      '' AS vendor,
-      0 AS last_opened_at,
-      path AS installed_path
-    FROM homebrew_packages
-    WHERE type = 'formula'
-    UNION
-    SELECT
-      name AS name,
-      version AS version,
-      '' AS bundle_identifier,
-      '' AS extension_id,
-      '' AS browser,
-      'homebrew_packages' AS source,
-      '' AS vendor,
-      0 AS last_opened_at,
-      path AS installed_path
-    FROM homebrew_packages
-    WHERE type = 'cask'
-    AND NOT EXISTS (SELECT 1 FROM file WHERE file.path LIKE CONCAT(homebrew_packages.path, '/%%') AND file.path LIKE '%.app%' LIMIT 1);
-  bash: bash -c 'echo "name,version,extension_id,browser,source,release,vendor,arch,installed_path"; npm list -g --depth=0 --json 2>/dev/null | python3 -c "import sys, json; deps = json.load(sys.stdin).get(\"dependencies\",
-    {}); [print(f\"{name},{info.get(\"version\",\"\")},,,npm_packages,,,\") for name, info in deps.items()]" ; pip3 freeze 2>/dev/null | awk -F== '\''{print $1\",\"$2\",,,,python_packages,,,\"}'\'''
-  purpose: Informational
-  tags: built-in
-  team: devices
+  query: "WITH cached_users AS (WITH cached_groups AS (select * from groups)\n SELECT\
+    \ uid, uuid, username, type, groupname, shell\n FROM users LEFT JOIN cached_groups\
+    \ USING (gid)\n WHERE type <> 'special' AND shell NOT LIKE '%/false' AND shell\
+    \ NOT LIKE '%/nologin' AND shell NOT LIKE '%/shutdown' AND shell NOT LIKE '%/halt'\
+    \ AND username NOT LIKE '%$' AND username NOT LIKE '\\_%' ESCAPE '\\' AND NOT\
+    \ (username = 'sync' AND shell ='/bin/sync' AND directory <> ''))\nSELECT\n  COALESCE(NULLIF(display_name,\
+    \ ''), NULLIF(bundle_name, ''), NULLIF(bundle_executable, ''), TRIM(name, '.app')\
+    \ ) AS name,\n  COALESCE(NULLIF(bundle_short_version, ''), bundle_version) AS\
+    \ version,\n  bundle_identifier AS bundle_identifier,\n  '' AS extension_id,\n\
+    \  '' AS browser,\n  'apps' AS source,\n  '' AS vendor,\n  last_opened_time AS\
+    \ last_opened_at,\n  path AS installed_path\nFROM apps\nUNION\nSELECT\n  name\
+    \ AS name,\n  version AS version,\n  '' AS bundle_identifier,\n  identifier AS\
+    \ extension_id,\n  browser_type AS browser,\n  'chrome_extensions' AS source,\n\
+    \  '' AS vendor,\n  0 AS last_opened_at,\n  path AS installed_path\nFROM cached_users\
+    \ CROSS JOIN chrome_extensions USING (uid)\nUNION\nSELECT\n  name AS name,\n \
+    \ version AS version,\n  '' AS bundle_identifier,\n  identifier AS extension_id,\n\
+    \  'firefox' AS browser,\n  'firefox_addons' AS source,\n  '' AS vendor,\n  0\
+    \ AS last_opened_at,\n  path AS installed_path\nFROM cached_users CROSS JOIN firefox_addons\
+    \ USING (uid)\nUNION\nSELECT\n  name As name,\n  version AS version,\n  '' AS\
+    \ bundle_identifier,\n  '' AS extension_id,\n  '' AS browser,\n  'safari_extensions'\
+    \ AS source,\n  '' AS vendor,\n  0 AS last_opened_at,\n  path AS installed_path\n\
+    FROM cached_users CROSS JOIN safari_extensions USING (uid)\nUNION\nSELECT\n  name\
+    \ AS name,\n  version AS version,\n  '' AS bundle_identifier,\n  '' AS extension_id,\n\
+    \  '' AS browser,\n  'homebrew_packages' AS source,\n  '' AS vendor,\n  0 AS last_opened_at,\n\
+    \  path AS installed_path\nFROM homebrew_packages\nWHERE type = 'formula'\nUNION\n\
+    SELECT\n  name AS name,\n  version AS version,\n  '' AS bundle_identifier,\n \
+    \ '' AS extension_id,\n  '' AS browser,\n  'homebrew_packages' AS source,\n  ''\
+    \ AS vendor,\n  0 AS last_opened_at,\n  path AS installed_path\nFROM homebrew_packages\n\
+    WHERE type = 'cask'\nAND NOT EXISTS (SELECT 1 FROM file WHERE file.path LIKE CONCAT(homebrew_packages.path,\
+    \ '/%%') AND file.path LIKE '%.app%' LIMIT 1);\n"
+  platform: darwin

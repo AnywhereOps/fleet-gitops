@@ -1,31 +1,13 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Files Downloads
+- name: CDK - Files Downloads
   description: Returns a list of file information from Downloads directories
-  query: |
-    SELECT
-      file.*,
-      magic.data,
-      hash.sha256
-    FROM
-      file
-      LEFT JOIN magic ON file.path = magic.path
-      LEFT JOIN hash ON file.path = hash.path
-    WHERE
-      (
-        file.path LIKE "/home/%/Downloads/%"
-        OR file.path LIKE "/Users/%/Downloads/%"
-      )
-      AND (
-        mtime > (strftime('%s', 'now') -3600)
-        OR ctime > (strftime('%s', 'now') -3600)
-        OR btime > (strftime('%s', 'now') -3600)
-      )
+  query: "SELECT\n  file.*,\n  magic.data,\n  hash.sha256\nFROM\n  file\n  LEFT JOIN\
+    \ magic ON file.path = magic.path\n  LEFT JOIN hash ON file.path = hash.path\n\
+    WHERE\n  (\n    file.path LIKE \"/home/%/Downloads/%\"\n    OR file.path LIKE\
+    \ \"/Users/%/Downloads/%\"\n  )\n  AND (\n    mtime > (strftime('%s', 'now') -3600)\n\
+    \    OR ctime > (strftime('%s', 'now') -3600)\n    OR btime > (strftime('%s',\
+    \ 'now') -3600)\n  )\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

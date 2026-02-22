@@ -1,11 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: macosx_kextstat_snapshot
+- name: macosx_kextstat_snapshot
   description: Snapshot query for macosx_kextstat
-  query: SELECT kernel_extensions.name, kernel_extensions.version, kernel_extensions.path, signature.signed, signature.identifier, signature.cdhash, signature.team_identifier, signature.authority, hash.md5
-    FROM hash JOIN kernel_extensions ON hash.path LIKE printf('%s/Contents/MacOS/%', kernel_extensions.path) JOIN signature ON signature.path LIKE printf('%s/Contents/MacOS/%', kernel_extensions.path) WHERE
-    signature.authority!='Software Signing';
+  query: SELECT kernel_extensions.name, kernel_extensions.version, kernel_extensions.path,
+    signature.signed, signature.identifier, signature.cdhash, signature.team_identifier,
+    signature.authority, hash.md5 FROM hash JOIN kernel_extensions ON hash.path LIKE
+    printf('%s/Contents/MacOS/%', kernel_extensions.path) JOIN signature ON signature.path
+    LIKE printf('%s/Contents/MacOS/%', kernel_extensions.path) WHERE signature.authority!='Software
+    Signing';
   platform: darwin
-  team: both

@@ -1,110 +1,36 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Empty Root Environ Linux
+- name: CDK - Empty Root Environ Linux
+  description: Find programs which spawn root children without propagating environment
+    variables
+  query: "SELECT\n  COUNT(key) AS count,\n  p.pid,\n  p.path,\n  p.name,\n  p.on_disk,\n\
+    \  p.cgroup_path,\n  hash.sha256,\n  p.parent,\n  p.cmdline,\n  p.cwd,\n  pp.name\
+    \ AS parent_name,\n  pp.cmdline AS parent_cmd\n  -- Processes is 20X faster to\
+    \ scan than process_envs\nFROM\n  processes p\n  LEFT JOIN hash ON p.path = hash.path\n\
+    \  LEFT JOIN process_envs pe ON p.pid = pe.pid\n  LEFT JOIN processes pp ON p.parent\
+    \ = pp.pid\nWHERE\n  p.euid = 0\n  -- This time should match the interval\n  AND\
+    \ p.start_time > (strftime('%s', 'now') - 601)\n  -- Filter out transient processes\
+    \ that may not have an envs entry by the time we poll for it\n  AND p.start_time\
+    \ < (strftime('%s', 'now') - 1)\n  AND p.parent NOT IN (0, 2)\n  AND NOT p.path\
+    \ IS NULL\n  AND p.name NOT IN (\n    '(udev-worker)',\n    '1Password-Keyri',\n\
+    \    'abrt-handle-eve',\n    'applydeltarpm',\n    'bwrap',\n    'containerd',\n\
+    \    'crond',\n    'cupsd',\n    'dbus-daemon',\n    'dhcpcd',\n    'dnf',\n \
+    \   'elastic-agent',\n    'fprintd',\n    'gdm-session-wor',\n    'gdm-x-session',\n\
+    \    'gpg-agent',\n    'ir_agent',\n    'launcher',\n    'modprobe',\n    'nix-daemon',\n\
+    \    'nginx',\n    'osqueryd',\n    'osqueryi',\n    'packagekit-dnf-',\n    'realmd',\n\
+    \    'sedispatch',\n    'ssh',\n    'sshd',\n    'sshd-session',\n    'sudo',\n\
+    \    'systemd-udevd',\n    'systemd-userdbd',\n    'systemd-userwor',\n    'systemd',\n\
+    \    'Xorg',\n    'zfs',\n    'zypak-sandbox'\n  )\n  AND NOT pp.name IN (\n \
+    \   '(sd-exec-strv)',\n    '(udev-worker)',\n    'crond',\n    'dovecot',\n  \
+    \  'dpkg',\n    'launcher',\n    'systemd-nsresou',\n    'systemd-udevd',\n  \
+    \  'systemd-userdbd',\n    'systemd'\n  )\n  AND NOT (\n    p.name LIKE 'systemd-%'\n\
+    \    AND p.parent = 1\n  )\n  AND NOT p.cgroup_path IN ('/system.slice/cronie.service')\n\
+    \  AND NOT pp.cmdline LIKE 'bwrap %'\n  AND NOT p.cmdline LIKE '%--type=zygote%'\n\
+    \  AND NOT p.cmdline LIKE '%--disable-seccomp-filter-sandbox%'\n  AND NOT p.cgroup_path\
+    \ LIKE '/system.slice/docker-%'\n  AND NOT pp.path LIKE '/usr/bin/%'\n  AND NOT\
+    \ (\n    p.name = 'sh'\n    AND p.cgroup_path = '/system.slice/znapzend.service'\n\
+    \  )\nGROUP BY\n  p.pid\nHAVING\n  count = 0;\n"
   platform: linux
-  description: Find programs which spawn root children without propagating environment variables
-  query: |
-    SELECT
-      COUNT(key) AS count,
-      p.pid,
-      p.path,
-      p.name,
-      p.on_disk,
-      p.cgroup_path,
-      hash.sha256,
-      p.parent,
-      p.cmdline,
-      p.cwd,
-      pp.name AS parent_name,
-      pp.cmdline AS parent_cmd
-      -- Processes is 20X faster to scan than process_envs
-    FROM
-      processes p
-      LEFT JOIN hash ON p.path = hash.path
-      LEFT JOIN process_envs pe ON p.pid = pe.pid
-      LEFT JOIN processes pp ON p.parent = pp.pid
-    WHERE
-      p.euid = 0
-      -- This time should match the interval
-      AND p.start_time > (strftime('%s', 'now') - 601)
-      -- Filter out transient processes that may not have an envs entry by the time we poll for it
-      AND p.start_time < (strftime('%s', 'now') - 1)
-      AND p.parent NOT IN (0, 2)
-      AND NOT p.path IS NULL
-      AND p.name NOT IN (
-        '(udev-worker)',
-        '1Password-Keyri',
-        'abrt-handle-eve',
-        'applydeltarpm',
-        'bwrap',
-        'containerd',
-        'crond',
-        'cupsd',
-        'dbus-daemon',
-        'dhcpcd',
-        'dnf',
-        'elastic-agent',
-        'fprintd',
-        'gdm-session-wor',
-        'gdm-x-session',
-        'gpg-agent',
-        'ir_agent',
-        'launcher',
-        'modprobe',
-        'nix-daemon',
-        'nginx',
-        'osqueryd',
-        'osqueryi',
-        'packagekit-dnf-',
-        'realmd',
-        'sedispatch',
-        'ssh',
-        'sshd',
-        'sshd-session',
-        'sudo',
-        'systemd-udevd',
-        'systemd-userdbd',
-        'systemd-userwor',
-        'systemd',
-        'Xorg',
-        'zfs',
-        'zypak-sandbox'
-      )
-      AND NOT pp.name IN (
-        '(sd-exec-strv)',
-        '(udev-worker)',
-        'crond',
-        'dovecot',
-        'dpkg',
-        'launcher',
-        'systemd-nsresou',
-        'systemd-udevd',
-        'systemd-userdbd',
-        'systemd'
-      )
-      AND NOT (
-        p.name LIKE 'systemd-%'
-        AND p.parent = 1
-      )
-      AND NOT p.cgroup_path IN ('/system.slice/cronie.service')
-      AND NOT pp.cmdline LIKE 'bwrap %'
-      AND NOT p.cmdline LIKE '%--type=zygote%'
-      AND NOT p.cmdline LIKE '%--disable-seccomp-filter-sandbox%'
-      AND NOT p.cgroup_path LIKE '/system.slice/docker-%'
-      AND NOT pp.path LIKE '/usr/bin/%'
-      AND NOT (
-        p.name = 'sh'
-        AND p.cgroup_path = '/system.slice/znapzend.service'
-      )
-    GROUP BY
-      p.pid
-    HAVING
-      count = 0;
   interval: 600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

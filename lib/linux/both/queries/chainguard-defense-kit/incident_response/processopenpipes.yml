@@ -1,25 +1,11 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Process Open Pipes
-  platform: linux
+- name: CDK - Process Open Pipes
   description: Return the list of open pipes per process
-  query: |
-    SELECT
-      p.path AS p_path,
-      p.name AS p_name,
-      p.start_time AS p_time,
-      p.euid AS p_euid,
-      p.uid AS p_uid,
-      p.cmdline AS p_cmdline,
-      pop.*
-    FROM
-      process_open_pipes AS pop
-      LEFT JOIN processes p ON pop.pid = p.pid;
+  query: "SELECT\n  p.path AS p_path,\n  p.name AS p_name,\n  p.start_time AS p_time,\n\
+    \  p.euid AS p_euid,\n  p.uid AS p_uid,\n  p.cmdline AS p_cmdline,\n  pop.*\n\
+    FROM\n  process_open_pipes AS pop\n  LEFT JOIN processes p ON pop.pid = p.pid;\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

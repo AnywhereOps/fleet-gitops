@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Dns Resolvers
+- name: CDK - Dns Resolvers
   description: Return the list of configured DNS servers on this system
-  query: |
-    SELECT
-      *
-    FROM
-      dns_resolvers;
+  query: "SELECT\n  *\nFROM\n  dns_resolvers;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

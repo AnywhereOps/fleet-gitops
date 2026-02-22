@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: os_version
+- name: os_version
   description: List the version of the resident operating system
   query: SELECT * FROM os_version;
   platform: darwin
-  team: both

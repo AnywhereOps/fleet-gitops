@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Docker Images
-  platform: linux
+- name: CDK - Docker Images
   description: Return the list of Docker images
-  query: |
-    SELECT
-      *
-    FROM
-      docker_images;
+  query: "SELECT\n  *\nFROM\n  docker_images;\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

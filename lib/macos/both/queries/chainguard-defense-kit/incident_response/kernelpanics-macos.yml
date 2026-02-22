@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Kernel Panics Macos
-  platform: darwin
+- name: CDK - Kernel Panics Macos
   description: Retrieves entries from the macOS kernel panic logs
-  query: |
-    SELECT
-      *
-    FROM
-      kernel_panics;
+  query: "SELECT\n  *\nFROM\n  kernel_panics;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

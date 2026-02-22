@@ -1,18 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Kernel Info
-  platform: linux
+- name: CDK - Kernel Info
   description: Return basic kernel information
-  query: |
-    SELECT
-      *
-    FROM
-      kernel_info;
+  query: "SELECT\n  *\nFROM\n  kernel_info;\n"
+  platform: linux
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

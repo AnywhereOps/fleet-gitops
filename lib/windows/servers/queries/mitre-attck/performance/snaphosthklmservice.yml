@@ -1,11 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Snaphost_HKLM_service
-  description: Snapshot Returns the content of the key HKLM_SYSTEM_CurrentControlSet_Service - ATT&CK T1058
+- name: Snaphost_HKLM_service
+  description: Snapshot Returns the content of the key HKLM_SYSTEM_CurrentControlSet_Service
+    - ATT&CK T1058
   query: select name, type from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services';
-  interval: 28800
-  snapshot: true
   platform: windows
-  team: servers
+  interval: 28800

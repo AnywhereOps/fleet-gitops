@@ -1,10 +1,11 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: emond
-  description: 'Query to monitor files for changes inside of /etc/emon.d/ or /private/var/db/emondClients/ which can be used for persistence: (https://www.xorrior.com/emond-persistence/)'
-  query: SELECT * FROM file JOIN hash USING (path) WHERE (path LIKE '/etc/emond.d/%%' AND sha256!='f19f881084f599fa261243918d922373eab14623e78d23c41fcc031aa21ca7b6' AND sha256!='20909c75c14c9f5360a48c889d06a0d6cfbfa28080348940fc077761744f2aa5'
-    AND sha256!='36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068'AND sha256!='2aafb4238cbdd40c66591c01798da942f62c7f06bb84c9328a40581fc22c4af8'AND sha256!='590192452963fdddc1990cd42c3bf77b3532b3e4a2c13e14e42c0d6a4c881ac4'AND
-    sha256!='69f416293592c0a96733498788b79d6516ed1ad5327ac7cafd6d12e8b231519f'AND sha256!='') OR (path LIKE '/private/var/db/emondClients/%');
-  team: both
+- name: emond
+  description: 'Query to monitor files for changes inside of /etc/emon.d/ or /private/var/db/emondClients/
+    which can be used for persistence: (https://www.xorrior.com/emond-persistence/)'
+  query: SELECT * FROM file JOIN hash USING (path) WHERE (path LIKE '/etc/emond.d/%%'
+    AND sha256!='f19f881084f599fa261243918d922373eab14623e78d23c41fcc031aa21ca7b6'
+    AND sha256!='20909c75c14c9f5360a48c889d06a0d6cfbfa28080348940fc077761744f2aa5'
+    AND sha256!='36a9e7f1c95b82ffb99743e0c5c4ce95d83c9a430aac59f84ef3cbfab6145068'AND
+    sha256!='2aafb4238cbdd40c66591c01798da942f62c7f06bb84c9328a40581fc22c4af8'AND
+    sha256!='590192452963fdddc1990cd42c3bf77b3532b3e4a2c13e14e42c0d6a4c881ac4'AND
+    sha256!='69f416293592c0a96733498788b79d6516ed1ad5327ac7cafd6d12e8b231519f'AND
+    sha256!='') OR (path LIKE '/private/var/db/emondClients/%');

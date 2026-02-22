@@ -1,45 +1,19 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Hidden Home Config Dir
+- name: CDK - Hidden Home Config Dir
   description: Find unexpected hidden files in a users config directory
-  query: |
-    SELECT
-      file.path,
-      file.type,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.ctime,
-      file.gid,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash ON file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      (
-        file.path LIKE "/home/%/.config/.%"
-        OR file.path LIKE '/home/%/.config/.%/%'
-        OR file.path LIKE '/home/%/.config/%%/.%/.%'
-        OR file.path LIKE '/home/%/.config/%%/.%/%'
-        OR file.path LIKE '/root/.%/.%/%'
-        OR file.path LIKE '/root/.config/.%/%'
-        OR file.path LIKE '/root/.config/%%/.%/.%'
-        OR file.path LIKE '/root/.config/%%/.%/%'
-      )
-      AND file.path NOT LIKE '/home/%/.config/.gsd-keyboard.settings-ported'
-      AND file.path NOT LIKE '/home/%/.config/.org.chromium.Chromium.%'
-      AND file.path NOT LIKE '/home/%/.config/%/.git%'
-      AND file.path NOT LIKE '/root/.cache/.flatpak/%'
-      AND file.path NOT LIKE '/root/.debug/.build-id/%'
-      AND file.path NOT LIKE '%/../%'
-      AND file.path NOT LIKE '%/./%'
+  query: "SELECT\n  file.path,\n  file.type,\n  file.size,\n  file.mtime,\n  file.uid,\n\
+    \  file.ctime,\n  file.gid,\n  hash.sha256,\n  magic.data\nFROM\n  file\n  LEFT\
+    \ JOIN hash ON file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\n\
+    WHERE\n  (\n    file.path LIKE \"/home/%/.config/.%\"\n    OR file.path LIKE '/home/%/.config/.%/%'\n\
+    \    OR file.path LIKE '/home/%/.config/%%/.%/.%'\n    OR file.path LIKE '/home/%/.config/%%/.%/%'\n\
+    \    OR file.path LIKE '/root/.%/.%/%'\n    OR file.path LIKE '/root/.config/.%/%'\n\
+    \    OR file.path LIKE '/root/.config/%%/.%/.%'\n    OR file.path LIKE '/root/.config/%%/.%/%'\n\
+    \  )\n  AND file.path NOT LIKE '/home/%/.config/.gsd-keyboard.settings-ported'\n\
+    \  AND file.path NOT LIKE '/home/%/.config/.org.chromium.Chromium.%'\n  AND file.path\
+    \ NOT LIKE '/home/%/.config/%/.git%'\n  AND file.path NOT LIKE '/root/.cache/.flatpak/%'\n\
+    \  AND file.path NOT LIKE '/root/.debug/.build-id/%'\n  AND file.path NOT LIKE\
+    \ '%/../%'\n  AND file.path NOT LIKE '%/./%'\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

@@ -1,100 +1,44 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Hidden Home Libappsupport
-  platform: darwin
+- name: CDK - Hidden Home Libappsupport
   description: Find unexpected hidden files in a users Application Support directory
-  query: |
-    SELECT
-      file.path,
-      file.filename,
-      file.type,
-      file.mode,
-      file.size,
-      file.mtime,
-      file.uid,
-      file.ctime,
-      REPLACE(file.path, u.directory, '~') AS homepath,
-      REPLACE(file.directory, u.directory, '~') AS homedir,
-      file.gid,
-      hash.sha256,
-      magic.data,
-      signature.identifier,
-      signature.authority
-    FROM
-      file
-      JOIN hash ON file.path = hash.path
-      JOIN users u ON file.uid = u.uid
-      JOIN magic ON file.path = magic.path
-      JOIN signature ON file.path = signature.path
-    WHERE
-      file.path IN (
-        SELECT
-          path
-        FROM
-          file
-        WHERE
-          (
-            path LIKE '/Users/%/Library/Application Support/%/.%'
-            OR path LIKE '/Users/%/Library/Application Support/.%'
-          )
-          AND NOT file.filename IN ('.', '..', '.updaterId', '.DS_Store')
-          AND size > 0
-      )
-      AND NOT homedir IN (
-        '~/Library/Application Support/1Password',
-        '~/Library/Application Support/Adobe',
-        '~/Library/Application Support/Beeper',
-        '~/Library/Application Support/BetterTouchTool',
-        '~/Library/Application Support/CleanMyMac X Menu',
-        '~/Library/Application Support/CleanMyMac X',
-        '~/Library/Application Support/Code',
-        '~/Library/Application Support/com.apple.spotlight',
-        '~/Library/Application Support/com.bohemiancoding.sketch3',
-        '~/Library/Application Support/com.intelliscapesolutions.caffeine',
-        '~/Library/Application Support/com.operasoftware.Opera',
-        '~/Library/Application Support/com.psiexams.psi-bridge-secure-browser',
-        '~/Library/Application Support/com.tinyapp.TablePlus',
-        '~/Library/Application Support/discord',
-        '~/Library/Application Support/Docker Desktop',
-        '~/Library/Application Support/DropboxElectron',
-        '~/Library/Application Support/GitHub Desktop',
-        '~/Library/Application Support/Jabra Direct',
-        '~/Library/Application Support/Keybase',
-        '~/Library/Application Support/Lens',
-        '~/Library/Application Support/lghub',
-        '~/Library/Application Support/Loom',
-        '~/Library/Application Support/abnerworks.Typora',
-        '~/Library/Application Support/nuclei',
-        '~/Library/Application Support/Evernote',
-        '~/Library/Application Support/Presenting',
-        '~/Library/Application Support/Slack',
-        '~/Library/Application Support/ZaloApp',
-        '~/Library/Application Support/ZaloData',
-        '~/Library/Application Support/ZaloPC'
-      )
-      AND NOT homepath IN (
-        '~/Library/Application Support/.com.contextsformac.Contexts.plist',
-        '~/Library/Application Support/.settings',
-        '~/Library/Application Support/.Shadowland5.5',
-        '~/Library/Application Support/Evernote/.ldl',
-        '~/Library/Application Support/BBEdit/.SupportFolderMigration.txt'
-      )
-      AND NOT homepath LIKE '~/Library/Application Support/.syssettings%'
-      AND NOT magic.data = 'XML 1.0 document, ASCII text'
-      -- Capture One
-      AND NOT (
-        file.mode = "0666"
-        AND size > 1200
-        AND size < 4000
-        AND REGEX_MATCH (file.filename, "^(\.[0-9A-Z]{32})$", 0) != ""
-      )
-    GROUP BY
-      file.path
+  query: "SELECT\n  file.path,\n  file.filename,\n  file.type,\n  file.mode,\n  file.size,\n\
+    \  file.mtime,\n  file.uid,\n  file.ctime,\n  REPLACE(file.path, u.directory,\
+    \ '~') AS homepath,\n  REPLACE(file.directory, u.directory, '~') AS homedir,\n\
+    \  file.gid,\n  hash.sha256,\n  magic.data,\n  signature.identifier,\n  signature.authority\n\
+    FROM\n  file\n  JOIN hash ON file.path = hash.path\n  JOIN users u ON file.uid\
+    \ = u.uid\n  JOIN magic ON file.path = magic.path\n  JOIN signature ON file.path\
+    \ = signature.path\nWHERE\n  file.path IN (\n    SELECT\n      path\n    FROM\n\
+    \      file\n    WHERE\n      (\n        path LIKE '/Users/%/Library/Application\
+    \ Support/%/.%'\n        OR path LIKE '/Users/%/Library/Application Support/.%'\n\
+    \      )\n      AND NOT file.filename IN ('.', '..', '.updaterId', '.DS_Store')\n\
+    \      AND size > 0\n  )\n  AND NOT homedir IN (\n    '~/Library/Application Support/1Password',\n\
+    \    '~/Library/Application Support/Adobe',\n    '~/Library/Application Support/Beeper',\n\
+    \    '~/Library/Application Support/BetterTouchTool',\n    '~/Library/Application\
+    \ Support/CleanMyMac X Menu',\n    '~/Library/Application Support/CleanMyMac X',\n\
+    \    '~/Library/Application Support/Code',\n    '~/Library/Application Support/com.apple.spotlight',\n\
+    \    '~/Library/Application Support/com.bohemiancoding.sketch3',\n    '~/Library/Application\
+    \ Support/com.intelliscapesolutions.caffeine',\n    '~/Library/Application Support/com.operasoftware.Opera',\n\
+    \    '~/Library/Application Support/com.psiexams.psi-bridge-secure-browser',\n\
+    \    '~/Library/Application Support/com.tinyapp.TablePlus',\n    '~/Library/Application\
+    \ Support/discord',\n    '~/Library/Application Support/Docker Desktop',\n   \
+    \ '~/Library/Application Support/DropboxElectron',\n    '~/Library/Application\
+    \ Support/GitHub Desktop',\n    '~/Library/Application Support/Jabra Direct',\n\
+    \    '~/Library/Application Support/Keybase',\n    '~/Library/Application Support/Lens',\n\
+    \    '~/Library/Application Support/lghub',\n    '~/Library/Application Support/Loom',\n\
+    \    '~/Library/Application Support/abnerworks.Typora',\n    '~/Library/Application\
+    \ Support/nuclei',\n    '~/Library/Application Support/Evernote',\n    '~/Library/Application\
+    \ Support/Presenting',\n    '~/Library/Application Support/Slack',\n    '~/Library/Application\
+    \ Support/ZaloApp',\n    '~/Library/Application Support/ZaloData',\n    '~/Library/Application\
+    \ Support/ZaloPC'\n  )\n  AND NOT homepath IN (\n    '~/Library/Application Support/.com.contextsformac.Contexts.plist',\n\
+    \    '~/Library/Application Support/.settings',\n    '~/Library/Application Support/.Shadowland5.5',\n\
+    \    '~/Library/Application Support/Evernote/.ldl',\n    '~/Library/Application\
+    \ Support/BBEdit/.SupportFolderMigration.txt'\n  )\n  AND NOT homepath LIKE '~/Library/Application\
+    \ Support/.syssettings%'\n  AND NOT magic.data = 'XML 1.0 document, ASCII text'\n\
+    \  -- Capture One\n  AND NOT (\n    file.mode = \"0666\"\n    AND size > 1200\n\
+    \    AND size < 4000\n    AND REGEX_MATCH (file.filename, \"^(\\.[0-9A-Z]{32})$\"\
+    , 0) != \"\"\n  )\nGROUP BY\n  file.path\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: servers

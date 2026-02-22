@@ -1,12 +1,6 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: launchd
-  platform: darwin
-  description: Retrieves all the daemons that will run in the start of the target OSX system.
+- name: launchd
+  description: Retrieves all the daemons that will run in the start of the target
+    OSX system.
   query: select * from launchd;
+  platform: darwin
   interval: '86400'
-  value: Visibility on what starts in the system.
-  version: 1.4.5
-  team: both

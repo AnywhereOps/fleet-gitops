@@ -1,19 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Socket Events
+- name: CDK - Socket Events
   description: Return the list of socket events
-  query: |
-    SELECT
-      *
-    FROM
-      socket_events
-    WHERE
-      time > (strftime('%s', 'now') -600)
+  query: "SELECT\n  *\nFROM\n  socket_events\nWHERE\n  time > (strftime('%s', 'now')\
+    \ -600)\n"
   interval: 600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

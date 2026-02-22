@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: rpm_packages
+- name: rpm_packages
   description: Display all installed RPM packages
   query: SELECT name, version, release, arch FROM rpm_packages;
   platform: linux
-  team: both

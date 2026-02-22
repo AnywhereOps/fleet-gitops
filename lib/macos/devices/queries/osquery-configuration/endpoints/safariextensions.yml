@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: safari_extensions
+- name: safari_extensions
   description: Safari browser extension details for all users.
   query: SELECT * FROM users CROSS JOIN safari_extensions USING (uid);
   platform: darwin
-  team: devices

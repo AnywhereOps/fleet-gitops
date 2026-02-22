@@ -1,13 +1,9 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: efi_file_hashes
+- name: efi_file_hashes
+  description: Hash files related to EFI platform updates and EFI bootloaders on primary
+    boot partition. This does not hash bootloaders on the EFI/boot partition.
+  query: select file.path, uid, gid, mode, 0 as atime, mtime, ctime, md5, sha1, sha256
+    from (select * from file where path like '/System/Library/CoreServices/%.efi'
+    union select * from file where path like '/System/Library/LaunchDaemons/com.apple%efi%')
+    file join hash using (path);
   platform: darwin
-  description: Hash files related to EFI platform updates and EFI bootloaders on primary boot partition. This does not hash bootloaders on the EFI/boot partition.
-  query: select file.path, uid, gid, mode, 0 as atime, mtime, ctime, md5, sha1, sha256 from (select * from file where path like '/System/Library/CoreServices/%.efi' union select * from file where path like
-    '/System/Library/LaunchDaemons/com.apple%efi%') file join hash using (path);
   interval: 7200
-  removed: false
-  version: 1.6.1
-  team: both

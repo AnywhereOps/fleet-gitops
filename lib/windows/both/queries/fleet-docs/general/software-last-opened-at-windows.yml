@@ -1,16 +1,9 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Software last opened at (Windows)
+- name: Software last opened at (Windows)
+  description: A software override query to append last_opened_at information to Windows
+    software entries.
+  query: "SELECT\n  MAX(last_run_time) AS last_opened_at,\n  REGEX_MATCH(accessed_files,\
+    \ \"VOLUME[^\\\\]+([^,]+\" || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(filename,\
+    \ '\\', '\\\\'), '.', '\\.'), '*', '\\*'), '+', '\\+'), '?', '\\?'), '[', '\\\
+    ['), ']', '\\]'), '{', '\\{'), '}', '\\}'), '(', '\\('), ')', '\\)'), '|', '\\\
+    |') || \")\", 1) AS executable_path\nFROM prefetch\nGROUP BY executable_path\n"
   platform: windows
-  description: A software override query to append last_opened_at information to Windows software entries.
-  query: |
-    SELECT
-      MAX(last_run_time) AS last_opened_at,
-      REGEX_MATCH(accessed_files, "VOLUME[^\\]+([^,]+" || REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(filename, '\', '\\'), '.', '\.'), '*', '\*'), '+', '\+'), '?', '\?'), '[', '\['), ']', '\]'), '{', '\{'), '}', '\}'), '(', '\('), ')', '\)'), '|', '\|') || ")", 1) AS executable_path
-    FROM prefetch
-    GROUP BY executable_path
-  purpose: Informational
-  tags: built-in
-  team: both

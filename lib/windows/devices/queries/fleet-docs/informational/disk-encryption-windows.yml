@@ -1,22 +1,8 @@
----
-apiVersion: v1
-kind: built-in
-spec:
-  name: Disk encryption (Windows)
-  platform: windows
+- name: Disk encryption (Windows)
   description: Retrieves the disk encryption status of a Windows device.
-  query: |
-    WITH encrypted(enabled) AS (
-        SELECT CASE WHEN
-          NOT EXISTS(SELECT 1 FROM windows_optional_features WHERE name = 'BitLocker')
-          OR
-          (SELECT 1 FROM windows_optional_features WHERE name = 'BitLocker' AND state = 1)
-        THEN (SELECT 1 FROM bitlocker_info WHERE drive_letter = 'C:' AND protection_status = 1)
-      END)
-      SELECT 1 FROM encrypted WHERE enabled IS NOT NULL
-  powershell: "$bitlockerFeature = Get-WindowsOptionalFeature -Online -FeatureName \"BitLocker\" -ErrorAction SilentlyContinue\nif (-not $bitlockerFeature -or $bitlockerFeature.State -eq \"Enabled\") {\n\
-    \    $bitlockerVolume = Get-BitLockerVolume -MountPoint \"C:\" -ErrorAction SilentlyContinue\n    if ($bitlockerVolume -and ($bitlockerVolume.ProtectionStatus -eq 1 -or $bitlockerVolume.ProtectionStatus\
-    \ -eq \"On\")) {\n        Write-Output \"1\"\n    }\n}"
-  purpose: Informational
-  tags: built-in
-  team: devices
+  query: "WITH encrypted(enabled) AS (\n    SELECT CASE WHEN\n      NOT EXISTS(SELECT\
+    \ 1 FROM windows_optional_features WHERE name = 'BitLocker')\n      OR\n     \
+    \ (SELECT 1 FROM windows_optional_features WHERE name = 'BitLocker' AND state\
+    \ = 1)\n    THEN (SELECT 1 FROM bitlocker_info WHERE drive_letter = 'C:' AND protection_status\
+    \ = 1)\n  END)\n  SELECT 1 FROM encrypted WHERE enabled IS NOT NULL\n"
+  platform: windows

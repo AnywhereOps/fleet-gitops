@@ -1,30 +1,12 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Recent Items Macos
+- name: CDK - Recent Items Macos
+  description: Retrieves the list of recent items opened in OSX by parsing the plist
+    per user.
+  query: "select\n  username,\n  key,\n  value\nfrom\n  plist p,\n  (\n    select\n\
+    \      *\n    from\n      users\n    where\n      directory like '/Users/%'\n\
+    \  ) u\nwhere\n  p.path = u.directory || '/Library/Preferences/com.apple.recentitems.plist';\n"
   platform: darwin
-  description: Retrieves the list of recent items opened in OSX by parsing the plist per user.
-  query: |
-    select
-      username,
-      key,
-      value
-    from
-      plist p,
-      (
-        select
-          *
-        from
-          users
-        where
-          directory like '/Users/%'
-      ) u
-    where
-      p.path = u.directory || '/Library/Preferences/com.apple.recentitems.plist';
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

@@ -1,36 +1,11 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Processes
-  description: Currently running programs, only the columns that are not constantly changing
-  query: |
-    SELECT
-      pid,
-      name,
-      path,
-      cmdline,
-      state,
-      cwd,
-      root,
-      uid,
-      gid,
-      euid,
-      egid,
-      suid,
-      sgid,
-      on_disk,
-      start_time,
-      parent,
-      pgroup,
-      threads,
-      nice,
-      cgroup_path
-    FROM
-      processes
+- name: CDK - Processes
+  description: Currently running programs, only the columns that are not constantly
+    changing
+  query: "SELECT\n  pid,\n  name,\n  path,\n  cmdline,\n  state,\n  cwd,\n  root,\n\
+    \  uid,\n  gid,\n  euid,\n  egid,\n  suid,\n  sgid,\n  on_disk,\n  start_time,\n\
+    \  parent,\n  pgroup,\n  threads,\n  nice,\n  cgroup_path\nFROM\n  processes\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

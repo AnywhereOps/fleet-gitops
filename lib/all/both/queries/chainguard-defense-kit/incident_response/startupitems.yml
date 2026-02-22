@@ -1,17 +1,8 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Startup Items
+- name: CDK - Startup Items
   description: Retrieve most programs that are part of a systems startup (multi-platform)
-  query: |
-    SELECT
-      *
-    FROM
-      startup_items;
+  query: "SELECT\n  *\nFROM\n  startup_items;\n"
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

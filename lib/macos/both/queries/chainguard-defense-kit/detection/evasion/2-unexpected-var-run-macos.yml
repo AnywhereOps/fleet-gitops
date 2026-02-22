@@ -1,77 +1,28 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: CDK - Unexpected Var Run Macos
-  platform: darwin
+- name: CDK - Unexpected Var Run Macos
   description: Find unexpected regular files in /var/run
-  query: |
-    SELECT
-      file.filename,
-      uid,
-      gid,
-      mode,
-      file.ctime,
-      file.atime,
-      file.mtime,
-      file.size,
-      hash.sha256,
-      magic.data
-    FROM
-      file
-      LEFT JOIN hash on file.path = hash.path
-      LEFT JOIN magic ON file.path = magic.path
-    WHERE
-      file.directory = "/var/run"
-      AND file.type = "regular"
-      AND file.filename NOT IN (
-        '.autoBackup',
-        '.DidRunFLO',
-        '.fctcompsupdate',
-        'appfwd.pid',
-        'auditd.pid',
-        'automount.initialized',
-        'bootpd.pid',
-        'com.apple.DumpPanic.finishedPMUFaultHandling',
-        'com.apple.DumpPanic.finishedThisBoot',
-        'com.apple.logind.didRunThisBoot',
-        'com.apple.loginwindow.didRunThisBoot',
-        'com.apple.mdmclient.daemon.didRunThisBoot',
-        'com.apple.mobileassetd-MobileAssetBrain',
-        'com.apple.parentalcontrols.webfilterctl.mutex',
-        'com.apple.softwareupdate.availableupdatesupdated',
-        'com.apple.WindowServer.didRunThisBoot',
-        'diskarbitrationd.pid',
-        'fctc.s',
-        'FirstBootAfterUpdate',
-        'FirstBootCleanupHandled',
-        'hdiejectd.pid',
-        'installd.commit.pid',
-        'kdc.pid',
-        'MobileAssetCritialDomainsUpdated.plist',
-        'MobileAssetStartupActivation.doneThisBoot',
-        'prl_desktop_services_foreground.lock',
-        'prl_desktop_services.lock',
-        'prl_disp_service.pid',
-        'prl_disp_service.urgent',
-        'prl_naptd.pid',
-        'prl_watchdog-ebdba5702a20.pid',
-        'resolv.conf',
-        'rtadvd.pid',
-        'signpost_reporter_running',
-        'socketfilterfw.launchd',
-        'syslog.pid',
-        'systemkeychaincheck.done',
-        'utmpx',
-        'VMware Fusion Services.lock',
-        'wifi'
-      )
-      AND NOT file.filename LIKE '%.pid'
-    GROUP BY
-      file.path;
+  query: "SELECT\n  file.filename,\n  uid,\n  gid,\n  mode,\n  file.ctime,\n  file.atime,\n\
+    \  file.mtime,\n  file.size,\n  hash.sha256,\n  magic.data\nFROM\n  file\n  LEFT\
+    \ JOIN hash on file.path = hash.path\n  LEFT JOIN magic ON file.path = magic.path\n\
+    WHERE\n  file.directory = \"/var/run\"\n  AND file.type = \"regular\"\n  AND file.filename\
+    \ NOT IN (\n    '.autoBackup',\n    '.DidRunFLO',\n    '.fctcompsupdate',\n  \
+    \  'appfwd.pid',\n    'auditd.pid',\n    'automount.initialized',\n    'bootpd.pid',\n\
+    \    'com.apple.DumpPanic.finishedPMUFaultHandling',\n    'com.apple.DumpPanic.finishedThisBoot',\n\
+    \    'com.apple.logind.didRunThisBoot',\n    'com.apple.loginwindow.didRunThisBoot',\n\
+    \    'com.apple.mdmclient.daemon.didRunThisBoot',\n    'com.apple.mobileassetd-MobileAssetBrain',\n\
+    \    'com.apple.parentalcontrols.webfilterctl.mutex',\n    'com.apple.softwareupdate.availableupdatesupdated',\n\
+    \    'com.apple.WindowServer.didRunThisBoot',\n    'diskarbitrationd.pid',\n \
+    \   'fctc.s',\n    'FirstBootAfterUpdate',\n    'FirstBootCleanupHandled',\n \
+    \   'hdiejectd.pid',\n    'installd.commit.pid',\n    'kdc.pid',\n    'MobileAssetCritialDomainsUpdated.plist',\n\
+    \    'MobileAssetStartupActivation.doneThisBoot',\n    'prl_desktop_services_foreground.lock',\n\
+    \    'prl_desktop_services.lock',\n    'prl_disp_service.pid',\n    'prl_disp_service.urgent',\n\
+    \    'prl_naptd.pid',\n    'prl_watchdog-ebdba5702a20.pid',\n    'resolv.conf',\n\
+    \    'rtadvd.pid',\n    'signpost_reporter_running',\n    'socketfilterfw.launchd',\n\
+    \    'syslog.pid',\n    'systemkeychaincheck.done',\n    'utmpx',\n    'VMware\
+    \ Fusion Services.lock',\n    'wifi'\n  )\n  AND NOT file.filename LIKE '%.pid'\n\
+    GROUP BY\n  file.path;\n"
+  platform: darwin
   interval: 3600
-  logging: snapshot
   observer_can_run: true
   automations_enabled: false
+  logging: snapshot
   discard_data: false
-  team: both

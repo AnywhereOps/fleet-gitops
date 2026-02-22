@@ -1,9 +1,4 @@
----
-apiVersion: v1
-kind: query
-spec:
-  name: Processes_run_without_binary_disk
+- name: Processes_run_without_binary_disk
   description: Detect Processes running without a binary on disk
   query: SELECT name, path, pid FROM processes WHERE on_disk = 0;
   interval: 3600
-  team: both
