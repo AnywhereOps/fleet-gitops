@@ -5,3 +5,4 @@ spec:
   name: chrome_extensions_snapshot
   description: Snapshot query for Chrome extensions
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid);
+  team: devices

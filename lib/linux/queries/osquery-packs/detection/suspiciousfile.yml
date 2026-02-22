@@ -12,3 +12,4 @@ spec:
     '/usr/bin/snick', '/usr/bin/kfl', '/tmp/.dump', '/var/.x', '/var/.x/psotnic');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

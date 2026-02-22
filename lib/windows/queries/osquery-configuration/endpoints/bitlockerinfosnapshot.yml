@@ -6,3 +6,4 @@ spec:
   description: Disk encryption status and information snapshot query.
   query: SELECT * FROM bitlocker_info;
   platform: windows
+  team: devices

@@ -6,3 +6,4 @@ spec:
   description: Display all installed DEB packages
   query: SELECT * FROM deb_packages;
   platform: linux
+  team: both

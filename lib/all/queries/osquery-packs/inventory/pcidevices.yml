@@ -8,3 +8,4 @@ spec:
   query: select * from pci_devices;
   interval: 7200
   version: 1.0.4
+  team: both

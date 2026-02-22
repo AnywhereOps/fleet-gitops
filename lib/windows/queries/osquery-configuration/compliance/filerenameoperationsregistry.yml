@@ -6,3 +6,4 @@ spec:
   description: Entries for the FileRenameOperation support the MoveFileEx delayed-rename and delayed-delete capabilities. Sometimes used as a self-deletion technique for malware.
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\FileRenameOperations';
   platform: windows
+  team: both

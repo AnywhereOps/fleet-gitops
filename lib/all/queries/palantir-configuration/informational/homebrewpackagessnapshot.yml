@@ -5,3 +5,4 @@ spec:
   name: homebrew_packages_snapshot
   description: The installed homebrew package database.
   query: SELECT name, version FROM homebrew_packages;
+  team: both

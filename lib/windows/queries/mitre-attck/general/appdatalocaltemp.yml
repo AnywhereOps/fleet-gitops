@@ -9,3 +9,4 @@ spec:
     'unixepoch', 'UTC') as mtime FROM hash JOIN file USING (path) where path like 'C:\users\%\AppData\Local\temp\%' and type='regular';
   interval: 1900
   removed: false
+  team: both

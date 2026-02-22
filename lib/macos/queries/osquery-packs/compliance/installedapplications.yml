@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Find currently installed applications and versions of each.
   version: 1.4.5
+  team: devices

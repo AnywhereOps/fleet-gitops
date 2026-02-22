@@ -5,3 +5,4 @@ spec:
   name: python_packages
   description: Python packages installed in a system.
   query: SELECT * FROM python_packages;
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: LaunchAgents and LaunchDaemons from default search paths.
   query: SELECT * FROM launchd;
   platform: darwin
+  team: both

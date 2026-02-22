@@ -8,3 +8,4 @@ spec:
   interval: '3600'
   value: Determine if MITM in progress.
   version: 1.4.5
+  team: both

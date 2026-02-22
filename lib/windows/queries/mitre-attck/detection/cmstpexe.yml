@@ -7,3 +7,4 @@ spec:
   description: CMSTP Execute, The Microsoft Connection Manager Profile Installer (CMSTP.exe) is a command-line program used to install Connection Manager service profiles. - ATT&CK T1191
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%CMSTP%';
   interval: 600
+  team: both

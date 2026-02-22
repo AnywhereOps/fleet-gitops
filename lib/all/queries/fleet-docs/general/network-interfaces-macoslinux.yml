@@ -33,3 +33,4 @@ spec:
     "$ip $mac"
   purpose: Informational
   tags: built-in
+  team: both

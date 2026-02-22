@@ -88,3 +88,4 @@ spec:
     {}); [print(f\"{name},{info.get(\"version\",\"\")},,,npm_packages,,,\") for name, info in deps.items()]" ; pip3 freeze 2>/dev/null | awk -F== '\''{print $1\",\"$2\",,,,python_packages,,,\"}'\'''
   purpose: Informational
   tags: built-in
+  team: devices

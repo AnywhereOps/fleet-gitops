@@ -59,140 +59,33 @@ spec:
       '' AS vendor,
       path AS installed_path
     FROM chocolatey_packages
-  powershell: |-
-    # Get installed Windows programs from registry
-    $programs = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*", "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName } | ForEach-Object {
-        [PSCustomObject]@{
-            name    = $_.DisplayName
-            version = $_.DisplayVersion
-            type    = "Program (Windows)"
-            source  = "programs"
-        }
-    }
-
-    # Get installed Python packages (if pip is available)
-    $python_pkgs = @()
-    try {
-        $pipOutput = & pip list --format=freeze 2>$null
-        if ($pipOutput) {
-            foreach ($line in $pipOutput) {
-                if ($line -match "^(.*?)==(.*)$") {
-                    $python_pkgs += [PSCustomObject]@{
-                        name    = $matches[1]
-                        version = $matches[2]
-                        type    = "Package (Python)"
-                        source  = "python_packages"
-                    }
-                }
-            }
-        }
-    } catch {
-        # pip not found or error occurred
-    }
-
-    # Get Internet Explorer extensions from registry
-    $ie_extensions = @()
-    $ieRegKey = "HKLM:\SOFTWARE\Microsoft\Internet Explorer\Extensions"
-    if (Test-Path $ieRegKey) {
-        $ieData = Get-ItemProperty -Path $ieRegKey -ErrorAction SilentlyContinue
-        if ($ieData) {
-            foreach ($prop in $ieData.PSObject.Properties) {
-                # Using property name as the identifier; version info is not normally stored
-                $ie_extensions += [PSCustomObject]@{
-                    name    = $prop.Name
-                    version = ""
-                    type    = "Browser plugin (IE)"
-                    source  = "ie_extensions"
-                }
-            }
-        }
-    }
-
-    # Get Chrome extensions by reading installed extension manifests
-    $chrome_extensions = @()
-    $chromeExtPath = Join-Path $env:LOCALAPPDATA "Google\Chrome\User Data\Default\Extensions"
-    if (Test-Path $chromeExtPath) {
-        $extDirs = Get-ChildItem -Path $chromeExtPath -Directory -ErrorAction SilentlyContinue
-        foreach ($ext in $extDirs) {
-            $versionDirs = Get-ChildItem -Path $ext.FullName -Directory -ErrorAction SilentlyContinue
-            foreach ($verDir in $versionDirs) {
-                $manifestPath = Join-Path $verDir.FullName "manifest.json"
-                if (Test-Path $manifestPath) {
-                    try {
-                        $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
-                        $extName = $manifest.name
-                        $extVersion = $manifest.version
-                    } catch {
-                        $extName = $ext.Name
-                        $extVersion = $verDir.Name
-                    }
-                } else {
-                    $extName = $ext.Name
-                    $extVersion = $verDir.Name
-                }
-                $chrome_extensions += [PSCustomObject]@{
-                    name    = $extName
-                    version = $extVersion
-                    type    = "Browser plugin (Chrome)"
-                    source  = "chrome_extensions"
-                }
-            }
-        }
-    }
-
-    # Get Firefox add-ons by locating extensions.json in profile directories and parsing it
-    $firefox_addons = @()
-    $firefoxProfilesPath = Join-Path $env:APPDATA "Mozilla\Firefox\Profiles"
-    if (Test-Path $firefoxProfilesPath) {
-        $profiles = Get-ChildItem -Path $firefoxProfilesPath -Directory -ErrorAction SilentlyContinue
-        foreach ($profile in $profiles) {
-            $extensionsJson = Join-Path $profile.FullName "extensions.json"
-            if (Test-Path $extensionsJson) {
-                try {
-                    $json = Get-Content $extensionsJson -Raw | ConvertFrom-Json
-                    if ($json.addons) {
-                        foreach ($addon in $json.addons) {
-                            if ($addon.type -eq "extension") {
-                                $firefox_addons += [PSCustomObject]@{
-                                    name    = $addon.name
-                                    version = $addon.version
-                                    type    = "Browser plugin (Firefox)"
-                                    source  = "firefox_addons"
-                                }
-                            }
-                        }
-                    }
-                } catch {
-                    # Skip profiles with parsing issues
-                }
-            }
-        }
-    }
-
-    # Get installed Chocolatey packages (if choco is available)
-    $chocolatey_packages = @()
-    try {
-        $chocoOutput = & choco list --local-only --limit-output 2>$null
-        if ($chocoOutput) {
-            foreach ($line in $chocoOutput) {
-                if ($line -match "^(.*?)\|(.*)$") {
-                    $chocolatey_packages += [PSCustomObject]@{
-                        name    = $matches[1]
-                        version = $matches[2]
-                        type    = "Package (Chocolatey)"
-                        source  = "chocolatey_packages"
-                    }
-                }
-            }
-        }
-    } catch {
-        # choco not found or error occurred
-    }
-
-    # Combine all results
-    $result = $programs + $python_pkgs + $ie_extensions + $chrome_extensions + $firefox_addons + $chocolatey_packages
-
-    # Output the result to stdout in table format
-    $result | Format-Table -AutoSize
+  powershell: "# Get installed Windows programs from registry\n$programs = Get-ItemProperty -Path \"HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\", \"HKLM:\\SOFTWARE\\Wow6432Node\\\
+    Microsoft\\Windows\\CurrentVersion\\Uninstall\\*\" -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName } | ForEach-Object {\n    [PSCustomObject]@{\n        name    = $_.DisplayName\n    \
+    \    version = $_.DisplayVersion\n        type    = \"Program (Windows)\"\n        source  = \"programs\"\n    }\n}\n\n# Get installed Python packages (if pip is available)\n$python_pkgs = @()\ntry\
+    \ {\n    $pipOutput = & pip list --format=freeze 2>$null\n    if ($pipOutput) {\n        foreach ($line in $pipOutput) {\n            if ($line -match \"^(.*?)==(.*)$\") {\n                $python_pkgs\
+    \ += [PSCustomObject]@{\n                    name    = $matches[1]\n                    version = $matches[2]\n                    type    = \"Package (Python)\"\n                    source  = \"python_packages\"\
+    \n                }\n            }\n        }\n    }\n} catch {\n    # pip not found or error occurred\n}\n\n# Get Internet Explorer extensions from registry\n$ie_extensions = @()\n$ieRegKey = \"HKLM:\\\
+    SOFTWARE\\Microsoft\\Internet Explorer\\Extensions\"\nif (Test-Path $ieRegKey) {\n    $ieData = Get-ItemProperty -Path $ieRegKey -ErrorAction SilentlyContinue\n    if ($ieData) {\n        foreach ($prop\
+    \ in $ieData.PSObject.Properties) {\n            # Using property name as the identifier; version info is not normally stored\n            $ie_extensions += [PSCustomObject]@{\n                name\
+    \    = $prop.Name\n                version = \"\"\n                type    = \"Browser plugin (IE)\"\n                source  = \"ie_extensions\"\n            }\n        }\n    }\n}\n\n# Get Chrome\
+    \ extensions by reading installed extension manifests\n$chrome_extensions = @()\n$chromeExtPath = Join-Path $env:LOCALAPPDATA \"Google\\Chrome\\User Data\\Default\\Extensions\"\nif (Test-Path $chromeExtPath)\
+    \ {\n    $extDirs = Get-ChildItem -Path $chromeExtPath -Directory -ErrorAction SilentlyContinue\n    foreach ($ext in $extDirs) {\n        $versionDirs = Get-ChildItem -Path $ext.FullName -Directory\
+    \ -ErrorAction SilentlyContinue\n        foreach ($verDir in $versionDirs) {\n            $manifestPath = Join-Path $verDir.FullName \"manifest.json\"\n            if (Test-Path $manifestPath) {\n \
+    \               try {\n                    $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json\n                    $extName = $manifest.name\n                    $extVersion = $manifest.version\n\
+    \                } catch {\n                    $extName = $ext.Name\n                    $extVersion = $verDir.Name\n                }\n            } else {\n                $extName = $ext.Name\n\
+    \                $extVersion = $verDir.Name\n            }\n            $chrome_extensions += [PSCustomObject]@{\n                name    = $extName\n                version = $extVersion\n        \
+    \        type    = \"Browser plugin (Chrome)\"\n                source  = \"chrome_extensions\"\n            }\n        }\n    }\n}\n\n# Get Firefox add-ons by locating extensions.json in profile directories\
+    \ and parsing it\n$firefox_addons = @()\n$firefoxProfilesPath = Join-Path $env:APPDATA \"Mozilla\\Firefox\\Profiles\"\nif (Test-Path $firefoxProfilesPath) {\n    $profiles = Get-ChildItem -Path $firefoxProfilesPath\
+    \ -Directory -ErrorAction SilentlyContinue\n    foreach ($profile in $profiles) {\n        $extensionsJson = Join-Path $profile.FullName \"extensions.json\"\n        if (Test-Path $extensionsJson) {\n\
+    \            try {\n                $json = Get-Content $extensionsJson -Raw | ConvertFrom-Json\n                if ($json.addons) {\n                    foreach ($addon in $json.addons) {\n       \
+    \                 if ($addon.type -eq \"extension\") {\n                            $firefox_addons += [PSCustomObject]@{\n                                name    = $addon.name\n                   \
+    \             version = $addon.version\n                                type    = \"Browser plugin (Firefox)\"\n                                source  = \"firefox_addons\"\n                       \
+    \     }\n                        }\n                    }\n                }\n            } catch {\n                # Skip profiles with parsing issues\n            }\n        }\n    }\n}\n\n# Get\
+    \ installed Chocolatey packages (if choco is available)\n$chocolatey_packages = @()\ntry {\n    $chocoOutput = & choco list --local-only --limit-output 2>$null\n    if ($chocoOutput) {\n        foreach\
+    \ ($line in $chocoOutput) {\n            if ($line -match \"^(.*?)\\|(.*)$\") {\n                $chocolatey_packages += [PSCustomObject]@{\n                    name    = $matches[1]\n             \
+    \       version = $matches[2]\n                    type    = \"Package (Chocolatey)\"\n                    source  = \"chocolatey_packages\"\n                }\n            }\n        }\n    }\n} catch\
+    \ {\n    # choco not found or error occurred\n}\n\n# Combine all results\n$result = $programs + $python_pkgs + $ie_extensions + $chrome_extensions + $firefox_addons + $chocolatey_packages\n\n# Output\
+    \ the result to stdout in table format\n$result | Format-Table -AutoSize"
   purpose: Informational
   tags: built-in
+  team: devices

@@ -9,3 +9,4 @@ spec:
   interval: '3600'
   value: Scope for lateral movement. Potential exfiltration locations. Potential dormant backdoors.
   version: 1.4.5
+  team: both

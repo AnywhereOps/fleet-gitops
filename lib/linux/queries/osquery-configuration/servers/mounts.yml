@@ -6,3 +6,4 @@ spec:
   description: Retrieves the current list of mounted drives in the target system.
   query: SELECT device, device_alias, path, type, blocks_size, flags FROM mounts;
   platform: linux
+  team: both

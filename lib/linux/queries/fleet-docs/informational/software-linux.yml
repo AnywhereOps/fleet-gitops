@@ -84,3 +84,4 @@ spec:
     FROM cached_users CROSS JOIN firefox_addons USING (uid);
   purpose: Informational
   tags: built-in
+  team: devices

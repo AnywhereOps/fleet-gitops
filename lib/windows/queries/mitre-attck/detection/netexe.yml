@@ -7,3 +7,4 @@ spec:
   description: Net Execute, is used in command-line operations for control of users, groups, services, and network connections - ATT&CK T1126,T1087,T1201,T1069,S0039,T1018,T1007,T1124
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%net.exe%';
   interval: 600
+  team: servers

@@ -9,3 +9,4 @@ spec:
   removed: false
   denylist: false
   version: 1.5.3
+  team: both

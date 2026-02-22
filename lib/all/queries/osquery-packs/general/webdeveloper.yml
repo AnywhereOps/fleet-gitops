@@ -6,3 +6,4 @@ spec:
   description: (https://www.bleepingcomputer.com/news/security/chrome-extension-with-over-one-million-users-hijacked-to-serve-adware/)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='bfbameneiokkgbdmiekhjnmfkcnldhhm';
   interval: 3600
+  team: devices

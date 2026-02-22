@@ -5,3 +5,4 @@ spec:
   name: endpoint_security_tool_backend_server_registry_misconfigured
   description: Returns the content of the key if the backend server does not match the expected value
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\EndpointSecurityTool\BackendServerLocation' AND data!='https://expected_endpoint.local';
+  team: both

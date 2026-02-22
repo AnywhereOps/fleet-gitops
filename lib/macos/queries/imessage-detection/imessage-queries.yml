@@ -1,139 +1,125 @@
-# ==============================================================================
-# FILE 2: imessage-queries.yml
-# Apply with: fleetctl apply -f imessage-queries.yml
-# These are saved queries that run AGAINST the ATC tables defined in agent-options.yml.
-# The ATC config must be applied first, otherwise these return nothing.
-# ==============================================================================
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - All messages (snapshot)
-  description: >-
-    Collects all iMessage/SMS data including message text, timestamps,
-    direction, and contact info. WARNING: Can return very large result
-    sets on heavy texters. Use LIMIT in live queries.
+  description: 'Collects all iMessage/SMS data including message text, timestamps, direction, and contact info. WARNING: Can return very large result sets on heavy texters. Use LIMIT in live queries.'
   query: SELECT * FROM imessage_messages;
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Contacts / handles
-  description: >-
-    All phone numbers and email addresses the user has exchanged
-    iMessages or SMS with.
+  description: All phone numbers and email addresses the user has exchanged iMessages or SMS with.
   query: SELECT * FROM imessage_handles;
   platform: darwin
   observer_can_run: true
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Chat metadata
-  description: >-
-    All conversations including group chats with display names,
-    identifiers, and service info.
+  description: All conversations including group chats with display names, identifiers, and service info.
   query: SELECT * FROM imessage_chats;
   platform: darwin
   observer_can_run: true
   discard_data: false
   logging: snapshot
+  team: servers
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Messages with chat context
-  description: >-
-    Pre-joined view of messages with chat names and contact IDs.
-    Most useful single table for browsing conversations.
+  description: Pre-joined view of messages with chat names and contact IDs. Most useful single table for browsing conversations.
   query: SELECT * FROM imessage_chat_messages;
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Recent messages (last 24h)
-  description: >-
-    Messages from the last 24 hours only. Use this for scheduled
-    queries to avoid pulling entire history every run.
-  query: >-
-    SELECT * FROM imessage_chat_messages
-    WHERE date_epoch > (
+  description: Messages from the last 24 hours only. Use this for scheduled queries to avoid pulling entire history every run.
+  query: |-
+    SELECT * FROM imessage_chat_messages WHERE date_epoch > (
       (strftime('%s', 'now') - 978307200 - 86400) * 1000000000
     );
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Attachments
-  description: >-
-    All file attachments sent/received via iMessage including
-    filenames, MIME types, and sizes. Useful for DLP and
-    security auditing.
+  description: All file attachments sent/received via iMessage including filenames, MIME types, and sizes. Useful for DLP and security auditing.
   query: SELECT * FROM imessage_attachments;
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Large attachments (>10MB)
-  description: >-
-    Attachments larger than 10MB. Useful for identifying
-    large file transfers over iMessage.
-  query: >-
-    SELECT * FROM imessage_attachments
-    WHERE CAST(total_bytes AS INTEGER) > 10485760;
+  description: Attachments larger than 10MB. Useful for identifying large file transfers over iMessage.
+  query: SELECT * FROM imessage_attachments WHERE CAST(total_bytes AS INTEGER) > 10485760;
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Deleted messages
-  description: >-
-    GUIDs of deleted messages. Content is not available,
-    only useful for forensic correlation.
+  description: GUIDs of deleted messages. Content is not available, only useful for forensic correlation.
   query: SELECT * FROM imessage_deleted;
   platform: darwin
   observer_can_run: false
   discard_data: false
   logging: snapshot
+  team: both
+
 ---
 apiVersion: v1
 kind: query
 spec:
   name: iMessage - Message count by contact
-  description: >-
-    Counts messages per contact, split by sent vs received.
-    Good overview of communication patterns without exposing content.
-  query: >-
+  description: Counts messages per contact, split by sent vs received. Good overview of communication patterns without exposing content.
+  query: |-
     SELECT
       contact_id,
       SUM(CASE WHEN is_from_me = '1' THEN 1 ELSE 0 END) as sent,
       SUM(CASE WHEN is_from_me = '0' THEN 1 ELSE 0 END) as received,
       COUNT(*) as total
-    FROM imessage_chat_messages
-    GROUP BY contact_id
-    ORDER BY total DESC;
+    FROM imessage_chat_messages GROUP BY contact_id ORDER BY total DESC;
   platform: darwin
   observer_can_run: true
   discard_data: false
   logging: snapshot
+  team: both

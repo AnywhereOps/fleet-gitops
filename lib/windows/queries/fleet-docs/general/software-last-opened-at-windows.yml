@@ -13,3 +13,4 @@ spec:
     GROUP BY executable_path
   purpose: Informational
   tags: built-in
+  team: both

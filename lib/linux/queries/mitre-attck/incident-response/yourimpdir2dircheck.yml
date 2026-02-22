@@ -9,3 +9,4 @@ spec:
     '/YOURIMPDIR2/%'));
   interval: 600
   platform: linux
+  team: both

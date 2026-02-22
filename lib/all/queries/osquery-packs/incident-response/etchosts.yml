@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: 'Identify network communications that are being redirected. Example: identify if security logging has been disabled'
   version: 1.4.5
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Users snapshot query
   query: SELECT * FROM users;
   platform: windows
+  team: both

@@ -7,3 +7,4 @@ spec:
   description: Attrib Execute, usaullay used to modify file attributes - ATT&CK T1158
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%attrib%';
   interval: 600
+  team: both

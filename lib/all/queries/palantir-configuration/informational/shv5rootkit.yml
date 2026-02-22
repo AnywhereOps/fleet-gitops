@@ -5,3 +5,4 @@ spec:
   name: shv5_rootkit
   description: shv5_rootkit
   query: select * from file where path in ('/lib/libsh.so', '/usr/lib/libsh');
+  team: both

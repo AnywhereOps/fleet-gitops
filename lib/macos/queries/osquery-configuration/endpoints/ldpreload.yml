@@ -6,3 +6,4 @@ spec:
   description: Detect the presence of the LD_PRELOAD environment variable
   query: SELECT process_envs.pid, process_envs.key, process_envs.value, processes.name, processes.path, processes.cmdline, processes.cwd FROM process_envs join processes USING (pid) WHERE key = 'LD_PRELOAD';
   platform: darwin
+  team: both

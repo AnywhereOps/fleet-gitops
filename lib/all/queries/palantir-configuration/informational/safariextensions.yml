@@ -5,3 +5,4 @@ spec:
   name: safari_extensions
   description: Safari browser extension details for all users.
   query: SELECT * FROM users CROSS JOIN safari_extensions USING (uid);
+  team: devices

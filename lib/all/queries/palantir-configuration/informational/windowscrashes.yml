@@ -5,3 +5,4 @@ spec:
   name: windows_crashes
   description: Extracted information from Windows crash logs (Minidumps).
   query: SELECT * FROM windows_crashes;
+  team: both

@@ -10,3 +10,4 @@ spec:
   value: Artifact used by this malware
   version: 2.2.1
   platform: windows
+  team: both

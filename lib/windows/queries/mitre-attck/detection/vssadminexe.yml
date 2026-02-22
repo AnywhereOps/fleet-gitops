@@ -7,3 +7,4 @@ spec:
   description: Vssadmin Execute, usaullay used to execute activity on Volume Shadow copy
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%vssadmin%';
   interval: 600
+  team: both

@@ -5,3 +5,4 @@ spec:
   name: chocolatey_packages
   description: List installed Chocolatey packages
   query: SELECT * FROM chocolatey_packages;
+  team: both

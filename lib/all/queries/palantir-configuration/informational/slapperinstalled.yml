@@ -5,3 +5,4 @@ spec:
   name: slapper_installed
   description: slapper_installed
   query: select * from file where path in ('/tmp/.bugtraq', '/tmp/.bugtraq.c', '/tmp/.cinik', '/tmp/.b', '/tmp/httpd', '/tmp./update', '/tmp/.unlock', '/tmp/.font-unix/.cinik', '/tmp/.cinik');
+  team: both

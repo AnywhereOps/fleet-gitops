@@ -244,3 +244,4 @@ spec:
     labels:
     - Ubuntu Linux
     - CentOS Linux
+  team: both

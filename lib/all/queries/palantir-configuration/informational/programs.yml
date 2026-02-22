@@ -5,3 +5,4 @@ spec:
   name: programs
   description: Lists installed programs
   query: SELECT * FROM programs;
+  team: both

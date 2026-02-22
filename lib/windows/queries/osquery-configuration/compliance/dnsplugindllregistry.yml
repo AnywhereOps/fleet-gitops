@@ -6,3 +6,4 @@ spec:
   description: 'This registry key specifies the path to a DLL to be loaded by a Windows DNS server. This key does not exist by default. Can allow privesc: https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83'
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\DNS\Parameters\ServerLevelPluginDll';
   platform: windows
+  team: servers

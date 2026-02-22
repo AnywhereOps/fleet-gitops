@@ -6,3 +6,4 @@ spec:
   description: Controls Local Administrative Password Solution (LAPS) settings.
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft Services\AdmPwd';
   platform: windows
+  team: servers

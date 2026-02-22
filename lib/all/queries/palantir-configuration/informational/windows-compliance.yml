@@ -118,3 +118,4 @@ spec:
   targets:
     labels:
     - MS Windows
+  team: both

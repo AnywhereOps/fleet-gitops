@@ -18,3 +18,4 @@ spec:
   purpose: Informational
   tags: built-in
   discovery: deb_package_files
+  team: both

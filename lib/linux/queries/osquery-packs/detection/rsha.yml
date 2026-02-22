@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/usr/bin/kr4p', '/usr/bin/n3tstat', '/usr/bin/chsh2', '/usr/bin/slice2', '/etc/rc.d/rsha');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

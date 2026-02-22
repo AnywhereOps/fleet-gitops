@@ -9,3 +9,4 @@ spec:
     as ctime, datetime(f.mtime, 'unixepoch', 'UTC') as mtime from file f LEFT JOIN users u on f.uid=u.uid where f.path like 'C:\users\%\AppData\Local\%' AND f.type='directory';
   interval: 1860
   removed: false
+  team: both

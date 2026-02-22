@@ -7,32 +7,12 @@ spec:
   description: Watches for the backdoored Python packages installed on the system. See (http://www.nbu.gov.sk/skcsirt-sa-20170909-pypi/index.html)
   query: SELECT CASE cnt WHEN 0 THEN "NONE_INSTALLED" ELSE "INSTALLED" END AS "Malicious Python Packages", package_name, package_version FROM (SELECT COUNT(name) AS cnt, name AS package_name, version AS
     package_version, path AS package_path FROM python_packages WHERE package_name IN ('acquisition', 'apidev-coop', 'bzip', 'crypt', 'django-server', 'pwd', 'setup-tools', 'telnet', 'urlib3', 'urllib'));
-  powershell: |-
-    $maliciousPackages = @('acquisition','apidev-coop','bzip','crypt','django-server','pwd','setup-tools','telnet','urlib3','urllib')
-    try {
-        # Use pip to list installed packages in JSON format.
-        $pipList = & pip list --format=json 2>$null
-        if (-not $pipList) {
-            Write-Output "Failed to retrieve package list. Ensure pip is installed and in your PATH."
-            exit 1
-        }
-        $installedPackages = $pipList | ConvertFrom-Json
-    }
-    catch {
-        Write-Output "Error executing pip list: $_"
-        exit 1
-    }
-
-    $found = $installedPackages | Where-Object { $maliciousPackages -contains ($_.name).ToLower() }
-
-    if (-not $found) {
-        Write-Output "Malicious Python Packages: NONE_INSTALLED"
-    }
-    else {
-        foreach ($pkg in $found) {
-            Write-Output ("Malicious Python Packages: INSTALLED, package_name: {0}, package_version: {1}" -f $pkg.name, $pkg.version)
-        }
-    }
+  powershell: "$maliciousPackages = @('acquisition','apidev-coop','bzip','crypt','django-server','pwd','setup-tools','telnet','urlib3','urllib')\ntry {\n    # Use pip to list installed packages in JSON\
+    \ format.\n    $pipList = & pip list --format=json 2>$null\n    if (-not $pipList) {\n        Write-Output \"Failed to retrieve package list. Ensure pip is installed and in your PATH.\"\n        exit\
+    \ 1\n    }\n    $installedPackages = $pipList | ConvertFrom-Json\n}\ncatch {\n    Write-Output \"Error executing pip list: $_\"\n    exit 1\n}\n\n$found = $installedPackages | Where-Object { $maliciousPackages\
+    \ -contains ($_.name).ToLower() }\n\nif (-not $found) {\n    Write-Output \"Malicious Python Packages: NONE_INSTALLED\"\n}\nelse {\n    foreach ($pkg in $found) {\n        Write-Output (\"Malicious\
+    \ Python Packages: INSTALLED, package_name: {0}, package_version: {1}\" -f $pkg.name, $pkg.version)\n    }\n}"
   purpose: Informational
   tags: hunting, inventory, malware
   contributors: alphabrevity
+  team: both

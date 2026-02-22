@@ -8,3 +8,4 @@ spec:
   interval: '86400'
   value: Identify out of date operating systems or version drift across your infrastructure
   version: 1.4.5
+  team: both

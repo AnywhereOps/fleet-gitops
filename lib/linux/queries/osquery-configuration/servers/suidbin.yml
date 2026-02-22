@@ -6,3 +6,4 @@ spec:
   description: Display any SUID binaries that are owned by root
   query: SELECT * FROM suid_bin;
   platform: linux
+  team: both

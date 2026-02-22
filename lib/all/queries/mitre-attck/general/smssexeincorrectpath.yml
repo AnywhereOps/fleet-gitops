@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM processes WHERE LOWER(name)='smss.exe' AND LOWER(path)!='c:\windows\system32\smss.exe' AND path!='';
   interval: 3600
   removed: false
+  team: both

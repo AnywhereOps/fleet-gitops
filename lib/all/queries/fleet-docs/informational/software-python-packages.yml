@@ -18,3 +18,4 @@ spec:
   purpose: Informational
   tags: built-in
   discovery: osquery_info
+  team: both

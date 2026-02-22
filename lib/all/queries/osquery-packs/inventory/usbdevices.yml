@@ -8,3 +8,4 @@ spec:
   query: select * from usb_devices;
   interval: 7200
   version: 1.2.0
+  team: both

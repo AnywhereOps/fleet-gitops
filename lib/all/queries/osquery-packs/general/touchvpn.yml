@@ -6,3 +6,4 @@ spec:
   description: (https://www.bleepingcomputer.com/news/security/eight-chrome-extensions-hijacked-to-deliver-malicious-code-to-4-8-million-users/)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='bihmplhobchoageeokmgbdihknkjbknd';
   interval: 3600
+  team: devices

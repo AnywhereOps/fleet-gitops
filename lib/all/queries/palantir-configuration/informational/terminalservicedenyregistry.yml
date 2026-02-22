@@ -5,3 +5,4 @@ spec:
   name: terminal_service_deny_registry
   description: This key exists by default and has a default value of 1. Terminal service connections are allowed to the host when the key value is set to 0
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections';
+  team: servers

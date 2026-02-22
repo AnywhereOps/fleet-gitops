@@ -7,3 +7,4 @@ spec:
   query: select * from powershell_events;
   interval: 3600
   removed: false
+  team: both

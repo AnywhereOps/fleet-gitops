@@ -5,3 +5,4 @@ spec:
   name: users
   description: Local system users.
   query: SELECT * FROM users;
+  team: both

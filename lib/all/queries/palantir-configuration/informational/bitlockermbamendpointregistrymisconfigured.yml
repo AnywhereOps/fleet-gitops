@@ -5,3 +5,4 @@ spec:
   name: bitlocker_mbam_endpoint_registry_misconfigured
   description: Returns the content of the key if it does not match the expected value
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\MDOPBitLockerManagement\KeyRecoveryServiceEndPoint' AND data!='https://mbam.server.com/MBAMRecoveryAndHardwareService/CoreService.svc';
+  team: devices

@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Identifies a system potentially vulnerable to disk cloning.
   version: 1.4.5
+  team: devices

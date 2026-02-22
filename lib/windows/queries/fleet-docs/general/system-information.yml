@@ -6,37 +6,12 @@ spec:
   platform: windows
   description: Retrieves information about a device's hardware.
   query: SELECT * FROM system_info LIMIT 1
-  powershell: |-
-    $hostname = $env:COMPUTERNAME
-    $cpu = Get-WmiObject Win32_Processor
-    $cpu_brand = $cpu[0].Name
-    $logical_cpus = $cpu[0].NumberOfLogicalProcessors
-    $physical_cpus = (Get-WmiObject Win32_ComputerSystem).NumberOfProcessors
-    $hardware_model = (Get-WmiObject Win32_ComputerSystem).Model
-    $hardware_serial = (Get-WmiObject Win32_BIOS).SerialNumber
-    $computer_name = $hostname
-    $osInfo = Get-CimInstance Win32_OperatingSystem
-    $os_name = $osInfo.Caption
-    $os_build = $osInfo.BuildNumber
-    $os_version = $osInfo.Version
-    $os_distribution = ""
-    $platform = "windows"
-
-    $result = [pscustomobject]@{
-        hostname        = $hostname
-        cpu_brand       = $cpu_brand
-        physical_cpus   = $physical_cpus
-        logical_cpus    = $logical_cpus
-        hardware_model  = $hardware_model
-        hardware_serial = $hardware_serial
-        computer_name   = $computer_name
-        os_name         = $os_name
-        os_build        = $os_build
-        os_distribution = $os_distribution
-        os_version      = $os_version
-        platform        = $platform
-    }
-
-    $result
+  powershell: "$hostname = $env:COMPUTERNAME\n$cpu = Get-WmiObject Win32_Processor\n$cpu_brand = $cpu[0].Name\n$logical_cpus = $cpu[0].NumberOfLogicalProcessors\n$physical_cpus = (Get-WmiObject Win32_ComputerSystem).NumberOfProcessors\n\
+    $hardware_model = (Get-WmiObject Win32_ComputerSystem).Model\n$hardware_serial = (Get-WmiObject Win32_BIOS).SerialNumber\n$computer_name = $hostname\n$osInfo = Get-CimInstance Win32_OperatingSystem\n\
+    $os_name = $osInfo.Caption\n$os_build = $osInfo.BuildNumber\n$os_version = $osInfo.Version\n$os_distribution = \"\"\n$platform = \"windows\"\n\n$result = [pscustomobject]@{\n    hostname        = $hostname\n\
+    \    cpu_brand       = $cpu_brand\n    physical_cpus   = $physical_cpus\n    logical_cpus    = $logical_cpus\n    hardware_model  = $hardware_model\n    hardware_serial = $hardware_serial\n    computer_name\
+    \   = $computer_name\n    os_name         = $os_name\n    os_build        = $os_build\n    os_distribution = $os_distribution\n    os_version      = $os_version\n    platform        = $platform\n}\n\
+    \n$result"
   purpose: Informational
   tags: built-in
+  team: both

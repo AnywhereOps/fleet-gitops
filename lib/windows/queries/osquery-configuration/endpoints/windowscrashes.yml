@@ -6,3 +6,4 @@ spec:
   description: Extracted information from Windows crash logs (Minidumps).
   query: SELECT * FROM windows_crashes;
   platform: windows
+  team: both

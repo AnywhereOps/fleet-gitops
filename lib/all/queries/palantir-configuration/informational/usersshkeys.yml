@@ -5,3 +5,4 @@ spec:
   name: user_ssh_keys
   description: Returns the private keys in the users ~/.ssh directory and whether or not they are encrypted
   query: SELECT * FROM users CROSS JOIN user_ssh_keys USING (uid);
+  team: servers

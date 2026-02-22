@@ -10,3 +10,4 @@ spec:
     f.type='directory';
   interval: 1860
   removed: false
+  team: both

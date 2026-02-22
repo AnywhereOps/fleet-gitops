@@ -5,3 +5,4 @@ spec:
   name: illogic_rootkit
   description: illogic_rootkit
   query: select * from file where path in ('/lib/security/.config', '/usr/bin/sia', '/etc/ld.so.hash');
+  team: both

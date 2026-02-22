@@ -9,3 +9,4 @@ spec:
     '/usr/bin/ldu', '/bin/ldu', '/usr/bin/lkillall', '/bin/lkillall', '/usr/include/rpcsvc/du');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

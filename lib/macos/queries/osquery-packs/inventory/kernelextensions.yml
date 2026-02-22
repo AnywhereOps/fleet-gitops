@@ -8,3 +8,4 @@ spec:
   query: select * from kernel_extensions;
   interval: '7200'
   version: 1.4.5
+  team: both

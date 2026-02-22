@@ -10,3 +10,4 @@ spec:
   tags: hunting, ATTACK, t1574
   contributors: anelshaer
   remediation: Identify the process/binary detected and confirm with the system's owner.
+  team: both

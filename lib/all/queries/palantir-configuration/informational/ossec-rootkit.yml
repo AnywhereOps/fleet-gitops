@@ -296,3 +296,4 @@ spec:
     query: bash_door
   targets:
     labels: null
+  team: both

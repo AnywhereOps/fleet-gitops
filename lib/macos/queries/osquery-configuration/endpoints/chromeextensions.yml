@@ -6,3 +6,4 @@ spec:
   description: List installed Chrome Extensions for all users
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid);
   platform: darwin
+  team: devices

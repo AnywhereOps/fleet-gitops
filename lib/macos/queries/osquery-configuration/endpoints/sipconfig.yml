@@ -6,3 +6,4 @@ spec:
   description: Apple's System Integrity Protection (rootless) status.
   query: SELECT * FROM sip_config;
   platform: darwin
+  team: both

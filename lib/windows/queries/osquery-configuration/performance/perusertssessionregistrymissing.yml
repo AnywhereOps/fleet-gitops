@@ -7,3 +7,4 @@ spec:
   query: SELECT IFNULL(key_count,0) AS key_exists FROM (SELECT COUNT(*) AS key_count FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\fSingleSessionPerUser')
     WHERE key_exists!=1;
   platform: windows
+  team: both

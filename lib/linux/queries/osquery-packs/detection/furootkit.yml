@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/sbin/xc', '/usr/include/ivtype.h', '/bin/.lib');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

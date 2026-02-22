@@ -5,3 +5,4 @@ spec:
   name: os_version
   description: Retrieves information from the Operating System where osquery is currently running.
   query: SELECT * FROM os_version;
+  team: both

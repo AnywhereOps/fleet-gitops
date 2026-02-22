@@ -13,3 +13,4 @@ spec:
   contributors: mike-j-thomas
   remediation: Check out the linked table (https://github.com/fleetdm/fleet/blob/32b4d53e7f1428ce43b0f9fa52838cbe7b413eed/handbook/queries/detect-hosts-with-high-severity-vulnerable-versions-of-openssl.md#table-of-vulnerable-openssl-versions)
     to determine if the installed version is a high severity vulnerability and view the corresponding CVE(s)
+  team: servers

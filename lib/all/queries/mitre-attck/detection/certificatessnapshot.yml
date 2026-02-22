@@ -7,3 +7,4 @@ spec:
   query: select * from certificates;
   interval: 28800
   snapshot: true
+  team: both

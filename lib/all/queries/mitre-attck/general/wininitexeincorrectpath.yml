@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM processes WHERE LOWER(name)='wininit.exe' AND LOWER(path)!='c:\windows\system32\wininit.exe' AND path!='';
   interval: 3600
   removed: false
+  team: both

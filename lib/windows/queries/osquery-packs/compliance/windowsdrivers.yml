@@ -8,3 +8,4 @@ spec:
   query: select * from drivers;
   interval: '86400'
   version: 2.2.0
+  team: both

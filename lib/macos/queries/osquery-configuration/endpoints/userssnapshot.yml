@@ -6,3 +6,4 @@ spec:
   description: Local system users.
   query: SELECT * FROM users;
   platform: darwin
+  team: both

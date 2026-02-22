@@ -5,3 +5,4 @@ spec:
   name: nvram
   description: Apple NVRAM variable listing.
   query: SELECT * FROM nvram;
+  team: both

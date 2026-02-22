@@ -5,3 +5,4 @@ spec:
   name: file_events
   description: File events collected from file integrity monitoring
   query: SELECT * FROM file_events;
+  team: both

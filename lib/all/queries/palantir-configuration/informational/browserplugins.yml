@@ -5,3 +5,4 @@ spec:
   name: browser_plugins
   description: All C/NPAPI browser plugin details for all users.
   query: SELECT * FROM users CROSS JOIN browser_plugins USING (uid);
+  team: devices

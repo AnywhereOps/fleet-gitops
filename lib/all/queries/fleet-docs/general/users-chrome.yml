@@ -8,3 +8,4 @@ spec:
   query: "SELECT \n  uid, username, email \nFROM users;\n"
   purpose: Informational
   tags: built-in
+  team: both

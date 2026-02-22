@@ -7,3 +7,4 @@ spec:
   query: select * from startup_items;
   interval: 3600
   removed: false
+  team: both

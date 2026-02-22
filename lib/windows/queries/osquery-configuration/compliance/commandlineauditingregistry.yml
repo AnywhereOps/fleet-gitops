@@ -6,3 +6,4 @@ spec:
   description: Controls Windows command-line auditing
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit';
   platform: windows
+  team: both

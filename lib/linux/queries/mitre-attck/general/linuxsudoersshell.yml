@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM processes WHERE cmdline LIKE '/bin/bash -i >& /dev/tcp/%';
   interval: 3600
   platform: linux
+  team: both

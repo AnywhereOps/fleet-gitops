@@ -5,3 +5,4 @@ spec:
   name: zk_rootkit
   description: zk_rootkit
   query: select * from file where path in ('/usr/share/.zk', '/usr/share/.zk/zk', '/etc/1ssue.net', '/usr/X11R6/.zk', '/usr/X11R6/.zk/xfs', '/usr/X11R6/.zk/echo', '/etc/sysconfig/console/load.zk');
+  team: both

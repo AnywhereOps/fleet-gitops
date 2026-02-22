@@ -6,34 +6,10 @@ spec:
   platform: darwin, linux, windows
   description: Retrieves the values of osquery configuration flags related to query scheduling, configuration updates, and logging intervals for active processes.
   query: "SELECT \n  name, value\nFROM osquery_flags\nWHERE name IN (\"distributed_interval\", \"config_tls_refresh\", \"config_refresh\", \"logger_tls_period\")\n"
-  powershell: |-
-    $service = Get-CimInstance Win32_Service -Filter "Name='osqueryd'"
-    if (-not $service) {
-        Write-Error "osqueryd service not found."
-        exit 1
-    }
-
-    $cmdLine = $service.CommandLine
-
-    $flagNames = @("distributed_interval", "config_tls_refresh", "config_refresh", "logger_tls_period")
-    $result = @()
-
-    foreach ($flag in $flagNames) {
-        # Match a flag of the form --flag=value or --flag value
-        $pattern = "--" + [regex]::Escape($flag) + "(?:=|\s+)(\S+)"
-        $match = [regex]::Match($cmdLine, $pattern)
-        if ($match.Success) {
-            $value = $match.Groups[1].Value
-        }
-        else {
-            $value = ""
-        }
-        $result += [pscustomobject]@{
-            Name  = $flag
-            Value = $value
-        }
-    }
-
-    $result | Format-Table -AutoSize
+  powershell: "$service = Get-CimInstance Win32_Service -Filter \"Name='osqueryd'\"\nif (-not $service) {\n    Write-Error \"osqueryd service not found.\"\n    exit 1\n}\n\n$cmdLine = $service.CommandLine\n\
+    \n$flagNames = @(\"distributed_interval\", \"config_tls_refresh\", \"config_refresh\", \"logger_tls_period\")\n$result = @()\n\nforeach ($flag in $flagNames) {\n    # Match a flag of the form --flag=value\
+    \ or --flag value\n    $pattern = \"--\" + [regex]::Escape($flag) + \"(?:=|\\s+)(\\S+)\"\n    $match = [regex]::Match($cmdLine, $pattern)\n    if ($match.Success) {\n        $value = $match.Groups[1].Value\n\
+    \    }\n    else {\n        $value = \"\"\n    }\n    $result += [pscustomobject]@{\n        Name  = $flag\n        Value = $value\n    }\n}\n\n$result | Format-Table -AutoSize"
   purpose: Informational
   tags: built-in
+  team: both

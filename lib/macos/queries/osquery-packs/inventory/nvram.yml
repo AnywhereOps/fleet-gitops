@@ -8,3 +8,4 @@ spec:
   query: select * from nvram where name not in ('backlight-level', 'SystemAudioVolumeDB', 'SystemAudioVolume');
   interval: 7200
   version: 1.0.2
+  team: both

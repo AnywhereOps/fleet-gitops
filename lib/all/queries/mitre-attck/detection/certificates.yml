@@ -6,3 +6,4 @@ spec:
   description: Local system users. - ATT&CK T1116,T1130
   query: select * from certificates;
   interval: 3600
+  team: both

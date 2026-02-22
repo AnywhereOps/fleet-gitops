@@ -6,3 +6,4 @@ spec:
   description: USB devices that are actively plugged into the host system.
   query: SELECT * FROM usb_devices;
   platform: darwin
+  team: both

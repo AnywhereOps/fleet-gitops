@@ -36,3 +36,4 @@ spec:
   purpose: Informational
   tags: built-in
   discovery: parse_ini
+  team: devices

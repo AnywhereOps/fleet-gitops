@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/bin/rtty', '/bin/squit', '/sbin/pback', '/proc/kset', '/usr/src/linux/modules/autod.o', '/usr/src/linux/modules/soundx.o');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

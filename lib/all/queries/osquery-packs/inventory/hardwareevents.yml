@@ -10,3 +10,4 @@ spec:
   value: Determine if a third party device was attached to the system.
   removed: false
   version: 1.4.5
+  team: both

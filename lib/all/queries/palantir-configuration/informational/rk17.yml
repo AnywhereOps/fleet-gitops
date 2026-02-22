@@ -5,3 +5,4 @@ spec:
   name: rk17
   description: rk17
   query: select * from file where path in ('/bin/rtty', '/bin/squit', '/sbin/pback', '/proc/kset', '/usr/src/linux/modules/autod.o', '/usr/src/linux/modules/soundx.o');
+  team: both

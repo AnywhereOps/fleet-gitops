@@ -6,24 +6,12 @@ spec:
   platform: windows, darwin, linux, chrome
   description: Retrieves the email address of Google Chrome profile on a host.
   query: "SELECT \n  email \nFROM google_chrome_profiles \nWHERE NOT ephemeral AND email <> ''\n"
-  powershell: |-
-    $chromeLocalState = "$env:LOCALAPPDATA\Google\Chrome\User Data\Local State"
-    if (-not (Test-Path $chromeLocalState)) { exit }
-    $json = Get-Content $chromeLocalState -Raw | ConvertFrom-Json
-    $profiles = $json.profile.info_cache
-    foreach ($prop in $profiles.PSObject.Properties.Value) {
-        $isEphemeral = $false
-        if ($prop.PSObject.Properties.Name -contains "ephemeral") {
-            $isEphemeral = $prop.ephemeral
-        } elseif ($prop.PSObject.Properties.Name -contains "is_ephemeral") {
-            $isEphemeral = $prop.is_ephemeral
-        }
-        $email = $prop.email
-        if (-not $isEphemeral -and -not [string]::IsNullOrEmpty($email)) {
-            Write-Output $email
-        }
-    }
+  powershell: "$chromeLocalState = \"$env:LOCALAPPDATA\\Google\\Chrome\\User Data\\Local State\"\nif (-not (Test-Path $chromeLocalState)) { exit }\n$json = Get-Content $chromeLocalState -Raw | ConvertFrom-Json\n\
+    $profiles = $json.profile.info_cache\nforeach ($prop in $profiles.PSObject.Properties.Value) {\n    $isEphemeral = $false\n    if ($prop.PSObject.Properties.Name -contains \"ephemeral\") {\n       \
+    \ $isEphemeral = $prop.ephemeral\n    } elseif ($prop.PSObject.Properties.Name -contains \"is_ephemeral\") {\n        $isEphemeral = $prop.is_ephemeral\n    }\n    $email = $prop.email\n    if (-not\
+    \ $isEphemeral -and -not [string]::IsNullOrEmpty($email)) {\n        Write-Output $email\n    }\n}"
   bash: cat "$HOME/Library/Application Support/Google/Chrome/Local State" | jq -r '.profile.info_cache|to_entries[]|select(.value.is_ephemeral==false and .value.email != "")|.value.email'
   purpose: Informational
   tags: built-in
   discovery: google_chrome_profiles
+  team: devices

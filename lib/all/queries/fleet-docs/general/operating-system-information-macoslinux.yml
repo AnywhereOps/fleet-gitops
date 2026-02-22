@@ -25,3 +25,4 @@ spec:
     "$major" "$minor" "${patch:-}" "$build_version" "$arch" "$platform" "$product_version" "$kernel_version"
   purpose: Informational
   tags: built-in
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Controls Windows Passport for Work (Hello) settings.
   query: SELECT * FROM registry WHERE path LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\PassportForWork\%%';
   platform: windows
+  team: both

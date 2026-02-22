@@ -5,3 +5,4 @@ spec:
   name: kenga3_rootkit
   description: kenga3_rootkit
   query: select * from file where path in ('/usr/include/. .');
+  team: both

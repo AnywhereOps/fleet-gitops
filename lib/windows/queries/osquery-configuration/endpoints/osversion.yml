@@ -6,3 +6,4 @@ spec:
   description: List the version of the resident operating system
   query: SELECT * FROM os_version;
   platform: windows
+  team: both

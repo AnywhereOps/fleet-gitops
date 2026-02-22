@@ -5,3 +5,4 @@ spec:
   name: emet_settings_registry
   description: Controls EMET-protected applications and system settings.
   query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\EMET\%%';
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Determine if the host is running the expected EFI firmware version given their Mac hardware and OS build version (https://github.com/duo-labs/EFIgy)
   query: SELECT * FROM efigy;
   platform: darwin
+  team: both

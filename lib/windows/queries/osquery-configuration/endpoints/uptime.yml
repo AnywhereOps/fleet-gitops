@@ -6,3 +6,4 @@ spec:
   description: System uptime
   query: SELECT * FROM uptime;
   platform: windows
+  team: both

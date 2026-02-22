@@ -5,3 +5,4 @@ spec:
   name: firefox_addons
   description: List installed Firefox addons for all users
   query: SELECT * FROM users CROSS JOIN firefox_addons USING (uid);
+  team: devices

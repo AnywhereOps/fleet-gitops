@@ -9,3 +9,4 @@ spec:
   interval: 60
   removed: false
   platform: windows
+  team: both

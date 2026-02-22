@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM services WHERE name = 'WinDefend' AND status != 'RUNNING';
   interval: 3600
   platform: windows
+  team: servers

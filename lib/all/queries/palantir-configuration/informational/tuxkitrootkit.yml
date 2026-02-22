@@ -5,3 +5,4 @@ spec:
   name: tuxkit_rootkit
   description: tuxkit_rootkit
   query: select * from file where path in ('/dev/tux', '/usr/bin/xsf', '/usr/bin/xchk');
+  team: both

@@ -5,3 +5,4 @@ spec:
   name: ajakit_rootkit
   description: ajakit_rootkit
   query: select * from file where path in ('/lib/.ligh.gh', '/lib/.libgh.gh', '/lib/.libgh-gh', '/dev/tux', '/dev/tux/.proc', '/dev/tux/.file');
+  team: both

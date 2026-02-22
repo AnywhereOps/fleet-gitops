@@ -8,3 +8,4 @@ spec:
     'unixepoch', 'UTC') as mtime FROM hash JOIN file fi USING (path) where (fi.path like '/etc/sudoers') AND type='regular';
   interval: 3600
   platform: linux
+  team: servers

@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM users;
   interval: 28800
   snapshot: true
+  team: both

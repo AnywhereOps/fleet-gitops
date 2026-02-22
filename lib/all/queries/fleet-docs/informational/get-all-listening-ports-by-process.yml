@@ -6,27 +6,14 @@ spec:
   platform: linux, darwin, windows
   description: List ports that are listening on all interfaces, along with the process to which they are attached.
   query: SELECT lp.address, lp.pid, lp.port, lp.protocol, p.name, p.path, p.cmdline FROM listening_ports lp JOIN processes p ON lp.pid = p.pid WHERE lp.address = "0.0.0.0";
-  powershell: |-
-    # Retrieve listening TCP connections with LocalAddress "0.0.0.0" $tcpConnections = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalAddress -eq '0.0.0.0' }
-    # Retrieve process details (includes name, executable path, and command line) $procDetails = Get-CimInstance -ClassName Win32_Process
-    # Build a lookup table for processes keyed by ProcessId $procLookup = @{} foreach ($proc in $procDetails) {
-        $procLookup[$proc.ProcessId] = $proc
-    }
-    $results = foreach ($conn in $tcpConnections) {
-        $proc = $procLookup[$conn.OwningProcess]
-        [PSCustomObject]@{
-            address  = $conn.LocalAddress
-            pid      = $conn.OwningProcess
-            port     = $conn.LocalPort
-            protocol = 'TCP'
-            name     = if ($proc) { $proc.Name } else { 'N/A' }
-            path     = if ($proc) { $proc.ExecutablePath } else { 'N/A' }
-            cmdline  = if ($proc) { $proc.CommandLine } else { 'N/A' }
-        }
-    }
-    $results | Format-Table -AutoSize
+  powershell: "# Retrieve listening TCP connections with LocalAddress \"0.0.0.0\" $tcpConnections = Get-NetTCPConnection -State Listen -ErrorAction SilentlyContinue | Where-Object { $_.LocalAddress -eq\
+    \ '0.0.0.0' }\n# Retrieve process details (includes name, executable path, and command line) $procDetails = Get-CimInstance -ClassName Win32_Process\n# Build a lookup table for processes keyed by ProcessId\
+    \ $procLookup = @{} foreach ($proc in $procDetails) {\n    $procLookup[$proc.ProcessId] = $proc\n}\n$results = foreach ($conn in $tcpConnections) {\n    $proc = $procLookup[$conn.OwningProcess]\n  \
+    \  [PSCustomObject]@{\n        address  = $conn.LocalAddress\n        pid      = $conn.OwningProcess\n        port     = $conn.LocalPort\n        protocol = 'TCP'\n        name     = if ($proc) { $proc.Name\
+    \ } else { 'N/A' }\n        path     = if ($proc) { $proc.ExecutablePath } else { 'N/A' }\n        cmdline  = if ($proc) { $proc.CommandLine } else { 'N/A' }\n    }\n}\n$results | Format-Table -AutoSize"
   bash: echo "address,pid,port,protocol,name,path,cmdline"; lsof -nP -iTCP -sTCP:LISTEN | awk 'NR>1 && $9 ~ /^0\.0\.0\.0:/ {split($9,a,":"); print $2","a[2]","$1}' | while IFS=',' read pid port name; do
     path=$(ps -p "$pid" -o comm= 2>/dev/null); cmdline=$(ps -p "$pid" -o command= 2>/dev/null | sed 's/^ *//'); echo "0.0.0.0,$pid,$port,TCP,$name,$path,$cmdline"; done
   purpose: Informational
   tags: hunting, network
   contributors: alphabrevity
+  team: servers

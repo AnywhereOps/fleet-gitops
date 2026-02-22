@@ -8,3 +8,4 @@ spec:
   query: SELECT * FROM orbit_info
   purpose: Informational
   tags: built-in
+  team: both

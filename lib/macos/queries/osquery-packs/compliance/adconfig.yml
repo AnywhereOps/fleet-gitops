@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Helps you debug domain binding / Active Directory issues in your environment.
   version: 1.4.5
+  team: both

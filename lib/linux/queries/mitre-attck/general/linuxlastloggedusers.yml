@@ -7,3 +7,4 @@ spec:
   query: select datetime(time,'unixepoch','UTC') as time_utc,host,username,tty,pid,type from last;
   interval: 3600
   platform: linux
+  team: both

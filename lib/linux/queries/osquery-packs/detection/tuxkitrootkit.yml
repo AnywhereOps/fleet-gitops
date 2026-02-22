@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/dev/tux', '/usr/bin/xsf', '/usr/bin/xchk');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

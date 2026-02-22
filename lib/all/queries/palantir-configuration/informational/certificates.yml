@@ -5,3 +5,4 @@ spec:
   name: certificates
   description: List all certificates in the trust store
   query: SELECT * FROM certificates WHERE path != 'Other People';
+  team: both

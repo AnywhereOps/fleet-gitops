@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Identify processes accessing sensitive files they shouldn't
   version: 1.4.5
+  team: both

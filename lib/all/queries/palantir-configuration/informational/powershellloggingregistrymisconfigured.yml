@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM registry WHERE (path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Powershell\ModuleLogging\EnableModuleLogging' OR path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Powershell\ScriptBlockLogging\EnableScriptBlockLogging'
     OR path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Powershell\Transcription\EnableTranscripting' OR path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Powershell\Transcription\EnableInvocationHeader')
     AND data!=1;
+  team: both

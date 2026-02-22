@@ -6,3 +6,4 @@ spec:
   description: Returns the content of this key if it exists, which it shouldn't by default
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Microsoft\PCHealth\ErrorReporting\ShowUI';
   platform: windows
+  team: both

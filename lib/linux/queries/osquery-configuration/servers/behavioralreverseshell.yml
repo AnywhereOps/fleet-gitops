@@ -9,3 +9,4 @@ spec:
     process_open_files ON processes.pid = process_open_files.pid WHERE (name='sh' OR name='bash') AND remote_address NOT IN ('0.0.0.0', '::', '') AND remote_address NOT LIKE '10.%' AND remote_address NOT
     LIKE '192.168.%';
   platform: linux
+  team: servers

@@ -6,3 +6,4 @@ spec:
   description: Display apt package manager sources.
   query: SELECT * FROM apt_sources;
   platform: linux
+  team: both

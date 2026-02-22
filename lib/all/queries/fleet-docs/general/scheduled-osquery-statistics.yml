@@ -11,3 +11,4 @@ spec:
           FROM osquery_schedule
   purpose: Informational
   tags: built-in
+  team: both

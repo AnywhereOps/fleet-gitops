@@ -8,3 +8,4 @@ spec:
   query: SELECT email FROM users
   purpose: Informational
   tags: built-in
+  team: devices

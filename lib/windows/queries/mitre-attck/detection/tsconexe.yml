@@ -7,3 +7,4 @@ spec:
   description: tscon.exe Execute, usaullay used to Terminal Services Console - ATT&CK T1076
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%tscon%';
   interval: 600
+  team: servers

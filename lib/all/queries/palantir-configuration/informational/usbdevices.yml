@@ -5,3 +5,4 @@ spec:
   name: usb_devices
   description: Retrieves the current list of USB devices in the target system.
   query: SELECT * FROM usb_devices;
+  team: both

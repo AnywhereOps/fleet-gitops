@@ -6,3 +6,4 @@ spec:
   description: Record shell history for all users on system (instead of just root)
   query: SELECT * FROM users CROSS JOIN shell_history USING (uid);
   platform: linux
+  team: both

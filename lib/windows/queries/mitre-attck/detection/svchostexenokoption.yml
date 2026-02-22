@@ -7,3 +7,4 @@ spec:
   description: SVCHOST Processes not using the -k [name] convention
   query: select * from processes where name like 'svchost.exe' and cmdline not like '%-k%';
   interval: 600
+  team: both

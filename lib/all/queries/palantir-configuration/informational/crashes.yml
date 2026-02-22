@@ -5,3 +5,4 @@ spec:
   name: crashes
   description: Application, System, and Mobile App crash logs.
   query: SELECT uid, datetime, responsible, exception_type, identifier, version, crash_path FROM users CROSS JOIN crashes USING (uid);
+  team: both

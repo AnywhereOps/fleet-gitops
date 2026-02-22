@@ -8,3 +8,4 @@ spec:
     'unixepoch', 'UTC') as mtime FROM hash JOIN file fi USING (path) where ((fi.path like '/tmp/%/%') OR (fi.path like '/tmp/.%')OR (fi.path like '/tmp/%'));
   interval: 600
   platform: linux
+  team: both

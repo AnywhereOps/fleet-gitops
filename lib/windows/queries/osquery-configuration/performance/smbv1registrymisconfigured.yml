@@ -5,3 +5,4 @@ spec:
   name: smbv1_registry_misconfigured
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\SMB1' AND data!=0;
   platform: windows
+  team: servers

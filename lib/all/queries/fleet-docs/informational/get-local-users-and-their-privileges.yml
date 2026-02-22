@@ -6,32 +6,12 @@ spec:
   platform: darwin, linux, windows
   description: Collects the local user accounts and their respective user group.
   query: SELECT uid, username, type, groupname FROM users u JOIN groups g ON g.gid = u.gid;
-  powershell: |-
-    $groupMapping = @{}
-    $localGroups = Get-LocalGroup -ErrorAction SilentlyContinue
-    foreach ($group in $localGroups) {
-        $members = Get-LocalGroupMember -Group $group.Name -ErrorAction SilentlyContinue
-        foreach ($member in $members) {
-            if ($member.ObjectClass -eq 'User') {
-                if (-not $groupMapping.ContainsKey($member.SID.Value)) {
-                    $groupMapping[$member.SID.Value] = @()
-                }
-                $groupMapping[$member.SID.Value] += $group.Name
-            }
-        }
-    }
-
-    $users = Get-LocalUser -ErrorAction SilentlyContinue
-    $results = foreach ($user in $users) {
-        $userGroups = $groupMapping[$user.SID.Value]
-        [PSCustomObject]@{
-            uid       = $user.SID.Value
-            username  = $user.Name
-            type      = 'Local'
-            groupname = if ($userGroups) { $userGroups -join ',' } else { 'N/A' }
-        }
-    }
-    $results | Format-Table -AutoSize
+  powershell: "$groupMapping = @{}\n$localGroups = Get-LocalGroup -ErrorAction SilentlyContinue\nforeach ($group in $localGroups) {\n    $members = Get-LocalGroupMember -Group $group.Name -ErrorAction SilentlyContinue\n\
+    \    foreach ($member in $members) {\n        if ($member.ObjectClass -eq 'User') {\n            if (-not $groupMapping.ContainsKey($member.SID.Value)) {\n                $groupMapping[$member.SID.Value]\
+    \ = @()\n            }\n            $groupMapping[$member.SID.Value] += $group.Name\n        }\n    }\n}\n\n$users = Get-LocalUser -ErrorAction SilentlyContinue\n$results = foreach ($user in $users)\
+    \ {\n    $userGroups = $groupMapping[$user.SID.Value]\n    [PSCustomObject]@{\n        uid       = $user.SID.Value\n        username  = $user.Name\n        type      = 'Local'\n        groupname = if\
+    \ ($userGroups) { $userGroups -join ',' } else { 'N/A' }\n    }\n}\n$results | Format-Table -AutoSize"
   purpose: informational
   tags: inventory
   contributors: noahtalerman
+  team: both

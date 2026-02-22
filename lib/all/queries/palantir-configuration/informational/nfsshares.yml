@@ -5,3 +5,4 @@ spec:
   name: nfs_shares
   description: NFS shares exported by the host.
   query: SELECT * FROM nfs_shares;
+  team: both

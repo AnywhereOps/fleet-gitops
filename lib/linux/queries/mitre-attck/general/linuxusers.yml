@@ -7,3 +7,4 @@ spec:
   query: select * from users;
   interval: 3600
   platform: linux
+  team: both

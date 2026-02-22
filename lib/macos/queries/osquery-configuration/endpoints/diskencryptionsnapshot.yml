@@ -6,3 +6,4 @@ spec:
   description: Disk encryption status and information.
   query: SELECT * FROM disk_encryption;
   platform: darwin
+  team: devices

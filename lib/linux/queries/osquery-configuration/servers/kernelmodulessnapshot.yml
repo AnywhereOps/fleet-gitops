@@ -6,3 +6,4 @@ spec:
   description: Linux kernel modules both loaded and within the load search path.
   query: SELECT * FROM kernel_modules;
   platform: linux
+  team: both

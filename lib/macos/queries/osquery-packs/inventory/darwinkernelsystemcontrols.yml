@@ -8,3 +8,4 @@ spec:
   query: select * from system_controls where subsystem = 'kern' and (name like '%boot%' or name like '%secure%' or name like '%single%');
   interval: 7200
   version: 1.4.3
+  team: both

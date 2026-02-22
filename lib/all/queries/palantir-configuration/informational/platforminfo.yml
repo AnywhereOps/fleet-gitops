@@ -5,3 +5,4 @@ spec:
   name: platform_info
   description: Information about EFI/UEFI/ROM and platform/boot.
   query: SELECT * FROM platform_info;
+  team: both

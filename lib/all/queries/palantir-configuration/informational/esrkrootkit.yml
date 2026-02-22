@@ -5,3 +5,4 @@ spec:
   name: esrk_rootkit
   description: esrk_rootkit
   query: select * from file where path in ('/usr/lib/tcl5.3');
+  team: both

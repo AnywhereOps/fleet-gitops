@@ -8,3 +8,4 @@ spec:
   query: select p.name, p.path, lp.port, lp.address, lp.protocol  from listening_ports lp LEFT JOIN processes p ON lp.pid = p.pid WHERE lp.port != 0 AND p.name != '';
   interval: 600
   removed: false
+  team: servers

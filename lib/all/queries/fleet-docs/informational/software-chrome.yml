@@ -17,3 +17,4 @@ spec:
     FROM chrome_extensions
   purpose: Informational
   tags: built-in
+  team: devices

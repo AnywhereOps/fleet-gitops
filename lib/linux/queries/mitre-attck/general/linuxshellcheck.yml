@@ -10,3 +10,4 @@ spec:
   interval: 3600
   removed: false
   platform: linux
+  team: servers

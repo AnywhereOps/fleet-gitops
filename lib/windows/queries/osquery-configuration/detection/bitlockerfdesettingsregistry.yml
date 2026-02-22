@@ -6,3 +6,4 @@ spec:
   description: Controls Bitlocker full-disk encryption settings.
   query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\FVE\%%';
   platform: windows
+  team: devices

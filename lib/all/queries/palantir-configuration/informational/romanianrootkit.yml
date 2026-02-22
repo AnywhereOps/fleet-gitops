@@ -5,3 +5,4 @@ spec:
   name: romanian_rootkit
   description: romanian_rootkit
   query: select * from file where path in ('/usr/sbin/initdl', '/usr/sbin/xntps');
+  team: both

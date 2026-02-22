@@ -7,3 +7,4 @@ spec:
     for more details.
   query: SELECT * FROM wmi_cli_event_consumers;
   platform: windows
+  team: both

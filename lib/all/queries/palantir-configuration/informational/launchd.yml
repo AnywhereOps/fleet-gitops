@@ -5,3 +5,4 @@ spec:
   name: launchd
   description: LaunchAgents and LaunchDaemons from default search paths.
   query: SELECT * FROM launchd;
+  team: both

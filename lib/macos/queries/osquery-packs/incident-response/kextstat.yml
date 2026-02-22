@@ -9,3 +9,4 @@ spec:
   interval: '3600'
   value: Identify malware that has a kernel extension component.
   version: 1.4.5
+  team: both

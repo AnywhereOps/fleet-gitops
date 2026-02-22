@@ -7,3 +7,4 @@ spec:
   query: select feature, value, output_register, output_bit, input_eax from cpuid;
   interval: 86400
   version: 1.0.4
+  team: both

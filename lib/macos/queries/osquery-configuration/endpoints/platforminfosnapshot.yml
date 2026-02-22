@@ -6,3 +6,4 @@ spec:
   description: Platform info snapshot query
   query: SELECT vendor, version, date, revision from platform_info;
   platform: darwin
+  team: both

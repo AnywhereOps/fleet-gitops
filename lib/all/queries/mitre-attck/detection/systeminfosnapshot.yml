@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM system_info;
   interval: 28800
   snapshot: true
+  team: both

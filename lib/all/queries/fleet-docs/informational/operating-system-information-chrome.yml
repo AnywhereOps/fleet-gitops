@@ -20,3 +20,4 @@ spec:
         os_version os;
   purpose: Informational
   tags: built-in
+  team: both

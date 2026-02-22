@@ -5,3 +5,4 @@ spec:
   name: osquery_info
   description: Information about the running osquery configuration
   query: SELECT * FROM osquery_info;
+  team: both

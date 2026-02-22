@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/usr/bin/soucemask', '/usr/bin/sourcemask');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

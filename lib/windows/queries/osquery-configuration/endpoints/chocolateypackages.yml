@@ -6,3 +6,4 @@ spec:
   description: List installed Chocolatey packages
   query: SELECT * FROM chocolatey_packages;
   platform: windows
+  team: both

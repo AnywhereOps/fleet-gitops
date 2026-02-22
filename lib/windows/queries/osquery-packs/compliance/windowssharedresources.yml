@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: General security posture.
   version: 2.0.0
+  team: both

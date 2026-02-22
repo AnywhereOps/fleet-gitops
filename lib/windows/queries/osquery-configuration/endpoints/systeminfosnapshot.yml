@@ -6,3 +6,4 @@ spec:
   description: System info snapshot query
   query: SELECT * FROM system_info;
   platform: windows
+  team: both

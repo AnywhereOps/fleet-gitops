@@ -6,3 +6,4 @@ spec:
   description: Line parsed values from system and user cron/tab.
   query: SELECT * FROM crontab;
   platform: darwin
+  team: servers

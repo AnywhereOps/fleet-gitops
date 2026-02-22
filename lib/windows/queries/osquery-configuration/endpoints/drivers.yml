@@ -6,3 +6,4 @@ spec:
   description: List in-use Windows drivers
   query: SELECT * FROM drivers;
   platform: windows
+  team: both

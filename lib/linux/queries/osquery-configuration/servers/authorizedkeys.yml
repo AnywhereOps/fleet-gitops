@@ -6,3 +6,4 @@ spec:
   description: A line-delimited authorized_keys table.
   query: SELECT * FROM users CROSS JOIN authorized_keys USING (uid);
   platform: linux
+  team: servers

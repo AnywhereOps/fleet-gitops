@@ -8,3 +8,4 @@ spec:
   interval: '3600'
   value: Artifact used by this malware
   version: 2.2.1
+  team: devices

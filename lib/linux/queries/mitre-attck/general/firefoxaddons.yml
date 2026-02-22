@@ -7,3 +7,4 @@ spec:
   query: SELECT u.username, ce.* FROM users u CROSS JOIN firefox_addons ce USING (uid);
   interval: 3600
   platform: linux
+  team: devices

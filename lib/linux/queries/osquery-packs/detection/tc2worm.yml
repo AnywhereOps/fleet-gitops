@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/usr/info/.tc2k', '/usr/bin/util', '/usr/sbin/initcheck', '/usr/sbin/ldb');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Returns the content of this key if it exists, which it shouldn't by default
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl\SendAlert';
   platform: windows
+  team: both

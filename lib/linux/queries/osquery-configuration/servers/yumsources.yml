@@ -6,3 +6,4 @@ spec:
   description: Display yum package manager sources.
   query: SELECT name, baseurl, enabled, gpgcheck FROM yum_sources;
   platform: linux
+  team: both

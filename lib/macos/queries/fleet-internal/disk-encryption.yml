@@ -5,12 +5,8 @@ spec:
   name: Disk encryption (macOS)
   platform: darwin
   description: Retrieves the disk encryption status of a macOS device.
-  query: |
-    SELECT 
-      1 
-    FROM disk_encryption 
-    WHERE user_uuid IS NOT "" 
-    AND filevault_status = 'on' LIMIT 1
+  query: "SELECT \n  1 \nFROM disk_encryption \nWHERE user_uuid IS NOT \"\" \nAND filevault_status = 'on' LIMIT 1\n"
   bash: fdesetup status | grep -q "FileVault is On" && echo 1 || echo 0
   purpose: Informational
   tags: built-in
+  team: devices

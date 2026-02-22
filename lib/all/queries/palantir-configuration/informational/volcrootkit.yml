@@ -5,3 +5,4 @@ spec:
   name: volc_rootkit
   description: volc_rootkit
   query: select * from file where path in ('/usr/lib/volc', '/usr/bin/volc');
+  team: both

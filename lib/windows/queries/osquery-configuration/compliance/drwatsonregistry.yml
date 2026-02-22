@@ -6,3 +6,4 @@ spec:
   description: 'This key (and subkeys) exist by default and are required to allow post-mortem debuggers like Dr. Watson. Some malware deletes this key. See: https://www.documentcloud.org/documents/3477047-Document-07-Neel-Mehta-Billy-Leonard-and-Shane.html'
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug';
   platform: windows
+  team: both

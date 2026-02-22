@@ -29,3 +29,4 @@ spec:
        path LIKE '/Users/%/Library/Keychains/login.keychain-db';
   purpose: Informational
   tags: built-in
+  team: both

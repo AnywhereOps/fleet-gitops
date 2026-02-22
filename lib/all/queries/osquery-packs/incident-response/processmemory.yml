@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Ability to compare with known good. Identify mapped regions corresponding with or containing injected code.
   version: 1.4.5
+  team: both

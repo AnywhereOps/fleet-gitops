@@ -7,3 +7,4 @@ spec:
   query: select * from sudoers;
   interval: 3600
   platform: linux
+  team: servers

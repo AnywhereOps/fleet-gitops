@@ -7,3 +7,4 @@ spec:
   query: SELECT device, device_alias, flags, path,type from mounts;
   interval: 600
   platform: linux
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Displays information from /proc/stat file about the time the CPU cores spent in different parts of the system
   query: SELECT * FROM cpu_time;
   platform: linux
+  team: both

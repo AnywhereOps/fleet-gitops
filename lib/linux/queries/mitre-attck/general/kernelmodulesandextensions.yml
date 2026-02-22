@@ -8,3 +8,4 @@ spec:
     sht.command LIKE ''%insmod%'' OR sht.command  LIKE ''%lsmod%'' OR sht.command  LIKE ''%rmmod%'' OR sht.command LIKE ''%modinfo%'' OR sht.command LIKE ''%linux-headers-$%''OR sht.command LIKE ''%kernel-devel-$%'');'
   interval: 3600
   platform: linux
+  team: both

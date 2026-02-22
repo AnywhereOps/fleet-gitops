@@ -27,37 +27,11 @@ spec:
           display_version_table d
         LEFT JOIN
           ubr_table u
-  powershell: |-
-    $os = Get-CimInstance -ClassName Win32_OperatingSystem
-    $osName = $os.Caption
-    $osVersion = $os.Version
-
-    $regPath = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion'
-
-    try {
-        $displayVersionObj = Get-ItemProperty -Path $regPath -Name 'DisplayVersion' -ErrorAction Stop
-        $displayVersion = $displayVersionObj.DisplayVersion
-    } catch {
-        $displayVersion = ""
-    }
-
-    try {
-        $ubrObj = Get-ItemProperty -Path $regPath -Name 'UBR' -ErrorAction Stop
-        $ubr = $ubrObj.UBR
-    } catch {
-        $ubr = $null
-    }
-
-    $kernelVersion = [System.Environment]::OSVersion.Version.ToString()
-
-    if ($ubr) {
-        $finalVersion = "$osVersion.$ubr"
-    } else {
-        $finalVersion = $kernelVersion
-    }
-
-    Write-Output "Name: $osName"
-    Write-Output "DisplayVersion: $displayVersion"
-    Write-Output "Version: $finalVersion"
+  powershell: "$os = Get-CimInstance -ClassName Win32_OperatingSystem\n$osName = $os.Caption\n$osVersion = $os.Version\n\n$regPath = 'HKLM:\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion'\n\ntry {\n \
+    \   $displayVersionObj = Get-ItemProperty -Path $regPath -Name 'DisplayVersion' -ErrorAction Stop\n    $displayVersion = $displayVersionObj.DisplayVersion\n} catch {\n    $displayVersion = \"\"\n}\n\
+    \ntry {\n    $ubrObj = Get-ItemProperty -Path $regPath -Name 'UBR' -ErrorAction Stop\n    $ubr = $ubrObj.UBR\n} catch {\n    $ubr = $null\n}\n\n$kernelVersion = [System.Environment]::OSVersion.Version.ToString()\n\
+    \nif ($ubr) {\n    $finalVersion = \"$osVersion.$ubr\"\n} else {\n    $finalVersion = $kernelVersion\n}\n\nWrite-Output \"Name: $osName\"\nWrite-Output \"DisplayVersion: $displayVersion\"\nWrite-Output\
+    \ \"Version: $finalVersion\""
   purpose: Informational
   tags: built-in
+  team: both

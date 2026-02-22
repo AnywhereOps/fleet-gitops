@@ -5,3 +5,4 @@ spec:
   name: cback_worm
   description: cback_worm
   query: select * from file where path in ('/tmp/cback', '/tmp/derfiq');
+  team: both

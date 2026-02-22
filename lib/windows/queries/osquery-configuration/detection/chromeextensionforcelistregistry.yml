@@ -6,3 +6,4 @@ spec:
   description: Controls Google Chrome plugins that are forcibly installed.
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Google\Chrome\ExtensionInstallForcelist';
   platform: windows
+  team: both

@@ -14,13 +14,9 @@ spec:
         THEN (SELECT 1 FROM bitlocker_info WHERE drive_letter = 'C:' AND protection_status = 1)
       END)
       SELECT 1 FROM encrypted WHERE enabled IS NOT NULL
-  powershell: |-
-    $bitlockerFeature = Get-WindowsOptionalFeature -Online -FeatureName "BitLocker" -ErrorAction SilentlyContinue
-    if (-not $bitlockerFeature -or $bitlockerFeature.State -eq "Enabled") {
-        $bitlockerVolume = Get-BitLockerVolume -MountPoint "C:" -ErrorAction SilentlyContinue
-        if ($bitlockerVolume -and ($bitlockerVolume.ProtectionStatus -eq 1 -or $bitlockerVolume.ProtectionStatus -eq "On")) {
-            Write-Output "1"
-        }
-    }
+  powershell: "$bitlockerFeature = Get-WindowsOptionalFeature -Online -FeatureName \"BitLocker\" -ErrorAction SilentlyContinue\nif (-not $bitlockerFeature -or $bitlockerFeature.State -eq \"Enabled\") {\n\
+    \    $bitlockerVolume = Get-BitLockerVolume -MountPoint \"C:\" -ErrorAction SilentlyContinue\n    if ($bitlockerVolume -and ($bitlockerVolume.ProtectionStatus -eq 1 -or $bitlockerVolume.ProtectionStatus\
+    \ -eq \"On\")) {\n        Write-Output \"1\"\n    }\n}"
   purpose: Informational
   tags: built-in
+  team: devices

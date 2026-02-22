@@ -5,3 +5,4 @@ spec:
   name: chrome_extension_force_list_registry
   description: Controls Google Chrome plugins that are forcibly installed.
   query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Google\Chrome\ExtensionInstallForcelist';
+  team: both

@@ -9,3 +9,4 @@ spec:
   value: Identify out of date kernels or version drift across your infrastructure
   version: 1.4.5
   platform: linux
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Snapshot query for launchd
   query: SELECT path, name, label, program, run_at_load, program_arguments FROM launchd WHERE run_at_load=1;
   platform: darwin
+  team: devices

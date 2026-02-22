@@ -8,3 +8,4 @@ spec:
   query: select DISTINCT p.name, p.path, pos.remote_address, pos.remote_port from process_open_sockets pos LEFT JOIN processes p ON pos.pid = p.pid WHERE pos.remote_port != 0 AND p.name != '';
   interval: 60
   removed: false
+  team: servers

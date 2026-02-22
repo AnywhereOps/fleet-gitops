@@ -5,3 +5,4 @@ spec:
   name: services
   description: Lists all installed services configured to start automatically at boot
   query: SELECT * FROM services WHERE start_type='DEMAND_START' OR start_type='AUTO_START';
+  team: servers

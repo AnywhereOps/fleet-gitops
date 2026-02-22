@@ -5,3 +5,4 @@ spec:
   name: wmi_script_event_consumers
   description: Snapshot query for WMI script event consumers.
   query: SELECT * FROM wmi_script_event_consumers;
+  team: both

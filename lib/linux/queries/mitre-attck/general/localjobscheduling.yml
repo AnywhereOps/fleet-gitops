@@ -7,3 +7,4 @@ spec:
   query: select command, path from crontab;
   interval: 3600
   platform: linux
+  team: servers

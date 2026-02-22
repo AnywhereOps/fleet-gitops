@@ -9,3 +9,4 @@ spec:
     '/usr/doc/.dnif', '/usr/doc/.nigol');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

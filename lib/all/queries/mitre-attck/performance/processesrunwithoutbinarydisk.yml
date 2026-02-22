@@ -6,3 +6,4 @@ spec:
   description: Detect Processes running without a binary on disk
   query: SELECT name, path, pid FROM processes WHERE on_disk = 0;
   interval: 3600
+  team: both

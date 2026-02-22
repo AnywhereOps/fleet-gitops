@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Post-priori hijack detection, detect potential sensitive information leakage.
   version: 1.4.7
+  team: both

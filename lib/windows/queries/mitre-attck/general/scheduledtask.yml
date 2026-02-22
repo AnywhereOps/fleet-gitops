@@ -8,3 +8,4 @@ spec:
   query: select name,action,path,enabled,datetime(next_run_time,'unixepoch','UTC') from scheduled_tasks;
   interval: 3600
   removed: false
+  team: servers

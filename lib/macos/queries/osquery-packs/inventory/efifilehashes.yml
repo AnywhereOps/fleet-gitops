@@ -10,3 +10,4 @@ spec:
   interval: 7200
   removed: false
   version: 1.6.1
+  team: both

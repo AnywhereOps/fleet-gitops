@@ -6,3 +6,4 @@ spec:
   description: Retrieves all the jobs scheduled in crontab in the target system.
   query: SELECT * FROM crontab;
   platform: linux
+  team: servers

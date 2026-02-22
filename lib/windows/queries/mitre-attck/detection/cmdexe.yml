@@ -7,3 +7,4 @@ spec:
   description: Command-Line Interface Execute, CMD execution - ATT&CK T1059
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%CMD%';
   interval: 600
+  team: both

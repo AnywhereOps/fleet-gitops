@@ -7,3 +7,4 @@ spec:
   description: Certutil Execute, Certutil.exe is a legitimate built-in command-line program to manage certificates in Windows - ATT&CK T1105,T1140,T1130,S0160
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%certutil%';
   interval: 600
+  team: both

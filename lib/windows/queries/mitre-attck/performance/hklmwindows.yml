@@ -8,3 +8,4 @@ spec:
   query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows' and name='AppInit_DLLs';
   interval: 3600
   removed: false
+  team: both

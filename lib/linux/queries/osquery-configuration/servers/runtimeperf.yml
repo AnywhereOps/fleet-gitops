@@ -8,3 +8,4 @@ spec:
     from osquery_info i, os_version ov, processes p, time, (SELECT (SUM(size) / 1024) / 1024.0 AS db_size_mb FROM (SELECT value FROM osquery_flags WHERE name = 'database_path' LIMIT 1) flags, file WHERE
     path LIKE flags.value || '%%' AND type = 'regular') db WHERE p.pid = i.pid;
   platform: linux
+  team: both

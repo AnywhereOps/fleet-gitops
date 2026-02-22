@@ -5,3 +5,4 @@ spec:
   name: suckit_rootkit
   description: suckit_rootkit
   query: select * from file where path in ('/lib/.x', '/lib/sk');
+  team: both

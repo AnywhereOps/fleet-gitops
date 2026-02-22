@@ -8,3 +8,4 @@ spec:
     OR pid=(SELECT pid FROM processes WHERE parent!=(SELECT pid from processes where name='explorer.exe') AND LOWER(name)='cmd.exe');
   interval: 60
   removed: false
+  team: both

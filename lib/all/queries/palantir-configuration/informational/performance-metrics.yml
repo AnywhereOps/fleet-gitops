@@ -28,3 +28,4 @@ spec:
     labels:
     - MS Windows
     - macOS
+  team: both

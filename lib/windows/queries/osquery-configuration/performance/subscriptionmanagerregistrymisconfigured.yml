@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager\1' AND (data!='Server=http://subdomain.domain.com:5985/wsman/SubscriptionManager/WEC'
     AND data!='Server=http://subdomain.domain.com:5985/wsman/SubscriptionManager/WEC');
   platform: windows
+  team: both

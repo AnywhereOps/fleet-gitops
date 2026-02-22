@@ -5,3 +5,4 @@ spec:
   name: knowndlls_registry
   description: The KnownDlls key defines the set of DLLs that are first searched during system startup.
   query: SELECT * FROM registry WHERE path LIKE 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\KnownDLLs\%%';
+  team: both

@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/usr/lib/.egcs', '/usr/lib/.wormie', '/usr/lib/.kinetic', '/usr/lib/liblog.o', '/usr/include/cron.h', '/usr/include/chk.h');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

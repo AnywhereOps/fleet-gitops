@@ -8,3 +8,4 @@ spec:
   query: select * from iokit_devicetree;
   interval: 86400
   version: 1.3.0
+  team: both

@@ -5,3 +5,4 @@ spec:
   name: disk_free_space_pct
   description: Displays the percentage of free space available on the primary disk partition
   query: SELECT (blocks_available * 100 / blocks) AS pct FROM mounts WHERE device='/dev/disk1s1';
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Various Linux kernel integrity checked attributes.
   query: SELECT * FROM kernel_integrity;
   platform: linux
+  team: both

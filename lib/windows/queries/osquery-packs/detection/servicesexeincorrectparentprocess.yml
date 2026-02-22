@@ -8,3 +8,4 @@ spec:
   interval: 3600
   version: 2.2.1
   platform: windows
+  team: servers

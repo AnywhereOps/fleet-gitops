@@ -114,3 +114,4 @@ spec:
   observer_can_run: true
   automations_enabled: false
   discard_data: false
+  team: devices

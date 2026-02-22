@@ -9,3 +9,4 @@ spec:
   interval: '3600'
   value: Identifies connections to rogue access points.
   version: 1.6.0
+  team: devices

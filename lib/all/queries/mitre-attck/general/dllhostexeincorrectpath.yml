@@ -7,3 +7,4 @@ spec:
   query: SELECT * FROM processes WHERE LOWER(name)='dllhost.exe' AND LOWER(path)!='c:\windows\system32\dllhost.exe' AND LOWER(path)!='c:\windows\syswow64\dllhost.exe' AND path!='';
   interval: 3600
   removed: false
+  team: both

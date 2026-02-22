@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: Identify actions taken. Useful for compromised hosts.
   version: 1.4.5
+  team: both

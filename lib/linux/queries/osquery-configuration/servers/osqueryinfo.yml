@@ -6,3 +6,4 @@ spec:
   description: Information about the running osquery configuration
   query: SELECT * FROM osquery_info;
   platform: linux
+  team: both

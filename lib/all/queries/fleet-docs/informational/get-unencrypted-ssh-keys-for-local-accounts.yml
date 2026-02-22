@@ -6,49 +6,18 @@ spec:
   platform: darwin, linux, windows
   description: Identify SSH keys created without a passphrase which can be used in Lateral Movement (MITRE. TA0008)
   query: SELECT uid, username, description, path, encrypted FROM users CROSS JOIN user_ssh_keys using (uid) WHERE encrypted=0;
-  powershell: |-
-    $results = @()
-
-    # Get a list of user directories in C:\Users
-    $usersDirs = Get-ChildItem "C:\Users" -Directory -ErrorAction SilentlyContinue
-
-    foreach ($userDir in $usersDirs) {
-        $username = $userDir.Name
-        $sshFolder = Join-Path $userDir.FullName ".ssh"
-        if (Test-Path $sshFolder) {
-            # Attempt to retrieve local user information; if not found, leave empty
-            $localUser = Get-LocalUser -Name $username -ErrorAction SilentlyContinue
-            $uid = if ($localUser) { $localUser.SID.Value } else { "" }
-            $description = if ($localUser) { $localUser.Description } else { "" }
-
-            # Get all files in the .ssh folder that are not public-key files
-            $keyFiles = Get-ChildItem -Path $sshFolder -File | Where-Object { $_.Extension -ne ".pub" }
-            foreach ($key in $keyFiles) {
-                # Read the key file; if it contains "ENCRYPTED" assume it is encrypted
-                $content = Get-Content $key.FullName -ErrorAction SilentlyContinue
-                if ($content -match "ENCRYPTED") {
-                    $enc = 1
-                }
-                else {
-                    $enc = 0
-                }
-                if ($enc -eq 0) {
-                    $results += [pscustomobject]@{
-                        uid         = $uid
-                        username    = $username
-                        description = $description
-                        path        = $key.FullName
-                        encrypted   = $enc
-                    }
-                }
-            }
-        }
-    }
-
-    $results | Format-Table -AutoSize
+  powershell: "$results = @()\n\n# Get a list of user directories in C:\\Users\n$usersDirs = Get-ChildItem \"C:\\Users\" -Directory -ErrorAction SilentlyContinue\n\nforeach ($userDir in $usersDirs) {\n\
+    \    $username = $userDir.Name\n    $sshFolder = Join-Path $userDir.FullName \".ssh\"\n    if (Test-Path $sshFolder) {\n        # Attempt to retrieve local user information; if not found, leave empty\n\
+    \        $localUser = Get-LocalUser -Name $username -ErrorAction SilentlyContinue\n        $uid = if ($localUser) { $localUser.SID.Value } else { \"\" }\n        $description = if ($localUser) { $localUser.Description\
+    \ } else { \"\" }\n\n        # Get all files in the .ssh folder that are not public-key files\n        $keyFiles = Get-ChildItem -Path $sshFolder -File | Where-Object { $_.Extension -ne \".pub\" }\n\
+    \        foreach ($key in $keyFiles) {\n            # Read the key file; if it contains \"ENCRYPTED\" assume it is encrypted\n            $content = Get-Content $key.FullName -ErrorAction SilentlyContinue\n\
+    \            if ($content -match \"ENCRYPTED\") {\n                $enc = 1\n            }\n            else {\n                $enc = 0\n            }\n            if ($enc -eq 0) {\n             \
+    \   $results += [pscustomobject]@{\n                    uid         = $uid\n                    username    = $username\n                    description = $description\n                    path    \
+    \    = $key.FullName\n                    encrypted   = $enc\n                }\n            }\n        }\n    }\n}\n\n$results | Format-Table -AutoSize"
   bash: echo "uid,username,description,path,encrypted"; for u in /Users/*; do [ -d "$u/.ssh" ] || continue; user=$(basename "$u"); uid=$(id -u "$user" 2>/dev/null); desc=$(dscl . -read /Users/"$user" RealName
     2>/dev/null | sed '1d;s/^ *//'); for f in "$u"/.ssh/*; do [ -f "$f" ] || continue; grep -q "ENCRYPTED" "$f" 2>/dev/null || echo "$uid,$user,$desc,$f,0"; done; done
   purpose: Informational
   tags: inventory, compliance, ssh, built-in
   contributors: anelshaer
   remediation: First, make the user aware about the impact of SSH keys.  Then rotate the unencrypted keys detected.
+  team: servers

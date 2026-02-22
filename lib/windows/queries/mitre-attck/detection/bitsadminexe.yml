@@ -7,3 +7,4 @@ spec:
   description: Bitsadmin Execute, Windows Background Intelligent Transfer Service (BITS) is a low-bandwidth, asynchronous file transfer mechanism exposed through Component Object Model (COM) - ATT&CK T1197,S0190
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename like '%bitsadmin%';
   interval: 600
+  team: servers

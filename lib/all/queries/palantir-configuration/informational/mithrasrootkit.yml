@@ -5,3 +5,4 @@ spec:
   name: mithra`s_rootkit
   description: mithra`s_rootkit
   query: select * from file where path in ('/usr/lib/locale/uboot');
+  team: both

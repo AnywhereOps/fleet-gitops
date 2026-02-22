@@ -7,3 +7,4 @@ spec:
     will be deleted after they run, thus (RunOnce). The RunOnceEx key will remain.
   query: SELECT * FROM registry WHERE path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx';
   platform: windows
+  team: both

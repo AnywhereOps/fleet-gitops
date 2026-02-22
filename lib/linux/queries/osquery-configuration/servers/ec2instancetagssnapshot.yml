@@ -6,3 +6,4 @@ spec:
   description: Snapshot query to retrieve the EC2 tags for this instance
   query: SELECT * FROM ec2_instance_tags;
   platform: linux
+  team: both

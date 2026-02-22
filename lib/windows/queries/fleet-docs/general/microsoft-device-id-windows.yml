@@ -11,3 +11,4 @@ spec:
     WHERE path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Provisioning\OMADM\MDMDeviceID\DeviceClientId';
   purpose: Informational
   tags: built-in
+  team: both

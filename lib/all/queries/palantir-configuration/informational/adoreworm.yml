@@ -5,3 +5,4 @@ spec:
   name: adore_worm
   description: adore_worm
   query: select * from file where path in ('/dev/.shit/red.tgz', '/usr/lib/libt', '/usr/bin/adore');
+  team: both

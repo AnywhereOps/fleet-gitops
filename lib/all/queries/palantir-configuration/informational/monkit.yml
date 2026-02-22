@@ -5,3 +5,4 @@ spec:
   name: monkit
   description: monkit
   query: select * from file where path in ('/lib/defs');
+  team: both

@@ -5,3 +5,4 @@ spec:
   name: knark_installed
   description: knark_installed
   query: select * from file where path in ('/proc/knark', '/dev/.pizda', '/dev/.pula', '/dev/.pula');
+  team: both

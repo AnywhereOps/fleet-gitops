@@ -5,3 +5,4 @@ spec:
   name: homebrew_packages
   description: The installed homebrew package database.
   query: SELECT * FROM homebrew_packages;
+  team: both

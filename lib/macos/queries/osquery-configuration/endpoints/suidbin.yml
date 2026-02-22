@@ -6,3 +6,4 @@ spec:
   description: suid binaries in common locations.
   query: SELECT * FROM suid_bin;
   platform: darwin
+  team: both

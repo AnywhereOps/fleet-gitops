@@ -5,3 +5,4 @@ spec:
   name: rpm_packages
   description: Display all installed RPM packages
   query: SELECT name, version, release, arch FROM rpm_packages;
+  team: both

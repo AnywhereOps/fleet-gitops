@@ -8,3 +8,4 @@ spec:
   interval: 7200
   version: 1.4.0
   platform: linux
+  team: both

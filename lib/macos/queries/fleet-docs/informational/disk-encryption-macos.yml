@@ -9,3 +9,4 @@ spec:
   bash: fdesetup status | grep -q "FileVault is On" && echo 1 || echo 0
   purpose: Informational
   tags: built-in
+  team: devices

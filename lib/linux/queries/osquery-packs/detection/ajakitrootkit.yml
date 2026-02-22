@@ -8,3 +8,4 @@ spec:
   query: select * from file where path in ('/lib/.ligh.gh', '/lib/.libgh.gh', '/lib/.libgh-gh', '/dev/tux', '/dev/tux/.proc', '/dev/tux/.file');
   interval: '3600'
   value: Artifacts used by this malware
+  team: both

@@ -6,3 +6,4 @@ spec:
   description: Retrieves information from the current kernel in the target system.
   query: SELECT * FROM kernel_info;
   platform: linux
+  team: both

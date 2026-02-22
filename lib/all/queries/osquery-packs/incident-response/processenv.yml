@@ -9,3 +9,4 @@ spec:
   interval: '86400'
   value: 'Insight into the process data: Where was it started from, was it preloaded...'
   version: 1.4.5
+  team: both
