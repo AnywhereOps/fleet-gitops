@@ -1,6 +1,12 @@
 name: "💻 Workstations"
-policies:
 queries:
+  - path: ./lib/macos/devices/queries/
+  - path: ./lib/macos/both/queries/
+  - path: ./lib/windows/devices/queries/
+  - path: ./lib/windows/both/queries/
+  - path: ./lib/all/devices/queries/
+  - path: ./lib/all/both/queries/
+policies:
 agent_options:
 controls:
 software:

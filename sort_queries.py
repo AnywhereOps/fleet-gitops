@@ -1043,6 +1043,107 @@ def update_existing_teams(lib_dir, dry_run):
 
 
 # ---------------------------------------------------------------------------
+# Restructure lib/ by team (all platforms)
+# ---------------------------------------------------------------------------
+def restructure_all_by_team(lib_dir, dry_run):
+    """Move queries into servers/devices/both subdirectories based on team field.
+
+    Processes: macos, linux, windows, all
+    Skips: ios, ipados (mobile only, no server/device split needed)
+    """
+    import shutil
+
+    # Platforms to restructure (skip mobile)
+    platforms_to_restructure = ["macos", "linux", "windows", "all"]
+
+    total_stats = {"moved": 0, "servers": 0, "devices": 0, "both": 0}
+
+    for platform in platforms_to_restructure:
+        platform_dir = os.path.join(lib_dir, platform)
+        if not os.path.isdir(platform_dir):
+            continue
+
+        queries_dir = os.path.join(platform_dir, "queries")
+        if not os.path.isdir(queries_dir):
+            continue
+
+        print(f"\n{'='*60}")
+        print(f"Restructuring {platform}/ by team...")
+        print(f"{'='*60}")
+
+        platform_stats = {"moved": 0, "servers": 0, "devices": 0, "both": 0}
+
+        for root, dirs, files in os.walk(queries_dir):
+            # Skip if already in a team subdirectory
+            rel_path = os.path.relpath(root, queries_dir)
+            if rel_path.startswith(("servers", "devices", "both")):
+                continue
+
+            dirs[:] = [d for d in dirs if d not in ("servers", "devices", "both")]
+
+            for filename in sorted(files):
+                if not filename.endswith((".yml", ".yaml")):
+                    continue
+
+                filepath = os.path.join(root, filename)
+
+                # Read and parse to get team field
+                try:
+                    with open(filepath, "r") as f:
+                        content = f.read()
+                    doc = yaml.safe_load(content.split("---", 1)[-1].strip())
+                    if not doc or not isinstance(doc, dict):
+                        team = "both"
+                    else:
+                        spec = doc.get("spec", doc)
+                        if isinstance(spec, dict):
+                            team = spec.get("team", "both")
+                        else:
+                            team = "both"
+                except (IOError, yaml.YAMLError):
+                    team = "both"
+
+                # Calculate new path: lib/{platform}/queries/source/category/file.yml
+                # -> lib/{platform}/{team}/queries/source/category/file.yml
+                rel_from_queries = os.path.relpath(filepath, queries_dir)
+                new_path = os.path.join(platform_dir, team, "queries", rel_from_queries)
+
+                if dry_run:
+                    print(f"  [DRY-RUN] {rel_from_queries} -> {team}/")
+                else:
+                    os.makedirs(os.path.dirname(new_path), exist_ok=True)
+                    shutil.move(filepath, new_path)
+
+                platform_stats["moved"] += 1
+                platform_stats[team] = platform_stats.get(team, 0) + 1
+
+        # Clean up empty directories
+        if not dry_run:
+            for root, dirs, files in os.walk(queries_dir, topdown=False):
+                rel_path = os.path.relpath(root, queries_dir)
+                if rel_path.startswith(("servers", "devices", "both")):
+                    continue
+                if not os.listdir(root):
+                    os.rmdir(root)
+
+        print(f"  {platform}: {platform_stats['moved']} moved")
+        print(f"    servers: {platform_stats['servers']}, devices: {platform_stats['devices']}, both: {platform_stats['both']}")
+
+        # Add to totals
+        for key in total_stats:
+            total_stats[key] += platform_stats[key]
+
+    print(f"\n{'='*60}")
+    print(f"TOTAL: {total_stats['moved']} queries restructured")
+    print(f"  servers: {total_stats['servers']}")
+    print(f"  devices: {total_stats['devices']}")
+    print(f"  both: {total_stats['both']}")
+
+    if dry_run:
+        print("\n** DRY RUN - no files were moved **")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 def main():
@@ -1079,6 +1180,11 @@ def main():
         action="store_true",
         help="Scan existing lib/ queries and add/update team field",
     )
+    parser.add_argument(
+        "--restructure-by-team",
+        action="store_true",
+        help="Restructure lib/all/ into servers/devices/both subdirectories",
+    )
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
@@ -1086,6 +1192,11 @@ def main():
     # Update teams mode: scan existing lib/ and add team field
     if args.update_teams:
         update_existing_teams(args.target, args.dry_run)
+        return
+
+    # Restructure lib/all/ by team
+    if args.restructure_by_team:
+        restructure_all_by_team(args.target, args.dry_run)
         return
 
     if args.reset_config:
