@@ -1,4 +1,3 @@
 - name: MacOSInstallCore
   description: (https://www.virustotal.com/#/file/5cab0821f597100dc1170bfef704d8cebaf67743e9d509e83b0b208eb630d992/detection)
   query: SELECT * FROM users CROSS JOIN chrome_extensions USING (uid) WHERE identifier='hinehnlkkmckjblijjpbpamhljokoohh';
-  interval: 3600

@@ -9,7 +9,6 @@
     \ \"%/sfc/dist/version/download/%\"\n  AND file.btime > (strftime('%s', 'now')\
     \ -86400)\n  AND file.size > 500000\nGROUP BY\n  file.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

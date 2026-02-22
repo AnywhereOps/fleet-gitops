@@ -143,7 +143,6 @@
     \ parent_cmd LIKE '%chainguard_dev%'\n  )\n  AND NOT p.path = '/opt/docker-desktop/bin/com.docker.backend'\n\
     GROUP BY\n  p.cmdline\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

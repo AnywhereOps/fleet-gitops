@@ -7,4 +7,3 @@
     FROM processes WHERE parent!=(SELECT pid from processes where name='explorer.exe')
     AND LOWER(name)='powershell.exe');
   platform: windows
-  interval: 60

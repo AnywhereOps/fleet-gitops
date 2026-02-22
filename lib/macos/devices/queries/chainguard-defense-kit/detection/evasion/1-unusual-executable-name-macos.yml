@@ -48,7 +48,6 @@
     \ Adobe Inc. (JQ525L2MZD)'\n    AND pname = 'agcinvokerutility'\n  )\n  AND NOT\
     \ p0.path LIKE '/nix/store/%'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -6,4 +6,3 @@
     FROM hash JOIN file fi USING (path) where ((fi.path like '/home/%%/.%') OR (fi.path
     like '/root/.%')) AND type='regular';
   platform: linux
-  interval: 3600

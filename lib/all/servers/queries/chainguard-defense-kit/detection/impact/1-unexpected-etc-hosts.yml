@@ -13,7 +13,6 @@
     \ '%local%'\n  AND hostnames NOT LIKE 'ip6-%'\n  AND hostnames NOT LIKE 'localhost.%'\n\
     \  AND hostnames NOT LIKE \"%.cloud\"\n  AND hostnames NOT LIKE \"%.example.com\"\
     \n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

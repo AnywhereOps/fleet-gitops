@@ -60,7 +60,6 @@
     \ media helper id\n    AND pe.path = '/System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/AppleCamera.plugin/Contents/Resources/AppleCameraAssistant'\n\
     \  )\n"
   platform: darwin
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

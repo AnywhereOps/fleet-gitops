@@ -21,7 +21,6 @@
     \ Fusion Services.lock',\n    'wifi'\n  )\n  AND NOT file.filename LIKE '%.pid'\n\
     GROUP BY\n  file.path;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

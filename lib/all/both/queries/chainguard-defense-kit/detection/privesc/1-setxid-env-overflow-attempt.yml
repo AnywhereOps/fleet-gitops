@@ -31,7 +31,6 @@
     \ ON pe1_p2.path = pe1_p2_hash.path\n  LEFT JOIN hash pe1_pe2_hash ON pe1_pe2.path\
     \ = pe1_pe2_hash.path\nWHERE\n  pe.time > (strftime('%s', 'now') -60)\n  AND file.mode\
     \ NOT LIKE '0%'\n  AND pe.env_size > 3500\n"
-  interval: 60
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

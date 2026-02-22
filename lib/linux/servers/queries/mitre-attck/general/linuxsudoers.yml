@@ -2,4 +2,3 @@
   description: Linux sudoers information - ATT&CK T1169,T1206
   query: select * from sudoers;
   platform: linux
-  interval: 3600

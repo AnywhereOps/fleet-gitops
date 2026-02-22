@@ -3,7 +3,6 @@
   query: "SELECT\n  pid,\n  permissions,\noffset\n,\n  inode,\n  path,\n  pseudo\n\
     FROM\n  process_memory_map\nWHERE\n  path != \"\"\nGROUP BY\n  pid,\n  permissions,\n\
     offset\n,\n  inode,\n  path,\n  pseudo;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

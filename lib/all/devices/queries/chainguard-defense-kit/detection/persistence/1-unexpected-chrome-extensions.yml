@@ -139,7 +139,6 @@
     \      'false,AgileBits,1Password – Password Manager,dppgmdbiimibapkepcbdbmkaabgiofem'\n\
     \    )\n    AND chrome_extensions.path LIKE '%/Microsoft Edge/%'\n  )\nGROUP BY\n\
     \  exception_key\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

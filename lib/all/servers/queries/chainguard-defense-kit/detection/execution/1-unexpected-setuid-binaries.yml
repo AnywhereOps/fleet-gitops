@@ -135,7 +135,6 @@
     \        )\n      )\n      AND NOT (\n        mode = '4110'\n        AND uid =\
     \ 0\n        AND gid = 156\n        AND file.path IN ('/bin/staprun', '/usr/bin/staprun',\
     \ '/sbin/staprun', '/usr/sbin/staprun')\n      )\n  )\nGROUP BY\n  inode\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

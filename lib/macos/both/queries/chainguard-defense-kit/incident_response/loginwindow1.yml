@@ -3,7 +3,6 @@
     OSX system.
   query: "select\n  key,\n  subkey,\n  value\nfrom\n  plist\nwhere\n  path = '/Library/Preferences/com.apple.loginwindow.plist';\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

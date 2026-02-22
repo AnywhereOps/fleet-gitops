@@ -32,7 +32,6 @@
     \ Rapid7 LLC (UL6CGN7MAL)',\n    'Software Signing'\n  )\n  AND NOT p0.path LIKE\
     \ '/opt/homebrew/Cellar/kubernetes-cli/%/bin/kubectl'\nGROUP BY\n  p0.pid\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

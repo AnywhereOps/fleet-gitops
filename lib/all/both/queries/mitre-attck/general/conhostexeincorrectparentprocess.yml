@@ -6,4 +6,3 @@
     where name='csrss.exe') AND LOWER(name)='conhost.exe') OR pid=(SELECT pid FROM
     processes WHERE parent != (SELECT pid from processes where name='csrss.exe') AND
     LOWER(name)='conhost.exe');
-  interval: 60

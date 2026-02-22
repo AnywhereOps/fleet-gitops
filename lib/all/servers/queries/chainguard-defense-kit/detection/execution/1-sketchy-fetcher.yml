@@ -62,7 +62,6 @@
     \n  )\n  -- Elastic Agent\n  AND NOT p0.path LIKE '/Library/Elastic/Agent/%'\n\
     \  AND NOt p0.cmdline LIKE '%/osqueryd %'\n  -- Dumb things run under Docker\n\
     \  AND NOT p0_cgroup LIKE '/system.slice/docker-%'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

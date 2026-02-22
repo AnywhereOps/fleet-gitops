@@ -24,7 +24,6 @@
     \ LIKE '/Users/%/Library/Caches/ms-playwright/webkit-%'\n    AND NOT pe.value\
     \ = '/System/Library/Frameworks'\n  )\n"
   platform: darwin
-  interval: 60
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

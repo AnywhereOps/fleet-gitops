@@ -2,7 +2,6 @@
   description: Dump a list of homebrew packages
   query: "SELECT\n  *\nFROM\n  homebrew_packages;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

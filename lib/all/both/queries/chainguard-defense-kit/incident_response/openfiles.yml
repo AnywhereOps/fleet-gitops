@@ -5,7 +5,6 @@
     \  LEFT JOIN processes p ON pof.pid = p.pid\nWHERE\n  pof.path NOT LIKE '/private/var/folders%'\n\
     \  AND pof.path NOT LIKE '/System/Library/%'\n  AND pof.path NOT IN ('/dev/null',\
     \ '/dev/urandom', '/dev/random');\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

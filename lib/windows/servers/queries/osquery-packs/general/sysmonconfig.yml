@@ -2,4 +2,3 @@
   description: Check Microsoft Sysinternals Sysmon config
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CCS\Services\SysmonDrv\Parameters'
   platform: windows
-  interval: 86400

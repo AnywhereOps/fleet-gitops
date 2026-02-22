@@ -75,7 +75,6 @@
     \  magic.data IS NULL\n        OR magic.data NOT LIKE \"%Mach-O%\"\n      )\n\
     \    )\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

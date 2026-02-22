@@ -2,7 +2,6 @@
   description: Retrieves the current filters and chains per filter in the target system.
   query: "SELECT\n  *\nFROM\n  iptables;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

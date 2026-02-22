@@ -6,4 +6,3 @@
     where name='wininit.exe') AND LOWER(name)='lsass.exe') OR pid=(SELECT pid FROM
     processes WHERE parent!=(SELECT pid from processes where name='wininit.exe') AND
     LOWER(name)='lsass.exe');
-  interval: 60

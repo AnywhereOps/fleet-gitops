@@ -2,7 +2,6 @@
   description: Retrieves launchd override keys per user
   query: "SELECT\n  *\nFROM\n  launchd_overrides;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

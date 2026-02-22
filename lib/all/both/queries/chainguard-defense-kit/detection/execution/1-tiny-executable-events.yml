@@ -20,7 +20,6 @@
     \  AND p.path NOT LIKE '/home/%/.ape-%'\n\n  -- Removes a false-positive we've\
     \ seen on Linux, generated through 'runc init'\n  AND NOT (\n    p.path = \"/\"\
     \n    AND file.size < 8192\n  )\n"
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -3,4 +3,3 @@
     T1034
   query: SELECT * FROM processes WHERE LOWER(name)='crss.exe' AND LOWER(path)!='c:\windows\system32\crss.exe'
     AND path!='';
-  interval: 3600

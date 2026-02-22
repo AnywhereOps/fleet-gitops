@@ -5,4 +5,3 @@
   query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
     like '%InstallUtil%';
   platform: windows
-  interval: 600

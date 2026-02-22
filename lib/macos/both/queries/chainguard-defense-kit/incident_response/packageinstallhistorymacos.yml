@@ -2,7 +2,6 @@
   description: Return macOS package install history
   query: "SELECT\n  *\nFROM\n  package_install_history;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

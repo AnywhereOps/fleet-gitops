@@ -136,7 +136,6 @@
     \ Communications, Inc. (BJ4HAAB9B3)',\n    'Developer ID Application: Zwift, Inc\
     \ (C2GM8Y9VFM)'\n  )\nGROUP BY\n  p0.cmdline\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

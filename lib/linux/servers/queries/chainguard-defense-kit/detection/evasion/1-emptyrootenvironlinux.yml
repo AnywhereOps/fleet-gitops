@@ -29,7 +29,6 @@
     \ (\n    p.name = 'sh'\n    AND p.cgroup_path = '/system.slice/znapzend.service'\n\
     \  )\nGROUP BY\n  p.pid\nHAVING\n  count = 0;\n"
   platform: linux
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

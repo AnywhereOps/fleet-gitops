@@ -10,7 +10,6 @@
     \ of any other pid\n  AND (\n    p.pgroup = p.pid\n    OR (\n      p.pid = p.parent\n\
     \      AND p.threads = 1\n    )\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

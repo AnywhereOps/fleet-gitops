@@ -39,7 +39,6 @@
     \ NOT (\n    p.name = ''\n    AND parent_cmd = '/Applications/Firefox Developer\
     \ Edition.app/Contents/MacOS/firefox -foreground'\n  )\n  AND NOt cmd LIKE '/opt/homebrew/opt/%'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

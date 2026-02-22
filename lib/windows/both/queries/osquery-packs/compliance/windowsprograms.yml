@@ -3,4 +3,3 @@
     in the target Windows system.
   query: select * from programs;
   platform: windows
-  interval: 86400

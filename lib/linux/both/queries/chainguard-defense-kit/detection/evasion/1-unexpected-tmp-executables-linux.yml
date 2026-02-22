@@ -85,7 +85,6 @@
     \      'py',\n      'rb',\n      'registry',\n      'script',\n      'sh',\n \
     \     'strings',\n      'txt',\n      'yaml',\n      'yml'\n    )\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

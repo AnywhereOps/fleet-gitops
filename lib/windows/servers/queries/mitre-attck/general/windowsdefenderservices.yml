@@ -2,4 +2,3 @@
   description: Windows Defender service Status change - ATT&CK T1089
   query: SELECT * FROM services WHERE name = 'WinDefend' AND status != 'RUNNING';
   platform: windows
-  interval: 3600

@@ -3,4 +3,3 @@
     target Windows system.
   query: select * from drivers;
   platform: windows
-  interval: 86400

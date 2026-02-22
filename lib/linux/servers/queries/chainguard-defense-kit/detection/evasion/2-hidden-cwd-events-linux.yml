@@ -30,7 +30,6 @@
     \    OR exception_key IN ('git,.test')\n  )\n  AND NOT pe.cwd LIKE '%/build/%'\n\
     \  AND NOT pe.cwd LIKE '%/out/%'\nGROUP BY\n  p.cmdline,\n  p.cwd;\n"
   platform: linux
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

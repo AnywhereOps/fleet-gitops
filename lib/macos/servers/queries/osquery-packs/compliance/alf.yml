@@ -3,4 +3,3 @@
     for OSX.
   query: select * from alf;
   platform: darwin
-  interval: 86400

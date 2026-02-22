@@ -30,7 +30,6 @@
     \ = '0755'\n    AND file.path LIKE '/dev/shm/flatpak-com.valvesoftware.Steam-%/u1000-Shm_%'\n\
     \    AND file.size > 1000000\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

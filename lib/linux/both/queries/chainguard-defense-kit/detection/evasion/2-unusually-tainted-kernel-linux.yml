@@ -20,7 +20,6 @@
     \ 12289 is an unsigned, out of tree, proprietary\n      taint IN (12352, 12289)\n\
     \      AND modules LIKE \"%,v4l2loopback,%\"\n    )\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

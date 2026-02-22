@@ -4,4 +4,3 @@
   query: select pr.pid, pr.name, usr.username, pr.path, pr.cmdline from processes
     pr LEFT JOIN users usr ON pr.uid = usr.uid WHERE pr.cmdline != '';
   platform: linux
-  interval: 3600

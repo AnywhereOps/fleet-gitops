@@ -19,7 +19,6 @@
     \  AND NOT INSTR(file.filename, 'melange.rsa') > 0\n  AND NOT INSTR(file.filename,\
     \ 'local-melange-enterprise.rsa') > 0\n  -- Demo keys\n  AND NOT sha256 IN (\n\
     \    'a68b29401730a9c5f3e06099f6703a43797ee5c6ad6c741961c6eb8ab39786de'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

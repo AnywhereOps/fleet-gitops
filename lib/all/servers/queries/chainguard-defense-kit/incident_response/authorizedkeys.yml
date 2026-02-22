@@ -2,7 +2,6 @@
   description: Retrieves all the currently installed authorized keys on a system
   query: "SELECT\n  authorized_keys.*\nFROM\n  users\n  JOIN authorized_keys ON users.uid\
     \ = authorized_keys.uid;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

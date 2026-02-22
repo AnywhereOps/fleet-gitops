@@ -1,7 +1,6 @@
 - name: CDK - Block Devices
   description: Retrieves all block devices known to the system
   query: "SELECT\n  *\nFROM\n  block_devices\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

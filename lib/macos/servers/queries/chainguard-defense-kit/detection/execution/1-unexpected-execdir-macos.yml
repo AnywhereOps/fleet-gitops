@@ -102,7 +102,6 @@
     \    )\n    AND p0.path NOT LIKE '%/Cache%'\n    AND p0.path NOT LIKE '%/Library/%'\n\
     \    AND p0.path NOT LIKE '%/.%'\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

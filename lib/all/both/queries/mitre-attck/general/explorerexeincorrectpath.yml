@@ -3,4 +3,3 @@
     T1034
   query: SELECT * FROM processes WHERE LOWER(name)='explorer.exe' AND LOWER(path)!='c:\windows\explorer.exe'
     AND LOWER(path)!='c:\windows\syswow64\explorer.exe' AND path!='';
-  interval: 3600

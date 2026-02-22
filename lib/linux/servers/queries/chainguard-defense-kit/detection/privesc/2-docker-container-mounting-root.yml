@@ -8,7 +8,6 @@
     \  \"ghcr.io/ublue-os/bluefin-cli\",\n    \"ghcr.io/ublue-os/ubuntu-toolbox\"\n\
     \  )\n  AND image NOT LIKE '%wolfi-sdk-toolbox:latest'\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

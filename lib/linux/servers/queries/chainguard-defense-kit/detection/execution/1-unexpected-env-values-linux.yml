@@ -35,7 +35,6 @@
     \ > 1024\n    AND pe.key != 'LS_COLORS'\n    AND pe.key != 'HTTP_AUTH'\n    AND\
     \ f.mode IS NOT NULL\n    AND f.mode NOT LIKE '0%'\n  )\n"
   platform: linux
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

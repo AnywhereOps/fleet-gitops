@@ -2,7 +2,6 @@
   description: Retrieves disk image (DMG) events
   query: "SELECT\n  *\nFROM\n  disk_events;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

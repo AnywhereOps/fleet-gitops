@@ -37,7 +37,6 @@
     \   p1.name LIKE 'kworker/%+events_unbound'\n    AND p0.name IN ('modprobe')\n\
     \  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

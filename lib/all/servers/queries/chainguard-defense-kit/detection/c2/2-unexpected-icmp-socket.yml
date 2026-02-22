@@ -14,7 +14,6 @@
     \ = p2_hash.path\nWHERE\n  pop.family = 2 -- PF_INET\n  AND pop.protocol = 1 --\
     \ ICMP\n  AND p0.name NOT IN ('ping')\n  AND p0.path NOT IN ('/opt/docker-desktop/bin/com.docker.backend')\n\
     GROUP BY\n  p0_pid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

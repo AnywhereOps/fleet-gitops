@@ -39,7 +39,6 @@
     \ = '/Applications/Google Drive.app/Contents/MacOS/crashpad_handler'\nGROUP BY\n\
     \  p0.cmdline\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

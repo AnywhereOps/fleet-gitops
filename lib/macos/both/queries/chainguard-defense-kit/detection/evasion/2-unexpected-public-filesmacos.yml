@@ -11,7 +11,6 @@
     \  OR file.path LIKE '%/./%'\n    OR file.path LIKE '/Users/%/Public/Drop Box/.localized'\n\
     \    OR file.path LIKE '/Users/%/Public/Drop Box/.DS_Store'\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

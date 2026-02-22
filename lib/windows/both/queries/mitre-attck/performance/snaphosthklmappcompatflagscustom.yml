@@ -4,4 +4,3 @@
   query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\software\microsoft\windows
     nt\currentversion\appcompatflags\custom';
   platform: windows
-  interval: 28800

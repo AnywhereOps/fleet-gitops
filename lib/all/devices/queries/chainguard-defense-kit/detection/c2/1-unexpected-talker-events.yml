@@ -126,7 +126,6 @@
     \   OR p0_cmd LIKE '%/google-cloud-sdk/%'\n      OR p0_cmd LIKE '%googlecloudsdk/%'\n\
     \      OR p0_cmd LIKE '%pip install%'\n      OR p0_cmd LIKE \"%/gsutil/%\"\n \
     \   )\n  )\nGROUP BY\n  s.pid,\n  exception_key\n"
-  interval: 601
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

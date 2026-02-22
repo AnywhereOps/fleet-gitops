@@ -3,4 +3,3 @@
   query: select name,action,path,enabled,datetime(next_run_time,'unixepoch','UTC')
     from scheduled_tasks;
   platform: windows
-  interval: 28800

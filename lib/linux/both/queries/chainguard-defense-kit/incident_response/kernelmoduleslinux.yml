@@ -3,7 +3,6 @@
     target Linux system.
   query: "SELECT\n  *\nFROM\n  kernel_modules;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -1,7 +1,6 @@
 - name: CDK - Ssh Configs
   description: Retrieves the ssh configs per user
   query: "SELECT\n  *\nFROM\n  users\n  JOIN ssh_configs USING (uid);\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -3,4 +3,3 @@
     - ATT&CK T1050
   query: SELECT * FROM services WHERE start_type='DEMAND_START' OR start_type='AUTO_START';
   platform: windows
-  interval: 3600

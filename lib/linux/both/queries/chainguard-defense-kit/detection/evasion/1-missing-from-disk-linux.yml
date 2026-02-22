@@ -20,7 +20,6 @@
     \  AND p.path NOT IN (\n    '/usr/lib/firefox/firefox-bin',\n    '/usr/lib64/firefox/firefox'\n\
     \  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

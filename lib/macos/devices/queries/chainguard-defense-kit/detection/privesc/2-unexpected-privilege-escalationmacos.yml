@@ -26,7 +26,6 @@
     \    AND s.authority = 'Developer ID Application: Adguard Software Limited (TC3Q7MAJXF)'\n\
     \  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

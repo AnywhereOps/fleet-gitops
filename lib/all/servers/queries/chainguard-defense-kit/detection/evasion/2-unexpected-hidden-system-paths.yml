@@ -119,7 +119,6 @@
     \ = 28\n    AND file.mode = '0666'\n  )\n  AND NOT (\n    file.path LIKE '/tmp/.comments/%.jpg.xml'\n\
     \    AND file.uid > 0\n    AND file.size < 15000\n  )\n  AND NOT (\n    file.path\
     \ LIKE '/tmp/.tmp%'\n    AND file.uid > 500\n    AND size < 4096\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

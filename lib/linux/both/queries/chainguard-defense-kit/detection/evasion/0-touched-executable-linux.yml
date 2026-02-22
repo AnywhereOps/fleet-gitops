@@ -24,7 +24,6 @@
     \ '%/go/bin/%'\n  AND f.path NOT LIKE '%/osqueryi'\n  AND p.name NOT LIKE 'osqtool%'\n\
     GROUP by\n  p.pid\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

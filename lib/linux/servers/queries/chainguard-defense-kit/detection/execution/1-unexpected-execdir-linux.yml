@@ -49,7 +49,6 @@
     \          OR path LIKE '%/.terraform/providers/%'\n          OR path LIKE '/tmp/.mount_%'\n\
     \        )\n      )\n    GROUP BY\n      path\n  )\nGROUP BY\n  p0.pid\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

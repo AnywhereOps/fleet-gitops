@@ -97,7 +97,6 @@
     \  )\n  AND NOT (\n    p0.path LIKE '/home/%/.magefile/%'\n    AND p0.uid > 499\n\
     \    AND f.ctime = f.mtime\n    AND f.uid = p0.uid\n  )\nGROUP BY\n  p0.pid\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

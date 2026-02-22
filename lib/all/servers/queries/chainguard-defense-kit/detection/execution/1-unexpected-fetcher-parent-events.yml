@@ -49,7 +49,6 @@
     \ LIKE '/usr/bin/env bash ./hack/%.sh'\n  )\n  AND NOT p0_cmd LIKE 'wget --no-check-certificate\
     \ https://github.com/istio/istio/%'\n  AND NOT p0_cmd LIKE '%curl -L https://artifacts.elastic.co/%'\n\
     \  AND NOT p.cgroup_path LIKE '/system.slice/docker-%'\nGROUP BY\n  pe.pid\n"
-  interval: 450
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

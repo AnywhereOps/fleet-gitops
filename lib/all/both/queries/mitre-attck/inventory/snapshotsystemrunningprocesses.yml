@@ -3,4 +3,3 @@
   query: select processes.pid, processes.name, users.username, processes.path from
     processes LEFT JOIN users ON processes.uid = users.uid WHERE processes.path !=
     '';
-  interval: 28800

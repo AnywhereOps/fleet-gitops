@@ -3,4 +3,3 @@
     T1034
   query: SELECT * FROM processes WHERE LOWER(name)='wmiprvse.exe' AND LOWER(path)!='c:\windows\system32\wbem\wmiprvse.exe'
     AND LOWER(path)!='c:\windows\syswow64\wbem\wmiprvse.exe' AND path!='';
-  interval: 3600

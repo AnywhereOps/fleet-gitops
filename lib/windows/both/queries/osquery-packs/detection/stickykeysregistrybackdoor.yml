@@ -4,4 +4,3 @@
   query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Microsoft\Windows
     NT\CurrentVersion\Image File Execution Options\%%' and name='Debugger';
   platform: windows
-  interval: 3600

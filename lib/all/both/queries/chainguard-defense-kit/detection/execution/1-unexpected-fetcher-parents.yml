@@ -52,7 +52,6 @@
     \ = 'ruby'\n    AND p.cmdline LIKE '/usr/bin/curl --disable --cookie /dev/null\
     \ --globoff --show-error --user-agent Homebrew/%'\n  )\n  AND NOT p.cgroup_path\
     \ LIKE '/system.slice/docker-%'\nGROUP BY\n  p.pid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -13,7 +13,6 @@
     \  )\n  AND NOT (\n    file.path = '/sbin/ldconfig'\n    AND pp.euid = 1000\n\
     \  )\n  AND NOT (\n    file.path LIKE '/home/%/.ape-%'\n    AND pp.euid = 1000\n\
     \  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

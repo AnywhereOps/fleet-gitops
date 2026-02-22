@@ -15,7 +15,6 @@
     \  AND exception_key NOT LIKE '/usr/appleinternal/standalone/platform,com.apple.sptm,24.%'\n\
     \  AND exception_key NOT LIKE '/usr/appleinternal/standalone/platform,com.apple.txm,24.%'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

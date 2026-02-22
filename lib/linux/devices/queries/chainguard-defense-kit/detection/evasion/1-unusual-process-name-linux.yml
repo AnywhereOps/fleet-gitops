@@ -50,7 +50,6 @@
     \n  )\n  AND basename NOT LIKE '___Test%'\n  AND basename NOT LIKE '___2Test%'\n\
     \  AND NOT (\n    basename IN ('nm-dispatcher')\n    AND p1_pid = 1\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

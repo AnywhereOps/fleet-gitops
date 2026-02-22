@@ -2,7 +2,6 @@
   description: Lists the application bundle that owns a sandbox label.
   query: "SELECT\n  *\nFROM\n  sandboxes;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

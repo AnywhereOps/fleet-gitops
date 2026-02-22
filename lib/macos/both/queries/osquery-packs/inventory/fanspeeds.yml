@@ -2,4 +2,3 @@
   description: Report current fan speeds in the target OSX system.
   query: select * from fan_speed_sensors;
   platform: darwin
-  interval: 7200

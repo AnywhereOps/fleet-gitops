@@ -3,4 +3,3 @@
     - ATT&CK T1058
   query: select name, type from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services';
   platform: windows
-  interval: 28800

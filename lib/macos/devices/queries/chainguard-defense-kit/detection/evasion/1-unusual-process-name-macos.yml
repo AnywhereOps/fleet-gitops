@@ -52,7 +52,6 @@
     %.com.flexibits.fantastical2.mac.helper\"\n  AND NOT s.authority IN (\n    \"\
     Software Signing\",\n    \"Apple Mac OS Application Signing\"\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

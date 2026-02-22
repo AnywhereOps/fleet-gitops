@@ -15,7 +15,6 @@
     \  )\n  AND p.cmdline != '/usr/bin/python3 /usr/sbin/execsnoop-bpfcc'\n  AND p.path\
     \ NOT LIKE '/nix/store/%/lib/systemd/systemd'\n  AND p.name != \"xcover\"\nGROUP\
     \ BY\n  pmm.pid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

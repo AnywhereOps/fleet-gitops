@@ -70,7 +70,6 @@
     \  AND file.path NOT LIKE '/etc/pwrstatd-%.sh'\n  AND file.path NOT LIKE '/etc/pwrstatd-%.sh'\n\
     \  AND file.path NOT LIKE '/etc/alternatives/%'\n  AND (\n    magic.data IS NULL\n\
     \    OR magic.data NOT IN ('JSON text data', 'ASCII text')\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -62,7 +62,6 @@
     \    '/etc/ld.so.conf.d/zz_x32-biarch-compat.conf,0644,58,af55087d2769067a6a7c9069fd70f9ac2adb0e0ae29bfbd4e9df7504396c9bf2'\n\
     \  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

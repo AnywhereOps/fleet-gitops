@@ -30,7 +30,6 @@
     \ Helper.app/Contents/MacOS/Code Helper\",\n        \"/sbin/launchd\",\n     \
     \   \"/var/lib/incus/containers\"\n      )\n      AND pp.on_disk != 1\n  );\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

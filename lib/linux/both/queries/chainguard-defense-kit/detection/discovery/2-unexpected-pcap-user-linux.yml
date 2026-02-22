@@ -21,7 +21,6 @@
     \    '/run/current-system/systemd/lib/systemd/systemd'\n  )\n  AND child_cmd NOT\
     \ LIKE '/usr/bin/python3 -s%/usr/sbin/firewalld%'\nGROUP BY\n  p.pid\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

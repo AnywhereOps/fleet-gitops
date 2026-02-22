@@ -3,7 +3,6 @@
     Application Layer Firewall.
   query: "SELECT\n  *\nFROM\n  alf_explicit_auths;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

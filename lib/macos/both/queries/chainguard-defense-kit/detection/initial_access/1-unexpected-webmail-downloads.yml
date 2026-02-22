@@ -21,7 +21,6 @@
     \    'yaml',\n    'yml',\n    'zip'\n  )\n  AND file.path NOT LIKE '%/Dockerfile'\n\
     GROUP BY\n  file.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

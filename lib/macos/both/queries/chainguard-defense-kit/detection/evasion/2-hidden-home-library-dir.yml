@@ -26,7 +26,6 @@
     \ Scripts/.%-%-%-%-%/.%'\n  AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%'\n\
     \  AND NOT homedir LIKE '~/Library/Application Scripts/.%-%-%-%-%/.%'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

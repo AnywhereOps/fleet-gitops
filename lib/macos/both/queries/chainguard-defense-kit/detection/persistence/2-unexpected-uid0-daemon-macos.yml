@@ -246,7 +246,6 @@
     \ AND s.authority = 'Developer ID Application: Sanford, L.P. (N3S6676K3E)'\n \
     \ )\n  AND NOT p0_cmd = './perflock -daemon'\nGROUP BY\n  p0.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

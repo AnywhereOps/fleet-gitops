@@ -1,7 +1,6 @@
 - name: CDK - Last
   description: Retrieves the list of the latest logins with PID, username and timestamp.
   query: "SELECT\n  *\nFROM\n  last;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

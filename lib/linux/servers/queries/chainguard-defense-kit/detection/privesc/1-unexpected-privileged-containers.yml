@@ -15,7 +15,6 @@
     \  AND image NOT LIKE 'melange-%'\n  AND command NOT LIKE '/usr/bin/melange build\
     \ %'\n  AND command != '/bin/k3s server'\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

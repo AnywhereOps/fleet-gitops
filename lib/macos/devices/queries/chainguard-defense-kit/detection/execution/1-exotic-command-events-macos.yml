@@ -97,7 +97,6 @@
     \    'go,500,fish,login',\n    'jq,500,zsh,login',\n    'sh,0,Ecamm Live,launchd',\n\
     \    'ssh,500,limactl.ventura,launchd',\n    'yara,500,bash,fish'\n  )\n"
   platform: darwin
-  interval: 180
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

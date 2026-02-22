@@ -45,7 +45,6 @@
     \ Chrome Helper'\n  -- Workaround for the GROUP_CONCAT subselect adding a blank\
     \ ent\n  -- Workaround for the GROUP_CONCAT subselect adding a blank ent\nGROUP\
     \ BY\n  s.remote_address,\n  s.remote_port\nHAVING\n  remote_address != ''\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

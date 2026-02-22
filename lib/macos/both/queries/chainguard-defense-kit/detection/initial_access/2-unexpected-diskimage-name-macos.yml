@@ -16,7 +16,6 @@
     \    OR file.filename LIKE '% AIR %'\n    OR file.filename LIKE '%Flash%'\n  \
     \  OR file.filename LIKE '%Resume%'\n  )\nGROUP BY\n  ea.value\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

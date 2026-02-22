@@ -32,7 +32,6 @@
     \ NOT (\n    p0.path = '/usr/libexec/xdg-permission-store'\n    AND p1.path =\
     \ '/usr/lib/systemd/systemd'\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

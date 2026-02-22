@@ -2,4 +2,3 @@
   description: Retrieves all the ramdisk currently mounted in the target system.
   query: select * from block_devices where type = 'Virtual Interface';
   platform: posix
-  interval: 3600

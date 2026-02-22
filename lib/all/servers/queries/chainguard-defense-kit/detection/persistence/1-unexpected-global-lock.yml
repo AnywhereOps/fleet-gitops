@@ -26,7 +26,6 @@
     \ NOT exception_key LIKE '500,1000,/dev/shm/lsp-catalog-%.lock,regular,0664'\n\
     \  AND NOT exception_key LIKE '500,0,/tmp/uv-%.lock,regular,0777'\n  AND NOT exception_key\
     \ LIKE '500,1000,/tmp/uv-%.lock,regular,0777'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

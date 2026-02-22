@@ -41,7 +41,6 @@
     \  )\n  AND NOT p0.path IN ('/usr/lib/systemd/systemd')\n  AND NOT p0_cgroup LIKE\
     \ '/system.slice/docker-%'\nGROUP by\n  exception_key\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

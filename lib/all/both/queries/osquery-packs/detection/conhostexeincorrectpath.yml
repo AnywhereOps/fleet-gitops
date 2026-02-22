@@ -2,4 +2,3 @@
   description: Detect processes masquerading as legitimate Windows processes
   query: SELECT * FROM processes WHERE LOWER(name)='conhost.exe' AND LOWER(path)!='c:\windows\system32\conhost.exe'
     AND path!='';
-  interval: 3600

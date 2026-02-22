@@ -79,7 +79,6 @@
     \    '500,6,32768,.limactl-wrapped,.limactl-wrapped'\n  )\n  AND NOT unsigned_exception\
     \ LIKE '500,6,%,firefox,firefox'\nGROUP BY\n  p0.cmdline\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

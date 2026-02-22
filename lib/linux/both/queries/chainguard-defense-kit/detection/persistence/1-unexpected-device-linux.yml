@@ -111,7 +111,6 @@
     \  AND NOT exception_key LIKE '/dev/shm/lsp-catalog-%.shm,regular'\nGROUP BY\n\
     \  exception_key\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

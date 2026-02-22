@@ -51,7 +51,6 @@
     \ 0181;%'\n  AND p0_cmd NOT LIKE '/usr/bin/xattr -w com.apple.quarantine 0381;%'\n\
     GROUP BY\n  pe.pid\n"
   platform: darwin
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

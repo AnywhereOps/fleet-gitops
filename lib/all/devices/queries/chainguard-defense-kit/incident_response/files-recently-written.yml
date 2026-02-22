@@ -19,7 +19,6 @@
     \ AND file.type = \"regular\"\n    )\n    OR ctime > (strftime('%s', 'now') -3600)\n\
     \    OR btime > (strftime('%s', 'now') -3600)\n  )\n  AND NOT path LIKE \"%/../%\"\
     \nGROUP BY\n  inode;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

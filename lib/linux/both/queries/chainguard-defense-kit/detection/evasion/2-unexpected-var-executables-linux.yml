@@ -25,7 +25,6 @@
     \    magic.data IS NULL\n    OR magic.data != 'JSON data'\n  )\n  AND file.size\
     \ > 10\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

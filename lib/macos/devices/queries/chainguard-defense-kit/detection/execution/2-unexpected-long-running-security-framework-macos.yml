@@ -47,7 +47,6 @@
     \ exception_key LIKE '500,rust-analyzer-proc-macro-srv,rust_analyzer_proc_macro_srv-%,'\n\
     \  AND NOT exception_key LIKE '500,sm-agent,sm_agent-%'\nGROUP BY\n  p0.pid\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

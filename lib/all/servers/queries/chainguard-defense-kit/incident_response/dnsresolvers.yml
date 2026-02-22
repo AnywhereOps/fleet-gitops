@@ -1,7 +1,6 @@
 - name: CDK - Dns Resolvers
   description: Return the list of configured DNS servers on this system
   query: "SELECT\n  *\nFROM\n  dns_resolvers;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

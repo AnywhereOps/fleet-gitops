@@ -6,4 +6,3 @@
     union select * from file where path like '/System/Library/LaunchDaemons/com.apple%efi%')
     file join hash using (path);
   platform: darwin
-  interval: 7200

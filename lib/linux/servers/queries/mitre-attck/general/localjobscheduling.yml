@@ -2,4 +2,3 @@
   description: List Local job scheduling with Cron - ATT&CK T1168
   query: select command, path from crontab;
   platform: linux
-  interval: 3600

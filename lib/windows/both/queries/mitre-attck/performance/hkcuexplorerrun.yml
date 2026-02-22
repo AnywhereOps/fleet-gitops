@@ -3,4 +3,3 @@
     - ATT&CK T1060
   query: select name,type,data from registry where key='HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run';
   platform: windows
-  interval: 3600

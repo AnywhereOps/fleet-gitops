@@ -2,4 +2,3 @@
   description: 'Check Software Restriction Policies state: No SRP deny list rules'
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\0'
   platform: windows
-  interval: 86400

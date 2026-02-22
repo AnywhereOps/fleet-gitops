@@ -4,7 +4,6 @@
     \ AS p_time,\n  p.euid AS p_euid,\n  p.uid AS p_uid,\n  p.cmdline AS p_cmdline\n\
     FROM\n  shared_memory AS shm\n  LEFT JOIN processes p ON shm.pid = p.pid;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

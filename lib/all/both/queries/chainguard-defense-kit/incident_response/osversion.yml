@@ -1,7 +1,6 @@
 - name: CDK - Os Version
   description: Return the OS version including patch level
   query: "SELECT\n  *\nFROM\n  os_version;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

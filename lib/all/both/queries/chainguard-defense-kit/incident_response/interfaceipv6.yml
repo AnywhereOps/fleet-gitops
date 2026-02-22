@@ -1,7 +1,6 @@
 - name: CDK - Interface Ipv6
   description: Return the list of interface addresses (IPv6)
   query: "SELECT\n  *\nFROM\n  interface_ipv6;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

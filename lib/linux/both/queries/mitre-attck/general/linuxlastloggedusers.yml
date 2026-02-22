@@ -3,4 +3,3 @@
   query: select datetime(time,'unixepoch','UTC') as time_utc,host,username,tty,pid,type
     from last;
   platform: linux
-  interval: 3600

@@ -101,7 +101,6 @@
     \ link to /Users/%/My Drive'\n      -- Docker\n      AND magic.data NOT LIKE 'cannot\
     \ open%'\n    )\n  )\nGROUP BY\n  file.path;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

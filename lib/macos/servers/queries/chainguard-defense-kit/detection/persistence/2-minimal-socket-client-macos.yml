@@ -71,7 +71,6 @@
     \  AND libs NOT LIKE '/usr/lib/libobjc-trampolines.dylib,/Applications/%.app/Contents/Frameworks/Electron\
     \ Framework.framework/Versions/A/Libraries/libffmpeg.dylib'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

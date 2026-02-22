@@ -7,4 +7,3 @@
     FROM hash JOIN file USING (path) where path like 'C:\users\%\AppData\Roaming\%'
     and type='regular';
   platform: windows
-  interval: 1840

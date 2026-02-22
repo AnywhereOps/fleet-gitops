@@ -3,4 +3,3 @@
     up in hardware_events.
   query: select * from pci_devices;
   platform: posix
-  interval: 7200

@@ -76,7 +76,6 @@
     \ Service.app'\n  AND program_arguments NOT LIKE '/Users/%/gitsign-credential-cache'\n\
     \  AND NOT l.label IN ('org.sigstore.gitsign-credential-cache')\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

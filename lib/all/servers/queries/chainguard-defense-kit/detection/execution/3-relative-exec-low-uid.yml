@@ -19,7 +19,6 @@
     \ './xcover %'\n      AND NOT cmdline LIKE './updater -insecure %'\n      AND\
     \ NOT cmdline = './utrace -p utrace --debug'\n      AND NOT cgroup_path LIKE '/system.slice/docker-%'\n\
     \  )\nGROUP BY\n  p0.pid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

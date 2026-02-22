@@ -2,7 +2,6 @@
   description: Retrieves entries from the macOS nvram database
   query: "SELECT\n  *\nFROM\n  nvram;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

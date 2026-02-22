@@ -2,7 +2,6 @@
   description: Retrieves chrome extensions that execute on a broad set of URLs.
   query: "SELECT\n  known_hosts.*\nFROM\n  users\n  JOIN known_hosts ON users.uid\
     \ = known_hosts.uid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -9,7 +9,6 @@
     \ '/home/%/Downloads/report17%.%'\n    OR file.path LIKE '/Users/%/Downloads/%/Cont%act.csv'\n\
     \    OR file.path LIKE '/home/%/Downloads/%/Cont%act.csv'\n  )\n  AND file.btime\
     \ > (strftime('%s', 'now') -86400)\n  AND file.size > 500000\nGROUP BY\n  file.path\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -144,7 +144,6 @@
     \ Signing'\n      AND p.cmdline LIKE '%/.colima/_lima/colima-docker/ssh.sock%'\n\
     \    )\n  )\nGROUP BY\n  exception_key\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

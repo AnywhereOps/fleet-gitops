@@ -2,4 +2,3 @@
   description: General reporting and heuristics monitoring.
   query: select * from smbios_tables;
   platform: posix
-  interval: 86400

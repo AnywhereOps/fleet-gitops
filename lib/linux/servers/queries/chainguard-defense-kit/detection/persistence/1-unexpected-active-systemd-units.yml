@@ -417,7 +417,6 @@
     \      OR id LIKE 'systemd-zram-setup@zram%.service'\n      OR id LIKE 'user-runtime-dir@%.service'\n\
     \      OR id LIKE 'user@%.service'\n    )\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

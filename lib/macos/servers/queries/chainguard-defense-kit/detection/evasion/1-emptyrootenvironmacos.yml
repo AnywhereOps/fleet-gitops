@@ -28,7 +28,6 @@
     \ GmbH (4C6364ACXT)',\n    'Developer ID Application: Yubico Limited (LQA3CS5MM7)',\n\
     \    'Software Signing'\n  )\nGROUP BY\n  p.pid\nHAVING\n  count == 0;\n"
   platform: darwin
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

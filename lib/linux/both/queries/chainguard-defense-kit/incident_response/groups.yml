@@ -2,7 +2,6 @@
   description: Return the list of POSIX groups on the system
   query: "SELECT\n  *\nFROM\n  groups;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

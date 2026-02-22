@@ -6,7 +6,6 @@
     \  LEFT JOIN hash ON gap.path = hash.path\n  LEFT JOIN signature ON gap.path =\
     \ signature.path\nGROUP BY\n  gap.requirement\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

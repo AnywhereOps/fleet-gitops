@@ -4,4 +4,3 @@
   query: SELECT * FROM processes WHERE LOWER(name)='services.exe' AND LOWER(path)!='c:\windows\system32\services.exe'
     AND path!='';
   platform: windows
-  interval: 3600

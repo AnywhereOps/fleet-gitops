@@ -17,7 +17,6 @@
     \  AND signature.authority != 'Developer ID Application: Jamie Zawinski (4627ATJELP)'\n\
     GROUP BY\n  gap.requirement\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

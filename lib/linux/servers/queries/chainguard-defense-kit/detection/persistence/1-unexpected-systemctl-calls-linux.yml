@@ -62,7 +62,6 @@
     \ % snap-kubectl-%.mount'\n  AND NOT p0_cmd LIKE '%systemctl is-active -q %.service'\n\
     \  AND NOT p0_cmd LIKE '%systemctl show --property=%'\nGROUP BY\n  pe.pid\n"
   platform: linux
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

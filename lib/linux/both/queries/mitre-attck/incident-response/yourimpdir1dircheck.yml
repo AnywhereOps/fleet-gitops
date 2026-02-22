@@ -7,4 +7,3 @@
     (fi.path like '/YOURIMPDIR1/%%/.%') OR (fi.path like '/YOURIMPDIR1/.%') OR (fi.path
     like '/YOURIMPDIR1/%'));
   platform: linux
-  interval: 600

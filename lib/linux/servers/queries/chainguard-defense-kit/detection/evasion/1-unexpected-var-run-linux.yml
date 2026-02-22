@@ -24,7 +24,6 @@
     \    'zed.state',\n    'zfs_fs_name',\n    'zfs_unlock_complete'\n  )\n  AND NOT\
     \ file.filename LIKE 'u-d-c-%'\nGROUP BY\n  file.path;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

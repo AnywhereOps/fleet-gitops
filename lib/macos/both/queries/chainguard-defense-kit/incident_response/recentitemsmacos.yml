@@ -5,7 +5,6 @@
     \      *\n    from\n      users\n    where\n      directory like '/Users/%'\n\
     \  ) u\nwhere\n  p.path = u.directory || '/Library/Preferences/com.apple.recentitems.plist';\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

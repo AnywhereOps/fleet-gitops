@@ -3,7 +3,6 @@
     events
   query: "SELECT\n  *\nFROM\n  event_taps;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

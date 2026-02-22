@@ -3,7 +3,6 @@
   query: "SELECT\n  *\nFROM\n  mounts\nWHERE\n  device = '/dev/disk0s1'\n  AND type\
     \ = 'msdos';\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

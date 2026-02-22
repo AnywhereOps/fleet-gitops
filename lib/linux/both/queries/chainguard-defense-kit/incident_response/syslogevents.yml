@@ -2,7 +2,6 @@
   description: Return the list of syslog events
   query: "SELECT\n  *\nFROM\n  syslog_events;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

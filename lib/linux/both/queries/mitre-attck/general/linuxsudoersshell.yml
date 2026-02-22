@@ -2,4 +2,3 @@
   description: Check any bash reverse shell forwarded to the attacker - ATT&CK T1169,T1206
   query: SELECT * FROM processes WHERE cmdline LIKE '/bin/bash -i >& /dev/tcp/%';
   platform: linux
-  interval: 3600

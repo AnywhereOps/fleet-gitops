@@ -6,4 +6,3 @@
     where name='explorer.exe') AND LOWER(name)='iexplore.exe') OR pid=(SELECT pid
     FROM processes WHERE parent!=(SELECT pid from processes where name='explorer.exe')
     AND LOWER(name)='iexplore.exe');
-  interval: 60

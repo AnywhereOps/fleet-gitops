@@ -2,7 +2,6 @@
   description: Return the list of socket events
   query: "SELECT\n  *\nFROM\n  socket_events\nWHERE\n  time > (strftime('%s', 'now')\
     \ -600)\n"
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

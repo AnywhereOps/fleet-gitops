@@ -45,7 +45,6 @@
     \    AND f.mode = '0655'\n  )\n  AND NOT (\n    p0.name = 'ShortcutDroplet'\n\
     \    AND f.mode = '0751'\n  )\n  AND NOT (\n    f.path = '/home/%/.local/share/AppImage/ZenBrowser.AppImage'\n\
     \    AND f.mode = '0600'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

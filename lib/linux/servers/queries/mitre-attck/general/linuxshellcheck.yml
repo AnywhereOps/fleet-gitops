@@ -7,4 +7,3 @@
     ON processes.pid = process_open_files.pid WHERE (name = 'sh' OR name = 'bash')
     AND process_open_files.pid IS NULL;
   platform: linux
-  interval: 3600

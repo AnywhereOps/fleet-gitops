@@ -56,7 +56,6 @@
     \    'dash,500,code,code'\n  )\n  AND NOT (\n    exception_key LIKE '%sh,500,node,%sh'\n\
     \    AND f.path LIKE '%claude%'\n  )\nGROUP BY\n  p0_pid\n"
   platform: linux
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

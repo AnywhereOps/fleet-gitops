@@ -37,7 +37,6 @@
     \    AND size < 4000\n    AND REGEX_MATCH (file.filename, \"^(\\.[0-9A-Z]{32})$\"\
     , 0) != \"\"\n  )\nGROUP BY\n  file.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

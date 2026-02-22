@@ -2,7 +2,6 @@
   description: Retrieves currently running applications
   query: "SELECT\n  *\nFROM\n  running_apps;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

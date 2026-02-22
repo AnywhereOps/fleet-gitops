@@ -17,7 +17,6 @@
     \    'nix',\n    'nix-daemon',\n    'osqueryd',\n    'rapid7_endpoint_broker',\n\
     \    'socket_vmnet',\n    'velociraptor'\n  )\nGROUP BY\n  p0.pid\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

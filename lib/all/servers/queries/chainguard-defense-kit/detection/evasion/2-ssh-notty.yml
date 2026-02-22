@@ -15,7 +15,6 @@
     \  AND child_cmd NOT LIKE '%osquery-defense-kit%make verify'\n  AND grandchild_cmd\
     \ NOT LIKE '%osquery-defense-kit%make verify'\n  AND grandchild_name NOT IN ('unison')\n\
     \  AND cmd != 'sshd: docker@notty'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

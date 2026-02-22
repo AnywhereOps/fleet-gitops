@@ -10,7 +10,6 @@
     \ '%.json'\n  AND f.path NOT LIKE '%.log'\n  AND f.path NOT LIKE '%/testdata/%'\n\
     \  AND f.path NOT LIKE '%mysql-test/suite/%'\n  AND f.size > 32768\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

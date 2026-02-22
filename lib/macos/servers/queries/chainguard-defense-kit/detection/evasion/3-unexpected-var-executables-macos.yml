@@ -59,7 +59,6 @@
     \    AND magic.data = 'Apple binary property list'\n    AND file.size < 3000\n\
     \    AND file.mode = '0777'\n  )\nGROUP BY\n  file.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

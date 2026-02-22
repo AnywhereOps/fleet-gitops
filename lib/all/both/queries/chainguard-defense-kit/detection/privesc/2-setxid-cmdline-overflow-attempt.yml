@@ -28,7 +28,6 @@
     \ > (strftime('%s', 'now') -300)\n  AND file.mode NOT LIKE '0%'\n  AND pe.cmdline_size\
     \ > 2048\n  AND p0_cmd NOT LIKE '%sudo dpkg %'\n  AND p0_cmd NOT LIKE '%bwrap\
     \ --bind %'\n  AND p0_cmd NOT LIKE '%sudo %--vmodule=% --audit-policy-file=%kube%'\n"
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

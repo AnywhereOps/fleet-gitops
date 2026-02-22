@@ -1,7 +1,6 @@
 - name: CDK - Interface Addresses
   description: Return the list of interface addresses
   query: "SELECT\n  *\nFROM\n  interface_addresses;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

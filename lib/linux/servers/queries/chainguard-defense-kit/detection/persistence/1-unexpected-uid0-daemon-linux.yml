@@ -338,7 +338,6 @@
     \  AND NOT (\n    p0.cgroup_path = '/system.slice/dovecot.service'\n    AND p0.cwd\
     \ = '/run/dovecot'\n  )\nGROUP BY\n  p0.pid\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

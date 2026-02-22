@@ -3,4 +3,3 @@
   query: SELECT name FROM processes WHERE pid=(SELECT parent FROM processes WHERE
     LOWER(name)='svchost.exe') AND LOWER(name)!='services.exe';
   platform: windows
-  interval: 3600

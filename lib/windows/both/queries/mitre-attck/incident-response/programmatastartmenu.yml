@@ -7,4 +7,3 @@
     'UTC') as mtime from file f LEFT JOIN users u on f.uid=u.uid where f.path like
     'C:\ProgramData\Microsoft\Windows\Start Menu\%' AND f.type='directory';
   platform: windows
-  interval: 1860

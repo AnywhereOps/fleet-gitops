@@ -2,4 +2,3 @@
   description: Retrieves the list of application scheme/protocol-based IPC handlers.
   query: select * from app_schemes;
   platform: darwin
-  interval: 86400

@@ -41,7 +41,6 @@
     \  'xdg-desktop-portal-wlr',\n    \"xdg-desktop-portal\",\n    \"xdg-document-portal\"\
     ,\n    \"xdg-permission-store\",\n    \"xwaylandvideobridge\"\n  )\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

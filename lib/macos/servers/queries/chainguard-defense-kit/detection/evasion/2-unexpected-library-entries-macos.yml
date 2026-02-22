@@ -48,7 +48,6 @@
     \ (\n    file.path = '/Library/Caches/.DS_Store'\n    AND magic.data = 'Apple\
     \ Desktop Services Store'\n    AND file.size < 9000\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

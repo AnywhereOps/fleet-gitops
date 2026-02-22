@@ -22,7 +22,6 @@
     \ '/dev/shm/sem.mp-%'\n  AND file.path NOT LIKE '%/../%'\n  AND file.path NOT\
     \ LIKE '%/./%'\n  AND file.path NOT IN (\n    '/dev/.mdadm/',\n    '/dev/shm/libpod_lock',\n\
     \    '/dev/shm/sem.camlock'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -36,7 +36,6 @@
     \    OR (\n      pe.path IN ('/ur/bin/uname', '/bin/uname')\n      AND pe.cmdline\
     \ LIKE '%uname -p'\n    )\n  )\n  AND p.parent > 0\nGROUP BY\n  pe.pid\n"
   platform: linux
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

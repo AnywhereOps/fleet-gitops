@@ -6,4 +6,3 @@
     FROM hash JOIN file USING (path) where path like 'C:\users\%\AppData\Local\%'
     and type='regular';
   platform: windows
-  interval: 1860

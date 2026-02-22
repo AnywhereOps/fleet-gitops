@@ -17,7 +17,6 @@
     \    'tailscaled',\n    'tcpdump',\n    'wpa_supplicant'\n  )\n  AND NOT (\n \
     \   p0.cgroup_path LIKE '/system.slice/docker-%'\n    AND p0.path = '/speaker'\n\
     \    AND p0.name = 'speaker'\n    AND protocol = 2054\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

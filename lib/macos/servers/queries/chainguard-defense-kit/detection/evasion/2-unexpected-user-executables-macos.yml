@@ -88,7 +88,6 @@
     \  AND NOT f.path LIKE '/Users/%/Library/Fonts/%.otf'\n  AND NOT f.path LIKE '/Users/%/Library/Fonts/%.ttf'\n\
     \  AND NOT f.path LIKE '/Users/%/result/activate'\nGROUP BY\n  f.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

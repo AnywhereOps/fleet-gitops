@@ -2,7 +2,6 @@
   description: Retrieves the services for the Application Layer Firewall in OSX.
   query: "SELECT\n  *\nFROM\n  alf_services;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

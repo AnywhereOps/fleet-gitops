@@ -18,7 +18,6 @@
     \  AND file.path NOT LIKE '%/lynis%'\n  AND file.path NOT LIKE '%/yelp-xsl%'\n\
     \  AND file.path != '/bin/VGAuthService'\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

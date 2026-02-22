@@ -55,7 +55,6 @@
     \      OR file.directory LIKE '/Users/%/target/%'\n      OR file.directory LIKE\
     \ '/Users/%/tmp/%'\n    )\n  )\nGROUP BY\n  exception_key\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

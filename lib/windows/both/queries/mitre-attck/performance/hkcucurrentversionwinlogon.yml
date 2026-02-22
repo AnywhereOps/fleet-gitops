@@ -4,4 +4,3 @@
   query: select name,type,data from registry where key='HKEY_CURRENT_USER\Software\Microsoft\Windows
     NT\CurrentVersion\Winlogon';
   platform: windows
-  interval: 3600

@@ -3,4 +3,3 @@
   query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\EnableLUA'
     AND data=0;
   platform: windows
-  interval: 3600

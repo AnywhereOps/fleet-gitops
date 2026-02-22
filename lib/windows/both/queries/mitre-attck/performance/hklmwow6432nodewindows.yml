@@ -4,4 +4,3 @@
   query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
     NT\CurrentVersion\Windows' and name='AppInit_DLLs';
   platform: windows
-  interval: 3600

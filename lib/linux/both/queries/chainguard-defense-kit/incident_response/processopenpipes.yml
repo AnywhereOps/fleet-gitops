@@ -4,7 +4,6 @@
     \  p.euid AS p_euid,\n  p.uid AS p_uid,\n  p.cmdline AS p_cmdline,\n  pop.*\n\
     FROM\n  process_open_pipes AS pop\n  LEFT JOIN processes p ON pop.pid = p.pid;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

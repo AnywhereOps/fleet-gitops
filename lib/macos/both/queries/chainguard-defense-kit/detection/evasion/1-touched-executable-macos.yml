@@ -69,7 +69,6 @@
     \ 0\n    AND (\n      p.path LIKE '/nix/store/%/bin/nix'\n      OR p.path LIKE\
     \ '/nix/store/%/bin/nix-daemon'\n    )\n  )\nGROUP by\n  p.pid\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

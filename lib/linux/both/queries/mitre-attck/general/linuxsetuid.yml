@@ -2,4 +2,3 @@
   description: List linux files that are setuid-enabled
   query: select * from suid_bin;
   platform: linux
-  interval: 3600

@@ -2,7 +2,6 @@
   description: Retrieves System Integrity Protection Settings data
   query: "SELECT\n  *\nFROM\n  sip_config;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

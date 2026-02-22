@@ -2,4 +2,3 @@
   description: Check Special Logon Audit configuration - https://blogs.technet.microsoft.com/jepayne/2015/11/26/tracking-lateral-movement-part-one-special-groups-and-specific-service-accounts/
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\Audit'
   platform: windows
-  interval: 86400

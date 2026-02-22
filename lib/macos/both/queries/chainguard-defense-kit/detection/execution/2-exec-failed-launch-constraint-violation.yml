@@ -34,7 +34,6 @@
     \        '/Applications/ElasticEndpoint.app/Contents/MacOS/ElasticEndpoint --install'\n\
     \    )\nGROUP BY\n    pe.euid,\n    pe.path,\n    pe.cmdline\n"
   platform: darwin
-  interval: 900
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

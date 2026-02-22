@@ -81,7 +81,6 @@
     \  AND NOT p.cgroup_path LIKE '/user.slice/user-1000.slice/user@1000.service/user.slice/libpod-%'\n\
     \  AND NOT p1_cmd LIKE 'bwrap --bind%'\nGROUP BY\n  exception_key\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

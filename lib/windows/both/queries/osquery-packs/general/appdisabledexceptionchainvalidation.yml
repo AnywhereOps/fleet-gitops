@@ -3,4 +3,3 @@
   query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
     NT\CurrentVersion\Image File Execution Options\%\DisableExceptionChainValidation'
   platform: windows
-  interval: 86400

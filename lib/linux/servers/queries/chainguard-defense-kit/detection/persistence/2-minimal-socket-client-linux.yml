@@ -27,7 +27,6 @@
     \  AND NOT proc_cgroup LIKE '/system.slice/docker-%'\nGROUP BY\n  pos.pid -- libc.so,\
     \ ld-linux\nHAVING\n  lib_count IN (1, 2)\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

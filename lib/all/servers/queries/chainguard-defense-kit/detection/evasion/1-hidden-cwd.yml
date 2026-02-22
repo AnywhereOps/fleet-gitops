@@ -73,7 +73,6 @@
     \    OR dir LIKE '~/code/%'\n    OR dir LIKE '~/dev/%/dots/%/.config%'\n    OR\
     \ dir LIKE '~/src/%' -- For sudo calls to other things\n    OR (\n      dir LIKE\
     \ '/home/.terraform.d/%'\n      AND p0.euid = 0\n    )\n  )\nGROUP BY\n  p0.pid\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

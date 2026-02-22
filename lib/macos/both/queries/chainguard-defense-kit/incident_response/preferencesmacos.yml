@@ -2,7 +2,6 @@
   description: Retrieves entries from the macOS preferences database
   query: "SELECT\n  *\nFROM\n  preferences;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -12,7 +12,6 @@
     \ NOT LIKE '/home/%/.config/%/.git%'\n  AND file.path NOT LIKE '/root/.cache/.flatpak/%'\n\
     \  AND file.path NOT LIKE '/root/.debug/.build-id/%'\n  AND file.path NOT LIKE\
     \ '%/../%'\n  AND file.path NOT LIKE '%/./%'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -142,7 +142,6 @@
     \ p2_cmd LIKE '/usr/bin/python3 -m py_compile %'\n  )\n  AND NOT p0_cgroup LIKE\
     \ '/system.slice/docker-%'\n  AND NOT p1_cgroup LIKE '/system.slice/docker-%'\n\
     \  AND NOT p2_cgroup LIKE '/system.slice/docker-%'\nGROUP BY\n  pe.pid\n"
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

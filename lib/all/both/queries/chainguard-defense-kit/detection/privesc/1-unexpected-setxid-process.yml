@@ -25,7 +25,6 @@
     \ NOT LIKE '/opt/homebrew/Cellar/socket_vmnet/%/bin/socket_vmnet'\n  AND f.path\
     \ NOT LIKE '/Users/%/homebrew/Cellar/socket_vmnet/%/bin/socket_vmnet'\n  AND f.path\
     \ NOT LIKE '/snap/snapd/%/usr/lib/snapd/snap-confine'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

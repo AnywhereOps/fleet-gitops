@@ -7,7 +7,6 @@
     \ 'now') -86400)\n  -- This signature is used by Traitor: https://github.com/liamg/traitor/\n\
     \  AND created_by LIKE '%/bin/sh%/lol%';\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

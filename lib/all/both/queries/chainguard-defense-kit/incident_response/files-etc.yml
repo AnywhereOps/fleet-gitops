@@ -2,7 +2,6 @@
   description: Returns a list of file information from /etc (non-hidden only)
   query: "SELECT\n  *\nFROM\n  file\n  JOIN hash ON file.path = hash.path\nWHERE\n\
     \  file.path LIKE \"/etc/%%\";\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

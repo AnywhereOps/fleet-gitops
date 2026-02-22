@@ -3,4 +3,3 @@
     T1037
   query: select * from registry where key='HKEY_CURRENT_USER\Environment';
   platform: windows
-  interval: 3600

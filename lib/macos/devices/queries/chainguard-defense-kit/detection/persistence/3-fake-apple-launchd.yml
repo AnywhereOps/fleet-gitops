@@ -8,7 +8,6 @@
     \    '/System/Library/LaunchAgents',\n    '/System/Library/LaunchDaemons'\n  )\n\
     \  AND launchd.run_at_load = 1\n  AND signature.authority != 'Software Signing'\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

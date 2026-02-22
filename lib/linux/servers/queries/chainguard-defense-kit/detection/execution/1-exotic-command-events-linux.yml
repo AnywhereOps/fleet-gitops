@@ -81,7 +81,6 @@
     \    'grep,500,fish,konsole',\n    'kmod,0,incusd,systemd',\n    'ls,500,zsh,alacritty',\n\
     \    'nc,500,fish,konsole',\n    'tar,0,incusd,systemd'\n  )\n"
   platform: linux
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

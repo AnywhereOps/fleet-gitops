@@ -3,4 +3,3 @@
   query: select * from processes where name like 'svchost.exe' and cmdline not like
     '%-k%';
   platform: windows
-  interval: 600

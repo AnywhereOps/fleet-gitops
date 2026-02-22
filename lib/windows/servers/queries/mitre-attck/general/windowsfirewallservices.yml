@@ -2,4 +2,3 @@
   description: Windows Firewall service Status change - ATT&CK T1089
   query: SELECT * FROM services WHERE name = 'MpsSvc' AND status != 'RUNNING';
   platform: windows
-  interval: 3600

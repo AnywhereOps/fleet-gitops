@@ -107,7 +107,6 @@
     \ '%/bin/direnv'\n  AND NOT p1_path LIKE '/nix/store/%sh'\n  AND NOT p1_path LIKE\
     \ '/opt/homebrew/%'\n  AND NOT p0.cgroup_path LIKE '/system.slice/docker-%'\n\
     \  AND NOT p0.cgroup_path LIKE '/system.slice/system.slice:docker:%'\n"
-  interval: 60
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

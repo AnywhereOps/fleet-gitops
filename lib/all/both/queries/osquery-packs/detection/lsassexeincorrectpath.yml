@@ -2,4 +2,3 @@
   description: Detect processes masquerading as legitimate Windows processes
   query: SELECT * FROM processes WHERE LOWER(name)='lsass.exe' AND LOWER(path)!='c:\windows\system32\lsass.exe'
     AND path!='';
-  interval: 3600

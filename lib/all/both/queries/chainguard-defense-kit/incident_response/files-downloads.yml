@@ -6,7 +6,6 @@
     \ \"/Users/%/Downloads/%\"\n  )\n  AND (\n    mtime > (strftime('%s', 'now') -3600)\n\
     \    OR ctime > (strftime('%s', 'now') -3600)\n    OR btime > (strftime('%s',\
     \ 'now') -3600)\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

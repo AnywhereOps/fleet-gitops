@@ -90,7 +90,6 @@
     \ NOT LIKE 'https://storage.googleapis.com/kolide-k2-production-downloads-f414/%'\n\
     GROUP BY\n  ea.value\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -5,4 +5,3 @@
     'unixepoch', 'UTC') as ctime, datetime(file.mtime, 'unixepoch', 'UTC') as mtime
     FROM hash JOIN file USING (path) where path like 'C:\Windows\%' and type='regular';
   platform: windows
-  interval: 1800

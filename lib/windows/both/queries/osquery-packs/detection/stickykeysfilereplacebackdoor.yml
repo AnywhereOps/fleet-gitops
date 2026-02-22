@@ -7,4 +7,3 @@
     FROM hash WHERE path='c:\windows\system32\cmd.exe' OR path='c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe'
     OR path='c:\windows\system32\explorer.exe') AND sha256!='e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
   platform: windows
-  interval: 3600

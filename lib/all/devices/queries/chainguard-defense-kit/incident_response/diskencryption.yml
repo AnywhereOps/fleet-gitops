@@ -1,7 +1,6 @@
 - name: CDK - Disk Encryption
   description: Retrieves the current disk encryption status for the target system.
   query: "SELECT\n  *\nFROM\n  disk_encryption;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

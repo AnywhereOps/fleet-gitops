@@ -16,7 +16,6 @@
     \ && /etc/cron.daily/popularity-contest --crond',\n    'timeout --kill-after=10\
     \ 100 mbsync -q -a',\n    '~/scripts/gmail-token-refresh.py',\n    '~/.dotfiles/git_auto_commit.sh',\n\
     \    'osascript -e \"set volume with output muted\"'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -6,7 +6,6 @@
     \n  JOIN hash ON file.path = hash.path\nWHERE\n  file.size > 0\n  AND (\n    file.uid\
     \ != u_uid\n    OR file.uid < 500\n    OR (\n      file.path NOT LIKE '/home/%'\n\
     \      AND file.path NOT LIKE '/Users/%'\n    )\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

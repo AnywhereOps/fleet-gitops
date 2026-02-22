@@ -3,7 +3,6 @@
   query: "SELECT DISTINCT\n  pid,\n  family,\n  protocol,\n  local_address,\n  local_port,\n\
     \  remote_address,\n  remote_port,\n  path\nFROM\n  process_open_sockets\nWHERE\n\
     \  path <> ''\n  or remote_address <> '';\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

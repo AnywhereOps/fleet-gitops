@@ -60,7 +60,6 @@
     \ Preferences',\n    '/Applications/LogiTune.app/Contents/MacOS/LogiTune'\n  )\n\
     GROUP BY\n  pe.pid\n"
   platform: darwin
-  interval: 900
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

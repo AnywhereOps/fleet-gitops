@@ -4,4 +4,3 @@
     and path not like '/System/Library/%' and path not in ('/dev/null', '/dev/urandom',
     '/dev/random');
   platform: posix
-  interval: 86400

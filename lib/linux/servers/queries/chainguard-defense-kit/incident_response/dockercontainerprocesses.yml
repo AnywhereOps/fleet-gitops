@@ -4,7 +4,6 @@
     \  docker_containers\n  JOIN docker_container_processes ON docker_containers.id\
     \ = docker_container_processes.id;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

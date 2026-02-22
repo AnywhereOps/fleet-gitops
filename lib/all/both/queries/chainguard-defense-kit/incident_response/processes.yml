@@ -4,7 +4,6 @@
   query: "SELECT\n  pid,\n  name,\n  path,\n  cmdline,\n  state,\n  cwd,\n  root,\n\
     \  uid,\n  gid,\n  euid,\n  egid,\n  suid,\n  sgid,\n  on_disk,\n  start_time,\n\
     \  parent,\n  pgroup,\n  threads,\n  nice,\n  cgroup_path\nFROM\n  processes\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -50,7 +50,6 @@
     \  AND p1_cmd NOT IN ('/bin/sh /etc/periodic/daily/420.status-network')\n  AND\
     \ p1_authority != 'Software Signing'\nGROUP BY\n  pe.pid\n"
   platform: darwin
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

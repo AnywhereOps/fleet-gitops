@@ -2,7 +2,6 @@
   description: Retrieves the exceptions for the Application Layer Firewall in OSX.
   query: "SELECT\n  *\nFROM\n  alf_exceptions;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

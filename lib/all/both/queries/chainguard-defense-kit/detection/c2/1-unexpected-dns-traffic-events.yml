@@ -55,7 +55,6 @@
     \ 'terraform-provi'\n  AND p.path NOT LIKE '/snap/%'\n  AND pp.path NOT IN ('/usr/bin/containerd-shim-runc-v2')\n\
     \  -- Workaround for the GROUP_CONCAT subselect adding a blank ent\nGROUP BY\n\
     \  s.remote_address,\n  s.remote_port\nHAVING\n  remote_address != ''\n"
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

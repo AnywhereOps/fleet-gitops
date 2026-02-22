@@ -2,4 +2,3 @@
   description: Report current machine temperatures in the target OSX system.
   query: select * from temperature_sensors;
   platform: darwin
-  interval: 7200

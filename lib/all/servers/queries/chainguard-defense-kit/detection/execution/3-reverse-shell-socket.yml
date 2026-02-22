@@ -11,7 +11,6 @@
     WHERE\n  p.name IN ('sh', 'bash', 'perl', 'python')\n  AND pof.pid IS NULL\n \
     \ AND pos.remote_port > 0\n  AND NOT (\n    p.path = '/usr/bin/bash'\n    AND\
     \ pp.cmdline LIKE 'pacman -S%'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

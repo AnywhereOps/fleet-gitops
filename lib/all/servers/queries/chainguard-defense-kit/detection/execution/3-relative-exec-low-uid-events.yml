@@ -34,7 +34,6 @@
     \ './updater -insecure https://10.%:9174/check-update/macos'\n  AND p0_path NOT\
     \ LIKE '/private/tmp/PKInstallSandbox.%/Scripts/com.microsoft.OneDrive.%/OneDrivePkgTelemetry'\n\
     \  AND NOT p0_cgroup LIKE '/system.slice/docker-%'\n"
-  interval: 180
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

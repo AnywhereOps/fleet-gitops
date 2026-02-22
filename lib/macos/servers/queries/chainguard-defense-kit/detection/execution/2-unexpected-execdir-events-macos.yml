@@ -174,7 +174,6 @@
     \ spam alerts with repeated invocations of the same command-line\nGROUP BY\n \
     \ p.cmdline,\n  p.cwd,\n  p.euid;\n"
   platform: darwin
-  interval: 240
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -132,7 +132,6 @@
     \    AND s_auth = 'Developer ID Application: MacPaw Inc. (S8EX82NJP6)'\n  )\n\
     GROUP BY\n  p0.pid\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

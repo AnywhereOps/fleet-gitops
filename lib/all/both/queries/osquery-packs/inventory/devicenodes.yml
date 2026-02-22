@@ -3,4 +3,3 @@
   query: select file.path, uid, gid, mode, 0 as atime, mtime, ctime, block_size, type
     from file where directory = '/dev/';
   platform: posix
-  interval: 7200

@@ -12,7 +12,6 @@
     \  -- Kandji temp file\n  AND NOT (\n    file.path LIKE '/Library/LaunchAgents/.dat.nosync%'\n\
     \    AND size = 242\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

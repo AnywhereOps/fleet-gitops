@@ -3,4 +3,3 @@
     Application Layer Firewall.
   query: select * from alf_explicit_auths;
   platform: darwin
-  interval: 86400

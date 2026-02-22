@@ -73,7 +73,6 @@
     \ with administrator privileges',\n    'osascript -e user locale of (get system\
     \ info)'\n  )\nGROUP BY\n  pe.pid\n"
   platform: darwin
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

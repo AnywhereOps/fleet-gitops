@@ -73,7 +73,6 @@
     \ p0.cmdline LIKE '%python -m pip%'\n  AND NOT p0.cmdline LIKE '%/lib/gcloud.py\
     \ components update'\n  AND NOT p0.cmdline LIKE '%brew.rb upgrade%'\n  AND NOT\
     \ p0.cgroup_path LIKE '/system.slice/docker-%'\n  AND p0.cwd != '/home/build'\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

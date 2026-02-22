@@ -14,7 +14,6 @@
     \ 1\n    OR btime_newer == 1\n  )\n  AND NOT p.path LIKE '/Applications/Signal.app%'\n\
     \  AND NOT p.path LIKE '/private/var/db/com.apple.xpc.roleaccountd.staging/%'\n\
     \  -- 2038\n  AND NOT f.mtime > 2153484373\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

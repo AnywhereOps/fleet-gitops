@@ -51,7 +51,6 @@
     \ Extension Helper.app/Contents/MacOS'\n  AND NOT homedir LIKE '~/Library/Application\
     \ Support/Code/User/globalStorage/ms-dotnettools.vscode-dotnet-runtime/.dotnet/%'\n\
     \  AND NOT p0_cgroup LIKE '/system.slice/docker-%'\nGROUP BY\n  f.path\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

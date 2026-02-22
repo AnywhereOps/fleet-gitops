@@ -3,7 +3,6 @@
     the target OSX system.
   query: "SELECT\n  *\nFROM\n  kernel_extensions;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -3,4 +3,3 @@
     system.
   query: select * from keychain_items;
   platform: darwin
-  interval: 86400

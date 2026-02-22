@@ -7,7 +7,6 @@
     \    OR (\n      major = \"20\"\n      AND CAST(patch AS integer) < 30517\n  \
     \  )\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

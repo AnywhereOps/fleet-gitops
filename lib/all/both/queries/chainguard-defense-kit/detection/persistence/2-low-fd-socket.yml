@@ -20,7 +20,6 @@
     \    '/Library/Application Support/Viscosity/viscosity_openvpn',\n    '/usr/bin/skopeo',\n\
     \    '/usr/libexec/bootpd',\n    '/usr/libexec/pcp/bin/pmcd',\n    '/usr/local/bin/velociraptor'\n\
     \  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

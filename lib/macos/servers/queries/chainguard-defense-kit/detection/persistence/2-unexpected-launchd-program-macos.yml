@@ -49,7 +49,6 @@
     \  )\n  AND NOT l.label IN ('org.nix-community.home.sops-nix','com.github.domt4.homebrew-autoupdate')\n\
     GROUP BY\n  l.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

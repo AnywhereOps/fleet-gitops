@@ -2,7 +2,6 @@
   description: Retrieves IOKit registry
   query: "SELECT\n  *\nFROM\n  iokit_registry;\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

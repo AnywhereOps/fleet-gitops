@@ -2,7 +2,6 @@
   description: Returns the OS memory region map.
   query: "SELECT\n  *\nFROM\n  memory_map;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

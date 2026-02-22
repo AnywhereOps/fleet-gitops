@@ -1,4 +1,3 @@
 - name: Startup_Items
   description: Windows Startup Items Osquery predefined query - ATT&CK T1060
   query: select * from startup_items;
-  interval: 3600

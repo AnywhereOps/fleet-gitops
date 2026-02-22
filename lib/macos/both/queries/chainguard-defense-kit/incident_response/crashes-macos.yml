@@ -2,7 +2,6 @@
   description: Retrieves crash log info per user
   query: "SELECT\n  *\nFROM\n  users\n  JOIN crashes USING (uid);\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

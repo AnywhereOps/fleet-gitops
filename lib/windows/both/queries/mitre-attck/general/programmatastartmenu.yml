@@ -7,4 +7,3 @@
     FROM hash JOIN file USING (path) where path like 'C:\ProgramData\Microsoft\Windows\Start
     Menu\%' AND type='regular';
   platform: windows
-  interval: 1860

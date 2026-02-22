@@ -49,7 +49,6 @@
     \ file'\n    AND basename LIKE '._%'\n  )\n  AND NOT (\n    filename = \".install\"\
     \n    AND size = 0\n  )\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

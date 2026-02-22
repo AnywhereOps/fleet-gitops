@@ -52,7 +52,6 @@
     \  AND NOT exception_key LIKE '500,remindd,/private/var/folders/%/T/.AddressBookLocks'\n\
     \  AND NOT exception_key LIKE '500,ykman-gui,/private/var/folders/%/T'\nGROUP\
     \ BY\n  p0.path,\n  pof.path\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

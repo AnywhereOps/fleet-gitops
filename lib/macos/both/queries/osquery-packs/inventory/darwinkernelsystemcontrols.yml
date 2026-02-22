@@ -4,4 +4,3 @@
   query: select * from system_controls where subsystem = 'kern' and (name like '%boot%'
     or name like '%secure%' or name like '%single%');
   platform: darwin
-  interval: 7200

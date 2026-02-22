@@ -17,7 +17,6 @@
     \ LIKE 'test-%.rsa'\n  AND NOT file.filename LIKE 'demo-%.rsa'\n  AND NOT file.path\
     \ LIKE \"%/testdata/%\"\nGROUP BY\n  file.path\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

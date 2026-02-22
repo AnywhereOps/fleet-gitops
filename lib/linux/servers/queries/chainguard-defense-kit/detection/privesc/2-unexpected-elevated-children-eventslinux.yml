@@ -54,7 +54,6 @@
     \n  )\n  AND NOT p.cgroup_path LIKE '/system.slice/docker-%'\n  AND NOT p1.cgroup_path\
     \ LIKE '/system.slice/docker-%'\nGROUP BY\n  pe.pid\n"
   platform: linux
-  interval: 600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

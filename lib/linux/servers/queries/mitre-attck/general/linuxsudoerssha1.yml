@@ -5,4 +5,3 @@
     'unixepoch', 'UTC') as ctime, datetime(fi.mtime, 'unixepoch', 'UTC') as mtime
     FROM hash JOIN file fi USING (path) where (fi.path like '/etc/sudoers') AND type='regular';
   platform: linux
-  interval: 3600

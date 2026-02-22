@@ -3,7 +3,6 @@
   query: "SELECT\n  lp.*,\n  p.name AS p_name,\n  p.start_time AS p_time,\n  p.path\
     \ AS p_path,\n  p.euid AS p_euid\nFROM\n  listening_ports AS lp\n  LEFT JOIN processes\
     \ p ON lp.pid = p.pid;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

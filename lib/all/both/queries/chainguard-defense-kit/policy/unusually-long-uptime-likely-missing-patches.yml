@@ -4,7 +4,6 @@
   query: "SELECT\n  os_version.name AS os_name,\n  os_version.version AS os_version,\n\
     \  kernel_info.version AS kernel,\n  days AS uptime_days\nFROM\n  kernel_info,\n\
     \  os_version,\n  uptime\nWHERE\n  uptime.days > 89;\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

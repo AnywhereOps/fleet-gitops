@@ -1,7 +1,6 @@
 - name: CDK - Users
   description: Returns a list of users
   query: "SELECT\n  *\nFROM\n  users\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

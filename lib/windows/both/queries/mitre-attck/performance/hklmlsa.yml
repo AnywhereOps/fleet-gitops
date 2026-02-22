@@ -3,4 +3,3 @@
     - ATT&CK T1131
   query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\system\CurrentControlSet\Control\Lsa';
   platform: windows
-  interval: 3600

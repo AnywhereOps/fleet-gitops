@@ -45,7 +45,6 @@
     \  AND NOT (\n    exception_key = '32768,17,500,qemu-system-x86'\n    AND homecwd\
     \ LIKE '/tmp/wolfi-%'\n  )\n  AND NOT (\n    exception_key = '32768,17,500,go'\n\
     \    AND homecwd LIKE '%/.terraform/modules/%'\n  )\n"
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

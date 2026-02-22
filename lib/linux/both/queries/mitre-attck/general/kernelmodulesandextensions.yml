@@ -7,4 +7,3 @@
     ''%lsmod%'' OR sht.command  LIKE ''%rmmod%'' OR sht.command LIKE ''%modinfo%''
     OR sht.command LIKE ''%linux-headers-$%''OR sht.command LIKE ''%kernel-devel-$%'');'
   platform: linux
-  interval: 3600

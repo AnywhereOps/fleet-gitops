@@ -56,7 +56,6 @@
     \ '/system.slice/system.slice:docker:%'\n  AND NOT p.cgroup_path LIKE '/user.slice/user-%.slice/user@%.service/user.slice/nerdctl-%'\
     \ -- Tests\n  AND NOT p.path LIKE '/tmp/go-build%.test'\nGROUP BY\n  p.cmdline\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

@@ -15,7 +15,6 @@
     \ = 0\n  AND pmm.device = '00:00'\n  AND pmm.permissions = 'r--p'\n  AND pmm.pseudo\
     \ = 0\n  and pmm.start LIKE '0x0%'\nGROUP BY\n  p0.pid;\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

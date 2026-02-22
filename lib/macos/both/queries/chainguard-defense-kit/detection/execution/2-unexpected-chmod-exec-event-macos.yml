@@ -41,7 +41,6 @@
     \ 'now') -300)\n  AND pe.syscall = \"execve\"\n  AND f.type != 'directory'\nGROUP\
     \ BY\n  p0_pid\n"
   platform: darwin
-  interval: 300
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

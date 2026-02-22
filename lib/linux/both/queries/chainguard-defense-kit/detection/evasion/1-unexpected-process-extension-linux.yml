@@ -26,7 +26,6 @@
     \ NOT basename LIKE 'python3.%'\n  AND NOT basename LIKE 'emacs-%'\n  AND NOT\
     \ basename LIKE 'terraform-provider%'\n  AND NOT basename LIKE 'unison-%'\n"
   platform: linux
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot

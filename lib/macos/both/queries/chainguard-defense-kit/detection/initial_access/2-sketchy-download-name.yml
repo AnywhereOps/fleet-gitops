@@ -38,7 +38,6 @@
     \ LIKE 'https://prod-downloads.geocomply.com/%'\n    OR download_url LIKE 'https://%.bose.com/%'\n\
     \  )\nGROUP BY\n  file.filename\n"
   platform: darwin
-  interval: 3600
   observer_can_run: true
   automations_enabled: false
   logging: snapshot
