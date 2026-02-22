@@ -2,7 +2,7 @@
 
 policies:
 queries:
-  - path: ./lib/**/queries/**/*.yml
+  - path: lib/**/queries/**/*.yml
 agent_options:
 controls:
 org_settings:
