@@ -2,4 +2,4 @@
   description: Retrieves the services for the Application Layer Firewall in OSX.
   query: select * from alf_services;
   platform: darwin
-  interval: '86400'
+  interval: 86400

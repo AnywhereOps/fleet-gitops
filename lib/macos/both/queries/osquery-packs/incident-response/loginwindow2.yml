@@ -3,4 +3,4 @@
     OSX system.
   query: select key, subkey, value from plist where path = '/Library/Preferences/loginwindow.plist';
   platform: darwin
-  interval: '86400'
+  interval: 86400

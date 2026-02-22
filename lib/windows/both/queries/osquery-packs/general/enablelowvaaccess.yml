@@ -3,4 +3,4 @@
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
     Manager\Memory Management\EnableLowVaAccess'
   platform: windows
-  interval: '86400'
+  interval: 86400

@@ -4,4 +4,4 @@
   query: select username, key, subkey, value from plist p, (select * from users where
     directory like '/Users/%') u where p.path = u.directory || '/Library/Preferences/loginwindow.plist';
   platform: darwin
-  interval: '86400'
+  interval: 86400

@@ -2,4 +2,4 @@
   description: Determine state of Certificate Padding (https://docs.microsoft.com/en-us/security-updates/securityadvisories/2014/2915720)
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Cryptography\WinTrust\Config\EnableCertPaddingCheck'
   platform: windows
-  interval: '86400'
+  interval: 86400
