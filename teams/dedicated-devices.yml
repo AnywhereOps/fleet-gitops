@@ -5,7 +5,6 @@ queries:
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/evasion/2-executables-from-the-future.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/execution/1-unexpected-executable-permissions.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/execution/2-tiny-executable.yml
-  - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/exfil/3-yara-unexpected-rust-http-exec-process.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/initial_access/1-unexpected-shell-parent-events.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/initial_access/1-unexpected-shell-parents.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/persistence/1-unexpected-chrome-extensions.yml

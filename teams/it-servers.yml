@@ -83,8 +83,6 @@ queries:
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/persistence/1-unexpected-systemctl-calls-linux.yml
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/persistence/1-unexpected-uid0-daemon-linux.yml
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/persistence/2-minimal-socket-client-linux.yml
-  - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/persistence/2-suspicious-systemd-unit.yml
-  - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/persistence/3-yara-suspicious-strings-process-linux.yml
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/privesc/1-unexpected-privileged-containers.yml
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/privesc/2-docker-container-mounting-root.yml
   - path: ../lib/linux/servers/queries/chainguard-defense-kit/detection/privesc/2-unexpected-elevated-children-eventslinux.yml
