@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: suid_bin
+  description: suid binaries in common locations.
+  query: SELECT * FROM suid_bin;
+  platform: darwin
+  team: both

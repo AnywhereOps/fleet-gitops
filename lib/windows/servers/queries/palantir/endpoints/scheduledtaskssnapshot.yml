@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: scheduled_tasks_snapshot
+  description: Scheduled Tasks snapshot query
+  query: SELECT * FROM scheduled_tasks;
+  platform: windows
+  team: servers

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: wmi_cli_event_consumers_snapshot
+  description: Snapshot query for WMI event consumers.
+  query: SELECT * FROM wmi_cli_event_consumers;
+  platform: windows
+  team: both

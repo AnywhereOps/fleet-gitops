@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: bitlocker_autoencrypt_settings_registry
+  description: Controls Bitlocker full-disk encryption settings.
+  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Bitlocker\%%';
+  platform: windows
+  team: devices

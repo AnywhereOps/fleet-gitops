@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: platform_info_snapshot
+  description: Platform info snapshot query
+  query: SELECT vendor, version, date, revision from platform_info;
+  platform: darwin
+  team: both

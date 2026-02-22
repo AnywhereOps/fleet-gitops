@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: startup_items
+  description: Applications and binaries set as user/login startup items.
+  query: SELECT * FROM startup_items;
+  platform: darwin
+  team: both

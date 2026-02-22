@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: patches
+  description: Lists all the patches applied
+  query: SELECT * FROM patches;
+  platform: windows
+  team: both

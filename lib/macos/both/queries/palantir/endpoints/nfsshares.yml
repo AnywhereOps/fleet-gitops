@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: nfs_shares
+  description: NFS shares exported by the host.
+  query: SELECT * FROM nfs_shares;
+  platform: darwin
+  team: both

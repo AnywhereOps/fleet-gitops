@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: network_interfaces_snapshot
+  description: Retrieve the interface name, IP address, and MAC address for all interfaces on the host.
+  query: SELECT a.interface, a.address, d.mac FROM interface_addresses a JOIN interface_details d USING (interface);
+  platform: darwin
+  team: both

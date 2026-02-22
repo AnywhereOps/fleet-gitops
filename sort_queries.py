@@ -760,7 +760,7 @@ def process_sql_source(source_dir, target_dir, output_folder, prefix, dry_run):
             spec["team"] = device_type
 
             out_filename = slugify(os.path.splitext(filename)[0]) + ".yml"
-            out_dir = os.path.join(target_dir, lib_subdir, "queries", output_folder, category)
+            out_dir = os.path.join(target_dir, lib_subdir, device_type, "queries", output_folder, category)
             out_path = os.path.join(out_dir, out_filename)
 
             yaml_content = generate_yaml_doc("query", spec)
@@ -892,7 +892,7 @@ def process_structured_source(source_path, target_dir, output_folder, dry_run):
 
             query_name = spec.get("name", "unnamed")
             out_filename = slugify(query_name) + ".yml"
-            out_dir = os.path.join(target_dir, lib_subdir, "queries", output_folder, category)
+            out_dir = os.path.join(target_dir, lib_subdir, device_type, "queries", output_folder, category)
             out_path = os.path.join(out_dir, out_filename)
 
             yaml_content = generate_yaml_doc(kind, out_spec)

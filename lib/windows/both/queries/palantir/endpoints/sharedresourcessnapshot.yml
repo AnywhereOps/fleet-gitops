@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: shared_resources_snapshot
+  description: Shared resources snapshot query
+  query: SELECT * FROM shared_resources;
+  platform: windows
+  team: both

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: file_events
+  description: Track time/action changes to files specified in configuration data.
+  query: SELECT * FROM file_events;
+  platform: darwin
+  team: both

@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: event_taps
+  description: Returns information about installed event taps. Can be used to detect keyloggers
+  query: SELECT * FROM event_taps INNER JOIN processes ON event_taps.tapping_process = processes.pid WHERE event_tapped NOT LIKE '%mouse%' AND processes.path NOT IN ('/usr/libexec/airportd', '/usr/sbin/universalaccessd')
+    AND processes.path NOT LIKE '/System/Library/%' AND processes.path NOT LIKE '%/steamapps/%' AND processes.path NOT LIKE '%.app%' AND event_taps.enabled=1;
+  platform: darwin
+  team: both

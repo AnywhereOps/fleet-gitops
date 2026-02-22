@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: authorized_keys
+  description: List authorized_keys for each user on the system
+  query: SELECT * FROM users CROSS JOIN authorized_keys USING (uid);
+  platform: darwin
+  team: servers

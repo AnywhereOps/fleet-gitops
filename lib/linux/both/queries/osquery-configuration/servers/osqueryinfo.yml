@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: osquery_info
+  description: Information about the running osquery configuration
+  query: SELECT * FROM osquery_info;
+  platform: linux
+  team: both

@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: backup_tool_perf
+  description: Track the percentage of total CPU time utilized by $backup_tool
+  query: SELECT ((backuptool_time*100)/(SUM(system_time) + SUM(user_time))) AS pct FROM processes, (SELECT (SUM(processes.system_time)+SUM(processes.user_time)) AS backuptool_time FROM processes WHERE name='backup_tool');
+  team: both

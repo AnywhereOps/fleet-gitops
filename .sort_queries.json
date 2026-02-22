@@ -23,5 +23,15 @@
     "output_folder": "osquery-npacks",
     "source_type": "conf",
     "prefix": ""
+  },
+  "Palantir": {
+    "output_folder": "palantir",
+    "source_type": "yaml",
+    "prefix": ""
+  },
+  "osquery-packs": {
+    "output_folder": "osquery-packs",
+    "source_type": "conf",
+    "prefix": ""
   }
 }

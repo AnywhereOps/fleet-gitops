@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: query
+spec:
+  name: error_mode_registry
+  description: 'Controls the suppression of error dialog boxes. The default value is 0 (all messages are visible), but some malware sets this value to 2 (all messages are invisible). See: https://www.documentcloud.org/documents/3477047-Document-07-Neel-Mehta-Billy-Leonard-and-Shane.html'
+  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Windows\ErrorMode';
+  platform: windows
+  team: both
