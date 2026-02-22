@@ -5,4 +5,5 @@ agent_options:
 controls:
 software:
 team_settings:
-  secrets: []
+  secrets:
+    - secret: "$FLEET_GLOBAL_ENROLL_SECRET"

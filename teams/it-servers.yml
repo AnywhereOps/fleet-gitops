@@ -1,8 +1,17 @@
 name: ☁️ IT servers
 queries:
+  - path: ../lib/linux/servers/queries/
+  - path: ../lib/linux/both/queries/
+  - path: ../lib/macos/servers/queries/
+  - path: ../lib/macos/both/queries/
+  - path: ../lib/windows/servers/queries/
+  - path: ../lib/windows/both/queries/
+  - path: ../lib/all/servers/queries/
+  - path: ../lib/all/both/queries/
 policies:
 agent_options:
 controls:
 software:
 team_settings:
-  secrets: []
+  secrets:
+    - secret: "$FLEET_GLOBAL_ENROLL_SECRET"
