@@ -1,7 +1,0 @@
-- name: Get current users with active shell/console on the system
-  description: Get current users with active shell/console on the system and associated
-    process
-  query: SELECT user,host,time, p.name, p.cmdline, p.cwd, p.root FROM logged_in_users
-    liu, processes p WHERE liu.pid = p.pid and liu.type='user' and liu.user <> ''
-    ORDER BY time;
-  platform: darwin, linux, windows

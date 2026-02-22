@@ -1,4 +1,0 @@
-- name: disk_encryption_snapshot
-  description: Disk encryption status and information.
-  query: SELECT * FROM disk_encryption;
-  platform: darwin

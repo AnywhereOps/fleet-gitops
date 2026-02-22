@@ -1,6 +1,0 @@
-- name: Identify the default mail, http and ftp applications
-  description: Lists the currently enabled applications configured to handle mailto,
-    http and ftp schemes.
-  query: SELECT * FROM app_schemes WHERE (scheme='mailto' OR scheme='http' OR scheme='ftp')
-    AND enabled='1';
-  platform: darwin

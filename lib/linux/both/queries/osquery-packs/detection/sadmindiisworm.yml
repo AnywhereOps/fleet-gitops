@@ -1,5 +1,0 @@
-- name: sadmind/iis_worm
-  description: sadmind/iis_worm
-  query: select * from file where path in ('/dev/cuc');
-  platform: linux
-  interval: '3600'

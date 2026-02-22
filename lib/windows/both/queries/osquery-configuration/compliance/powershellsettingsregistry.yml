@@ -1,5 +1,0 @@
-- name: powershell_settings_registry
-  description: Controls Powershell execution policy, script execution, logging, and
-    more.
-  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Powershell\%%';
-  platform: windows

@@ -1,5 +1,0 @@
-- name: volc_rootkit
-  description: volc_rootkit
-  query: select * from file where path in ('/usr/lib/volc', '/usr/bin/volc');
-  platform: linux
-  interval: '3600'

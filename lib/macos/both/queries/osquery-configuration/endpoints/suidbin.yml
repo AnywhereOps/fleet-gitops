@@ -1,4 +1,0 @@
-- name: suid_bin
-  description: suid binaries in common locations.
-  query: SELECT * FROM suid_bin;
-  platform: darwin

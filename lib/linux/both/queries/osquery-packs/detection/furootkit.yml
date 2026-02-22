@@ -1,5 +1,0 @@
-- name: fu_rootkit
-  description: fu_rootkit
-  query: select * from file where path in ('/sbin/xc', '/usr/include/ivtype.h', '/bin/.lib');
-  platform: linux
-  interval: '3600'

@@ -1,4 +1,0 @@
-- name: apt_sources
-  description: Display apt package manager sources.
-  query: SELECT * FROM apt_sources;
-  platform: linux

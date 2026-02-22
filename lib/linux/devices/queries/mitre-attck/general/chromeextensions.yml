@@ -1,6 +1,0 @@
-- name: chrome_extensions
-  description: Lists all chrome extensions - ATT&CK T1176
-  query: SELECT u.username, ce.* FROM users u CROSS JOIN chrome_extensions ce USING
-    (uid);
-  platform: linux
-  interval: 3600

@@ -1,5 +1,0 @@
-- name: event_log_settings_registry
-  description: Controls behavior, size, and rotation strategy for primary windows
-    event log files.
-  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\EventLog\%%';
-  platform: windows

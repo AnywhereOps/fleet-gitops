@@ -1,6 +1,0 @@
-- name: Get Docker contained processes on a system
-  description: Docker containers Processes, can be used on normal systems or a kubenode.
-  query: SELECT c.id, c.name, c.image, c.image_id, c.command, c.created, c.state,
-    c.status, p.cmdline  FROM docker_containers c JOIN docker_container_processes
-    p ON c.id = p.id;
-  platform: darwin, linux

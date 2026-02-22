@@ -1,4 +1,0 @@
-- name: System information
-  description: Retrieves information about a device's hardware.
-  query: SELECT * FROM system_info LIMIT 1
-  platform: windows

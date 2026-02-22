@@ -1,5 +1,0 @@
-- name: usb_devices
-  description: Check USB device on the host - ATT&CK T1052
-  query: SELECT * FROM usb_devices;
-  platform: linux
-  interval: 3600

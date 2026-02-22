@@ -1,5 +1,0 @@
-- name: programs_snapshot
-  description: Local system users.
-  query: select * from programs;
-  platform: windows
-  interval: 28800

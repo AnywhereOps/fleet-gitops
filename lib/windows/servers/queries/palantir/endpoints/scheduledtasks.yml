@@ -1,4 +1,0 @@
-- name: scheduled_tasks
-  description: Lists all of the tasks in the Windows task scheduler
-  query: SELECT * FROM scheduled_tasks;
-  platform: windows

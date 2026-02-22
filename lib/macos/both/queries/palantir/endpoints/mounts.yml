@@ -1,4 +1,0 @@
-- name: mounts
-  description: System mounted devices and filesystems (not process specific).
-  query: SELECT device, device_alias, path, type, blocks_size FROM mounts;
-  platform: darwin

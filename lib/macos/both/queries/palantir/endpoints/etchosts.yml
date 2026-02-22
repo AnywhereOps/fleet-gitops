@@ -1,4 +1,0 @@
-- name: etc_hosts
-  description: List the contents of /etc/hosts
-  query: SELECT * FROM etc_hosts;
-  platform: darwin

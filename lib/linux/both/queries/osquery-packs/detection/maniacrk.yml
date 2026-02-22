@@ -1,5 +1,0 @@
-- name: maniac_rk
-  description: maniac_rk
-  query: select * from file where path in ('/usr/bin/mailrc');
-  platform: linux
-  interval: '3600'

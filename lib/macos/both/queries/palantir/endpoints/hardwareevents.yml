@@ -1,4 +1,0 @@
-- name: hardware_events
-  description: Hardware (PCI/USB/HID) events from UDEV or IOKit.
-  query: SELECT * FROM hardware_events;
-  platform: darwin

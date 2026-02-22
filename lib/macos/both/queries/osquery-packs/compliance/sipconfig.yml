@@ -1,6 +1,0 @@
-- name: sip_config
-  description: Retrieves the current System Integrity Protection configuration in
-    the target system.
-  query: select * from sip_config;
-  platform: darwin
-  interval: '86400'

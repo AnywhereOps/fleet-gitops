@@ -1,5 +1,0 @@
-- name: Get dynamic linker hijacking on Linux (MITRE. T1574.006)
-  description: Detect any processes that run with LD_PRELOAD environment variable
-  query: SELECT env.pid, env.key, env.value, p.name,p.path, p.cmdline, p.cwd FROM
-    process_envs env join processes p USING (pid) WHERE key='LD_PRELOAD';
-  platform: linux

@@ -1,6 +1,0 @@
-- name: launchd
-  description: Retrieves all the daemons that will run in the start of the target
-    OSX system.
-  query: select * from launchd;
-  platform: darwin
-  interval: '3600'

@@ -1,5 +1,0 @@
-- name: osquery_info
-  description: Retrieves the current version of the running osquery in the target
-    system and where the configuration was loaded from.
-  query: select * from time, osquery_info;
-  interval: '86400'

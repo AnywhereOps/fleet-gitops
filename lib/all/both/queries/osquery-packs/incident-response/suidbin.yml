@@ -1,5 +1,0 @@
-- name: suid_bin
-  description: Retrieves all the files in the target system that are setuid enabled.
-  query: select * from suid_bin;
-  platform: posix
-  interval: '3600'

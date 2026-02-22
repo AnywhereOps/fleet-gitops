@@ -1,6 +1,0 @@
-- name: lsass.exe_incorrect_path
-  description: Detect processes masquerading as legitimate Windows processes - ATT&CK
-    T1034
-  query: SELECT * FROM processes WHERE LOWER(name)='lsass.exe' AND LOWER(path)!='c:\windows\system32\lsass.exe'
-    AND path!='';
-  interval: 3600

@@ -1,4 +1,0 @@
-- name: users_snapshot
-  description: Local system users.
-  query: SELECT * FROM users;
-  platform: darwin

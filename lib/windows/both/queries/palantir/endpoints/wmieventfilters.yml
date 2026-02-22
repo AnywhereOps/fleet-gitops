@@ -1,4 +1,0 @@
-- name: wmi_event_filters
-  description: Lists WMI event filters.
-  query: SELECT * FROM wmi_event_filters;
-  platform: windows

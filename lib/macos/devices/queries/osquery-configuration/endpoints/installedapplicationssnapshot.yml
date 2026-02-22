@@ -1,5 +1,0 @@
-- name: installed_applications_snapshot
-  description: Snapshot query for installed_applications
-  query: SELECT name, path, bundle_short_version, bundle_version, display_name FROM
-    apps;
-  platform: darwin

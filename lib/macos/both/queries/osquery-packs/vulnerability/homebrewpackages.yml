@@ -1,5 +1,0 @@
-- name: homebrew_packages
-  description: Retrieves the list of brew packages installed in the target OSX system.
-  query: select * from homebrew_packages;
-  platform: darwin
-  interval: '86400'

@@ -1,5 +1,0 @@
-- name: 55808.a_worm
-  description: 55808.a_worm
-  query: select * from file where path in ('/tmp/.../a', '/tmp/.../r');
-  platform: linux
-  interval: '3600'

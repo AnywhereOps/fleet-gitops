@@ -1,4 +1,0 @@
-- name: Check for artifacts of the Floxif trojan
-  description: Checks for artifacts from the Floxif trojan on Windows machines.
-  query: SELECT * FROM registry WHERE path LIKE 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Piriform\\Agomo%';
-  platform: windows

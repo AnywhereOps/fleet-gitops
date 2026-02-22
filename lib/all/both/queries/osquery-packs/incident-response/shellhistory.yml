@@ -1,6 +1,0 @@
-- name: shell_history
-  description: Retrieves the command history, per user, by parsing the shell history
-    files.
-  query: select * from users join shell_history using (uid);
-  platform: posix
-  interval: '86400'

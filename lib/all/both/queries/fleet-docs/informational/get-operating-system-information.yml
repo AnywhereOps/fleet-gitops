@@ -1,4 +1,0 @@
-- name: Get operating system information
-  description: Returns the operating system name and version on the device.
-  query: SELECT name, version FROM os_version;
-  platform: darwin, windows, linux

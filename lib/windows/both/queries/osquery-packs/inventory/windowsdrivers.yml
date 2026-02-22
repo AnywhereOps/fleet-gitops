@@ -1,6 +1,0 @@
-- name: windows_drivers
-  description: Retrieves all the information for the current windows drivers in the
-    target Windows system.
-  query: select * from drivers;
-  platform: windows
-  interval: '7200'

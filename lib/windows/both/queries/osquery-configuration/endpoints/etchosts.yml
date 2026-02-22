@@ -1,4 +1,0 @@
-- name: etc_hosts
-  description: List the contents of the Windows hosts file
-  query: SELECT * FROM etc_hosts;
-  platform: windows

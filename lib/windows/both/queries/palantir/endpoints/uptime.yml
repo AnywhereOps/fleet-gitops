@@ -1,4 +1,0 @@
-- name: uptime
-  description: System uptime
-  query: SELECT * FROM uptime;
-  platform: windows

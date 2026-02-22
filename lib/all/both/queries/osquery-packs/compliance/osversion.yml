@@ -1,5 +1,0 @@
-- name: os_version
-  description: Retrieves information from the Operative System where osquery is currently
-    running.
-  query: select * from os_version;
-  interval: '86400'

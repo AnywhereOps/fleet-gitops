@@ -1,5 +1,0 @@
-- name: monkit
-  description: monkit
-  query: select * from file where path in ('/lib/defs');
-  platform: linux
-  interval: '3600'

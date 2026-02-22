@@ -1,4 +1,0 @@
-- name: dns_resolvers
-  description: DNS resolvers used by the host
-  query: SELECT * FROM dns_resolvers;
-  platform: linux

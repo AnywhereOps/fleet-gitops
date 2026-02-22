@@ -1,4 +1,0 @@
-- name: users
-  description: Local system users.
-  query: SELECT * FROM users;
-  platform: linux

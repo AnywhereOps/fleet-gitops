@@ -1,5 +1,0 @@
-- name: iptables
-  description: Retrieves the current filters and chains per filter in the target system.
-  query: select * from iptables;
-  platform: linux
-  interval: '3600'

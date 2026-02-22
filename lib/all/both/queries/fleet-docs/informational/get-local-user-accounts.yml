@@ -1,5 +1,0 @@
-- name: Get local user accounts
-  description: Local user accounts (including domain accounts that have logged on
-    locally (Windows)).
-  query: SELECT uid, gid, username, description, directory, shell FROM users;
-  platform: darwin, linux, windows

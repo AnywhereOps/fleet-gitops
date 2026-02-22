@@ -1,9 +1,0 @@
-- name: Get malicious Python backdoors
-  description: Watches for the backdoored Python packages installed on the system.
-    See (http://www.nbu.gov.sk/skcsirt-sa-20170909-pypi/index.html)
-  query: SELECT CASE cnt WHEN 0 THEN "NONE_INSTALLED" ELSE "INSTALLED" END AS "Malicious
-    Python Packages", package_name, package_version FROM (SELECT COUNT(name) AS cnt,
-    name AS package_name, version AS package_version, path AS package_path FROM python_packages
-    WHERE package_name IN ('acquisition', 'apidev-coop', 'bzip', 'crypt', 'django-server',
-    'pwd', 'setup-tools', 'telnet', 'urlib3', 'urllib'));
-  platform: darwin, linux, windows

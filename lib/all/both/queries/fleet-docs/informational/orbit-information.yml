@@ -1,5 +1,0 @@
-- name: Orbit information
-  description: Retrieves configuration information the osquery version and configuration
-    manager running on a device.
-  query: SELECT * FROM orbit_info
-  platform: darwin, linux, windows

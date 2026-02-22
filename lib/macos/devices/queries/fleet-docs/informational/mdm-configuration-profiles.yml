@@ -1,9 +1,0 @@
-- name: MDM configuration profiles
-  description: Retrieves information about mobile device management (MDM) configuration
-    profiles installed on a macOS device.
-  query: "SELECT 1\nWHERE EXISTS (\n    SELECT 1\n    FROM osquery_registry\n    WHERE\
-    \ active = true\n      AND registry = 'table'\n      AND name = 'macos_profiles'\n\
-    )\nAND NOT EXISTS (\n    SELECT 1\n    FROM osquery_registry\n    WHERE active\
-    \ = true\n      AND registry = 'table'\n      AND name = 'macos_user_profiles'\n\
-    );\n"
-  platform: darwin

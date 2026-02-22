@@ -1,5 +1,0 @@
-- name: Google Chrome profiles
-  description: Retrieves the email address of Google Chrome profile on a host.
-  query: "SELECT \n  email \nFROM google_chrome_profiles \nWHERE NOT ephemeral AND\
-    \ email <> ''\n"
-  platform: windows, darwin, linux, chrome

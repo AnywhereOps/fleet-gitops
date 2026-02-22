@@ -1,5 +1,0 @@
-- name: firefox_addons
-  description: Retrieves the list of addons for Firefox in the target system.
-  query: select * from users join firefox_addons using (uid);
-  platform: darwin
-  interval: '86400'

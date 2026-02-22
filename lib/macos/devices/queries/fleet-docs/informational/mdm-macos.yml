@@ -1,6 +1,0 @@
-- name: MDM (macOS)
-  description: Retrieves information about the mobile device management (MDM) solution
-    this host is enrolled in.
-  query: "SELECT \n  enrolled, server_url, installed_from_dep, payload_identifier\
-    \ \nFROM mdm\n"
-  platform: darwin

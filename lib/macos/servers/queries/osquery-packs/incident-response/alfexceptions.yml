@@ -1,5 +1,0 @@
-- name: alf_exceptions
-  description: Retrieves the exceptions for the Application Layer Firewall in OSX.
-  query: select * from alf_exceptions;
-  platform: darwin
-  interval: '3600'

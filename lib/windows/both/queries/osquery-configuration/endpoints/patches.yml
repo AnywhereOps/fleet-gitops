@@ -1,4 +1,0 @@
-- name: patches
-  description: Lists all the patches applied
-  query: SELECT * FROM patches;
-  platform: windows

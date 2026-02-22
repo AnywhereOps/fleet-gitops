@@ -1,5 +1,0 @@
-- name: Get crashes
-  description: Retrieve application, system, and mobile app crash logs.
-  query: SELECT uid, datetime, responsible, exception_type, identifier, version, crash_path
-    FROM users CROSS JOIN crashes USING (uid);
-  platform: darwin

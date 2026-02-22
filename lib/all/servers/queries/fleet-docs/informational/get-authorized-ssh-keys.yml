@@ -1,7 +1,0 @@
-- name: Get authorized SSH keys
-  description: Presence of authorized SSH keys may be unusual on laptops. Could be
-    completely normal on servers, but may be worth auditing for unusual keys and/or
-    changes.
-  query: SELECT username, authorized_keys. * FROM users CROSS JOIN authorized_keys
-    USING (uid);
-  platform: darwin, linux

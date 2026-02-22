@@ -1,4 +1,0 @@
-- name: wmi_filter_consumer_binding_snapshot
-  description: Snapshot query for WMI filter consumer bindings.
-  query: SELECT * FROM wmi_filter_consumer_binding;
-  platform: windows

@@ -1,4 +1,0 @@
-- name: installed_applications
-  description: OS X applications installed in known search paths (e.g., /Applications).
-  query: SELECT * FROM apps;
-  platform: darwin

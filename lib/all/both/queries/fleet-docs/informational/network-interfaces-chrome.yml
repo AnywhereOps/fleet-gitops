@@ -1,4 +1,0 @@
-- name: Network interfaces (Chrome)
-  description: Retrieves information about a ChromeOS device's current network.
-  query: "SELECT \nipv4 AS address, mac \nFROM network_interfaces LIMIT 1\n"
-  platform: chrome

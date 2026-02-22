@@ -1,6 +1,0 @@
-- name: madalin_rootkit
-  description: madalin_rootkit
-  query: select * from file where path in ('/usr/include/icekey.h', '/usr/include/iceconf.h',
-    '/usr/include/iceseed.h');
-  platform: linux
-  interval: '3600'

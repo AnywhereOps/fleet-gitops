@@ -1,5 +1,0 @@
-- name: firefox_addons
-  description: Lists all Firefox addons - ATT&CK T1176
-  query: SELECT u.username, ce.* FROM users u CROSS JOIN firefox_addons ce USING (uid);
-  platform: linux
-  interval: 3600

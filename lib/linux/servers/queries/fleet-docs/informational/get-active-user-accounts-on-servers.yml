@@ -1,5 +1,0 @@
-- name: Get active user accounts on servers
-  description: Domain Joined environments normally have root or other service only
-    accounts and users are SSH-ing using their Domain Accounts.
-  query: SELECT * FROM shadow WHERE password_status='active' and username!='root';
-  platform: linux

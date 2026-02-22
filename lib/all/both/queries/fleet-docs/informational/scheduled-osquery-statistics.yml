@@ -1,5 +1,0 @@
-- name: Scheduled osquery statistics
-  description: Retrieves statistics about queries that are scheduled on a device.
-  query: "SELECT *,\n        (SELECT value from osquery_flags where name = 'pack_delimiter')\
-    \ AS delimiter\n      FROM osquery_schedule\n"
-  platform: darwin, windows, linux

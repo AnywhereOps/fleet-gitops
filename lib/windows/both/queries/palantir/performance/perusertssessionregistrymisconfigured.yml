@@ -1,5 +1,0 @@
-- name: per_user_ts_session_registry_misconfigured
-  description: Returns the content of the key if it does not match the expected value
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal
-    Server\fSingleSessionPerUser' AND data!=1;
-  platform: windows

@@ -1,4 +1,0 @@
-- name: certificates_snapshot
-  description: List all certificates in the trust store (snapshot query)
-  query: SELECT * FROM certificates WHERE path != 'Other People';
-  platform: windows

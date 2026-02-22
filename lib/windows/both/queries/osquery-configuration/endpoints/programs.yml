@@ -1,4 +1,0 @@
-- name: programs
-  description: Lists installed programs
-  query: SELECT * FROM programs;
-  platform: windows

@@ -1,6 +1,0 @@
-- name: bobkit_rootkit
-  description: bobkit_rootkit
-  query: select * from file where path in ('/usr/include/.../', '/usr/lib/.../', '/usr/sbin/.../',
-    '/usr/bin/ntpsx', '/tmp/.bkp', '/usr/lib/.bkit-');
-  platform: linux
-  interval: '3600'

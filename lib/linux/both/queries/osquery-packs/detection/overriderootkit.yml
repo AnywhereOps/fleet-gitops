@@ -1,6 +1,0 @@
-- name: override_rootkit
-  description: override_rootkit
-  query: select * from file where path in ('/dev/grid-hide-pid-', '/dev/grid-unhide-pid-',
-    '/dev/grid-show-pids', '/dev/grid-hide-port-', '/dev/grid-unhide-port-');
-  platform: linux
-  interval: '3600'

@@ -1,4 +1,0 @@
-- name: users
-  description: Local system users. - ATT&CK T1136,T1078
-  query: SELECT * FROM users;
-  interval: 3600

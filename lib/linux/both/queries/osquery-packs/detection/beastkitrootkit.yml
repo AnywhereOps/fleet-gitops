@@ -1,6 +1,0 @@
-- name: beastkit_rootkit
-  description: beastkit_rootkit
-  query: select * from file where path in ('/usr/local/bin/bin', '/usr/man/.man10',
-    '/usr/sbin/arobia', '/usr/lib/elm/arobia', '/usr/local/bin/.../bktd');
-  platform: linux
-  interval: '3600'

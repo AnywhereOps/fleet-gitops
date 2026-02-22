@@ -1,5 +1,0 @@
-- name: bash_door
-  description: bash_door
-  query: select * from file where path in ('/tmp/mcliZokhb', '/tmp/mclzaKmfa');
-  platform: linux
-  interval: '3600'

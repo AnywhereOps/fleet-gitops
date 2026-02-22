@@ -1,4 +1,0 @@
-- name: Get laptops with failing batteries
-  description: Lists all laptops with under-performing or failing batteries.
-  query: SELECT * FROM battery WHERE health != 'Good' AND condition NOT IN ('', 'Normal');
-  platform: darwin

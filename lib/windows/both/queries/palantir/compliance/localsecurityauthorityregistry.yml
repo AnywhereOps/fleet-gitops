@@ -1,5 +1,0 @@
-- name: local_security_authority_registry
-  description: Controls which security packages store credentials in LSA memory, secure
-    boot, etc.
-  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa\%%';
-  platform: windows

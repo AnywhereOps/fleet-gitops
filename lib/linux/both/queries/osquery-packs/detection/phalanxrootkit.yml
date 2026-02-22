@@ -1,6 +1,0 @@
-- name: phalanx_rootkit
-  description: phalanx_rootkit
-  query: select * from file where path in ('/usr/share/.home*', '/usr/share/.home*/tty',
-    '/etc/host.ph1', '/bin/host.ph1');
-  platform: linux
-  interval: '3600'

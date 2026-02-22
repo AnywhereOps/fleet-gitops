@@ -1,6 +1,0 @@
-- name: Disk encryption (Linux)
-  description: Retrieves the default disk's (/) encryption status of a device running
-    Linux.
-  query: "SELECT \n  de.encrypted, m.path \nFROM disk_encryption de \nJOIN mounts\
-    \ m ON m.device_alias = de.name\n"
-  platform: linux

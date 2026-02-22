@@ -1,5 +1,0 @@
-- name: ark_rootkit
-  description: ark_rootkit
-  query: select * from file where path in ('/dev/ptyxx');
-  platform: linux
-  interval: '3600'

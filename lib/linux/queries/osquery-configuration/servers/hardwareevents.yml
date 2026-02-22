@@ -1,3 +1,0 @@
-- name: hardware_events
-  query: SELECT * FROM hardware_events;
-  platform: linux

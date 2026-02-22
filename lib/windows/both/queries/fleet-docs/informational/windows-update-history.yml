@@ -1,5 +1,0 @@
-- name: Windows update history
-  description: Retrieves the history of the update events on a Windows host.
-  query: "SELECT \n  date, title\nFROM windows_update_history\nWHERE result_code =\
-    \ 'Succeeded';\n"
-  platform: windows

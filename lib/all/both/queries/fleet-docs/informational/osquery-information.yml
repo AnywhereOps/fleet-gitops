@@ -1,4 +1,0 @@
-- name: Osquery information
-  description: Gathers information about the osquery process running on a device.
-  query: SELECT * FROM osquery_info LIMIT 1
-  platform: darwin, windows, linux

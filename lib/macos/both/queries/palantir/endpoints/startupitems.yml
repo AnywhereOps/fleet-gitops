@@ -1,4 +1,0 @@
-- name: startup_items
-  description: Applications and binaries set as user/login startup items.
-  query: SELECT * FROM startup_items;
-  platform: darwin

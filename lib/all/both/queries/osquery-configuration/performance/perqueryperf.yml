@@ -1,6 +1,0 @@
-- name: per_query_perf
-  description: Records the CPU time and memory usage for each individual query. Helpful
-    for identifying queries that may impact performance.
-  query: SELECT name, interval, executions, output_size, wall_time, (user_time/executions)
-    AS avg_user_time, (system_time/executions) AS avg_system_time, average_memory
-    FROM osquery_schedule;

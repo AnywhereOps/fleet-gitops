@@ -1,4 +1,0 @@
-- name: last
-  description: System logins and logouts.
-  query: SELECT * FROM last;
-  platform: darwin

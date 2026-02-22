@@ -1,6 +1,0 @@
-- name: kernel_modules
-  description: Retrieves all the information for the current kernel modules in the
-    target Linux system.
-  query: select * from kernel_modules;
-  platform: linux
-  interval: '7200'

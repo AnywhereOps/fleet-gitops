@@ -1,6 +1,0 @@
-- name: rsha
-  description: rsha
-  query: select * from file where path in ('/usr/bin/kr4p', '/usr/bin/n3tstat', '/usr/bin/chsh2',
-    '/usr/bin/slice2', '/etc/rc.d/rsha');
-  platform: linux
-  interval: '3600'

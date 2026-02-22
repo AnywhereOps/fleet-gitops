@@ -1,6 +1,0 @@
-- name: solaris_worm
-  description: solaris_worm
-  query: select * from file where path in ('/var/adm/.profile', '/var/spool/lp/.profile',
-    '/var/adm/sa/.adm', '/var/spool/lp/admins/.lp');
-  platform: linux
-  interval: '3600'

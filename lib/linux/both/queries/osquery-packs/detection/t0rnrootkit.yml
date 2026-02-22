@@ -1,6 +1,0 @@
-- name: t0rn_rootkit
-  description: t0rn_rootkit
-  query: select * from file where path in ('/usr/src/.puta', '/usr/info/.t0rn', '/lib/ldlib.tk',
-    '/etc/ttyhash', '/sbin/xlogin');
-  platform: linux
-  interval: '3600'

@@ -1,5 +1,0 @@
-- name: etc_hosts
-  description: Retrieves all the entries in the target system /etc/hosts file.
-  query: select * from etc_hosts;
-  platform: posix
-  interval: '86400'

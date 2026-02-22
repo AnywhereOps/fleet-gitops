@@ -1,5 +1,0 @@
-- name: nfs_shares
-  description: Retrieves the current list of Network File System mounted shares.
-  query: select * from nfs_shares;
-  platform: darwin
-  interval: '86400'

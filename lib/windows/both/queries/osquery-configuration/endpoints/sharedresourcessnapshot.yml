@@ -1,4 +1,0 @@
-- name: shared_resources_snapshot
-  description: Shared resources snapshot query
-  query: SELECT * FROM shared_resources;
-  platform: windows

@@ -1,6 +1,0 @@
-- name: per_user_ts_session_registry
-  description: Controls how many simultaneous terminal services sessions can use the
-    same account
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal
-    Server\fSingleSessionPerUser';
-  platform: windows

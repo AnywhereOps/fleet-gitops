@@ -1,5 +1,0 @@
-- name: usb_devices
-  description: Retrieves the current list of USB devices in the target system.
-  query: select * from usb_devices;
-  platform: posix
-  interval: '86400'

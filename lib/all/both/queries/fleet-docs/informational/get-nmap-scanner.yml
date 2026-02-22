@@ -1,7 +1,0 @@
-- name: Get Nmap scanner
-  description: Get Nmap scanner process, as well as its user, parent, and process
-    details.
-  query: SELECT p.pid, name, p.path, cmdline, cwd, start_time, parent, (SELECT name
-    FROM processes WHERE pid=p.parent) AS parent_name, (SELECT username FROM users
-    WHERE uid=p.uid) AS username FROM processes as p WHERE cmdline like 'nmap%';
-  platform: darwin, linux, windows

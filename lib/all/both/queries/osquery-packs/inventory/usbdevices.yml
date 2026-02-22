@@ -1,6 +1,0 @@
-- name: usb_devices
-  description: Report an inventory of USB devices. Attaches and detaches will show
-    up in hardware_events.
-  query: select * from usb_devices;
-  platform: posix
-  interval: 7200
