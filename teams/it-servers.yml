@@ -1,13 +1,9 @@
 name: ☁️ IT servers
 queries:
-  - path: ../lib/linux/servers/queries/
-  - path: ../lib/linux/both/queries/
-  - path: ../lib/macos/servers/queries/
-  - path: ../lib/macos/both/queries/
-  - path: ../lib/windows/servers/queries/
-  - path: ../lib/windows/both/queries/
   - path: ../lib/all/servers/queries/
-  - path: ../lib/all/both/queries/
+  - path: ../lib/linux/servers/queries/
+  - path: ../lib/macos/servers/queries/
+  - path: ../lib/windows/servers/queries/
 policies:
 agent_options:
 controls:

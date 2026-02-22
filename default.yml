@@ -2,7 +2,10 @@
 
 policies:
 queries:
-  - path: lib/**/queries/**/*.yml
+  - path: lib/all/both/queries/
+  - path: lib/linux/both/queries/
+  - path: lib/macos/both/queries/
+  - path: lib/windows/both/queries/
 agent_options:
 controls:
 org_settings:
