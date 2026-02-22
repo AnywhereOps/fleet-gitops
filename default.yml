@@ -1,7 +1,7 @@
 # default.yml controls global settings and policies/queries that run on all hosts ("All teams").
 
 policies:
-queries: ../lib/**/queries/**/*.yml
+queries: ./lib/**/queries/**/*.yml
 agent_options:
 controls:
 org_settings:
