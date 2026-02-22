@@ -146,6 +146,8 @@ def save_queries(filepath, queries):
 def main():
     parser = argparse.ArgumentParser(description="Deduplicate Fleet queries")
     parser.add_argument("--dry-run", action="store_true", help="Don't actually modify files")
+    parser.add_argument("--force", action="store_true",
+                        help="Delete ALL duplicates regardless of SQL similarity")
     parser.add_argument("--similarity", type=float, default=0.85,
                         help="SQL similarity threshold (0-1, default 0.85)")
     args = parser.parse_args()
@@ -203,6 +205,12 @@ def main():
                 losers.append(occ)
             else:
                 different.append((occ, similarity))
+
+        # With --force, also delete the "different" ones
+        if args.force:
+            for diff, sim in different:
+                losers.append(diff)
+            different = []
 
         if args.dry_run:
             winner_rel = os.path.relpath(winner["filepath"], SCRIPT_DIR)

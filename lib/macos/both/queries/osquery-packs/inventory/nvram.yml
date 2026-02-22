@@ -1,6 +1,0 @@
-- name: nvram
-  description: Report on crashes, alternate boots, and boot arguments.
-  query: select * from nvram where name not in ('backlight-level', 'SystemAudioVolumeDB',
-    'SystemAudioVolume');
-  platform: darwin
-  interval: 7200

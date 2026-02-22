@@ -1,5 +1,0 @@
-- name: rpm_packages
-  description: Retrieves all the installed RPM packages in the target Linux system.
-  query: select * from rpm_packages;
-  platform: linux
-  interval: '86400'

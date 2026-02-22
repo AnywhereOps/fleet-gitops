@@ -1,5 +1,0 @@
-- name: kernel_info
-  description: Report the booted kernel, potential arguments, and the device.
-  query: select * from kernel_info join hash using (path);
-  platform: linux
-  interval: 7200

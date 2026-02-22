@@ -17,7 +17,6 @@ queries:
   - path: ../lib/all/devices/queries/fleet-docs/general/get-installed-chrome-extensions.yml
   - path: ../lib/all/devices/queries/fleet-docs/general/google-chrome-profiles.yml
   - path: ../lib/all/devices/queries/fleet-docs/general/software-chrome.yml
-  - path: ../lib/all/devices/queries/mitre-attck/general/chromeextensions.yml
   - path: ../lib/all/devices/queries/mitre-attck/inventory/snapshotchromeextensions.yml
   - path: ../lib/all/devices/queries/osquery-packs/compliance/diskencryption.yml
   - path: ../lib/all/devices/queries/osquery-packs/detection/untabs2.yml
@@ -36,8 +35,6 @@ queries:
   - path: ../lib/all/devices/queries/osquery-packs/general/user-agent-switcher.yml
   - path: ../lib/all/devices/queries/osquery-packs/general/webdeveloper.yml
   - path: ../lib/all/devices/queries/osquery-packs/general/webpaint.yml
-  - path: ../lib/all/devices/queries/osquery-packs/vulnerability/chromeextensions.yml
-  - path: ../lib/all/devices/queries/osquery-packs/vulnerability/firefoxaddons.yml
   - path: ../lib/all/devices/queries/palantir-configuration/informational/backuptoolnotrunning.yml
   - path: ../lib/all/devices/queries/palantir-configuration/informational/bitlockerautoencryptsettingsregistry.yml
   - path: ../lib/all/devices/queries/palantir-configuration/informational/bitlockerencryptionsettingsregistrymisconfigured.yml
@@ -105,8 +102,6 @@ queries:
   - path: ../lib/macos/devices/queries/fleet-docs/general/software-firefox.yml
   - path: ../lib/macos/devices/queries/fleet-docs/general/software-macos.yml
   - path: ../lib/macos/devices/queries/fleet-internal/battery.yml
-  - path: ../lib/macos/devices/queries/osquery-packs/vulnerability/browserplugins.yml
-  - path: ../lib/macos/devices/queries/osquery-packs/vulnerability/safariextensions.yml
   - path: ../lib/macos/devices/queries/osquery-packs/vulnerability/unauthenticatedsparklefeeds.yml
   - path: ../lib/windows/devices/queries/fleet-docs/general/disk-encryption-windows.yml
   - path: ../lib/windows/devices/queries/fleet-docs/general/get-antivirus-status-from-the-windows-security-center.yml

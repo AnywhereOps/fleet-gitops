@@ -1,5 +1,0 @@
-- name: mounts
-  description: Retrieves the current list of mounted drives in the target system.
-  query: select * from mounts;
-  platform: posix
-  interval: '3600'

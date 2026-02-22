@@ -1,5 +1,0 @@
-- name: listening_ports
-  description: Retrieves all the listening ports in the target system.
-  query: select * from listening_ports;
-  platform: posix
-  interval: '3600'

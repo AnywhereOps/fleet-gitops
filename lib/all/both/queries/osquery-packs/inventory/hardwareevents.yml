@@ -1,5 +1,0 @@
-- name: hardware_events
-  description: Retrieves all the hardware related events in the target OSX system.
-  query: select * from hardware_events where path <> '' or model <> '';
-  platform: posix
-  interval: 7200
