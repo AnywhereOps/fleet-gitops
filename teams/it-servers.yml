@@ -17,7 +17,6 @@ queries:
   - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/impact/1-unexpected-etc-hosts.yml
   - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/persistence/1-unexpected-global-lock.yml
   - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/persistence/2-listening-from-unusual-location.yml
-  - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/persistence/2-unexpected-cron-entries.yml
   - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/persistence/2-unexpected-lock-opener.yml
   - path: ../lib/all/servers/queries/chainguard-defense-kit/detection/persistence/3-unexpected-ssh-authorized-keys.yml
   - path: ../lib/all/servers/queries/chainguard-defense-kit/incident_response/authorizedkeys.yml
