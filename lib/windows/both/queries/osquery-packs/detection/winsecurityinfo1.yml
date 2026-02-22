@@ -2,4 +2,4 @@
   description: (https://sensorstechforum.com/windows-infected-2-viruses-scam-remove/)
   query: select * from programs where name = 'Winsecurity.info';
   platform: windows
-  interval: '3600'
+  interval: 3600

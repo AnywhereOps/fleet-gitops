@@ -2,4 +2,4 @@
   description: Retrieves all the PKG related information stored in OSX.
   query: select * from package_receipts;
   platform: darwin
-  interval: '86400'
+  interval: 86400

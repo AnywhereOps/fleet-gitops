@@ -3,4 +3,4 @@
     attached to the domain (requires sudo).
   query: select * from ad_config;
   platform: darwin
-  interval: '86400'
+  interval: 86400

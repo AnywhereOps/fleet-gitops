@@ -196,7 +196,6 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/ldpreload.yml
   - path: lib/all/both/queries/palantir-configuration/informational/ldpworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/ldsopreloadexists.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/linuxpack.yml
   - path: lib/all/both/queries/palantir-configuration/informational/lionworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/localsecurityauthorityregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/locrookit.yml
@@ -204,7 +203,6 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/logerrorsregistrymisconfigured.yml
   - path: lib/all/both/queries/palantir-configuration/informational/logerrorsregistrymissing.yml
   - path: lib/all/both/queries/palantir-configuration/informational/lrkrootkit.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/mac-pack.yml
   - path: lib/all/both/queries/palantir-configuration/informational/macosxkextstat.yml
   - path: lib/all/both/queries/palantir-configuration/informational/macosxkextstatsnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/madalinrootkit.yml
@@ -221,14 +219,12 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/omegaworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/optickit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osqueryinfo.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/ossec-rootkit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osversion.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osversionsnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/overriderootkit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/passportforworksettingsregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/patches.yml
   - path: lib/all/both/queries/palantir-configuration/informational/patchessnapshot.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/performance-metrics.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perqueryperf.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perusertssessionregistrymisconfigured.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perusertssessionregistrymissing.yml
@@ -262,7 +258,6 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/sadmindiisworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/scalperinstalled.yml
   - path: lib/all/both/queries/palantir-configuration/informational/securebootregistry.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/security-tooling-checks.yml
   - path: lib/all/both/queries/palantir-configuration/informational/securityprovidersregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/senderroralertregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/senderroralertregistryexists.yml
@@ -299,10 +294,6 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/users.yml
   - path: lib/all/both/queries/palantir-configuration/informational/userssnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/volcrootkit.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/windows-application-security.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/windows-compliance.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/windows-pack.yml
-  - path: lib/all/both/queries/palantir-configuration/informational/windows-registry-monitoring.yml
   - path: lib/all/both/queries/palantir-configuration/informational/windowscrashes.yml
   - path: lib/all/both/queries/palantir-configuration/informational/winrmsettingsregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/winrmsettingsregistrymisconfigured.yml

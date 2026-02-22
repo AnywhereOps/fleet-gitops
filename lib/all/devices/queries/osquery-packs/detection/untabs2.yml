@@ -1,4 +1,4 @@
 - name: unTabs_2
   description: (https://sensorstechforum.com/untabs-browser-extension-virus-remove-completely/)
   query: select * from chrome_extensions join users using (uid) where name like 'unTabs%';
-  interval: '3600'
+  interval: 3600

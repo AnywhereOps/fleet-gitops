@@ -4,4 +4,4 @@
     remote_port, path from process_open_sockets where path <> '' or remote_address
     <> '';
   platform: posix
-  interval: '86400'
+  interval: 86400

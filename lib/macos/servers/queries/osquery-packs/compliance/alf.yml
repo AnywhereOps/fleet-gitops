@@ -3,4 +3,4 @@
     for OSX.
   query: select * from alf;
   platform: darwin
-  interval: '86400'
+  interval: 86400

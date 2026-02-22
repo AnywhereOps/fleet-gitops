@@ -3,4 +3,4 @@
     the target OSX system.
   query: select * from kernel_extensions;
   platform: darwin
-  interval: '3600'
+  interval: 3600

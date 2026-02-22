@@ -3,4 +3,4 @@
   query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
     NT\CurrentVersion\Image File Execution Options\%\MitigationOptions'
   platform: windows
-  interval: '86400'
+  interval: 86400
