@@ -1,4 +1,4 @@
 - name: Winsecurity_info_2
   description: (https://sensorstechforum.com/windows-infected-2-viruses-scam-remove/)
   query: select * from chrome_extensions join users using (uid) where name = 'Winsecurity.info';
-  interval: 3600
+  interval: '3600'

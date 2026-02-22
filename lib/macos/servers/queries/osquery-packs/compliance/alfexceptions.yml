@@ -2,4 +2,4 @@
   description: Retrieves the exceptions for the Application Layer Firewall in OSX.
   query: select * from alf_exceptions;
   platform: darwin
-  interval: 86400
+  interval: '86400'

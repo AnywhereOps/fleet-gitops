@@ -2,4 +2,4 @@
   description: Retrieves the list of shared resources in the target Windows system.
   query: select * from shared_resources;
   platform: windows
-  interval: 86400
+  interval: '86400'

@@ -1,0 +1,46 @@
+- name: CDK - Yara Recently Downloaded Stealer
+  description: CDK - Yara Recently Downloaded Stealer
+  query: "SELECT\n  file.path,\n  file.size,\n  file.btime,\n  file.ctime,\n  file.mtime,\n\
+    \  magic.data,\n  hash.sha256,\n  yara.*\nFROM\n  file\n  JOIN yara ON file.path\
+    \ = yara.path\n  LEFT JOIN magic ON file.path = magic.path\n  LEFT JOIN hash ON\
+    \ file.path = hash.path\nWHERE -- Only scan recent downloads\n  file.path IN (\n\
+    \    SELECT\n      path\n    FROM\n      file\n    WHERE\n      (\n        file.path\
+    \ LIKE '/home/%/Downloads/%'\n        OR file.path LIKE '/home/%/Downloads/%/%'\n\
+    \        OR file.path LIKE '/Users/%/Downloads/%'\n        OR file.path LIKE '/Users/%/Downloads/%/%'\n\
+    \        OR file.path LIKE '/tmp/%'\n        OR file.path LIKE '/var/tmp/%'\n\
+    \      )\n      AND file.type = \"regular\"\n      AND file.size > 2000\n    \
+    \  AND file.size < 400000\n      AND (\n        file.btime > (strftime('%s', 'now')\
+    \ -43200)\n        OR file.ctime > (strftime('%s', 'now') -43200)\n        OR\
+    \ file.mtime > (strftime('%s', 'now') -43200)\n      )\n  )\n  AND yara.sigrule\
+    \ = '\nrule multiple_browser_credentials : suspicious {\n  strings:\n    $c_library_keychains\
+    \ = \"/Library/Keychains\"\n    $c_cookies_sqlite = \"cookies.sqlite\"\n    $c_moz_cookies\
+    \ = \"moz_cookies\"\n    $c_opera_gx = \"OperaGX\"\n    $c_keychain_db = \"login.keychain-db\"\
+    \n    $c_dscl_local = \"dscl /Local/Default\"\n    $c_osascript = \"osascript\"\
+    \n    $c_find_generic_password = \"find-generic-password\"\n    $not_security\
+    \ = \"PROGRAM:security\"\n    $not_verbose = \"system_verbose\"\n    $not_kandji\
+    \ = \"com.kandji.profile.mdmprofile\"\n    $not_xul = \"XUL_APP_FILE\"\n  condition:\n\
+    \    3 of ($c_*) and none of ($not_*)\n}\n\nrule multiple_browser_credentials_2\
+    \ {\n  strings:\n    $a_google_chrome = \"Google/Chrome\"\n    $a_app_support\
+    \ = \"Application Support\"\n    $a_app_support_slash = \"Application\\\\ Support\"\
+    \n    $a_cookies_sqlite = \"cookies.sqlite\"\n    $a_cookies = \"Cookies\"\n \
+    \   $a_places_sqlite = \"places.sqlite\"\n    $a_moz_cookies = \"moz_cookies\"\
+    \n    $a_firefox_profiles = \"Firefox/Profiles\"\n    $a_opera_gx = \"OperaGX\"\
+    \n    $a_form_history = \"formhistory.sqlite\"\n    $a_chrome_local_state = \"\
+    Chrome/Local State\"\n    $a_brave_software = \"BraveSoftware\"\n    $a_opera\
+    \ = \"Opera Software\"\n    $not_osquery = \"OSQUERY_WORKER\"\n    $not_private\
+    \ = \"/System/Library/PrivateFrameworks/\"\n  condition:\n    3 of ($a_*) and\
+    \ none of ($not_*)\n}\n\n\nrule multiple_browser_refs : notable {\n  strings:\n\
+    \t$d_config = \".config\" fullword\n\t$d_app_support = \"Application Support\"\
+    \ fullword\n\n\t$h_http = \"http\" fullword\n\t$h_POST = \"POST\" fullword\n\n\
+    \t$z_zip = \"zip\" fullword\n\t$z_ZIP = \"ZIP\" fullword\n\t$z_ditto = \"ditto\"\
+    \ fullword\n\t$z_tar = \"tar\" fullword\n\n\t$b_Yandex = \"Yandex\"\n\t$b_Brave\
+    \ = \"Brave\"\n\t$b_Firefox = \"Firefox\"\n\t$b_Safari = \"Safari\"\n\t$b_Chrome\
+    \ = \"Chrome\"\n  condition:\n    any of ($d*) and any of ($h*) and any of ($z*)\
+    \ and 2 of ($b*)\n}\n'\n  AND yara.count > 0\n  AND file.path NOT LIKE \"%.csv\"\
+    \n  AND file.filename != 'RIT_Wireless.dmg'\n"
+  platform: darwin
+  interval: 3600
+  observer_can_run: true
+  automations_enabled: false
+  logging: snapshot
+  discard_data: false

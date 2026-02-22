@@ -11,8 +11,13 @@ queries:
   - path: lib/all/both/queries/chainguard-defense-kit/detection/evasion/3-parent-pid-missing-from-procfs.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/execution/1-tiny-executable-events.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/execution/1-unexpected-fetcher-parents.yml
+  - path: lib/all/both/queries/chainguard-defense-kit/detection/execution/3-yara-unexpected-miner-process.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/exfil/0-salesforce-large-download-generic.yml
+  - path: lib/all/both/queries/chainguard-defense-kit/detection/initial_access/3-yara-recently-downloaded-miner.yml
+  - path: lib/all/both/queries/chainguard-defense-kit/detection/initial_access/3-yara-recently-downloaded-packed.yml
+  - path: lib/all/both/queries/chainguard-defense-kit/detection/initial_access/3-yara-recently-downloaded-ransom.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/persistence/2-low-fd-socket.yml
+  - path: lib/all/both/queries/chainguard-defense-kit/detection/persistence/3-yara-libtomcrypt-process.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/privesc/1-setxid-env-overflow-attempt.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/privesc/1-unexpected-setxid-process.yml
   - path: lib/all/both/queries/chainguard-defense-kit/detection/privesc/2-setxid-cmdline-overflow-attempt.yml
@@ -50,6 +55,7 @@ queries:
   - path: lib/all/both/queries/chainguard-defense-kit/incident_response/users.yml
   - path: lib/all/both/queries/chainguard-defense-kit/policy/unexpected-rsa-keys.yml
   - path: lib/all/both/queries/chainguard-defense-kit/policy/unusually-long-uptime-likely-missing-patches.yml
+  - path: lib/all/both/queries/fleet-docs/detection/detect-active-processes-with-log4j-running.yml
   - path: lib/all/both/queries/fleet-docs/general/discover-python-packages-from-running-python-interpreters.yml
   - path: lib/all/both/queries/fleet-docs/general/get-a-list-of-visual-studio-code-extensions.yml
   - path: lib/all/both/queries/fleet-docs/general/get-applications-hogging-memory.yml
@@ -196,6 +202,7 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/ldpreload.yml
   - path: lib/all/both/queries/palantir-configuration/informational/ldpworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/ldsopreloadexists.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/linuxpack.yml
   - path: lib/all/both/queries/palantir-configuration/informational/lionworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/localsecurityauthorityregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/locrookit.yml
@@ -203,6 +210,7 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/logerrorsregistrymisconfigured.yml
   - path: lib/all/both/queries/palantir-configuration/informational/logerrorsregistrymissing.yml
   - path: lib/all/both/queries/palantir-configuration/informational/lrkrootkit.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/mac-pack.yml
   - path: lib/all/both/queries/palantir-configuration/informational/macosxkextstat.yml
   - path: lib/all/both/queries/palantir-configuration/informational/macosxkextstatsnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/madalinrootkit.yml
@@ -219,12 +227,14 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/omegaworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/optickit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osqueryinfo.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/ossec-rootkit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osversion.yml
   - path: lib/all/both/queries/palantir-configuration/informational/osversionsnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/overriderootkit.yml
   - path: lib/all/both/queries/palantir-configuration/informational/passportforworksettingsregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/patches.yml
   - path: lib/all/both/queries/palantir-configuration/informational/patchessnapshot.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/performance-metrics.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perqueryperf.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perusertssessionregistrymisconfigured.yml
   - path: lib/all/both/queries/palantir-configuration/informational/perusertssessionregistrymissing.yml
@@ -258,6 +268,7 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/sadmindiisworm.yml
   - path: lib/all/both/queries/palantir-configuration/informational/scalperinstalled.yml
   - path: lib/all/both/queries/palantir-configuration/informational/securebootregistry.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/security-tooling-checks.yml
   - path: lib/all/both/queries/palantir-configuration/informational/securityprovidersregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/senderroralertregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/senderroralertregistryexists.yml
@@ -294,6 +305,10 @@ queries:
   - path: lib/all/both/queries/palantir-configuration/informational/users.yml
   - path: lib/all/both/queries/palantir-configuration/informational/userssnapshot.yml
   - path: lib/all/both/queries/palantir-configuration/informational/volcrootkit.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/windows-application-security.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/windows-compliance.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/windows-pack.yml
+  - path: lib/all/both/queries/palantir-configuration/informational/windows-registry-monitoring.yml
   - path: lib/all/both/queries/palantir-configuration/informational/windowscrashes.yml
   - path: lib/all/both/queries/palantir-configuration/informational/winrmsettingsregistry.yml
   - path: lib/all/both/queries/palantir-configuration/informational/winrmsettingsregistrymisconfigured.yml
@@ -322,8 +337,11 @@ queries:
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/evasion/3-unexpected-dev-executables-linux.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/execution/1-recently-created-executables-long-lived-linux.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/execution/1-unexpected-sysutils-linux.yml
+  - path: lib/linux/both/queries/chainguard-defense-kit/detection/execution/3-yara-unexpected-upx-process.yml
+  - path: lib/linux/both/queries/chainguard-defense-kit/detection/exfil/2-yara-exec-connect-process-linux.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/impact/1-evenly-timestomped.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/persistence/1-unexpected-device-linux.yml
+  - path: lib/linux/both/queries/chainguard-defense-kit/detection/persistence/3-suspicious-udev-runner-linux.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/detection/privesc/2-unexpected-privilege-escalationlinux.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/incident_response/debpackages.yml
   - path: lib/linux/both/queries/chainguard-defense-kit/incident_response/groups.yml
@@ -360,8 +378,11 @@ queries:
   - path: lib/linux/both/queries/mitre-attck/incident-response/yourimpdirndircheck.yml
   - path: lib/linux/both/queries/osquery-packs/detection/beurkrootkit.yml
   - path: lib/linux/both/queries/osquery-packs/detection/reptilerootkit.yml
+  - path: lib/macos/both/queries/chainguard-defense-kit/detection/collection/2-excess-google-drive-downloads-macos.yml
+  - path: lib/macos/both/queries/chainguard-defense-kit/detection/collection/2-excess-google-drive-folder-exports-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/collection/2-spotlight-database-export-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/credentials/2-macoskeyboardsniffer.yml
+  - path: lib/macos/both/queries/chainguard-defense-kit/detection/credentials/3-yara-mounted-stealer.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/evasion/1-old-binaries-running.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/evasion/1-touched-executable-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/evasion/2-hidden-home-library-dir.yml
@@ -383,6 +404,7 @@ queries:
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/initial_access/2-sketchy-mounted-diskimage.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/initial_access/2-unexpected-diskimage-name-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/initial_access/2-unexpected-volume-contents.yml
+  - path: lib/macos/both/queries/chainguard-defense-kit/detection/initial_access/3-yara-recently-downloaded-stealer.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/detection/persistence/2-unexpected-uid0-daemon-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/incident_response/accountpolicydata-macos.yml
   - path: lib/macos/both/queries/chainguard-defense-kit/incident_response/appschemes.yml

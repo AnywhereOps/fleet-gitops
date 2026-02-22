@@ -2,4 +2,4 @@
   description: Whether DEP is enabled
   query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SystemStartOptions'
   platform: windows
-  interval: 86400
+  interval: '86400'

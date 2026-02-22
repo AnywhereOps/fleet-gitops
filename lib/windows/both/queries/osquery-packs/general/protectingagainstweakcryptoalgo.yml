@@ -5,4 +5,4 @@
     0\CertDllCreateCertificateChainEngine\Config\Default\%' AND name IN ('WeakSha1ThirdPartyFlags','WeakMd5ThirdPartyFlags')
     AND type = 'REG_DWORD' AND data not like '-2%';
   platform: windows
-  interval: 3600
+  interval: '3600'

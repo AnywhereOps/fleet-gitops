@@ -1,0 +1,57 @@
+- name: CDK - Yara Suspicious Strings Process Linux
+  description: 'Currently running program with Linux red flags reference: * https://github.com/timb-machine/linux-malware/blob/725aad34e216cc024c93b04964b289f10f819e6e/defensive/yara/personal-malware-bazaar/unixredflags3.yara'
+  query: "SELECT\n  yara.strings,\n  -- Child\n  p0.pid AS p0_pid,\n  p0.path AS p0_path,\n\
+    \  p0.name AS p0_name,\n  p0.start_time AS p0_start,\n  p0.cmdline AS p0_cmd,\n\
+    \  p0.cwd AS p0_cwd,\n  p0.cgroup_path AS p0_cgroup,\n  p0.euid AS p0_euid,\n\
+    \  p0_hash.sha256 AS p0_sha256,\n  -- Parent\n  p0.parent AS p1_pid,\n  p1.path\
+    \ AS p1_path,\n  p1.name AS p1_name,\n  p1.start_time AS p1_start,\n  p1.euid\
+    \ AS p1_euid,\n  p1.cmdline AS p1_cmd,\n  p1_hash.sha256 AS p1_sha256,\n  -- Grandparent\n\
+    \  p1.parent AS p2_pid,\n  p2.name AS p2_name,\n  p2.start_time AS p2_start,\n\
+    \  p2.path AS p2_path,\n  p2.cmdline AS p2_cmd,\n  p2_hash.sha256 AS p2_sha256\n\
+    FROM\n  processes p0\n  JOIN yara ON p0.path = yara.path\n  LEFT JOIN hash p0_hash\
+    \ ON p0.path = p0_hash.path\n  LEFT JOIN processes p1 ON p0.parent = p1.pid\n\
+    \  LEFT JOIN hash p1_hash ON p1.path = p1_hash.path\n  LEFT JOIN processes p2\
+    \ ON p1.parent = p2.pid\n  LEFT JOIN hash p2_hash ON p2.path = p2_hash.path\n\
+    WHERE\n  p0.pid IN (\n    SELECT\n      pid\n    FROM\n      processes\n    WHERE\n\
+    \      start_time > (strftime('%s', 'now') - 7200)\n      AND path != \"\"\n \
+    \   GROUP BY\n      path\n  )\n  AND yara.sigrule = '\n    rule redflags {\n \
+    \   strings:\n        $avahi = \"avahi-daemon:\"\n        $bash_history = \".bash_history\"\
+    \n        $bin_sh = \"/bin/sh\"\n        $cron = \"cron\"\n        $dev_mqueue\
+    \ = \"/dev/mqueue\"\n        $dev_shm = \"/dev/shm\"\n        $dev_tcp = \"/dev/tcp\"\
+    \n        $dev_udp = \"/dev/udp\"\n        $google_chrome = \"google-chrome\"\n\
+    \        $iptables = \"iptables\"\n        $ld_so = \"ld.so.conf\"\n        $pickup\
+    \ = \"pickup -l\"\n        $proc = \"/proc\"\n        $redhat4 = \"Red Hat 4\"\
+    \n        $sudo = \"sudo\"\n        $systemctl = \"systemctl\"\n        $useradd\
+    \ = \"useradd\"\n        $var_run = \"/var/run\"\n        $var_tmp = \"/var/tmp\"\
+    \n    condition:\n        filesize < 25MB and 5 of them\n}'\n  AND yara.count\
+    \ > 0\n  AND p0.name NOT IN (\n    'chrome_crashpad',\n    'X',\n    'emacs',\n\
+    \    'git',\n    'systemd',\n    'NetworkManager',\n    'systemd-journal',\n \
+    \   'Xorg',\n    'slirp4netns',\n    'nacl_helper'\n  )\n  AND p0.path NOT LIKE\
+    \ '%/google/chrome/%'\n  AND p0.path NOT LIKE '%/chrome_crashpad_handler'\n  AND\
+    \ p0.path NOT LIKE '/nix/store/%/bin/%'\n  AND p0.path NOT LIKE '/nix/store/%/libexec/%'\n\
+    \  AND p0.path NOT LIKE '/usr/local/aws-cli/%/aws'\n  AND p0.path NOT LIKE '/usr/local/kolide-k2/bin/launcher-updates/%/launcher'\n\
+    \  AND p0.path NOT IN (\n    '/bin/bash',\n    '/bin/containerd-shim-runc-v2',\n\
+    \    '/bin/dash',\n    '/bin/fish',\n    '/bin/sh',\n    '/opt/Elastic/Endpoint/elastic-endpoint',\n\
+    \    '/usr/bin/bash',\n    '/usr/bin/containerd-shim-runc-v2',\n    '/usr/bin/docker',\n\
+    \    '/usr/bin/docker-proxy',\n    '/usr/bin/fish',\n    '/usr/bin/gnome-software',\n\
+    \    '/usr/bin/gpg-agent',\n    '/usr/bin/ibus-daemon',\n    '/usr/bin/make',\n\
+    \    '/usr/bin/NetworkManager',\n    '/usr/bin/nvidia-persistenced',\n    '/usr/bin/nvim',\n\
+    \    '/usr/bin/pulseaudio',\n    '/usr/bin/snap',\n    '/usr/bin/sshd',\n    '/usr/bin/sudo',\n\
+    \    '/usr/bin/udevadm',\n    '/usr/bin/update-notifier',\n    '/usr/bin/Xwayland',\n\
+    \    '/usr/lib/bluetooth/bluetoothd',\n    '/usr/lib/bluetooth/obexd',\n    '/usr/libexec/accounts-daemon',\n\
+    \    '/usr/libexec/bluetooth/bluetoothd',\n    '/usr/libexec/bluetooth/obexd',\n\
+    \    '/usr/libexec/flatpak-system-helper',\n    '/usr/libexec/sssd/sssd_kcm',\n\
+    \    '/usr/libexec/xdg-desktop-portal',\n    '/usr/lib/opt/kolide-k2/bin/launcher',\n\
+    \    '/usr/lib/snapd/snapd',\n    '/usr/lib/systemd/systemd',\n    '/usr/lib/systemd/systemd-executor',\n\
+    \    '/usr/lib/systemd/systemd-journald',\n    '/usr/lib/systemd/systemd-machined',\n\
+    \    '/usr/local/bin/rootlesskit',\n    '/usr/local/kolide-k2/bin/launcher',\n\
+    \    '/usr/sbin/acpid',\n    '/usr/sbin/auditd',\n    '/usr/sbin/cron',\n    '/usr/sbin/crond',\n\
+    \    '/usr/sbin/gdm',\n    '/usr/sbin/gssproxy',\n    '/usr/sbin/mcelog',\n  \
+    \  '/usr/sbin/NetworkManager',\n    '/usr/sbin/rsyslogd',\n    '/usr/sbin/smartd'\n\
+    \  )\n"
+  platform: linux
+  interval: 7200
+  observer_can_run: true
+  automations_enabled: false
+  logging: snapshot
+  discard_data: false

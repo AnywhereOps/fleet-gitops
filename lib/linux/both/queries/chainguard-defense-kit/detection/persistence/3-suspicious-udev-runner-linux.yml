@@ -1,0 +1,35 @@
+- name: CDK - Suspicious Udev Runner Linux
+  description: Look for sketchy udev entries, inspired by sedexp
+  query: "SELECT\n  file.path,\n  file.size,\n  file.btime,\n  file.ctime,\n  file.mtime,\n\
+    \  hash.sha256,\n  yara.*\nFROM\n  file\n  JOIN yara ON file.path = yara.path\n\
+    \  LEFT JOIN hash ON file.path = hash.path\nWHERE\n  file.path IN (\n    SELECT\n\
+    \      file.path\n    FROM\n      file\n    WHERE\n      file.path LIKE '/etc/udev/rules.d/%'\n\
+    \      OR file.path LIKE '/usr/lib/udev/rules.d/%'\n      OR file.path LIKE '/lib/udev/rules.d/%'\n\
+    \      OR file.path LIKE '/usr/local/lib/udev/rules.d/%'\n    GROUP BY\n     \
+    \ file.inode\n  )\n  AND yara.sigrule = '\nrule udev_memory_device_runner : critical\
+    \ {\n    meta:\n        description = \"runs program once built-in memory device\
+    \ is created\"\n    strings:\n        $action_add = \"ACTION==\\\"add\\\"\"\n\
+    \        $major = \"ENV{MAJOR}==\\\"1\\\"\"\n        $run = \"RUN+=\"\n    condition:\n\
+    \        all of them\n}\n\nrule udev_at_runner : critical {\n    meta:\n     \
+    \   description = \"runs program via at\"\n        reference = \"https://ch4ik0.github.io/en/posts/leveraging-Linux-udev-for-persistence/\"\
+    \n    strings:\n        $add = \"ACTION==\\\"add\\\"\"\n        $run_at = \"RUN+=\\\
+    \"/usr/bin/at \"\n        $run_at2 = \"RUN+=\\\"at \"\n    condition:\n      \
+    \  $add and any of ($run*)\n}\n\nrule udev_unusual_small_runner : high {\n   \
+    \ meta:\n        description = \"small udev entry that runs program based on unusual\
+    \ parameters\"\n    strings:\n        $action_run = \"RUN+=\"\n        $not_attrs\
+    \ = \"ATTRS{\"\n        $not_kernel = \"KERNEL==\"\n        $not_block = \"SUBSYSTEM==\\\
+    \"block\\\"\"\n        $not_bridge = \"RUN+=\\\"bridge-network-interface\\\"\"\
+    \n    condition:\n        filesize < 96 and all of ($action*) and none of ($not*)\n\
+    }\n\nrule udev_major_runner : high {\n    meta:\n        description = \"runs\
+    \ program once major device number is created, may have false-positives\"\n  \
+    \  strings:\n        $action_add = \"ACTION==\\\"add\\\"\"\n        $major = \"\
+    ENV{MAJOR}==\"\n        $run = \"RUN+=\"\n    condition:\n        all of them\n\
+    }'\n  AND yara.count > 0\n  AND NOT (\n    matches = \"udev_unusual_small_runner\"\
+    \n    AND file.path IN ('/usr/lib/udev/rules.d/99-cec-bluetooth.rules')\n    AND\
+    \ file.size = 74\n  )\n"
+  platform: linux
+  interval: 3600
+  observer_can_run: true
+  automations_enabled: false
+  logging: snapshot
+  discard_data: false

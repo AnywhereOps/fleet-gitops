@@ -1,0 +1,21 @@
+- name: CDK - Excess Google Drive Folder Exports Macos
+  description: Surface when a machine has downloaded an unusual number of zip exports
+    from Google Drive
+  query: "SELECT\n  COUNT(DISTINCT file.path) AS num_exports,\n  GROUP_CONCAT(DISTINCT\
+    \ file.path) AS paths,\n  SUM(file.size) AS total_size,\n  MIN(file.btime) AS\
+    \ first_btime,\n  MAX(file.atime) AS last_atime\nFROM\n  mdfind\n  JOIN file ON\
+    \ mdfind.path = file.path\n  JOIN hash ON file.path = hash.path\n  JOIN extended_attributes\
+    \ ea ON mdfind.path = ea.path\nWHERE\n  mdfind.query = \"kMDItemWhereFroms ==\
+    \ 'https://*-drive-data-export.googleusercontent.com*' AND 'kMDItemFSCreationDate\
+    \ >= $time.now(-604800)'\"\n  -- this seems excessive, but I was having issues\
+    \ with kMDItemFSCreationDate not filtering appropriately\n  AND MAX(file.btime,\
+    \ file.ctime, file.mtime) > (strftime('%s', 'now') -604800)\n  -- \"GROUP BY\"\
+    \ should be unnecessary, but Kolide seems to require it\nGROUP BY\n  ea.key\n\
+    HAVING\n  total_size > (100 * 1024 * 1024)\n  OR num_exports > 1\nORDER BY\n \
+    \ file.path ASC\n"
+  platform: darwin
+  interval: 3600
+  observer_can_run: true
+  automations_enabled: false
+  logging: snapshot
+  discard_data: false

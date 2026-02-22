@@ -1,0 +1,123 @@
+- name: CDK - Suspicious Systemd Unit
+  description: Funky systemd units, may be evidence of persistence
+  query: "SELECT\n  file.path,\n  file.size,\n  file.btime,\n  file.ctime,\n  file.mtime,\n\
+    \  hash.sha256,\n  yara.*\nFROM\n  file\n  JOIN yara ON file.path = yara.path\n\
+    \  JOIN hash ON file.path = hash.path\nWHERE\n  file.path IN (\n    SELECT DISTINCT\n\
+    \      (fragment_path)\n    FROM\n      systemd_units\n    WHERE\n      fragment_path\
+    \ LIKE \"%.service\"\n      AND NOT fragment_path LIKE \"/run/systemd/generator.late/%\"\
+    \n  )\n  AND yara.sigrule = '\nrule systemd_execstart_danger_path_val : high {\n\
+    \  meta:\n    ref = \"https://sandflysecurity.com/blog/log4j-kinsing-linux-malware-in-the-wild/\"\
+    \n    description = \"Starts from a dangerous-looking path\"\n  strings:\n   \
+    \ $awkward = /ExecStart=\\/(boot|var|tmp|dev|root)\\/[\\.\\w\\-\\/]{0,32}/\n \
+    \ condition:\n    filesize < 102400 and $awkward\n}\n\nrule systemd_execstart_elsewhere\
+    \ : medium {\n  meta:\n    description = \"Starts from an unusual path\"\n   \
+    \ ref = \"https://sandflysecurity.com/blog/log4j-kinsing-linux-malware-in-the-wild/\"\
+    \n    hash_2023_Downloads_kinsing = \"05d02411668f4ebd576a24ac61cc84e617bdb66aa819581daa670c65f1a876f0\"\
+    \n    hash_2023_articles_https_pberba_github_io_security_2022_02_07_linux_threat_hunting_for_persistence_systemd_generators\
+    \ = \"8c227f67a16162ffd5b453a478ced2950eba4cbe3b004c5cc935fb9551dc2289\"\n   \
+    \ hash_2024_2024_Spinning_YARN_yarn_fragments = \"723326f8551f2a92ccceeec93859f58df380a3212e7510bc64181f2a0743231c\"\
+    \n  strings:\n    $execstart = /ExecStart=\\/[\\w\\/]{1,128}/\n    $not_bin =\
+    \ \"ExecStart=/bin/\"\n    $not_bin_true = \"ExecStart=/bin/true\"\n    $not_etc_rcd\
+    \ = \"ExecStart=/etc/rc.d/rc.local\"\n    $not_etc_rc_local = \"ExecStart=/etc/rc.local\"\
+    \n    $not_init_d = \"ExecStart=/etc/init.d/\"\n    $not_lib = \"ExecStart=/lib/\"\
+    \n    $not_motd = \"ExecStart=/etc/update-motd.d/\"\n    $not_opt = \"ExecStart=/opt/\"\
+    \n    $not_sbin = \"ExecStart=/sbin/\"\n    $not_usr_bin = \"ExecStart=/usr/bin/\"\
+    \n    $not_usr_libexec = \"ExecStart=/usr/libexec/\"\n    $not_usr_lib = \"ExecStart=/usr/lib/\"\
+    \n    $not_usr_local = \"ExecStart=/usr/local/\"\n    $not_usr_sbin = \"ExecStart=/usr/sbin/\"\
+    \n    $not_usr_share = \"ExecStart=/usr/share/\"\n    $not_etckeeper = \"ExecStart=/etc/etckeeper/\"\
+    \n  condition:\n    filesize < 102400 and $execstart and none of ($not_*)\n}\n\
+    \nrule systemd_execstop_elsewhere : medium {\n  meta:\n    ref = \"https://www.trendmicro.com/en_us/research/23/c/iron-tiger-sysupdate-adds-linux-targeting.html\"\
+    \n\tdescription = \"Runs program from unexpected directory at stop\"\n  strings:\n\
+    \    $execstop = /ExecStop=\\/[\\w\\.\\_\\-]{2,64}/\n    $not_lib = \"ExecStop=/lib/\"\
+    \n    $not_opt = \"ExecStart=/opt/\"\n    $not_sbin = \"ExecStop=/sbin/\"\n  \
+    \  $not_usr_libexec = \"ExecStop=/usr/libexec/\"\n    $not_usr_lib = \"ExecStop=/usr/lib/\"\
+    \n    $not_usr_local = \"ExecStop=/usr/local/\"\n    $not_usr_sbin = \"ExecStop=/usr/sbin/\"\
+    \n    $not_usr_share = \"ExecStop=/usr/share/\"\n  condition:\n    filesize <\
+    \ 384 and $execstop and none of ($not*)\n}\n\nrule systemd_small_no_blank_lines\
+    \ : high {\n  meta:\n    ref = \"https://sandflysecurity.com/blog/log4j-kinsing-linux-malware-in-the-wild/\"\
+    \n    hash_2023_Downloads_kinsing = \"05d02411668f4ebd576a24ac61cc84e617bdb66aa819581daa670c65f1a876f0\"\
+    \n  strings:\n    $execstart = \"ExecStart\"\n    $blank = \"\\n\\n\"\n    $not_dbus\
+    \ = \"Type=dbus\"\n    $not_after = /After=\\w/\n    $not_before = /Before=\\\
+    w{1,128}/\n    $not_notify = \"Type=notify\"\n  condition:\n    filesize < 512\
+    \ and $execstart and not $blank and none of ($not*)\n}\n\nrule systemd_small_multiuser_no_comments_or_documentation\
+    \ : high {\n  meta:\n    ref = \"https://sandflysecurity.com/blog/log4j-kinsing-linux-malware-in-the-wild/\"\
+    \n\tdescription = \"systemd unit is undocumented\"\n  strings:\n    $execstart\
+    \ = \"ExecStart=\"\n    $multiuser = \"multi-user.target\"\n    $not_comment =\
+    \ \"# \"\n    $not_documentation = \"Documentation=\"\n    $not_requires_socket\
+    \ = /Requires=.{0,64}socket/\n    $not_condition_path = \"Condition\"\n    $not_after\
+    \ = \"After=\"\n    $not_systemd = \"ExecStart=systemd-\"\n    $not_output = \"\
+    StandardOutput=\"\n    $not_part_of = \"PartOf=\"\n    $not_dbus = \"Type=dbus\"\
+    \n    $not_oneshot = \"Type=oneshot\"\n    $not_lima = \"Description=lima-guestagent\"\
+    \n    $not_check_sb = \"Description=Service to check for secure boot key enrollment\"\
+    \n    $not_waydroid = \"waydroid\"\n    $not_keyd = \"ExecStart=/usr/local/bin/keyd\"\
+    \n  condition:\n    filesize < 384 and $execstart and $multiuser and none of ($not_*)\n\
+    }\nrule systemd_small_no_output : high {\n  meta:\n\tdescription = \"Discards\
+    \ all logging output\"\n  strings:\n    $output_null = \"StandardOutput=null\"\
+    \n    $error_null = \"StandardError=null\"\n    $not_input_null = \"StandardInput=null\"\
+    \n    $not_syslog = \"syslog\"\n    $not_before = \"Before=\"\n    $not_display\
+    \ = \"WantedBy=display-manager.service\"\n  condition:\n    filesize < 384 and\
+    \ ($output_null and $error_null) and none of ($not*)\n}\n\nrule systemd_small_multiuser_not_in_dependency_tree\
+    \ : high {\n  meta:\n    description = \"Relies on nothing, nothing relies on\
+    \ it\"\n    hash_2023_Downloads_kinsing = \"05d02411668f4ebd576a24ac61cc84e617bdb66aa819581daa670c65f1a876f0\"\
+    \n  strings:\n    $execstart = \"ExecStart=\"\n    $multiuser = \"multi-user.target\"\
+    \n    $not_after = /After=\\w/\n    $not_before = /Before=\\w{1,128}/\n    $not_requires\
+    \ = /Requires=\\w/\n    $not_condition = \"Condition\"\n    $not_oneshot = \"\
+    Type=oneshot\"\n    $not_default = \"DefaultDependencies=no\"\n    $not_env =\
+    \ \"EnvironmentFile=\"\n    $not_bus = \"BusName=\"\n    $not_idle = \"Type=idle\"\
+    \n    $not_systemd = \"ExecStart=systemd-\"\n    $not_lima = \"Description=lima-guestagent\"\
+    \n    $not_check_sb = \"Description=Service to check for secure boot key enrollment\"\
+    \n    $not_touchegg = /ExecStart=.*\\/touchegg --/\n    $not_keyd = \"ExecStart=/usr/local/bin/keyd\"\
+    \n  condition:\n    filesize < 384 and $execstart and $multiuser and none of ($not_*)\n\
+    }\n\nrule sytemd_small_type_forking_not_in_dep_tree : high {\n  meta:\n    hash_2023_Txt_Malware_Sustes_0e77\
+    \ = \"0e77291955664d2c25d5bfe617cec12a388e5389f82dee5ae4fd5c5d1f1bdefe\"\n   \
+    \ hash_2023_Unix_Malware_Kaiji_3e68 = \"3e68118ad46b9eb64063b259fca5f6682c5c2cb18fd9a4e7d97969226b2e6fb4\"\
+    \n    hash_2023_Unix_Malware_Kaiji_f4a6 = \"f4a64ab3ffc0b4a94fd07a55565f24915b7a1aaec58454df5e47d8f8a2eec22a\"\
+    \n  strings:\n    $forking = \"Type=forking\"\n    $not_after = /After=\\w/\n\
+    \    $not_before = /Before=\\w{1,128}/\n    $not_condition = \"ConditionPath\"\
+    \n    $not_oneshot = \"Type=oneshot\"\n    $not_default_deps = \"DefaultDependencies=no\"\
+    \n    $not_env = \"EnvironmentFile=\"\n    $not_bus = \"BusName=\"\n    $not_idle\
+    \ = \"Type=idle\"\n    $not_systemd = \"ExecStart=systemd-\"\n    $not_default_target\
+    \ = \"WantedBy=default.target\"\n  condition:\n    filesize < 384 and $forking\
+    \ and none of ($not_*)\n}\n\nrule systemd_small_restart_always : medium {\n  meta:\n\
+    \    description = \"service restarts no matter how many times it crashes\"\n\
+    \    hash_2023_Downloads_kinsing = \"05d02411668f4ebd576a24ac61cc84e617bdb66aa819581daa670c65f1a876f0\"\
+    \n  strings:\n    $restart = \"Restart=always\"\n    $not_syslog = \"SyslogLevel=\"\
+    \n    $not_gpl = \"GPL-2.0-only\"\n    $not_after = /After=\\w/\n    $not_before\
+    \ = /Before=\\w{1,128}/\n    $not_notify = \"Type=notify\"\n    $not_wanted_by\
+    \ = /WantedBy=\\w{2,32}\\.target/\n  condition:\n    filesize < 384 and $restart\
+    \ and none of ($not*)\n}\n\nrule systemd_small_short_description {\n  meta:\n\
+    \    description = \"Short or no description\"\n  strings:\n    $execstart = \"\
+    ExecStart=\"\n    $short_desc = /Description=\\n/\n  condition:\n    filesize\
+    \ < 384 and all of them\n}\n\nrule systemd_nice_execstart_restart_no_comment {\n\
+    \  meta:\n    description = \"Sets nice value and restarts always without comments,\
+    \ possible miner\"\n  strings:\n    $has_execstart = \"ExecStart=\"\n    $has_restart\
+    \ = \"Restart=always\"\n    $has_nice = \"Nice=\"\n    $not_comment = \"#\"\n\
+    \  condition:\n    filesize < 4096 and all of ($has*) and none of ($not*)\n}\n\
+    \nrule usr_bin_execstop_shell : medium {\n  meta:\n    ref = \"https://www.trendmicro.com/en_us/research/23/c/iron-tiger-sysupdate-adds-linux-targeting.html\"\
+    \n\tdescription = \"Runs shell script at stop\"\n  strings:\n    $execstop = /ExecStop=\\\
+    /bin\\/sh .{0,64}/\n    $not_podman_logging = \"/usr/bin/podman $LOGGING\"\n \
+    \   $not_stderr = /ExecStop=\\/bin\\/sh .{0,64}set -eu/\n    $not_nfs = /ExecStop=\\\
+    /bin\\/sh -c .\\/usr\\/sbin\\/nfsdctl /\n  condition:\n    filesize < 4096 and\
+    \ $execstop and none of ($not*)\n}\n\nrule systemd_hidden_execstart : critical\
+    \ {\n  meta:\n  \tdescription = \"ExecStart references hidden file\"\n  strings:\n\
+    \    $path_top_bin = /ExecStart=\\/\\.[\\w\\/]+/\n    $path_sub_bin = /ExecStart=\\\
+    /\\w[\\w\\/]*\\/\\.\\w+/\n    $path_arg_sub = /ExecStart=.* \\/\\w[\\w\\/]*\\\
+    /\\.\\w+/\n    $path_arg_top = /ExecStart=.* \\/\\.[\\w\\/]+/\n    $not_autorelabel\
+    \ = \"/.autorelabel\"\n    $not_exists = \"ConditionPathExists\"\n    $not_ksysguard\
+    \ = \"/.ksysguard/ksgrd_network_helper\"\n  condition:\n  \tany of ($path*) and\
+    \ none of ($not*)\n}\n\nrule systemd_hidden_execstop : critical {\n  meta:\n \
+    \ \tdescription = \"ExecStop references hidden file\"\n  strings:\n    $path_top_bin\
+    \ = /ExecStart=\\/\\.[\\w\\/]+/\n    $path_sub_bin = /ExecStart=\\/\\w[\\w\\/]*\\\
+    /\\.\\w+/\n    $path_arg_sub = /ExecStart=.* \\/\\w[\\w\\/]*\\/\\.\\w+/\n    $path_arg_top\
+    \ = /ExecStart=.* \\/\\.[\\w\\/]+/\n\n    $not_autorelabel = \"/.autorelabel\"\
+    \n    $not_exists = \"ConditionPathExists\"\n  condition:\n  \tany of ($path*)\
+    \ and none of ($not*)\n}\n\nrule systemd_hidden_working_directory : critical {\n\
+    \  meta:\n  \tdescription = \"WorkingDirectory is a hidden\"\n  strings:\n   \
+    \ $ref = /WorkingDirectory=.*\\/\\..*/\n  condition:\n\tany of them\n}\n'\n  AND\
+    \ yara.count > 0\n"
+  platform: linux
+  interval: 3600
+  observer_can_run: true
+  automations_enabled: false
+  logging: snapshot
+  discard_data: false

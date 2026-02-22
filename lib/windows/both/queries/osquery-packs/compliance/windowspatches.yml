@@ -3,4 +3,4 @@
     target Windows system.
   query: select * from patches;
   platform: windows
-  interval: 86400
+  interval: '86400'

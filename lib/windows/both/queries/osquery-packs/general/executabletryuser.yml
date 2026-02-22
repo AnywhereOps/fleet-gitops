@@ -2,4 +2,4 @@
   description: Check Software Restriction Policies state
   query: select * from registry where key like 'HKEY_USERS\%\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\ExecutableTry'
   platform: windows
-  interval: 86400
+  interval: '86400'
