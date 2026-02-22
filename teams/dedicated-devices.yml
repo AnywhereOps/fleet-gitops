@@ -5,3 +5,4 @@ agent_options:
 controls:
 software:
 team_settings:
+  secrets: []
