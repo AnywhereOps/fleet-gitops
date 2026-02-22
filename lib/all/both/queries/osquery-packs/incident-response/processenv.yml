@@ -1,4 +1,4 @@
 - name: process_env
   description: Retrieves all the environment variables per process in the target system.
   query: select * from process_envs;
-  platform: posix
+  platform: darwin, linux

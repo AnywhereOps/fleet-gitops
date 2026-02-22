@@ -1,4 +1,4 @@
 - name: acpi_tables
   description: General reporting and heuristics monitoring.
   query: select * from acpi_tables;
-  platform: posix
+  platform: darwin, linux

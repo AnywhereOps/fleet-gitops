@@ -2,4 +2,4 @@
   description: Retrieves the current status of IP/IPv6 forwarding.
   query: select * from system_controls where oid = '4.30.41.1' union select * from
     system_controls where oid = '4.2.0.1';
-  platform: posix
+  platform: darwin, linux

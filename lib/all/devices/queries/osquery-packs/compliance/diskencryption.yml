@@ -1,4 +1,4 @@
 - name: disk_encryption
   description: Retrieves the current disk encryption status for the target system.
   query: select * from disk_encryption;
-  platform: posix
+  platform: darwin, linux
