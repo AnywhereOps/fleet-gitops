@@ -130,6 +130,47 @@ queries:
   - path: ../lib/macos/servers/queries/osquery-packs/compliance/alfexceptions.yml
   - path: ../lib/macos/servers/queries/osquery-packs/compliance/alfexplicitauths.yml
   - path: ../lib/macos/servers/queries/osquery-packs/compliance/alfservices.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/credentials/1-unexpected-dev-opener-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/discovery/1-unexpected-netutil-calls-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/evasion/1-missing-from-disk-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/evasion/1-unusual-executable-name-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/evasion/1-unusual-process-name-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/evasion/2-parent-missing-from-disk-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/1-exotic-command-events-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/1-unexpected-gatekeeper-approvals-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/1-unexpected-sysutils-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/1-unexpected-xattr-calls-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/2-unexpected-long-running-security-framework-macos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/execution/3-xprotect-reports.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/exfil/1-highdiskbytesread.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/persistence/2-shady-chrome-extension-author.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/persistence/2-unexpected-launchd-program-arguments.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/persistence/3-fake-apple-launchd.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/privesc/2-unexpected-elevated-children-eventsmacos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/detection/privesc/2-unexpected-privilege-escalationmacos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/incident_response/apps.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/incident_response/esprocessevents.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/incident_response/gatekeeperapprovedappsmacos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/incident_response/launchdmacos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/incident_response/safariextensionsmacos.yml
+  - path: ../lib/macos/devices/queries/chainguard-defense-kit/vulnerabilities/2-vulnerable-acrobat-reader.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/disk-encryption-macos.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-applications-that-are-not-in-the-applications-directory.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-applications-that-were-opened-within-the-last-24-hours.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-built-in-antivirus-status-on-macos.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-installed-macos-software.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-installed-safari-extensions.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-laptops-with-failing-batteries.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/get-subscription-based-applications-that-have-not-been-opened-for-the-last-30-da.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/mdm-configuration-profiles.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/mdm-disk-encryption-key-file-lines.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/mdm-disk-encryption-key-file.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/mdm-macos.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/software-codesign.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/software-firefox.yml
+  - path: ../lib/macos/devices/queries/fleet-docs/general/software-macos.yml
+  - path: ../lib/macos/devices/queries/fleet-internal/battery.yml
+  - path: ../lib/macos/devices/queries/osquery-packs/vulnerability/unauthenticatedsparklefeeds.yml
   - path: ../lib/windows/servers/queries/fleet-docs/general/get-whether-teamviewer-is-installedrunning.yml
   - path: ../lib/windows/servers/queries/fleet-docs/general/get-windows-print-spooler-remote-code-execution-vulnerability.yml
   - path: ../lib/windows/servers/queries/mitre-attck/detection/bitsadminexe.yml
