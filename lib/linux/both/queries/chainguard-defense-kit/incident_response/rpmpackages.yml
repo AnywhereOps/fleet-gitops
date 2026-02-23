@@ -1,8 +1,0 @@
-- name: CDK - Rpm Packages
-  description: Retrieves a list of RPM packages
-  query: "SELECT\n  *\nFROM\n  rpm_packages;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

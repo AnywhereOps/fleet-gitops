@@ -1,4 +1,0 @@
-- name: TransparentEnabledMachine
-  description: Check Software Restriction Policies state
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\TransparentEnabled'
-  platform: windows

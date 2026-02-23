@@ -1,6 +1,0 @@
-- name: HKLM_CurrentVersion_Winlogon
-  description: Returns the content of the key HKLM_Software_Microsoft_WindowsNT_CurrentVersion_winlogon
-    - ATT&CK T1004
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-    NT\CurrentVersion\Winlogon';
-  platform: windows

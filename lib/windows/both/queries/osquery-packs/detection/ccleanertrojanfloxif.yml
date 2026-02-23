@@ -1,4 +1,0 @@
-- name: CCleaner_Trojan.Floxif
-  description: (https://sensorstechforum.com/ccleaner-trojan-floxif-malware-how-to-remove/)
-  query: select * from registry where path like 'HKEY_LOCAL_MACHINE\SOFTWARE\Piriform\Agomo%';
-  platform: windows

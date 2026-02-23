@@ -1,4 +1,0 @@
-- name: powershell_events_script_blocks
-  description: Powershell script blocks reconstructed to their full script content,
-    this table requires script block logging to be enabled. - ATT&CK T1086,T1064
-  query: select * from powershell_events;

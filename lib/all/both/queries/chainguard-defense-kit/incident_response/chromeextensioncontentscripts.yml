@@ -1,9 +1,0 @@
-- name: CDK - Chrome Extension Content Scripts
-  description: Retrieves chrome extension cotent scripts that execute on a broad set
-    of URLs.
-  query: "SELECT\n  chrome_extension_content_scripts.*\nFROM\n  users\n  JOIN chrome_extension_content_scripts\
-    \ ON users.uid = chrome_extension_content_scripts.uid\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

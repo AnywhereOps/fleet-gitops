@@ -1,4 +1,0 @@
-- name: Windows_Security_Service
-  description: Windows Security Service Status change - ATT&CK T1089
-  query: SELECT * FROM services WHERE name = 'wscsvc' AND status != 'RUNNING';
-  platform: windows

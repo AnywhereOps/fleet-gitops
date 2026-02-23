@@ -1,4 +1,0 @@
-- name: DeveloperMode
-  description: Check Developer Mode state
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock'
-  platform: windows

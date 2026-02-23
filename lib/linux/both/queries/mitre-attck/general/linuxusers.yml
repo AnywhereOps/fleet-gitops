@@ -1,4 +1,0 @@
-- name: linux_users
-  description: Lists all create and deleted account - ATT&CK T1136,T1078,T1184,T1021
-  query: select * from users;
-  platform: linux

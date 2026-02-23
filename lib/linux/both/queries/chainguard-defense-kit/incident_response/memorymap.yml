@@ -1,8 +1,0 @@
-- name: CDK - Memory Map
-  description: Returns the OS memory region map.
-  query: "SELECT\n  *\nFROM\n  memory_map;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

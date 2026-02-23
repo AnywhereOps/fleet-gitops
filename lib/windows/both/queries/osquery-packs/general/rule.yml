@@ -1,4 +1,0 @@
-- name: Rule
-  description: Check Applocker rule set
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\%\%\Value'
-  platform: windows

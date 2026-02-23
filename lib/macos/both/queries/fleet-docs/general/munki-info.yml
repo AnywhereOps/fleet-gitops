@@ -1,4 +1,0 @@
-- name: Munki info
-  description: Retrieves information about the last Munki run on a macOS device.
-  query: "SELECT \n  version, errors, warnings \nFROM munki_info\n"
-  platform: darwin

@@ -1,4 +1,0 @@
-- name: crash_dump_registry_misconfigured
-  description: Returns the content of the key if it does not match the expected value
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl\CrashDumpEnabled'
-    AND data=0;

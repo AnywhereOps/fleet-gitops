@@ -1,3 +1,0 @@
-- name: bitlocker_info_snapshot
-  description: Disk encryption status and information snapshot query.
-  query: SELECT * FROM bitlocker_info;

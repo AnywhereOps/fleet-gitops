@@ -1,3 +1,0 @@
-- name: arp_cache
-  description: Retrieves the ARP cache values in the target system.
-  query: select * from arp_cache;

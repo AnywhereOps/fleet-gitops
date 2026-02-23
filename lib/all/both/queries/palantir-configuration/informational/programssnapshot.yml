@@ -1,3 +1,0 @@
-- name: programs_snapshot
-  description: Programs snapshot query
-  query: SELECT * FROM programs;

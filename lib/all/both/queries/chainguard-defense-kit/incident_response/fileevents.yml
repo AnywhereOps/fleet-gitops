@@ -1,8 +1,0 @@
-- name: CDK - File Events
-  description: Return the list of watched file events (must be configured)
-  query: "SELECT\n  *\nFROM\n  file_events\nWHERE\n  time > (strftime('%s', 'now')\
-    \ -900)\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

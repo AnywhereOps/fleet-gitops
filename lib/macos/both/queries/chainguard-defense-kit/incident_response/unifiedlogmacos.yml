@@ -1,9 +1,0 @@
-- name: CDK - Unified Log Macos
-  description: Retrieves recent entries from the macOS unified log
-  query: "SELECT\n  timestamp,\n  pid,\n  process,\n  category,\n  subsystem,\n  message\n\
-    FROM\n  unified_log\nWHERE\n  timestamp > (strftime('%s', 'now') - 1800)\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

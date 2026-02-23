@@ -1,5 +1,0 @@
-- name: Get antivirus (ClamAV/clamd) and updater (freshclam) process status
-  description: Selects the clamd and freshclam processes to ensure AV and its updater
-    are running
-  query: SELECT pid, state, cmdline, name FROM processes WHERE name='clamd' OR name='freshclam';
-  platform: linux

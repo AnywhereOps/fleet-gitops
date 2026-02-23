@@ -1,6 +1,0 @@
-- name: darwin_kernel_system_controls
-  description: Double check the information reported in kernel_info and report the
-    kernel signature.
-  query: select * from system_controls where subsystem = 'kern' and (name like '%boot%'
-    or name like '%secure%' or name like '%single%');
-  platform: darwin

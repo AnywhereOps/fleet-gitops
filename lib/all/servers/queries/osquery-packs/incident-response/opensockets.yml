@@ -1,6 +1,0 @@
-- name: open_sockets
-  description: Retrieves all the open sockets per process in the target system.
-  query: select distinct pid, family, protocol, local_address, local_port, remote_address,
-    remote_port, path from process_open_sockets where path <> '' or remote_address
-    <> '';
-  platform: darwin, linux

@@ -1,5 +1,0 @@
-- name: KernelSehopEnabled
-  description: Whether SEHOP is enabled
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
-    Manager\Kernel\KernelSEHOPEnabled'
-  platform: windows

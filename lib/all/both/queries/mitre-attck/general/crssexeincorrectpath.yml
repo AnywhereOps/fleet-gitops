@@ -1,5 +1,0 @@
-- name: crss.exe_incorrect_path
-  description: Detect processes masquerading as legitimate Windows processes - ATT&CK
-    T1034
-  query: SELECT * FROM processes WHERE LOWER(name)='crss.exe' AND LOWER(path)!='c:\windows\system32\crss.exe'
-    AND path!='';

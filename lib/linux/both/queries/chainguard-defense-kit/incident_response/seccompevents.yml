@@ -1,8 +1,0 @@
-- name: CDK - Seccomp Events
-  description: Return the list of seccomp events
-  query: "SELECT\n  *\nFROM\n  seccomp_events;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

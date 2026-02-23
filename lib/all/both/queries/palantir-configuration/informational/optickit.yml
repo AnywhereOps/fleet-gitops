@@ -1,4 +1,0 @@
-- name: optickit
-  description: optickit
-  query: select * from file where path in ('/usr/bin/xchk', '/usr/bin/xsf', '/usr/bin/xsf',
-    '/usr/bin/xchk');

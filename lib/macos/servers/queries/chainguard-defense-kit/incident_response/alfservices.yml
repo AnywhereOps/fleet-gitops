@@ -1,8 +1,0 @@
-- name: CDK - Alf Services
-  description: Retrieves the services for the Application Layer Firewall in OSX.
-  query: "SELECT\n  *\nFROM\n  alf_services;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

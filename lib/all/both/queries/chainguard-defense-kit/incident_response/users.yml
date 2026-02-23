@@ -1,7 +1,0 @@
-- name: CDK - Users
-  description: Returns a list of users
-  query: "SELECT\n  *\nFROM\n  users\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

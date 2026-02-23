@@ -1,6 +1,0 @@
-- name: Osquery flags
-  description: Retrieves the values of osquery configuration flags related to query
-    scheduling, configuration updates, and logging intervals for active processes.
-  query: "SELECT \n  name, value\nFROM osquery_flags\nWHERE name IN (\"distributed_interval\"\
-    , \"config_tls_refresh\", \"config_refresh\", \"logger_tls_period\")\n"
-  platform: darwin, linux, windows

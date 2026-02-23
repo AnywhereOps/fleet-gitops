@@ -1,3 +1,0 @@
-- name: system_info
-  description: Information about the system hardware and name
-  query: SELECT * FROM system_info;

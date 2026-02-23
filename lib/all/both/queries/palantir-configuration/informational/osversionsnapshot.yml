@@ -1,3 +1,0 @@
-- name: os_version_snapshot
-  description: Operating system version snapshot query
-  query: SELECT * FROM os_version;

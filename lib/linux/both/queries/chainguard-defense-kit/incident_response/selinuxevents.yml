@@ -1,8 +1,0 @@
-- name: CDK - Selinux Events
-  description: Return the list of SELinux events
-  query: "SELECT\n  *\nFROM\n  selinux_events;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

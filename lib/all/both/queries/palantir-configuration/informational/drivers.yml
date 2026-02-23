@@ -1,3 +1,0 @@
-- name: drivers
-  description: List in-use Windows drivers
-  query: SELECT * FROM drivers;

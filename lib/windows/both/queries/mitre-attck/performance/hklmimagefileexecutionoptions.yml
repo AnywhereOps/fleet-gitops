@@ -1,6 +1,0 @@
-- name: HKLM_Image_File_Execution_Options
-  description: Returns the content of the key HKLM_Image_File_Execution_Options -
-    ATT&CK T1015
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-    NT\CurrentVersion\Image File Execution Options';
-  platform: windows

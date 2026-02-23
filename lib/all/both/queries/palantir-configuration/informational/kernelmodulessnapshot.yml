@@ -1,3 +1,0 @@
-- name: kernel_modules_snapshot
-  description: Linux kernel modules both loaded and within the load search path.
-  query: SELECT * FROM kernel_modules;

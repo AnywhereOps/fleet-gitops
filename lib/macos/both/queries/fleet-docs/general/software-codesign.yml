@@ -1,5 +1,0 @@
-- name: Software codesign
-  description: A software override query to append codesign information to macOS software
-    entries. Requires fleetd
-  query: "SELECT c.*\n    FROM apps a\n    JOIN codesign c ON a.path = c.path\n"
-  platform: darwin

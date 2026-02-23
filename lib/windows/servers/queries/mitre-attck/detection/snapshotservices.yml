@@ -1,4 +1,0 @@
-- name: Snapshot_services
-  description: Snapshot Services query
-  query: SELECT * FROM services;
-  platform: windows

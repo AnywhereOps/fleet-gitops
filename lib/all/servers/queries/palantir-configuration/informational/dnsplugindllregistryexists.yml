@@ -1,4 +1,0 @@
-- name: dns_plugin_dll_registry_exists
-  description: Returns the content of this key if it exists, which it shouldn't by
-    default
-  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\services\DNS\Parameters\ServerLevelPluginDll';

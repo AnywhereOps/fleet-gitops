@@ -1,7 +1,0 @@
-- name: CDK - Interface Details
-  description: Return stats on network interfaces
-  query: "SELECT\n  *\nFROM\n  interface_details\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

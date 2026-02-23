@@ -1,3 +1,0 @@
-- name: cpuid
-  description: General reporting and heuristics monitoring.
-  query: select feature, value, output_register, output_bit, input_eax from cpuid;

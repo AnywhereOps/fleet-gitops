@@ -1,5 +1,0 @@
-- name: HKCU_Logon_Scripts
-  description: Returns the content of the key HKEY_CURRENT_USER_Environment - ATT&CK
-    T1037
-  query: select * from registry where key='HKEY_CURRENT_USER\Environment';
-  platform: windows

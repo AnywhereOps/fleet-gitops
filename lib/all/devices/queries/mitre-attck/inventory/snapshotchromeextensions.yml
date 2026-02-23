@@ -1,4 +1,0 @@
-- name: Snapshot_chrome_extensions
-  description: Snapshot Lists all chrome extensions - ATT&CK T1176
-  query: select u.username, ce.name,ce.identifier,ce.version,ce.description,ce.locale,ce.update_url,ce.author,ce.persistent,ce.path
-    from chrome_extensions ce LEFT JOIN users u ON ce.uid = u.uid;

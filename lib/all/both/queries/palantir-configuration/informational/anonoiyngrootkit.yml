@@ -1,3 +1,0 @@
-- name: anonoiyng_rootkit
-  description: anonoiyng_rootkit
-  query: select * from file where path in ('/usr/sbin/mech', '/usr/sbin/kswapd');

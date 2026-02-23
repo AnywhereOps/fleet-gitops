@@ -1,8 +1,0 @@
-- name: CDK - App Schemes
-  description: Retrieves the list of application scheme/protocol-based IPC handlers.
-  query: "SELECT\n  *\nFROM\n  app_schemes;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

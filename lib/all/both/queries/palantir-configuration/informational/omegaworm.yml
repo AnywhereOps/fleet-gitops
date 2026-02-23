@@ -1,3 +1,0 @@
-- name: omega_worm
-  description: omega_worm
-  query: select * from file where path in ('/dev/chr');

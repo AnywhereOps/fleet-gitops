@@ -1,4 +1,0 @@
-- name: SaferFlags
-  description: 'Check Software Restriction Policies state: SRP rule is not enforcing'
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\%\%\%\SaferFlags'
-  platform: windows

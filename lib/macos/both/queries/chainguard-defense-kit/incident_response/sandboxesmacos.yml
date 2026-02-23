@@ -1,8 +1,0 @@
-- name: CDK - Sandboxes Macos
-  description: Lists the application bundle that owns a sandbox label.
-  query: "SELECT\n  *\nFROM\n  sandboxes;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

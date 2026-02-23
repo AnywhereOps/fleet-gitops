@@ -1,4 +1,0 @@
-- name: iokit_devicetree
-  description: General inventory of IOKit's devices on OS X.
-  query: select * from iokit_devicetree;
-  platform: darwin

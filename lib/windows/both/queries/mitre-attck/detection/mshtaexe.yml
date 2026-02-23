@@ -1,6 +1,0 @@
-- name: mshta.exe
-  description: Mshta Execute, is a utility that executes Microsoft HTML Applications
-    (HTA) - ATT&CK T1170
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
-    like '%mshta%';
-  platform: windows

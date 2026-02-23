@@ -1,9 +1,0 @@
-- name: CDK - Open Sockets
-  description: Retrieves all the open sockets per process in the target system.
-  query: "SELECT DISTINCT\n  pid,\n  family,\n  protocol,\n  local_address,\n  local_port,\n\
-    \  remote_address,\n  remote_port,\n  path\nFROM\n  process_open_sockets\nWHERE\n\
-    \  path <> ''\n  or remote_address <> '';\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,6 +1,0 @@
-- name: Operating system information (Chrome)
-  description: Retrieves information about a ChromeOS device's operating system.
-  query: "SELECT\n    os.name,\n    os.major,\n    os.minor,\n    os.patch,\n    os.build,\n\
-    \    os.arch,\n    os.platform,\n    os.version AS version,\n    os.version AS\
-    \ kernel_version\n  FROM\n    os_version os;\n"
-  platform: chrome

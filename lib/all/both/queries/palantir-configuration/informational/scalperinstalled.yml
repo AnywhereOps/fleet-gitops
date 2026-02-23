@@ -1,3 +1,0 @@
-- name: scalper_installed
-  description: scalper_installed
-  query: select * from file where path in ('/tmp/.uua', '/tmp/.a');

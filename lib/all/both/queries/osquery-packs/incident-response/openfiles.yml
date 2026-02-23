@@ -1,6 +1,0 @@
-- name: open_files
-  description: Retrieves all the open files per process in the target system.
-  query: select distinct pid, path from process_open_files where path not like '/private/var/folders%'
-    and path not like '/System/Library/%' and path not in ('/dev/null', '/dev/urandom',
-    '/dev/random');
-  platform: darwin, linux

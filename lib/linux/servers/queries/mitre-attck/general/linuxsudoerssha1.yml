@@ -1,7 +1,0 @@
-- name: linux_sudoers_sha1
-  description: Check any bash reverse shell forwarded to the attacker - ATT&CK T1169,T1206
-  query: SELECT hash.sha1, fi.path, fi.filename, datetime(fi.btime, 'unixepoch', 'UTC')
-    as btime, datetime(fi.atime, 'unixepoch', 'UTC') as atime, datetime(fi.ctime,
-    'unixepoch', 'UTC') as ctime, datetime(fi.mtime, 'unixepoch', 'UTC') as mtime
-    FROM hash JOIN file fi USING (path) where (fi.path like '/etc/sudoers') AND type='regular';
-  platform: linux

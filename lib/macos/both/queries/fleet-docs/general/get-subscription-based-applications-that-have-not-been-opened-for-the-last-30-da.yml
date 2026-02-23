@@ -1,9 +1,0 @@
-- name: Get subscription-based applications that have not been opened for the last
-    30 days
-  description: Returns applications that are subscription-based and have not been
-    opened for the last 30 days. You can replace the list of applications with those
-    specific to your use case.
-  query: SELECT * FROM apps WHERE path LIKE '/Applications/%' AND name IN ("Photoshop.app",
-    "Adobe XD.app", "Sketch.app", "Illustrator.app") AND last_opened_time < (( SELECT
-    unix_time FROM time ) - 2592000000000 );
-  platform: darwin

@@ -1,6 +1,0 @@
-- name: netstat.exe
-  description: Netstat Execute,  is an operating system utility that displays active
-    TCP connections, listening ports, and network statistics. - ATT&CK T1049,S0104
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
-    like '%netstat%';
-  platform: windows

@@ -1,4 +1,0 @@
-- name: PolicyScopeUser
-  description: Check Software Restriction Policies state
-  query: select * from registry where key like 'HKEY_USERS\%\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\PolicyScope'
-  platform: windows

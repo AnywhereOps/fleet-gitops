@@ -1,5 +1,0 @@
-- name: svchost.exe_incorrect_parent_process
-  description: Detect processes masquerading as legitimate Windows processes
-  query: SELECT name FROM processes WHERE pid=(SELECT parent FROM processes WHERE
-    LOWER(name)='svchost.exe') AND LOWER(name)!='services.exe';
-  platform: windows

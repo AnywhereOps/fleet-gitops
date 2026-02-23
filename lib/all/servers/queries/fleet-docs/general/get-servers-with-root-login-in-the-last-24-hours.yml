@@ -1,6 +1,0 @@
-- name: Get servers with root login in the last 24 hours
-  description: Returns servers with root login in the last 24 hours and the time the
-    users were logged in.
-  query: SELECT * FROM last WHERE username = "root" AND time > (( SELECT unix_time
-    FROM time ) - 86400 );
-  platform: darwin, linux, windows

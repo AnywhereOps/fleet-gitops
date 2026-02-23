@@ -1,4 +1,0 @@
-- name: Get applications that are not in the Applications directory
-  description: Returns applications that are not in the `/Applications` directory
-  query: SELECT * FROM apps WHERE path NOT LIKE '/Applications/%';
-  platform: darwin

@@ -1,7 +1,0 @@
-- name: CDK - Platform Info
-  description: Return hardware platform info (UEFI)
-  query: "SELECT\n  *\nFROM\n  platform_info\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

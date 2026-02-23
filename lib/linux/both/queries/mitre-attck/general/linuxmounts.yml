@@ -1,4 +1,0 @@
-- name: linux_mounts
-  description: Check mount on the host - ATT&CK T1025,T1052
-  query: SELECT device, device_alias, flags, path,type from mounts;
-  platform: linux

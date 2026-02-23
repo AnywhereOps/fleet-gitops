@@ -1,6 +1,0 @@
-- name: runonceex_persistence_registry
-  description: Registry based persistence mechanism to load DLLs at reboot time and
-    avoids detection by Autoruns (https://oddvar.moe/2018/03/21/persistence-using-runonceex-hidden-from-autoruns-exe/).
-    Subkeys will be deleted after they run, thus (RunOnce). The RunOnceEx key will
-    remain.
-  query: SELECT * FROM registry WHERE path = 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx';

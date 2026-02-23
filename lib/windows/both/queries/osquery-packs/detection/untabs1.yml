@@ -1,4 +1,0 @@
-- name: unTabs_1
-  description: (https://sensorstechforum.com/untabs-browser-extension-virus-remove-completely/)
-  query: select * from programs where name like 'unTabs%';
-  platform: windows

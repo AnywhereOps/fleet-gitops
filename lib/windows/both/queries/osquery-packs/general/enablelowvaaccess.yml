@@ -1,5 +1,0 @@
-- name: EnableLowVaAccess
-  description: Check Kernel Null page state
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
-    Manager\Memory Management\EnableLowVaAccess'
-  platform: windows

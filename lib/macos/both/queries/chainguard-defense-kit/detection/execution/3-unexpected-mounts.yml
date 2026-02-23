@@ -1,9 +1,0 @@
-- name: CDK - Unexpected Mounts
-  description: Detect weird mounts, like mounting the EFI partition
-  query: "SELECT\n  *\nFROM\n  mounts\nWHERE\n  device = '/dev/disk0s1'\n  AND type\
-    \ = 'msdos';\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

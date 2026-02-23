@@ -1,5 +1,0 @@
-- name: taskkill.exe
-  description: 'Taskkill Execute, usaullay used to kill task '
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
-    like '%taskkill%';
-  platform: windows

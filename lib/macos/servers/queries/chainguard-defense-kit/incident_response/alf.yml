@@ -1,9 +1,0 @@
-- name: CDK - Alf
-  description: Retrieves the configuration values for the Application Layer Firewall
-    for OSX.
-  query: "SELECT\n  *\nFROM\n  alf;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,6 +1,0 @@
-- name: Software Python packages
-  description: Retrieves python packages installed on a host.
-  query: "SELECT\n      name AS name,\n      version AS version,\n      '' AS extension_id,\n\
-    \      '' AS browser,\n      'python_packages' AS source,\n      '' AS vendor,\n\
-    \      path AS installed_path\n    FROM python_packages;\n"
-  platform: darwin, windows, linux

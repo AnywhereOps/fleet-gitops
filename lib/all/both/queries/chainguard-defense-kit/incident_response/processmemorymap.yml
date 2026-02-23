@@ -1,9 +1,0 @@
-- name: CDK - Process Memory Map
-  description: Retrieves the memory map per process
-  query: "SELECT\n  pid,\n  permissions,\noffset\n,\n  inode,\n  path,\n  pseudo\n\
-    FROM\n  process_memory_map\nWHERE\n  path != \"\"\nGROUP BY\n  pid,\n  permissions,\n\
-    offset\n,\n  inode,\n  path,\n  pseudo;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

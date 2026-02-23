@@ -1,6 +1,0 @@
-- name: sc.exe
-  description: SC.exe Execute, Service Control - Create, Start, Stop, Query or Delete
-    any Windows SERVICE. . - ATT&CK T1007
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
-    like '%sc%';
-  platform: windows

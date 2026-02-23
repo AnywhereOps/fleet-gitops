@@ -1,4 +1,0 @@
-- name: iexplorer_extensions
-  description: Lists all internet explorer extensions - ATT&CK T1176
-  query: select * from ie_extensions;
-  platform: windows

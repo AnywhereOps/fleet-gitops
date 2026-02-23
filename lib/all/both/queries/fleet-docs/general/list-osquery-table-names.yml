@@ -1,5 +1,0 @@
-- name: List osquery table names
-  description: List all table names in the schema of the currently installed version
-    of osquery
-  query: SELECT DISTINCT name FROM osquery_registry;
-  platform: darwin, linux, windows

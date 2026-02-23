@@ -1,3 +1,0 @@
-- name: shkit_rootkit
-  description: shkit_rootkit
-  query: select * from file where path in ('/lib/security/.config', '/etc/ld.so.hash');

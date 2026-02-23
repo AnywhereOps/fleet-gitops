@@ -1,8 +1,0 @@
-- name: CDK - Homebrew Packages Macos
-  description: Dump a list of homebrew packages
-  query: "SELECT\n  *\nFROM\n  homebrew_packages;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

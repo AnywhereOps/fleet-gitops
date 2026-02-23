@@ -1,5 +1,0 @@
-- name: svchost.exe_no_K_option
-  description: SVCHOST Processes not using the -k [name] convention
-  query: select * from processes where name like 'svchost.exe' and cmdline not like
-    '%-k%';
-  platform: windows

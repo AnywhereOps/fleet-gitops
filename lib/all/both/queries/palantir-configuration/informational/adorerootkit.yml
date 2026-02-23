@@ -1,3 +1,0 @@
-- name: adore_rootkit
-  description: adore_rootkit
-  query: select * from file where path in ('/etc/bin/ava', '/etc/sbin/ava');

@@ -1,8 +1,0 @@
-- name: Disk encryption (Windows)
-  description: Retrieves the disk encryption status of a Windows device.
-  query: "WITH encrypted(enabled) AS (\n    SELECT CASE WHEN\n      NOT EXISTS(SELECT\
-    \ 1 FROM windows_optional_features WHERE name = 'BitLocker')\n      OR\n     \
-    \ (SELECT 1 FROM windows_optional_features WHERE name = 'BitLocker' AND state\
-    \ = 1)\n    THEN (SELECT 1 FROM bitlocker_info WHERE drive_letter = 'C:' AND protection_status\
-    \ = 1)\n  END)\n  SELECT 1 FROM encrypted WHERE enabled IS NOT NULL\n"
-  platform: windows

@@ -1,4 +1,0 @@
-- name: TransparentEnabledUser
-  description: Check Software Restriction Policies state
-  query: select * from registry where key like 'HKEY_USERS\%\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\TransparentEnabled'
-  platform: windows

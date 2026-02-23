@@ -1,5 +1,0 @@
-- name: CwdIllegalInDllSearch
-  description: Check Secure Search Path state (https://support.microsoft.com/en-us/help/2264107/a-new-cwdillegalindllsearch-registry-entry-is-available-to-control-the)
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
-    Manager\CWDIllegalInDllSearch'
-  platform: windows

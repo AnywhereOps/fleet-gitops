@@ -1,4 +1,0 @@
-- name: dllhost.exe_incorrect_path
-  description: Detect processes masquerading as legitimate Windows processes
-  query: SELECT * FROM processes WHERE LOWER(name)='dllhost.exe' AND LOWER(path)!='c:\windows\system32\dllhost.exe'
-    AND LOWER(path)!='c:\windows\syswow64\dllhost.exe' AND path!='';

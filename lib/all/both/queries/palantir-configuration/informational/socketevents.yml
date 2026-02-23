@@ -1,7 +1,0 @@
-- name: socket_events
-  description: Socket events collected from the audit framework
-  query: SELECT action, auid, family, local_address, local_port, path, pid, remote_address,
-    remote_port, success, time FROM socket_events WHERE success=1 AND path NOT IN
-    ('/usr/bin/hostname') AND remote_address NOT IN ('127.0.0.1', '169.254.169.254',
-    '', '0000:0000:0000:0000:0000:0000:0000:0001', '::1', '0000:0000:0000:0000:0000:ffff:7f00:0001',
-    'unknown', '0.0.0.0', '0000:0000:0000:0000:0000:0000:0000:0000');

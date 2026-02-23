@@ -1,6 +1,0 @@
-- name: Battery
-  description: Determines battery health based on the cycle count, designed capacity,
-    and max capacity of the battery.
-  query: "SELECT \n  serial_number, cycle_count, designed_capacity, max_capacity \n\
-    FROM battery\n"
-  platform: windows, darwin

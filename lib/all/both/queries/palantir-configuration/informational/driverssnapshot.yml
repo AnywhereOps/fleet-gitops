@@ -1,3 +1,0 @@
-- name: drivers_snapshot
-  description: Drivers snapshot query
-  query: SELECT * FROM drivers;

@@ -1,6 +1,0 @@
-- name: HKCU_Control Panel_Desktop
-  description: Returns the content of the key HKCU_Control Panel_Desktop - ATT&CK
-    T1180
-  query: select name,type,data from registry where key='HKEY_CURRENT_USER\Control
-    Panel\Desktop';
-  platform: windows

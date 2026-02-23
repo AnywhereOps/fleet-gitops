@@ -1,7 +1,0 @@
-- name: CDK - User Ssh Keys
-  description: Retrieves the ssh keys per user
-  query: "SELECT\n  *\nFROM\n  users\n  JOIN user_ssh_keys USING (uid);\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,5 +1,0 @@
-- name: ControlFlowGuard
-  description: Check Control Flow Guard state
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
-    Manager\Memory Management\EnableCfg'
-  platform: windows

@@ -1,4 +1,0 @@
-- name: Uptime
-  description: Retrieves the amount time passed since a device's last boot.
-  query: SELECT * FROM uptime LIMIT 1
-  platform: darwin, linux, windows

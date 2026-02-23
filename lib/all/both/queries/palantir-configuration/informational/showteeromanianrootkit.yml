@@ -1,4 +1,0 @@
-- name: showtee_/_romanian_rootkit
-  description: showtee_/_romanian_rootkit
-  query: select * from file where path in ('/usr/include/addr.h', '/usr/include/file.h',
-    '/usr/include/syslogs.h', '/usr/include/proc.h');

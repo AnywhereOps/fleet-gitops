@@ -1,3 +1,0 @@
-- name: wmi_event_filters_snapshot
-  description: Snapshot query for WMI event filters.
-  query: SELECT * FROM wmi_event_filters;

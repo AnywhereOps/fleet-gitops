@@ -1,5 +1,0 @@
-- name: portage_packages
-  description: Retrieves all the packages installed with portage from the target Linux
-    system.
-  query: select * from portage_use;
-  platform: linux

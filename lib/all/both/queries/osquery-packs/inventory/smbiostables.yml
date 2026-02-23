@@ -1,4 +1,0 @@
-- name: smbios_tables
-  description: General reporting and heuristics monitoring.
-  query: select * from smbios_tables;
-  platform: darwin, linux

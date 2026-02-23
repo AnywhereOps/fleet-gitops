@@ -1,8 +1,0 @@
-- name: CDK - Docker Image History
-  description: Return the Docker image history on a machine
-  query: "SELECT\n  *\nFROM\n  docker_image_history\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

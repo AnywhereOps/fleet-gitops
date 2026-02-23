@@ -1,5 +1,0 @@
-- name: AppCompat
-  description: Check Applications opted in for DEP
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
-    NT\CurrentVersion\AppCompatFlags\Layers'
-  platform: windows

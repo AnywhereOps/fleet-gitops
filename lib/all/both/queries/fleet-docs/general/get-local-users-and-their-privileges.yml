@@ -1,5 +1,0 @@
-- name: Get local users and their privileges
-  description: Collects the local user accounts and their respective user group.
-  query: SELECT uid, username, type, groupname FROM users u JOIN groups g ON g.gid
-    = u.gid;
-  platform: darwin, linux, windows

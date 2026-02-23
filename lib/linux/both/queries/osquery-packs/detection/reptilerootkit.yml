@@ -1,4 +1,0 @@
-- name: reptile_rootkit
-  description: reptile_rootkit
-  query: select * from file where path in ('/reptile/reptile_cmd', '/lib/udev/reptile');
-  platform: linux

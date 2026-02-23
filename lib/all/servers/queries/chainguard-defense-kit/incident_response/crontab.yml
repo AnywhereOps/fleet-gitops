@@ -1,7 +1,0 @@
-- name: CDK - Crontab
-  description: Crontab entries
-  query: "SELECT\n  *\nFROM\n  crontab\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

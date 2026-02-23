@@ -1,8 +1,0 @@
-- name: CDK - Running Apps Macos
-  description: Retrieves currently running applications
-  query: "SELECT\n  *\nFROM\n  running_apps;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

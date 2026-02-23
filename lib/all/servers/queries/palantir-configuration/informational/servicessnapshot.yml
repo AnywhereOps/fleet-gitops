@@ -1,3 +1,0 @@
-- name: services_snapshot
-  description: Services snapshot query
-  query: SELECT * FROM services;

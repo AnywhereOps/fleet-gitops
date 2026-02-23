@@ -1,4 +1,0 @@
-- name: Disallowed_Paths_ItemData
-  description: 'Check Software Restriction Policies state: SRP deny list rule is missing'
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Safer\CodeIdentifiers\0\Paths\%\ItemData'
-  platform: windows

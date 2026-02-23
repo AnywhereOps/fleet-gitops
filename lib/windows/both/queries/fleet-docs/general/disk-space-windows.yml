@@ -1,7 +1,0 @@
-- name: Disk space (Windows)
-  description: Retrieves total amount of free disk space on a Windows host.
-  query: "SELECT \n  ROUND((sum(free_space) * 100 * 10e-10) / (sum(size) * 10e-10))\
-    \ AS percent_disk_space_available,\n  ROUND(sum(free_space) * 10e-10) AS gigs_disk_space_available,\n\
-    \  ROUND(sum(size)       * 10e-10) AS gigs_total_disk_space\nFROM logical_drives\n\
-    WHERE file_system = 'NTFS' LIMIT 1\n"
-  platform: windows

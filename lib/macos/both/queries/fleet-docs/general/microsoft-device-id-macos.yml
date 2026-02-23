@@ -1,7 +1,0 @@
-- name: Microsoft device ID (macOS)
-  description: Retrieves the Microsoft device ID of a macOS device.
-  query: 'SELECT * FROM app_sso_platform WHERE extension_identifier = ''com.microsoft.CompanyPortalMac.ssoextension''
-    AND realm = ''KERBEROS.MICROSOFTONLINE.COM'';
-
-    '
-  platform: darwin

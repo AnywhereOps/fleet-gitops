@@ -1,8 +1,0 @@
-- name: CDK - Xprotect Reports
-  description: Returns a list of malware matches from macOS XProtect
-  query: "SELECT\n  *\nFROM\n  xprotect_reports;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

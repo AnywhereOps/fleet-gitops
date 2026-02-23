@@ -1,8 +1,0 @@
-- name: CDK - Docker Images
-  description: Return the list of Docker images
-  query: "SELECT\n  *\nFROM\n  docker_images;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

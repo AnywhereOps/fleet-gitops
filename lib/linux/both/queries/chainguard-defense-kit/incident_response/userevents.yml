@@ -1,8 +1,0 @@
-- name: CDK - User Events
-  description: Return the list of audit user events
-  query: "SELECT\n  *\nFROM\n  user_events;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

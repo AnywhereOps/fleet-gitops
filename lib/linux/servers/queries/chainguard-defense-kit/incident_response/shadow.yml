@@ -1,8 +1,0 @@
-- name: CDK - Shadow
-  description: Return user data from /etc/shadow
-  query: "SELECT\n  *\nFROM\n  shadow;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

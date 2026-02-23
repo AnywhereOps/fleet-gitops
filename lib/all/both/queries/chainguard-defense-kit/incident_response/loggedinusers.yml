@@ -1,9 +1,0 @@
-- name: CDK - Logged In Users
-  description: Retrieves the list of all the currently logged in users in the target
-    system.
-  query: "SELECT\n  liu.*,\n  p.name,\n  p.cmdline,\n  p.cwd,\n  p.start_time,\n \
-    \ p.root\nFROM\n  logged_in_users liu,\n  processes p\nWHERE\n  liu.pid = p.pid;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

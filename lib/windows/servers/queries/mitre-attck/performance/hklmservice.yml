@@ -1,5 +1,0 @@
-- name: HKLM_service
-  description: Returns the content of the key HKLM_SYSTEM_CurrentControlSet_Service
-    - ATT&CK T1058
-  query: select name, type from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services';
-  platform: windows

@@ -1,8 +1,0 @@
-- name: CDK - Shell History
-  description: Retrieves the command history, per user, by parsing the shell history
-    files.
-  query: "SELECT\n  *\nFROM\n  users\n  JOIN shell_history USING (uid);\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

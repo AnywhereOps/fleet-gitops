@@ -1,8 +1,0 @@
-- name: CDK - Docker Containers
-  description: Return the list of running Docker containers on this machine
-  query: "SELECT\n  *\nFROM\n  docker_containers\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

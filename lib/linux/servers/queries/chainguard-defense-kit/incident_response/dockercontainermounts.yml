@@ -1,8 +1,0 @@
-- name: CDK - Docker Container Mounts
-  description: Return the list of mounts for Docker containers
-  query: "SELECT\n  *\nFROM\n  docker_container_mounts;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

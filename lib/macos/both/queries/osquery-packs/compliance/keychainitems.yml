@@ -1,5 +1,0 @@
-- name: keychain_items
-  description: Retrieves all the items contained in the keychain in the target OSX
-    system.
-  query: select * from keychain_items;
-  platform: darwin

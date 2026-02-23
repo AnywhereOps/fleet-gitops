@@ -1,8 +1,0 @@
-- name: hidden_directories
-  description: Lists hidden direcotry in relevant path - ATT&CK T1158
-  query: SELECT hash.sha1, fi.path, fi.filename, datetime(fi.btime, 'unixepoch', 'UTC')
-    as btime, datetime(fi.atime, 'unixepoch', 'UTC') as atime, datetime(fi.ctime,
-    'unixepoch', 'UTC') as ctime, datetime(fi.mtime, 'unixepoch', 'UTC') as mtime
-    FROM hash JOIN file fi USING (path) where ((fi.path like '/home/%%/.%') OR (fi.path
-    like '/root/.%')) AND type='directory';
-  platform: linux

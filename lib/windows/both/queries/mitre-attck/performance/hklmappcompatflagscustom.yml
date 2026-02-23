@@ -1,6 +1,0 @@
-- name: HKLM_appcompatflags_custom
-  description: '**Application Shimming** Returns the content of the key HKLM_Software_Microsoft_WindowsNT_CurrentVersion_appcompatflags_custom
-    - ATT&CK T1138'
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\software\microsoft\windows
-    nt\currentversion\appcompatflags\custom';
-  platform: windows

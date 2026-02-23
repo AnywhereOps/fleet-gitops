@@ -1,5 +1,0 @@
-- name: App_ExecuteOptions
-  description: Check Applications opted in for DEP
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
-    NT\CurrentVersion\Image File Execution Options\%\executeOptions'
-  platform: windows

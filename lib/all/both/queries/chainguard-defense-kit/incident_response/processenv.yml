@@ -1,7 +1,0 @@
-- name: CDK - Process Env
-  description: Retrieves all the environment variables per process in the target system.
-  query: "SELECT\n  *\nFROM\n  process_envs;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

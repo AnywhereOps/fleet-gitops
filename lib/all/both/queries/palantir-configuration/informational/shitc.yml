@@ -1,3 +1,0 @@
-- name: shitc
-  description: shitc
-  query: select * from file where path in ('/bin/home', '/sbin/home', '/usr/sbin/in.slogind');

@@ -1,5 +1,0 @@
-- name: MoveImages
-  description: Check ASLR configuration
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session
-    Manager\Memory Management\moveImages'
-  platform: windows

@@ -1,4 +1,0 @@
-- name: wifi_status_snapshot
-  description: Shows information about the wifi network that a host is currently connected
-    to.
-  query: SELECT * FROM wifi_status;

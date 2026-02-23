@@ -1,4 +1,0 @@
-- name: send_error_alert_registry
-  description: Controls sending administrative notifications after a crash. Some malware
-    sets this value to 0
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\CrashControl\SendAlert';

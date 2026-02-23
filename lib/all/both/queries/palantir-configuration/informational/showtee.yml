@@ -1,4 +1,0 @@
-- name: showtee
-  description: showtee
-  query: select * from file where path in ('/usr/lib/.egcs', '/usr/lib/.wormie', '/usr/lib/.kinetic',
-    '/usr/lib/liblog.o', '/usr/include/cron.h', '/usr/include/chk.h');

@@ -1,9 +1,0 @@
-- name: CDK - Safari Extensions Macos
-  description: Return the list of installed Safari extensions
-  query: "SELECT\n  safari_extensions.*\nFROM\n  users\n  JOIN safari_extensions ON\
-    \ users.uid = safari_extensions.uid;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

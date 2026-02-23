@@ -1,5 +1,0 @@
-- name: loginwindow1
-  description: Retrieves all the values for the loginwindow process in the target
-    OSX system.
-  query: select key, subkey, value from plist where path = '/Library/Preferences/com.apple.loginwindow.plist';
-  platform: darwin

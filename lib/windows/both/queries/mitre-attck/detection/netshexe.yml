@@ -1,7 +1,0 @@
-- name: netsh.exe
-  description: Netsh Execute, Netsh.exe (also referred to as Netshell) is a command-line
-    scripting utility used to interact with the network configuration of a system
-    - ATT&CK T1128,T1063,S0108
-  query: select * from file WHERE directory = 'C:\Windows\Prefetch\' and filename
-    like '%netsh%';
-  platform: windows

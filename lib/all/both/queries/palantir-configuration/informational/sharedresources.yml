@@ -1,4 +1,0 @@
-- name: shared_resources
-  description: Displays shared resources on a computer system running Windows. This
-    may be a disk drive, printer, interprocess communication, or other sharable device.
-  query: SELECT * FROM shared_resources;

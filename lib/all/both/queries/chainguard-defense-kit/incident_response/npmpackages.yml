@@ -1,7 +1,0 @@
-- name: CDK - Npm Packages
-  description: Return the list of npm packages
-  query: "SELECT\n  *\nFROM\n  npm_packages;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

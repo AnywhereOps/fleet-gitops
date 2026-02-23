@@ -1,9 +1,0 @@
-- name: CDK - Loginwindow2
-  description: Retrieves all the values for the loginwindow process in the target
-    OSX system.
-  query: "select\n  key,\n  subkey,\n  value\nfrom\n  plist\nwhere\n  path = '/Library/Preferences/loginwindow.plist';\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

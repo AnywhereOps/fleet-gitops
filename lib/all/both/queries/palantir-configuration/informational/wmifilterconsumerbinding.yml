@@ -1,3 +1,0 @@
-- name: wmi_filter_consumer_binding
-  description: Lists the relationship between event consumers and filters.
-  query: SELECT * FROM wmi_filter_consumer_binding;

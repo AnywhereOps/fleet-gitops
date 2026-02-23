@@ -1,3 +1,0 @@
-- name: enye_sec_rootkit
-  description: enye_sec_rootkit
-  query: select * from file where path in ('/etc/.enyelkmHIDE^IT.ko');

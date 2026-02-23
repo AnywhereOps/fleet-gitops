@@ -1,7 +1,0 @@
-- name: CDK - Mounts
-  description: Retrieves the current list of mounted drives in the target system.
-  query: "SELECT\n  *\nFROM\n  mounts;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

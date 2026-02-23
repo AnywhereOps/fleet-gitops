@@ -1,4 +1,0 @@
-- name: windows_shared_resources
-  description: Retrieves the list of shared resources in the target Windows system.
-  query: select * from shared_resources;
-  platform: windows

@@ -1,7 +1,0 @@
-- name: CDK - Etc Hosts
-  description: Retrieves all the entries in the target system /etc/hosts file.
-  query: "SELECT\n  *\nFROM\n  etc_hosts;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

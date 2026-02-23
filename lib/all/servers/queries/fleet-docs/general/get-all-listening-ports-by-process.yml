@@ -1,7 +1,0 @@
-- name: Get all listening ports, by process
-  description: List ports that are listening on all interfaces, along with the process
-    to which they are attached.
-  query: SELECT lp.address, lp.pid, lp.port, lp.protocol, p.name, p.path, p.cmdline
-    FROM listening_ports lp JOIN processes p ON lp.pid = p.pid WHERE lp.address =
-    "0.0.0.0";
-  platform: linux, darwin, windows

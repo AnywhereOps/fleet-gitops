@@ -1,8 +1,0 @@
-- name: CDK - Sip Config
-  description: Retrieves System Integrity Protection Settings data
-  query: "SELECT\n  *\nFROM\n  sip_config;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,4 +1,0 @@
-- name: ChromeOS profile user info
-  description: Retrieves information about profiles on ChromeOS devices
-  query: SELECT email FROM users
-  platform: chrome

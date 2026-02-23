@@ -1,6 +1,0 @@
-- name: Snaphost_HKLM_windows
-  description: '**AppInit DLLs** Snapshot Returns the content of the key HKLM_Software_Microsoft_WindowsNT_CurrentVersion_Windows
-    - ATT&CK T1103'
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-    NT\CurrentVersion\Windows' and name='AppInit_DLLs';
-  platform: windows

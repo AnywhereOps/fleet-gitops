@@ -1,3 +1,0 @@
-- name: memory_info
-  description: Information about memory usage on the system
-  query: SELECT * FROM memory_info;

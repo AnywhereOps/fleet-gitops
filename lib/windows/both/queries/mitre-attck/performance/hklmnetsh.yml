@@ -1,5 +1,0 @@
-- name: HKLM_netsh
-  description: Returns the content of the key HKLM_SYSTEM_CurrentControlSet_Control_Lsa
-    - ATT&CK T1128,S0108
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Netsh';
-  platform: windows

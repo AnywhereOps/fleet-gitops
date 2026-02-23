@@ -1,6 +1,0 @@
-- name: recent_items
-  description: Retrieves the list of recent items opened in OSX by parsing the plist
-    per user.
-  query: select username, key, value from plist p, (select * from users where directory
-    like '/Users/%') u where p.path = u.directory || '/Library/Preferences/com.apple.recentitems.plist';
-  platform: darwin

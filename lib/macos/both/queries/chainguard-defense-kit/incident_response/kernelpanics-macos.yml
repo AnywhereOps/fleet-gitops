@@ -1,8 +1,0 @@
-- name: CDK - Kernel Panics Macos
-  description: Retrieves entries from the macOS kernel panic logs
-  query: "SELECT\n  *\nFROM\n  kernel_panics;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

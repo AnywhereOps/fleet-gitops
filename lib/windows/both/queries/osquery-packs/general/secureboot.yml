@@ -1,4 +1,0 @@
-- name: SecureBoot
-  description: Whether Secureboot is enabled
-  query: select * from registry where key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot\State\UEFISecureBootEnabled'
-  platform: windows

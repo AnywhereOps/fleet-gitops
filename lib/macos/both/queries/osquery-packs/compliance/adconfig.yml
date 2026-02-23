@@ -1,5 +1,0 @@
-- name: ad_config
-  description: Retrieves the Active Directory configuration for the target machine,
-    attached to the domain (requires sudo).
-  query: select * from ad_config;
-  platform: darwin

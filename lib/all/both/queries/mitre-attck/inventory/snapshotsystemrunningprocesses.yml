@@ -1,5 +1,0 @@
-- name: snapshot_system_running_processes
-  description: Snapshot List Windows System running processes - ATT&CK T1034,T1121,T1117,T1085
-  query: select processes.pid, processes.name, users.username, processes.path from
-    processes LEFT JOIN users ON processes.uid = users.uid WHERE processes.path !=
-    '';

@@ -1,6 +1,0 @@
-- name: Get user files matching a specific hash
-  description: Looks for specific hash in the Users/ directories for files that are
-    less than 50MB (osquery file size limitation.)
-  query: SELECT path, sha256 FROM hash WHERE path IN (SELECT path FROM file WHERE
-    size < 50000000 AND path LIKE '/Users/%/Documents/%%') AND sha256 = '16d28cd1d78b823c4f961a6da78d67a8975d66cde68581798778ed1f98a56d75';
-  platform: darwin, linux

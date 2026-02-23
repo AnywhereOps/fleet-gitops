@@ -1,4 +1,0 @@
-- name: Winsecurity_info_1
-  description: (https://sensorstechforum.com/windows-infected-2-viruses-scam-remove/)
-  query: select * from programs where name = 'Winsecurity.info';
-  platform: windows

@@ -1,3 +1,0 @@
-- name: ec2_instance_metadata
-  description: Retrieve the EC2 metadata for this endpoint
-  query: SELECT * FROM ec2_instance_metadata;

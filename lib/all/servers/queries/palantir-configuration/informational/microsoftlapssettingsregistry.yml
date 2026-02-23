@@ -1,4 +1,0 @@
-- name: microsoft_laps_settings_registry
-  description: Controls Local Administrative Password Solution (LAPS) settings.
-  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft
-    Services\AdmPwd';

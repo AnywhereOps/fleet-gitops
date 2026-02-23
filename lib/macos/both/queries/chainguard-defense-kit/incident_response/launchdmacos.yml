@@ -1,8 +1,0 @@
-- name: CDK - Launchd Macos
-  description: macOS launchd entries
-  query: "SELECT\n  *\nFROM\n  launchd;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,4 +1,0 @@
-- name: sandboxes
-  description: Lists the application bundle that owns a sandbox label.
-  query: select * from sandboxes;
-  platform: darwin

@@ -1,5 +1,0 @@
-- name: Get running docker containers
-  description: Returns the running Docker containers
-  query: SELECT id, name, image, image_id, state, status FROM docker_containers WHERE
-    state = "running";
-  platform: darwin, linux

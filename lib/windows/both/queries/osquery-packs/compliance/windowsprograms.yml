@@ -1,5 +1,0 @@
-- name: windows_programs
-  description: Retrieves the list of products as they are installed by Windows Installer
-    in the target Windows system.
-  query: select * from programs;
-  platform: windows

@@ -1,3 +1,0 @@
-- name: lrk_rootkit
-  description: lrk_rootkit
-  query: select * from file where path in ('/dev/ida/.inet');

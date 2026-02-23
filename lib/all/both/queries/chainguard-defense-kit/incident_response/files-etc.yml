@@ -1,8 +1,0 @@
-- name: CDK - Files Etc
-  description: Returns a list of file information from /etc (non-hidden only)
-  query: "SELECT\n  *\nFROM\n  file\n  JOIN hash ON file.path = hash.path\nWHERE\n\
-    \  file.path LIKE \"/etc/%%\";\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

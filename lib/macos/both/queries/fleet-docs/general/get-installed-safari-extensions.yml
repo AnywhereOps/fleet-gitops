@@ -1,5 +1,0 @@
-- name: Get installed Safari extensions
-  description: Retrieves the list of installed Safari Extensions for all users in
-    the target system.
-  query: SELECT safari_extensions.* FROM users join safari_extensions USING (uid);
-  platform: darwin

@@ -1,8 +1,0 @@
-- name: CDK - Firefox Addons
-  description: Return the list of installed Firefox addons
-  query: "SELECT\n  firefox_addons.*\nFROM\n  users\n  JOIN firefox_addons ON users.uid\
-    \ = firefox_addons.uid;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,8 +1,0 @@
-- name: Collect macOS compatibility data
-  automations_enabled: false
-  description: Collects macOS compatibility data from macOS hosts.
-  discard_data: false
-  logging: snapshot
-  observer_can_run: true
-  platform: darwin
-  query: SELECT * FROM macos_compatibility;

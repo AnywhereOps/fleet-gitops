@@ -1,4 +1,0 @@
-- name: Symantec_Endpoint_Protection_Services
-  description: Symantec Endpoint Protection service Status change - ATT&CK T1089
-  query: SELECT * FROM services WHERE name = 'SepMasterService' AND status != 'RUNNING';
-  platform: windows

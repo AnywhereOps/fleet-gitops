@@ -1,9 +1,0 @@
-- name: CDK - Kernel Modules Linux
-  description: Retrieves all the information for the current kernel modules in the
-    target Linux system.
-  query: "SELECT\n  *\nFROM\n  kernel_modules;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

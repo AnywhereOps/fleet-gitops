@@ -1,9 +1,0 @@
-- name: CDK - Process Open Sockets
-  description: Return the list of open sockets per process
-  query: "SELECT\n  p.path AS p_path,\n  p.name AS p_name,\n  p.start_time AS p_time,\n\
-    \  p.euid AS p_euid,\n  p.uid AS p_uid,\n  p.cmdline AS p_cmdline,\n  pos.*\n\
-    FROM\n  process_open_sockets AS pos\n  LEFT JOIN processes p ON pos.pid = p.pid;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

@@ -1,5 +1,0 @@
-- name: kernel_extensions
-  description: Retrieves all the information about the current kernel extensions for
-    the target OSX system.
-  query: select * from kernel_extensions;
-  platform: darwin

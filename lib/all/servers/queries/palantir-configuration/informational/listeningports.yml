@@ -1,4 +1,0 @@
-- name: listening_ports
-  description: Gather information about processes that are listening on a socket.
-  query: SELECT pid, port, processes.path, cmdline, cwd FROM listening_ports JOIN
-    processes USING (pid) WHERE port!=0;

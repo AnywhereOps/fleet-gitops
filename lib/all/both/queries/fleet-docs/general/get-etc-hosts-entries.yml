@@ -1,4 +1,0 @@
-- name: Get etc hosts entries
-  description: Line-parsed /etc/hosts
-  query: SELECT * FROM etc_hosts WHERE address not in ('127.0.0.1', '::1');
-  platform: darwin, linux

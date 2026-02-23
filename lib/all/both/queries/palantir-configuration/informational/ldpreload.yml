@@ -1,5 +1,0 @@
-- name: ld_preload
-  description: Any processes that run with an LD_PRELOAD environment variable
-  query: SELECT process_envs.pid, process_envs.key, process_envs.value, processes.name,
-    processes.path, processes.cmdline, processes.cwd FROM process_envs join processes
-    USING (pid) WHERE key = 'LD_PRELOAD';

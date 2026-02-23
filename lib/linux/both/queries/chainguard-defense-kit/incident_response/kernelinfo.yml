@@ -1,8 +1,0 @@
-- name: CDK - Kernel Info
-  description: Return basic kernel information
-  query: "SELECT\n  *\nFROM\n  kernel_info;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

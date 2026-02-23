@@ -1,4 +1,0 @@
-- name: smbv1_registry
-  description: Controls enabling/disabling SMBv1. Setting this key to 0 disables the
-    SMBv1 protocol on the host.
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters\SMB1';

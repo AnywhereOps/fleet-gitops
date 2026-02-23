@@ -1,3 +1,0 @@
-- name: tpm_registry
-  description: Controls system TPM settings
-  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\TPM';

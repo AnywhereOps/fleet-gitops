@@ -1,3 +1,0 @@
-- name: trk_rootkit
-  description: trk_rootkit
-  query: select * from file where path in ('/usr/bin/soucemask', '/usr/bin/sourcemask');

@@ -1,3 +1,0 @@
-- name: secure_boot_registry
-  description: Lists information about SecureBoot status.
-  query: SELECT * FROM registry WHERE key='HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\SecureBoot';

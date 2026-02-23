@@ -1,5 +1,0 @@
-- name: Get authorized keys for Domain Joined Accounts
-  description: List authorized_keys for each user on the system.
-  query: SELECT *  FROM users CROSS JOIN  authorized_keys USING(uid) WHERE  username
-    IN (SELECT distinct(username) FROM last);
-  platform: darwin, linux

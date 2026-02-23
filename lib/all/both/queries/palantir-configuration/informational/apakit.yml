@@ -1,3 +1,0 @@
-- name: apa_kit
-  description: apa_kit
-  query: select * from file where path in ('/usr/share/.aPa');

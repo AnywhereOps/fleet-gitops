@@ -1,7 +1,0 @@
-- name: CDK - Hardware Events
-  description: Return hardware events
-  query: "SELECT\n  *\nFROM\n  hardware_events;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

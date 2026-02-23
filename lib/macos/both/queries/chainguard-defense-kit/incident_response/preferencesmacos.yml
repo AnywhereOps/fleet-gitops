@@ -1,8 +1,0 @@
-- name: CDK - Preferences Macos
-  description: Retrieves entries from the macOS preferences database
-  query: "SELECT\n  *\nFROM\n  preferences;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

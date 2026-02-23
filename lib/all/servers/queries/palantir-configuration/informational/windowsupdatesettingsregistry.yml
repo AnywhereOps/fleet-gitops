@@ -1,3 +1,0 @@
-- name: windows_update_settings_registry
-  description: Controls Windows Update server location and installation behavior.
-  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WindowsUpdate\%%';

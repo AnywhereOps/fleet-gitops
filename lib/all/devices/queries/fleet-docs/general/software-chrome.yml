@@ -1,6 +1,0 @@
-- name: Software (Chrome)
-  description: Gathers information about software installed on a ChromeOS device.
-  query: "SELECT\n  name AS name,\n  version AS version,\n  identifier AS extension_id,\n\
-    \  browser_type AS browser,\n  'chrome_extensions' AS source,\n  '' AS vendor,\n\
-    \  '' AS installed_path\nFROM chrome_extensions\n"
-  platform: chrome

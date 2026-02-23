@@ -1,7 +1,0 @@
-- name: CDK - Startup Items
-  description: Retrieve most programs that are part of a systems startup (multi-platform)
-  query: "SELECT\n  *\nFROM\n  startup_items;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

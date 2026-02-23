@@ -1,7 +1,0 @@
-- name: CDK - System Controls
-  description: Return the list of sysctl values
-  query: "SELECT\n  *\nFROM\n  system_controls;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

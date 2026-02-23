@@ -1,7 +1,0 @@
-- name: CDK - Usb Devices
-  description: Return the list of USB devices
-  query: "SELECT\n  *\nFROM\n  usb_devices;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

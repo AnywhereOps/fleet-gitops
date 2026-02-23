@@ -1,3 +1,0 @@
-- name: kernel_info
-  description: Retrieves information from the current kernel in the target system.
-  query: SELECT * FROM kernel_info;

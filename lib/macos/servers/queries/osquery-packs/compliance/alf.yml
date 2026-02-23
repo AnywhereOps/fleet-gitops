@@ -1,5 +1,0 @@
-- name: alf
-  description: Retrieves the configuration values for the Application Layer Firewall
-    for OSX.
-  query: select * from alf;
-  platform: darwin

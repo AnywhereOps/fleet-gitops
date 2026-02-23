@@ -1,3 +1,0 @@
-- name: tribe_bot
-  description: tribe_bot
-  query: select * from file where path in ('/dev/wd4');

@@ -1,8 +1,0 @@
-- name: CDK - Docker Container Ports
-  description: Return the list of ports for Docker containers
-  query: "SELECT\n  *\nFROM\n  docker_container_ports;\n"
-  platform: linux
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

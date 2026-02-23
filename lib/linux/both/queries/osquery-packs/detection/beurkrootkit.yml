@@ -1,4 +1,0 @@
-- name: beurk_rootkit
-  description: beurk_rootkit
-  query: select * from file where path in ('/lib/libselinux.so');
-  platform: linux

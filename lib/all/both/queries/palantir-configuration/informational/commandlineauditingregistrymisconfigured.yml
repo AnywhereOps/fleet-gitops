@@ -1,4 +1,0 @@
-- name: command_line_auditing_registry_misconfigured
-  description: Returns the content of the key if it does not match the expected value
-  query: SELECT * FROM registry WHERE path='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System\Audit\ProcessCreationIncludeCmdLine_Enabled'
-    AND data!=1;

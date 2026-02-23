@@ -1,3 +1,0 @@
-- name: winrm_settings_registry
-  description: Controls local WinRM client configuration and security.
-  query: SELECT * FROM registry WHERE key LIKE 'HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\WinRM\%%';

@@ -1,9 +1,0 @@
-- name: windows_temp_new_directory
-  description: Check suspicious directory creation under c:\windows\temp - ATT&CK
-    T1034,T1074,T1044
-  query: select f.path,f.directory,u.username,f.hard_links,f.symlink,datetime(f.btime,
-    'unixepoch', 'UTC') as btime, datetime(f.atime, 'unixepoch', 'UTC') as atime,
-    datetime(f.ctime, 'unixepoch', 'UTC') as ctime, datetime(f.mtime, 'unixepoch',
-    'UTC') as mtime from file f LEFT JOIN users u on f.uid=u.uid where f.path like
-    'C:\Windows\temp\%' AND f.type='directory';
-  platform: windows

@@ -1,7 +1,0 @@
-- name: CDK - Suid Bin
-  description: Retrieves setuid-enabled executables in well-known paths
-  query: "SELECT\n  *\nFROM\n  suid_bin;\n"
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

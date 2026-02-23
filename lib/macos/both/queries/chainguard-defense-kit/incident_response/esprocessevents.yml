@@ -1,8 +1,0 @@
-- name: CDK - Es Process Events
-  description: Dump a list of process execution events from EndpointSecurity
-  query: "SELECT\n  *\nFROM\n  es_process_events;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

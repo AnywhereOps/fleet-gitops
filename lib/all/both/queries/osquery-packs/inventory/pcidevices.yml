@@ -1,5 +1,0 @@
-- name: pci_devices
-  description: Report an inventory of PCI devices. Attaches and detaches will show
-    up in hardware_events.
-  query: select * from pci_devices;
-  platform: darwin, linux

@@ -1,4 +1,0 @@
-- name: Sophos_Anti-Virus_Services_2
-  description: Symantec Endpoint Protection service Status change - ATT&CK T1089
-  query: SELECT * FROM services WHERE name = 'SavService' AND status != 'RUNNING';
-  platform: windows

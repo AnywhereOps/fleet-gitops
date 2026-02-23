@@ -1,5 +1,0 @@
-- name: Disk encryption (macOS)
-  description: Retrieves the disk encryption status of a macOS device.
-  query: "SELECT \n  1 \nFROM disk_encryption \nWHERE user_uuid IS NOT \"\" \nAND\
-    \ filevault_status = 'on' LIMIT 1\n"
-  platform: darwin

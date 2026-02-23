@@ -1,5 +1,0 @@
-- name: Snaphost_HKLM_Explorer_Run
-  description: Returns the content of the key HKLMU_Software_Microsoft_Windows_CurrentVersion_Policies_Explorer_Run
-    - ATT&CK T1060
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run';
-  platform: windows

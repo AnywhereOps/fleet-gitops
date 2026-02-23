@@ -1,5 +1,0 @@
-- name: App_disabledExceptionChainValidation
-  description: Check Applications not supporting SEHOP
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\%Microsoft\Windows
-    NT\CurrentVersion\Image File Execution Options\%\DisableExceptionChainValidation'
-  platform: windows

@@ -1,6 +1,0 @@
-- name: backup_tool_not_running
-  description: "Returns an event if a BackupTool process is not found running from\
-    \ '/Applications/BackupTool' (OSX) or 'c:\backuptool.exe' (Windows)"
-  query: SELECT IFNULL(process_count,0) as process_exists FROM (SELECT count(*) as
-    process_count from processes where path='/Applications/BackupTool' OR lower(path)
-    LIKE 'c:\backuptool.exe') where process_exists!=1;

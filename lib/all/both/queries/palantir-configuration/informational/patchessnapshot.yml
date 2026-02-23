@@ -1,3 +1,0 @@
-- name: patches_snapshot
-  description: Patches snapshot query
-  query: SELECT * FROM patches;

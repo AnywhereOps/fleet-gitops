@@ -1,9 +1,0 @@
-- name: CDK - Alf Explicit Auths Macos
-  description: Retrieves the list of processes with explicit authorization for the
-    Application Layer Firewall.
-  query: "SELECT\n  *\nFROM\n  alf_explicit_auths;\n"
-  platform: darwin
-  observer_can_run: true
-  automations_enabled: false
-  logging: snapshot
-  discard_data: false

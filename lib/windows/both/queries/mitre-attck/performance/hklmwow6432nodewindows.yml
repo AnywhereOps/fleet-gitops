@@ -1,6 +1,0 @@
-- name: HKLM_Wow6432Node_Windows
-  description: '**AppInit DLLs** Returns the content of the key HKLM_Software_Wow6432Node_Microsoft_Windows
-    NT_CurrentVersion_Windows - ATT&CK T1103'
-  query: select name,type,data from registry where key='HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-    NT\CurrentVersion\Windows' and name='AppInit_DLLs';
-  platform: windows

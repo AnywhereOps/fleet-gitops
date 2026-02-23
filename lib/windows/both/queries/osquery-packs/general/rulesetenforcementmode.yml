@@ -1,4 +1,0 @@
-- name: RuleSetEnforcementMode
-  description: Check Applocker rule set configuration
-  query: select * from registry where key like 'HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\SrpV2\%\EnforcementMode'
-  platform: windows
