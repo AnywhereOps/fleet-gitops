@@ -1,4 +1,6 @@
 name: 🖥️ Dedicated devices
+agent_options:
+  path: ./lib/agent-options.yml
 queries:
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/c2/1-unexpected-talker-events.yml
   - path: ../lib/all/devices/queries/chainguard-defense-kit/detection/collection/1-high-disk-bytes-written.yml

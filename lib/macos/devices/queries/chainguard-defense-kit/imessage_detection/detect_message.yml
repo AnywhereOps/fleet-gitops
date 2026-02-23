@@ -1,0 +1,8 @@
+- name: Collect iMessages
+  description: Collects iMessage and SMS data from macOS chat.db for SEC 17a-4 compliance
+  query: SELECT * FROM imessage_messages;
+  platforms:
+    - darwin
+  interval: 10
+  logging: differential
+  automations_enabled: true

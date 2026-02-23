@@ -44,6 +44,10 @@
 - [ ] Add `interval` back to those specific queries
 - [ ] Consider different intervals for different query types
 
+### Automate APNS cert renewals thru github action 
+- [ ] use fleetctl generate mdm-apple to generate
+- [ ] use ai to actually do the thing
+
 ## Scripts
 
 | Script | Purpose |
