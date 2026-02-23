@@ -763,18 +763,6 @@ queries:
   - path: ../lib/windows/servers/queries/osquery-packs/detection/servicesexeincorrectparentprocess.yml
   - path: ../lib/windows/servers/queries/osquery-packs/detection/svchostexeincorrectparentprocess.yml
   - path: ../lib/windows/servers/queries/osquery-packs/general/sysmonconfig.yml
-  # Linux server queries
-  - path: ../lib/linux/servers/queries/
-  - path: ../lib/linux/both/queries/
-  # macOS server queries
-  - path: ../lib/macos/servers/queries/
-  - path: ../lib/macos/both/queries/
-  # Windows server queries
-  - path: ../lib/windows/servers/queries/
-  - path: ../lib/windows/both/queries/
-  # Cross-platform server queries
-  - path: ../lib/all/servers/queries/
-  - path: ../lib/all/both/queries/
 policies:
 agent_options:
 controls:

@@ -670,18 +670,6 @@ queries:
   - path: ../lib/windows/devices/queries/fleet-docs/general/mdm-windows.yml
   - path: ../lib/windows/devices/queries/fleet-docs/general/software-windows.yml
   - path: ../lib/windows/devices/queries/mitre-attck/performance/hkcucontrol-paneldesktop.yml
-  # macOS device queries
-  - path: ../lib/macos/devices/queries/
-  - path: ../lib/macos/both/queries/
-  # Windows device queries
-  - path: ../lib/windows/devices/queries/
-  - path: ../lib/windows/both/queries/
-  # Linux device queries
-  - path: ../lib/linux/devices/queries/
-  - path: ../lib/linux/both/queries/
-  # Cross-platform device queries
-  - path: ../lib/all/devices/queries/
-  - path: ../lib/all/both/queries/
 policies:
 agent_options:
 controls:

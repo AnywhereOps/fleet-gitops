@@ -33,9 +33,10 @@ def format_paths(paths, prefix=""):
 def update_config(filepath, paths_yaml):
     with open(filepath) as f:
         content = f.read()
-    pattern = r"(queries:)\s*(?:\n(?:  - [^\n]+\n)*|\n)"
+    # Match queries: section until next top-level key (policies:, agent_options:, etc.)
+    pattern = r"(queries:).*?(?=^[a-z_]+:|\Z)"
     replacement = f"queries:\n{paths_yaml}\n" if paths_yaml else "queries:\n"
-    new_content = re.sub(pattern, replacement, content, count=1)
+    new_content = re.sub(pattern, replacement, content, count=1, flags=re.MULTILINE | re.DOTALL)
     with open(filepath, "w") as f:
         f.write(new_content)
 
@@ -69,6 +70,12 @@ def main():
         if os.path.exists(servers_path):
             update_config(servers_path, format_paths(server_queries, ".."))
             print("Updated it-servers.yml")
+        # Mobile device teams - empty for now (no iOS/iPadOS queries yet)
+        for team in ["employee-issued-mobile-devices.yml", "personal-mobile-devices.yml"]:
+            path = os.path.join(ROOT_DIR, "teams", team)
+            if os.path.exists(path):
+                update_config(path, "")  # Empty queries section
+                print(f"Updated {team} (empty - no iOS/iPadOS queries yet)")
         print("\nDone!")
 
 if __name__ == "__main__":

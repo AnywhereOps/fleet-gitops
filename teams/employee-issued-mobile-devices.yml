@@ -1,7 +1,5 @@
 name: 📱🏢 Employee-issued mobile devices
 queries:
-  - path: ../lib/ios/queries/
-  - path: ../lib/ipados/queries/
 policies:
 agent_options:
 controls:
