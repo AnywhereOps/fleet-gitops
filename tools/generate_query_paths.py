@@ -4,7 +4,8 @@ import re
 import argparse
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-LIB_DIR = os.path.join(SCRIPT_DIR, "lib")
+ROOT_DIR = os.path.dirname(SCRIPT_DIR)
+LIB_DIR = os.path.join(ROOT_DIR, "lib")
 
 def find_query_files(lib_dir):
     both, devices, servers = [], [], []
@@ -49,12 +50,12 @@ def main():
     print(f"Found {len(queries['servers'])} 'servers' queries")
     
     if args.update:
-        update_config(os.path.join(SCRIPT_DIR, "default.yml"), format_paths(queries["both"]))
+        update_config(os.path.join(ROOT_DIR, "default.yml"), format_paths(queries["both"]))
         for team in ["workstations.yml", "dedicated-devices.yml"]:
-            path = os.path.join(SCRIPT_DIR, "teams", team)
+            path = os.path.join(ROOT_DIR, "teams", team)
             if os.path.exists(path):
                 update_config(path, format_paths(queries["devices"], ".."))
-        servers_path = os.path.join(SCRIPT_DIR, "teams", "it-servers.yml")
+        servers_path = os.path.join(ROOT_DIR, "teams", "it-servers.yml")
         if os.path.exists(servers_path):
             update_config(servers_path, format_paths(queries["servers"], ".."))
         print("\nDone!")
