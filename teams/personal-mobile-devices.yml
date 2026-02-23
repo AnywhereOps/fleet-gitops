@@ -1,9 +1,9 @@
 name: 📱🔐 Personal mobile devices
-queries:
 policies:
+queries:
 agent_options:
 controls:
 software:
 team_settings:
   secrets:
-    - secret: $FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET
+    - secret: "$FLEET_PERSONAL_MOBILE_DEVICES_ENROLL_SECRET"
