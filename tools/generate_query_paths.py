@@ -43,21 +43,32 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--update", action="store_true")
     args = parser.parse_args()
-    
+
     queries = find_query_files(LIB_DIR)
     print(f"Found {len(queries['both'])} 'both' queries")
     print(f"Found {len(queries['devices'])} 'devices' queries")
     print(f"Found {len(queries['servers'])} 'servers' queries")
-    
+
+    # Combine device and both queries for device teams
+    device_queries = sorted(queries["devices"] + queries["both"])
+    # Combine server and both queries for server teams
+    server_queries = sorted(queries["servers"] + queries["both"])
+
+    print(f"Device teams will get {len(device_queries)} queries (devices + both)")
+    print(f"Server teams will get {len(server_queries)} queries (servers + both)")
+
     if args.update:
-        update_config(os.path.join(ROOT_DIR, "default.yml"), format_paths(queries["both"]))
+        # Device teams get devices + both
         for team in ["workstations.yml", "dedicated-devices.yml"]:
             path = os.path.join(ROOT_DIR, "teams", team)
             if os.path.exists(path):
-                update_config(path, format_paths(queries["devices"], ".."))
+                update_config(path, format_paths(device_queries, ".."))
+                print(f"Updated {team}")
+        # Server team gets servers + both
         servers_path = os.path.join(ROOT_DIR, "teams", "it-servers.yml")
         if os.path.exists(servers_path):
-            update_config(servers_path, format_paths(queries["servers"], ".."))
+            update_config(servers_path, format_paths(server_queries, ".."))
+            print("Updated it-servers.yml")
         print("\nDone!")
 
 if __name__ == "__main__":
